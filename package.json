@@ -1,0 +1,23 @@
+{
+  "name": "eucorail-fleetops-demo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n WEB,API -c blue,green \"npm --workspace apps/web run dev\" \"npm --workspace packages/api run dev\"",
+    "build": "npm --workspace apps/web run build && npm --workspace packages/api run build",
+    "seed:lines": "npm --workspace packages/api run seed:lines",
+    "seed:fleet": "npm --workspace packages/api run seed:fleet",
+    "sim:start": "npm --workspace packages/api run sim:start",
+    "setup": "npm install && npm --workspace packages/api install && npm --workspace apps/web install && npm run seed:lines && npm run seed:fleet",
+    "demo": "node scripts/demo.mjs",
+    "stop": "node scripts/stop.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.2",
+    "concurrently": "^9.0.1",
+    "puppeteer": "^24.16.1"
+  }
+}

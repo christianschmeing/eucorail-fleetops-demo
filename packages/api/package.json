@@ -1,0 +1,27 @@
+{
+  "name": "@eucorail/api",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "seed:lines": "tsx src/seeds/seed-lines.ts",
+    "seed:fleet": "tsx src/seeds/seed-fleet.ts",
+    "sim:start": "tsx src/sim/run-sim.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "eventsource-parser": "^1.1.2",
+    "fastify": "^5.0.0",
+    "nanoid": "^5.0.7",
+    "zod": "^3.23.8",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  }
+}
+

@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  api:
+    build:
+      context: ./packages/api
+    ports:
+      - "4100:4100"
+    restart: unless-stopped
+  web:
+    build:
+      context: ./apps/web
+    ports:
+      - "3000:3000"
+    environment:
+      - API_ORIGIN=http://api:4100
+    depends_on:
+      - api
+    restart: unless-stopped
+
