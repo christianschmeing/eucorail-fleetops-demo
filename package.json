@@ -13,7 +13,8 @@
     "sim:start": "npm --workspace packages/api run sim:start",
     "setup": "npm install && npm --workspace packages/api install && npm --workspace apps/web install && npm run seed:lines && npm run seed:fleet",
     "demo": "node scripts/demo.mjs",
-    "stop": "node scripts/stop.mjs"
+    "stop": "node scripts/stop.mjs",
+    "push": "bash scripts/quick-push.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",
