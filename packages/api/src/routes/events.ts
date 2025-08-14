@@ -66,6 +66,34 @@ function haversineMeters(a: [number, number], b: [number, number]): number {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
+function toRad(deg: number): number { return (deg * Math.PI) / 180; }
+function toDeg(rad: number): number { return (rad * 180) / Math.PI; }
+function bearingDegrees(from: [number, number], to: [number, number]): number {
+  const lon1 = toRad(from[0]);
+  const lat1 = toRad(from[1]);
+  const lon2 = toRad(to[0]);
+  const lat2 = toRad(to[1]);
+  const y = Math.sin(lon2 - lon1) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
+  const brng = Math.atan2(y, x);
+  return (toDeg(brng) + 360) % 360;
+}
+function destinationPoint(start: [number, number], bearingDeg: number, distanceM: number): [number, number] {
+  const R = 6371000;
+  const δ = distanceM / R;
+  const θ = toRad(bearingDeg);
+  const λ1 = toRad(start[0]);
+  const φ1 = toRad(start[1]);
+  const sinφ1 = Math.sin(φ1), cosφ1 = Math.cos(φ1);
+  const sinδ = Math.sin(δ), cosδ = Math.cos(δ);
+  const sinφ2 = sinφ1 * cosδ + cosφ1 * sinδ * Math.cos(θ);
+  const φ2 = Math.asin(sinφ2);
+  const y = Math.sin(θ) * sinδ * cosφ1;
+  const x = cosδ - sinφ1 * sinφ2;
+  const λ2 = λ1 + Math.atan2(y, x);
+  return [((toDeg(λ2) + 540) % 360) - 180, toDeg(φ2)];
+}
+
 // Physics + weather instances and per-train state
 const physics = new RealisticTrainPhysics();
 const weatherService = new WeatherService();
@@ -73,6 +101,9 @@ const trainStartMs = new Map<string, number>();
 const lastSpeedKmh = new Map<string, number>();
 const energyMonitor = new EnergyMonitor();
 const paxSimByTrain = new Map<string, PassengerSimulator>();
+const trainPosById = new Map<string, [number, number]>();
+const trainSegIdxById = new Map<string, number>();
+const trainDwellMsById = new Map<string, number>();
 
 function distanceToNearestStation(line: string, lon: number, lat: number): number {
   const list = (schedules as any)[line] as Array<{ lat: number; lon: number }> | undefined;
@@ -113,21 +144,79 @@ function getNonDeterministicSnapshot() {
   const speedMod = weatherService.getSpeedModifier(weatherNow);
   const features = FLEET.map((t) => {
     const [minLon, minLat, maxLon, maxLat] = bboxByLine[t.line] || [9.0, 48.5, 11.5, 50.0];
-    const lon = minLon + Math.random() * (maxLon - minLon);
-    const lat = minLat + Math.random() * (maxLat - minLat);
-    // Physics-driven speed estimation
-    if (!trainStartMs.has(t.runId)) trainStartMs.set(t.runId, now - Math.floor(Math.random() * 60000));
-    const timeInMotionSec = Math.max(0, Math.round((now - (trainStartMs.get(t.runId) as number)) / 1000));
-    const distToStation = distanceToNearestStation(t.line, lon, lat);
+    const lineStops = (schedules as any)[t.line] as Array<{ lat: number; lon: number }> | undefined;
+    let pos = trainPosById.get(t.runId);
+    if (!pos) {
+      if (lineStops && lineStops.length > 0) {
+        const s0 = lineStops[0];
+        pos = [s0.lon, s0.lat];
+        trainSegIdxById.set(t.runId, 0);
+      } else {
+        pos = [minLon + Math.random() * (maxLon - minLon), minLat + Math.random() * (maxLat - minLat)];
+      }
+      trainPosById.set(t.runId, pos);
+      trainDwellMsById.set(t.runId, 0);
+      if (!trainStartMs.has(t.runId)) trainStartMs.set(t.runId, now - Math.floor(Math.random() * 60000));
+    }
+    let lon = pos[0];
+    let lat = pos[1];
+    // Physics-driven speed estimation with dwell
+    let distToStation = distanceToNearestStation(t.line, lon, lat);
     const previous = lastSpeedKmh.get(t.runId) ?? 60;
-    const baseSpeed = physics.calculateRealisticSpeed(distToStation, previous, timeInMotionSec, 0);
-    const realSpeed = Math.round(baseSpeed * speedMod);
+    let timeInMotionSec = Math.max(0, Math.round((now - (trainStartMs.get(t.runId) as number)) / 1000));
+    let realSpeed = 0;
+    const dwell = trainDwellMsById.get(t.runId) ?? 0;
+    if (dwell > 0) {
+      realSpeed = 0;
+      trainDwellMsById.set(t.runId, Math.max(0, dwell - TICK_MS));
+      timeInMotionSec = 0;
+    } else {
+      const baseSpeed = physics.calculateRealisticSpeed(distToStation, previous, timeInMotionSec, 0);
+      realSpeed = Math.round(baseSpeed * speedMod);
+    }
+    // Path-following
+    let bearing: number | undefined = undefined;
+    if (lineStops && lineStops.length >= 2) {
+      let segIdx = trainSegIdxById.get(t.runId) ?? 0;
+      const nextIdx = (segIdx + 1) % lineStops.length;
+      const target: [number, number] = [lineStops[nextIdx].lon, lineStops[nextIdx].lat];
+      distToStation = haversineMeters([lon, lat], target);
+      if ((trainDwellMsById.get(t.runId) ?? 0) === 0) {
+        const metersPerTick = (realSpeed * 1000 * TICK_MS) / 3600000;
+        if (metersPerTick >= distToStation && distToStation > 0) {
+          lon = target[0];
+          lat = target[1];
+          trainPosById.set(t.runId, [lon, lat]);
+          trainSegIdxById.set(t.runId, nextIdx);
+          trainDwellMsById.set(t.runId, 15000);
+          lastSpeedKmh.set(t.runId, 0);
+          timeInMotionSec = 0;
+          trainStartMs.set(t.runId, now);
+          bearing = undefined;
+        } else if (metersPerTick > 0) {
+          bearing = bearingDegrees([lon, lat], target);
+          const nextPos = destinationPoint([lon, lat], bearing, metersPerTick);
+          lon = nextPos[0];
+          lat = nextPos[1];
+          trainPosById.set(t.runId, [lon, lat]);
+        }
+      }
+    } else {
+      if (realSpeed > 0) {
+        const randomBearing = Math.random() * 360;
+        const metersPerTick = (realSpeed * 1000 * TICK_MS) / 3600000;
+        const nextPos = destinationPoint([lon, lat], randomBearing, metersPerTick);
+        lon = Math.max(minLon, Math.min(maxLon, nextPos[0]));
+        lat = Math.max(minLat, Math.min(maxLat, nextPos[1]));
+        trainPosById.set(t.runId, [lon, lat]);
+      }
+    }
     lastSpeedKmh.set(t.runId, realSpeed);
     // Energy + passengers
     const energyWhTick = energyMonitor.calculateConsumption(realSpeed);
     let pax = paxSimByTrain.get(t.runId);
     if (!pax) { pax = new PassengerSimulator(); paxSimByTrain.set(t.runId, pax); }
-    const atStation = distToStation < 80;
+    const atStation = distToStation < 80 || (trainDwellMsById.get(t.runId) ?? 0) > 0;
     const paxSnapshot = pax.tick(atStation);
     return {
       type: 'Feature',
@@ -138,6 +227,7 @@ function getNonDeterministicSnapshot() {
         speed: realSpeed,
         energyWhTick,
         loadFactor: paxSnapshot.loadFactor,
+        bearing,
         ts: now
       },
       geometry: { type: 'Point', coordinates: [lon, lat] }
