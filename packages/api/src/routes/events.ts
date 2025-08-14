@@ -2,6 +2,9 @@ import fp from 'fastify-plugin';
 import { FastifyInstance } from 'fastify';
 import { FastifySSEPlugin } from 'fastify-sse-v2';
 import { readFileSync } from 'node:fs';
+import { RealisticTrainPhysics } from '../simulation/physics.js';
+import { WeatherService } from '../weather/index.js';
+import { schedules } from '../schedules.js';
 
 // Environment-driven test mode configuration
 const TEST_MODE = process.env.TEST_MODE === '1' || process.env.NODE_ENV === 'test';
@@ -47,6 +50,37 @@ const bboxByLine: Record<string, [number, number, number, number]> = {
   BW: [8.5, 48.4, 9.9, 49.1]
 };
 
+// Simple haversine distance in meters
+function haversineMeters(a: [number, number], b: [number, number]): number {
+  const R = 6371000;
+  const toRad = (x: number) => (x * Math.PI) / 180;
+  const dLat = toRad(b[1] - a[1]);
+  const dLon = toRad(b[0] - a[0]);
+  const lat1 = toRad(a[1]);
+  const lat2 = toRad(b[1]);
+  const sinDLat = Math.sin(dLat / 2);
+  const sinDLon = Math.sin(dLon / 2);
+  const h = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+// Physics + weather instances and per-train state
+const physics = new RealisticTrainPhysics();
+const weatherService = new WeatherService();
+const trainStartMs = new Map<string, number>();
+const lastSpeedKmh = new Map<string, number>();
+
+function distanceToNearestStation(line: string, lon: number, lat: number): number {
+  const list = (schedules as any)[line] as Array<{ lat: number; lon: number }> | undefined;
+  if (!list || list.length === 0) return 2000; // fallback
+  let best = Number.POSITIVE_INFINITY;
+  for (const stop of list) {
+    const d = haversineMeters([lon, lat], [stop.lon, stop.lat]);
+    if (d < best) best = d;
+  }
+  return best;
+}
+
 // In TEST_MODE produce a deterministic, non-moving snapshot based on SEED
 function getDeterministicSnapshot(seed: number) {
   const features = FLEET.map((t) => {
@@ -70,18 +104,29 @@ function getDeterministicSnapshot(seed: number) {
 }
 
 function getNonDeterministicSnapshot() {
+  const now = Date.now();
+  const weatherNow = weatherService.getCurrentWeather();
+  const speedMod = weatherService.getSpeedModifier(weatherNow);
   const features = FLEET.map((t) => {
     const [minLon, minLat, maxLon, maxLat] = bboxByLine[t.line] || [9.0, 48.5, 11.5, 50.0];
     const lon = minLon + Math.random() * (maxLon - minLon);
     const lat = minLat + Math.random() * (maxLat - minLat);
+    // Physics-driven speed estimation
+    if (!trainStartMs.has(t.runId)) trainStartMs.set(t.runId, now - Math.floor(Math.random() * 60000));
+    const timeInMotionSec = Math.max(0, Math.round((now - (trainStartMs.get(t.runId) as number)) / 1000));
+    const distToStation = distanceToNearestStation(t.line, lon, lat);
+    const previous = lastSpeedKmh.get(t.runId) ?? 60;
+    const baseSpeed = physics.calculateRealisticSpeed(distToStation, previous, timeInMotionSec, 0);
+    const realSpeed = Math.round(baseSpeed * speedMod);
+    lastSpeedKmh.set(t.runId, realSpeed);
     return {
       type: 'Feature',
       properties: {
         id: t.runId,
         line: t.line,
         status: 'active',
-        speed: Math.round(80 + Math.random() * 40),
-        ts: Date.now()
+        speed: realSpeed,
+        ts: now
       },
       geometry: { type: 'Point', coordinates: [lon, lat] }
     } as const;
