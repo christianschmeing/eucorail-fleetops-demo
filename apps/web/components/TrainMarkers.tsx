@@ -267,7 +267,17 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
   const lastFeatureByIdRef = useRef<Map<string, any>>(new Map());
   const lastUpdateByIdRef = useRef<Map<string, number>>(new Map());
   const lastCenteredIdRef = useRef<string | null>(null);
-  const domMarkersRef = useRef<Map<string, { marker: maplibregl.Marker; el: HTMLDivElement; lastLonLat: [number, number] | null }>>(new Map());
+  type DomMarkerAnim = {
+    marker: maplibregl.Marker;
+    el: HTMLDivElement;
+    lastLonLat: [number, number] | null;
+    animFrom: [number, number] | null;
+    animTo: [number, number] | null;
+    animStartMs: number;
+    animDurationMs: number;
+  };
+  const domMarkersRef = useRef<Map<string, DomMarkerAnim>>(new Map());
+  const trailsByIdRef = useRef<Map<string, [number, number][]>>(new Map());
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
   const holdoverMinutes = Number(process.env.NEXT_PUBLIC_HOLDOVER_MINUTES ?? 5);
   const holdoverMs = Math.max(0, holdoverMinutes) * 60 * 1000;
@@ -299,7 +309,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     `;
   };
 
-  const ensureDomMarker = (id: string, lon: number, lat: number, line: string, isStale: boolean) => {
+  const ensureDomMarker = (id: string, lon: number, lat: number, line: string, isStale: boolean, acceptNewTarget = true) => {
     if (!map) return;
     let entry = domMarkersRef.current.get(id);
     const manufacturer: 'siemens' | 'stadler' = line === 'MEX16' ? 'siemens' : 'stadler';
@@ -322,19 +332,68 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         onTrainSelect(id);
       });
       const marker = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([lon, lat]).addTo(map);
-      entry = { marker, el, lastLonLat: [lon, lat] };
+      entry = { marker, el, lastLonLat: [lon, lat], animFrom: null, animTo: null, animStartMs: 0, animDurationMs: 0 };
       domMarkersRef.current.set(id, entry);
     } else {
       entry.el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
       const prev = entry.lastLonLat;
       const moved = !prev || Math.abs(prev[0] - lon) > 1e-6 || Math.abs(prev[1] - lat) > 1e-6;
-      if (moved) {
-        const dir = prev ? computeBearing(prev, [lon, lat]) : 0;
-        entry.el.innerHTML = renderTrainIconSVG(manufacturer, dir);
-        entry.marker.setLngLat([lon, lat]);
-        entry.lastLonLat = [lon, lat];
+      if (moved && acceptNewTarget) {
+        // Start an animated transition toward the new target
+        const now = performance.now();
+        const from = entry.lastLonLat ?? [lon, lat];
+        const to: [number, number] = [lon, lat];
+        const distanceMeters = haversine([from[0], from[1]], [to[0], to[1]]);
+        // Duration scales with distance (min 1000ms, max 5000ms)
+        const duration = Math.max(1000, Math.min(5000, Math.round(distanceMeters * 15))); // ~15 ms per meter
+        entry.animFrom = from;
+        entry.animTo = to;
+        entry.animStartMs = now;
+        entry.animDurationMs = duration;
       }
     }
+  };
+
+  // Easing for acceleration/braking effect
+  const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+  // Animation loop to smoothly move markers between targets
+  const stepAnimation = () => {
+    if (!map) return;
+    const zoom = map.getZoom();
+    const scale = Math.max(0.7, Math.min(1.6, 0.7 + 0.12 * (zoom - 8)));
+    const now = performance.now();
+    for (const [id, entry] of domMarkersRef.current.entries()) {
+      if (!entry.animFrom || !entry.animTo || entry.animDurationMs <= 0) continue;
+      const elapsed = now - entry.animStartMs;
+      const t = Math.max(0, Math.min(1, elapsed / entry.animDurationMs));
+      const eased = easeInOutCubic(t);
+      const [lon1, lat1] = entry.animFrom;
+      const [lon2, lat2] = entry.animTo;
+      const lon = lon1 + (lon2 - lon1) * eased;
+      const lat = lat1 + (lat2 - lat1) * eased;
+      // Update direction based on instantaneous gradient
+      const dir = computeBearing([lon1, lat1], [lon, lat]);
+      // Update SVG rotation by replacing innerHTML only when crossing noticeable angle deltas
+      if (entry.lastLonLat) {
+        const lastDir = computeBearing(entry.lastLonLat, [lon, lat]);
+        if (Math.abs(lastDir - dir) > 5) {
+          // keep manufacturer color based on id prefix
+          const manufacturer: 'siemens' | 'stadler' = id.startsWith('MEX16') ? 'siemens' : 'stadler';
+          entry.el.innerHTML = renderTrainIconSVG(manufacturer, dir);
+        }
+      }
+      entry.marker.setLngLat([lon, lat]);
+      entry.el.style.transform = `scale(${scale})`;
+      entry.lastLonLat = [lon, lat];
+      if (t >= 1) {
+        // Arrived at target
+        entry.animFrom = [lon2, lat2];
+        entry.animTo = [lon2, lat2];
+        entry.animDurationMs = 0;
+      }
+    }
+    rafRef.current = requestAnimationFrame(stepAnimation);
   };
 
   useEffect(() => {
@@ -390,6 +449,26 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
           'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular']
         },
         paint: { 'text-color': '#111' }
+      });
+    }
+
+    // Train trails source and layer
+    if (!map.getSource('train-trails')) {
+      map.addSource('train-trails', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] }
+      } as any);
+    }
+    if (!map.getLayer('train-trails')) {
+      map.addLayer({
+        id: 'train-trails',
+        type: 'line',
+        source: 'train-trails',
+        paint: {
+          'line-color': '#4ADE80',
+          'line-width': 3,
+          'line-opacity': 0.5
+        }
       });
     }
 
@@ -486,19 +565,32 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     console.log('✅ Clustered train marker layers initialized');
     try { (window as any).__mapReady = true; } catch {}
     try { window.dispatchEvent(new CustomEvent('map:ready')); } catch {}
+    // Trigger an immediate data update now that sources/layers exist
+    try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
     hasInitializedRef.current = true;
+
+    // Start animation loop
+    if (!rafRef.current) {
+      rafRef.current = requestAnimationFrame(stepAnimation);
+    }
 
     return () => {
       // Cleanup
       for (const layerId of ['train-selected', 'trains-unclustered', 'cluster-count', 'clusters']) {
         if (map.getLayer(layerId)) map.removeLayer(layerId);
       }
+      if (map.getLayer('train-trails')) map.removeLayer('train-trails');
       if (map.getSource('trains')) map.removeSource('trains');
+      if (map.getSource('train-trails')) map.removeSource('train-trails');
       // Remove DOM markers
       for (const [, entry] of domMarkersRef.current.entries()) {
         entry.marker.remove();
       }
       domMarkersRef.current.clear();
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     };
   }, [map, onTrainSelect, isTestMode]);
 
@@ -507,12 +599,27 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     if (!map) return;
     const update = () => {
       const now = Date.now();
-      const fc = qc.getQueryData<any>(['trains', 'live']);
-      if (!map.getSource('trains')) return;
+      let fc = qc.getQueryData<any>(['trains', 'live']);
       const seenIds = new Set<string>();
       const nextFeatures: any[] = [];
 
-      const liveFeatures = Array.isArray(fc?.features) ? fc.features : [];
+      // Fallback bootstrap if SSE has not populated anything yet
+      let liveFeatures = Array.isArray(fc?.features) ? fc.features : [];
+      if (!liveFeatures || liveFeatures.length === 0) {
+        const bootstrap = computeAllTrainPositions();
+        const bootstrapFc = {
+          type: 'FeatureCollection',
+          features: bootstrap.map((t) => ({
+            type: 'Feature',
+            properties: { id: t.id, line: t.line, status: t.status, speed: t.speed, ts: Date.now() },
+            geometry: { type: 'Point', coordinates: [t.lon, t.lat] }
+          }))
+        } as any;
+        qc.setQueryData(['trains', 'live'], bootstrapFc);
+        try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
+        fc = bootstrapFc;
+        liveFeatures = bootstrapFc.features;
+      }
       for (const f of liveFeatures) {
         const coords = (f?.geometry?.coordinates || []) as [number, number];
         const id = f?.properties?.id as string | undefined;
@@ -547,6 +654,14 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         lastUpdateByIdRef.current.set(id, nowMs);
         lastUpdateByTrainRef.current.set(id, nowMs);
         ensureDomMarker(id, lon, lat, line, false);
+        // Update trail with latest live position
+        const arr = trailsByIdRef.current.get(id) ?? [];
+        const prev = arr[arr.length - 1];
+        if (!prev || Math.abs(prev[0] - lon) > 1e-6 || Math.abs(prev[1] - lat) > 1e-6) {
+          arr.push([lon, lat]);
+          if (arr.length > 20) arr.shift();
+          trailsByIdRef.current.set(id, arr);
+        }
       }
 
       // Holdover: keep last known feature for a while when missing
@@ -572,12 +687,33 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
       }
       if (nextFeatures.length > 0) lastNonEmptyJsonRef.current = json;
 
-      if (json === (window as any).__lastTrainsJSON) return;
-      (window as any).__lastTrainsJSON = json;
-      requestAnimationFrame(() => {
-        const source = map.getSource('trains') as maplibregl.GeoJSONSource;
-        source.setData(JSON.parse(json));
-      });
+      if (map && map.getSource('trains')) {
+        if (json !== (window as any).__lastTrainsJSON) {
+          (window as any).__lastTrainsJSON = json;
+          requestAnimationFrame(() => {
+            const source = map.getSource('trains') as maplibregl.GeoJSONSource;
+            source.setData(JSON.parse(json));
+          });
+        }
+      }
+
+      // Update trails source from accumulated positions
+      if (map && map.getSource('train-trails')) {
+        const trailFeatures: any[] = [];
+        for (const [id, coords] of trailsByIdRef.current.entries()) {
+          if (!coords || coords.length < 2) continue;
+          trailFeatures.push({
+            type: 'Feature',
+            properties: { id },
+            geometry: { type: 'LineString', coordinates: coords }
+          });
+        }
+        const trailsOut = { type: 'FeatureCollection', features: trailFeatures } as any;
+        requestAnimationFrame(() => {
+          const source = map.getSource('train-trails') as maplibregl.GeoJSONSource;
+          source.setData(trailsOut);
+        });
+      }
 
       // Remove DOM markers that are no longer present and beyond holdover
       const keepIds = new Set(nextFeatures.map((f: any) => String(f.properties.id)));
@@ -601,6 +737,8 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     update();
     const handler = () => update();
     window.addEventListener('trains:update', handler as any);
+    const onBootstrap = () => update();
+    window.addEventListener('trains:bootstrap:request', onBootstrap as any);
     return () => window.removeEventListener('trains:update', handler as any);
   }, [map, qc, selectedTrain, isTestMode]);
 

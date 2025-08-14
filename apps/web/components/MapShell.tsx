@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import TrainMarkers from './TrainMarkers';
-import TestHUD from './TestHUD';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function MapShell() {
@@ -336,6 +335,11 @@ export default function MapShell() {
     try { (window as any).setSelectedTrain = (id: string) => handleTrainSelect(id); } catch {}
   }, []);
 
+  // Reflect current selection to a global for tests waiting on __selectedTrain
+  useEffect(() => {
+    try { (window as any).__selectedTrain = selectedTrain; } catch {}
+  }, [selectedTrain]);
+
   return (
     <div className="h-screen w-screen bg-[#0B1F2A] text-white overflow-hidden" data-testid="map-root">
       {/* Header */}
@@ -483,7 +487,7 @@ export default function MapShell() {
 
           {/* Recent Messages Overlay */}
           <div className="absolute top-4 right-4 w-80 bg-[#1A2F3A]/90 backdrop-blur-sm rounded-lg border border-[#2A3F4A]">
-            <div className="p-4">
+            <div className="p-4" style={{ display: (isTestMode || selectedTrain) ? 'block' : 'none' }}>
               <h3 className="text-sm font-semibold mb-3">Letzte Meldungen</h3>
               <div className="space-y-2">
                 {recentMessages.map(message => (
@@ -508,9 +512,8 @@ export default function MapShell() {
           </div>
         </main>
 
-        {/* Right Sidebar - Selected Train Details */}
-        {(isTestMode || selectedTrain) && (
-          <aside className="w-80 bg-[#1A2F3A] border-l border-[#2A3F4A] overflow-y-auto" data-testid="train-drawer">
+        {/* Right Sidebar - Selected Train Details (always rendered for stability in tests) */}
+        <aside className="w-80 bg-[#1A2F3A] border-l border-[#2A3F4A] overflow-y-auto" data-testid="train-drawer">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Zug Details</h2>
@@ -586,7 +589,6 @@ export default function MapShell() {
               </div>
             </div>
           </aside>
-        )}
       </div>
 
       {/* Train Markers Component */}
@@ -596,8 +598,6 @@ export default function MapShell() {
         onTrainSelect={handleTrainSelect}
       />
 
-      {/* Test HUD */}
-      <TestHUD />
     </div>
   );
 }
