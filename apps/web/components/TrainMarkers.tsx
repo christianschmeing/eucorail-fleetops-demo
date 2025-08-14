@@ -256,6 +256,17 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
   const [trainData, setTrainData] = useState(computeAllTrainPositions());
   const hasInitializedRef = useRef(false);
   const eventListenersAddedRef = useRef(false);
+  // Hook SSE to update query cache; also listen to custom event to refresh local state
+  useEffect(() => {
+    const handler = () => {
+      try {
+        // Optionally read from query cache in future; for now recompute local planned positions
+        setTrainData(computeAllTrainPositions());
+      } catch {}
+    };
+    window.addEventListener('trains:update', handler as any);
+    return () => window.removeEventListener('trains:update', handler as any);
+  }, []);
 
   // Update positions based on current time (every 60 seconds)
   useEffect(() => {

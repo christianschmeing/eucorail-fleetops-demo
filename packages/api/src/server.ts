@@ -1,18 +1,15 @@
 import Fastify from 'fastify';
-import cors from '@fastify/cors';
 import { registerRoutes } from './routes.js';
+import core from './plugins/core';
+import events from './routes/events';
+import trains from './routes/trains';
 import { readFileSync } from 'node:fs';
 import { WebSocketServer } from 'ws';
 
 const app = Fastify({ logger: true });
 
-// CORS für localhost:3001 erlauben
-await app.register(cors, { 
-  origin: ['http://localhost:3001', 'http://localhost:3000', 'http://127.0.0.1:3001'],
-  credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Accept', 'Cache-Control']
-});
+// Core plugins: CORS, rate limit, under-pressure, swagger, health
+await app.register(core);
 
 app.get('/api/meta', async () => ({
   name: 'Eucorail FleetOps Demo',
@@ -76,6 +73,8 @@ app.get('/events', async (req, reply) => {
   req.raw.on('close', () => { clearInterval(interval); clearInterval(heartbeat); });
 });
 
+await app.register(events);
+await app.register(trains);
 await registerRoutes(app);
 
 const port = Number(process.env.PORT || 4100);
