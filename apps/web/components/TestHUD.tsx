@@ -48,16 +48,16 @@ export default function TestHUD() {
   }, []);
 
   return (
-    <div className="fixed top-3 right-3 z-50 bg-[#1A2F3A]/95 border border-[#2A3F4A] rounded-md px-3 py-2 space-y-1 text-xs">
+    <div className="fixed top-3 right-3 z-50 bg-[#1A2F3A]/95 border border-[#2A3F4A] rounded-md px-3 py-2 space-y-1 text-xs" data-testid="test-hud">
       <div><span className="opacity-70">SSE:</span> <span data-testid="sse-status">{sseConnected ? 'connected' : 'connecting…'}</span></div>
       <div><span className="opacity-70">Map:</span> <span data-testid="map-status">{mapReady ? 'ready' : 'loading…'}</span></div>
       <div><span className="opacity-70">Trains:</span> <span data-testid="train-count">{trainCount}</span></div>
-      <ul data-testid="train-list" className="mt-1 space-y-1">
+      <ul data-testid="hud-train-list" className="mt-1 space-y-1">
         {demoTrains.map(id => (
           <li key={id}>
             <button
               type="button"
-              data-testid="open-details"
+              data-testid="hud-open-details"
               aria-label="details öffnen"
               className="bg-white/10 px-2 py-1 rounded hover:bg-white/20"
               onClick={() => {

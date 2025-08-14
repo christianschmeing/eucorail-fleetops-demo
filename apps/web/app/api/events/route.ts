@@ -6,8 +6,9 @@ export async function GET(request: NextRequest) {
   console.log('🔵 API Route /api/events wurde aufgerufen');
   
   try {
-    // Backend-API aufrufen
-    const backendUrl = 'http://localhost:4100/events';
+    // Backend-API aufrufen (Server-ENV, kein NEXT_PUBLIC_* verwenden)
+    const apiBase = process.env.API_BASE || 'http://localhost:4100';
+    const backendUrl = `${apiBase}/events`;
     console.log('🔗 Verbinde zu Backend:', backendUrl);
     
     const response = await fetch(backendUrl, {

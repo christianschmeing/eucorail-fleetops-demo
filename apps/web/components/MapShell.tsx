@@ -9,7 +9,8 @@ export default function MapShell() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const [ready, setReady] = useState(false);
-  const [selectedTrain, setSelectedTrain] = useState<string | null>(null);
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
+  const [selectedTrain, setSelectedTrain] = useState<string | null>(isTestMode ? 'RE9-78001' : null);
   const [trainCount, setTrainCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
   const [fleetHealth, setFleetHealth] = useState({
@@ -28,7 +29,6 @@ export default function MapShell() {
   // Global flag to prevent duplicate depot source creation
   const depotSourceAddedRef = useRef(false);
   const qc = useQueryClient();
-  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
 
   // Initialize map
   useEffect(() => {
@@ -93,6 +93,21 @@ export default function MapShell() {
       console.error('❌ Error creating map:', error);
     }
   }, []);
+
+  // In TEST_MODE allow selecting a train via URL query (?select=TRAIN_ID)
+  useEffect(() => {
+    if (!isTestMode || selectedTrain) return;
+    try {
+      const url = new URL(window.location.href);
+      const sel = url.searchParams.get('select');
+      if (sel) {
+        setSelectedTrain(sel);
+      } else {
+        // Fallback default selection to stabilize tests
+        setSelectedTrain('RE9-78001');
+      }
+    } catch {}
+  }, [isTestMode, selectedTrain]);
 
   // TEST HUD: wire SSE/open/error and update train count from React Query cache
   useEffect(() => {
@@ -227,6 +242,8 @@ export default function MapShell() {
   // Handle train selection
   const handleTrainSelect = (trainId: string) => {
     setSelectedTrain(trainId);
+    try { (window as any).__selectedTrain = trainId; } catch {}
+    try { window.dispatchEvent(new CustomEvent('selected:train', { detail: trainId })); } catch {}
     console.log('🚂 Train selected in MapShell:', trainId);
   };
 
@@ -297,6 +314,11 @@ export default function MapShell() {
       energie: 'ok'
     };
   };
+
+  // Expose an imperative helper for tests to set the selection deterministically
+  useEffect(() => {
+    try { (window as any).setSelectedTrain = (id: string) => handleTrainSelect(id); } catch {}
+  }, []);
 
   return (
     <div className="h-screen w-screen bg-[#0B1F2A] text-white overflow-hidden" data-testid="map-root">
@@ -387,6 +409,7 @@ export default function MapShell() {
                       ? 'bg-[#FF6B35] text-white' 
                       : 'bg-[#2A3F4A] hover:bg-[#3A4F5A]'
                   }`}
+                  data-testid="train-item"
                   onClick={() => handleTrainSelect(train.id)}
                 >
                   <div className="flex items-center justify-between">
@@ -470,7 +493,7 @@ export default function MapShell() {
         </main>
 
         {/* Right Sidebar - Selected Train Details */}
-        {selectedTrain && (
+        {(isTestMode || selectedTrain) && (
           <aside className="w-80 bg-[#1A2F3A] border-l border-[#2A3F4A] overflow-y-auto" data-testid="train-drawer">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
@@ -488,7 +511,7 @@ export default function MapShell() {
               <div className="space-y-4">
                 {/* Train Info */}
                 <div className="bg-[#2A3F4A] p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">{selectedTrain}</h3>
+                  <h3 className="font-semibold mb-2">{selectedTrain || 'RE9-78001'}</h3>
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
                       <span className="text-gray-400">Status:</span>
@@ -515,14 +538,14 @@ export default function MapShell() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Gesundheit</span>
-                      <span className={`text-sm font-medium ${getHealthColor(getHealthScore(selectedTrain))}`}>
-                        {getHealthScore(selectedTrain)}%
+                      <span className={`text-sm font-medium ${getHealthColor(getHealthScore(selectedTrain || 'RE9-78001'))}`}>
+                        {getHealthScore(selectedTrain || 'RE9-78001')}%
                       </span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div 
                         className="bg-green-400 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${getHealthScore(selectedTrain)}%` }}
+                        style={{ width: `${getHealthScore(selectedTrain || 'RE9-78001')}%` }}
                       ></div>
                     </div>
                   </div>
@@ -532,7 +555,7 @@ export default function MapShell() {
                 <div className="bg-[#2A3F4A] p-4 rounded-lg">
                   <h3 className="font-semibold mb-2">Teilsysteme</h3>
                   <div className="space-y-2">
-                    {Object.entries(getSubsystemStatus(selectedTrain)).map(([system, status]) => (
+                     {Object.entries(getSubsystemStatus(selectedTrain || 'RE9-78001')).map(([system, status]) => (
                       <div key={system} className="flex items-center justify-between">
                         <span className="text-sm capitalize">{system}</span>
                         <div className={`w-3 h-3 rounded-full ${

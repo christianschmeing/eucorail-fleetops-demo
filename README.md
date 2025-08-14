@@ -54,6 +54,16 @@ npm run sim:start
 npm run stop
 ```
 
+## 🌐 Environment Variablen (lokal/Docker/CI)
+
+- API_BASE: Server-seitige Basis-URL für den Frontend-SSE-Proxy (`apps/web/app/api/events/route.ts`). Default: `http://localhost:4100`.
+- NEXT_PUBLIC_API_BASE: Client-seitige Basis-URL für direkte API-Aufrufe im Browser. Default: `http://localhost:4100`.
+- NEXT_PUBLIC_TEST_MODE: Wenn `1`, deaktiviert Map-Animationen und rendert Test‑HUD/Ready‑Signale.
+- PORT: API-Port (packages/api). Default: `4100`.
+- NEXT_PORT: Web-Port (apps/web). Default: `3001`.
+
+Hinweis: Lokale Scripts setzen sinnvolle Defaults. In Docker/CI sollten obige Variablen explizit gesetzt werden.
+
 ## 🏗️ Projektstruktur
 
 ```
