@@ -1,8 +1,8 @@
 import Fastify from 'fastify';
 import { registerRoutes } from './routes.js';
-import core from './plugins/core';
-import events from './routes/events';
-import trains from './routes/trains';
+import core from './plugins/core.js';
+import events from './routes/events.js';
+import trains from './routes/trains.js';
 import { readFileSync } from 'node:fs';
 import { WebSocketServer } from 'ws';
 

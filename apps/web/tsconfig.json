@@ -19,8 +19,7 @@
     "incremental": true,
     "types": [
       "node",
-      "react",
-      "react-dom"
+      "react"
     ],
     "plugins": [
       { "name": "next" }

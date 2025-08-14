@@ -1,4 +1,6 @@
 import path from 'path';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,15 +9,12 @@ const nextConfig = {
   webpack: (config) => {
     // Ensure maplibre-gl resolves from the hoisted root node_modules
     config.resolve.modules = [
-      path.resolve(__dirname, 'node_modules'),
-      path.resolve(__dirname, '../../node_modules'),
+      path.resolve(process.cwd(), 'node_modules'),
+      path.resolve(process.cwd(), '../../node_modules'),
       ...(config.resolve.modules || []),
       'node_modules'
     ];
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      'maplibre-gl': require.resolve('maplibre-gl')
-    };
+    // Do not alias 'maplibre-gl' to a single file to preserve subpath CSS imports
     return config;
   },
   async rewrites() {

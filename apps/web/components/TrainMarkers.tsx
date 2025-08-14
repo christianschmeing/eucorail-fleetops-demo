@@ -262,6 +262,8 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
   const didFitRef = useRef(false);
   const rafRef = useRef<number | null>(null);
   const lastJsonRef = useRef<string>('');
+  const lastCenteredIdRef = useRef<string | null>(null);
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
 
   useEffect(() => {
     if (!map || hasInitializedRef.current) return;
@@ -336,6 +338,8 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     }
 
     console.log('✅ Timetable-based train markers initialized');
+    try { (window as any).__mapReady = true; } catch {}
+    try { window.dispatchEvent(new CustomEvent('map:ready')); } catch {}
     hasInitializedRef.current = true;
 
     return () => {
@@ -370,7 +374,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
       if (!didFitRef.current && features.length > 0) {
         const bounds = new maplibregl.LngLatBounds();
         for (const ft of features) bounds.extend(ft.geometry.coordinates as [number, number]);
-        map.fitBounds(bounds, { padding: 60, duration: 500 });
+        map.fitBounds(bounds, { padding: 60, duration: isTestMode ? 0 : 500 });
         didFitRef.current = true;
       }
     };
@@ -378,19 +382,33 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     const handler = () => update();
     window.addEventListener('trains:update', handler as any);
     return () => window.removeEventListener('trains:update', handler as any);
-  }, [map, qc, selectedTrain]);
+  }, [map, qc, selectedTrain, isTestMode]);
 
-  // Fly to selected train on selection change (read from cache)
+  // Center map to selected train on selection change (read from cache)
   useEffect(() => {
     if (!map || !selectedTrain) return;
     const fc = qc.getQueryData<any>(['trains', 'live']);
-    const found = fc?.features?.find((f: any) => f.properties?.id === selectedTrain);
+    const features = Array.isArray(fc?.features) ? fc.features : [];
+    const found = features.find((f: any) => f?.properties?.id === selectedTrain);
     if (!found) return;
-    const [lon, lat] = found.geometry.coordinates as [number, number];
+    const [lon, lat] = (found.geometry?.coordinates || []) as [number, number];
     if (!isValidCoord(lon, lat)) return;
+
+    // Only re-center if target changed or we're far enough/zoomed out
+    const mapCenter = map.getCenter();
+    const distanceMeters = haversine([mapCenter.lng, mapCenter.lat], [lon, lat]);
     const targetZoom = Math.max(map.getZoom(), 12);
-    map.flyTo({ center: [lon, lat], zoom: targetZoom, duration: 400 });
-  }, [map, selectedTrain, qc]);
+    const shouldRecentreById = lastCenteredIdRef.current !== selectedTrain;
+    const shouldRecentreByDistance = distanceMeters > 200 || map.getZoom() < 12;
+    if (!shouldRecentreById && !shouldRecentreByDistance) return;
+
+    if (isTestMode) {
+      map.jumpTo({ center: [lon, lat], zoom: targetZoom });
+    } else {
+      map.flyTo({ center: [lon, lat], zoom: targetZoom, duration: 400 });
+    }
+    lastCenteredIdRef.current = selectedTrain;
+  }, [map, selectedTrain, qc, isTestMode]);
 
   return null; // This component doesn't render anything visible
 }

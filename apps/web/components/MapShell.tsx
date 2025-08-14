@@ -2,12 +2,16 @@
 import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import TrainMarkers from './TrainMarkers';
+import TestHUD from './TestHUD';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function MapShell() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const [ready, setReady] = useState(false);
   const [selectedTrain, setSelectedTrain] = useState<string | null>(null);
+  const [trainCount, setTrainCount] = useState(0);
+  const [sseConnected, setSseConnected] = useState(false);
   const [fleetHealth, setFleetHealth] = useState({
     active: 7,
     maintenance: 2,
@@ -23,6 +27,8 @@ export default function MapShell() {
   
   // Global flag to prevent duplicate depot source creation
   const depotSourceAddedRef = useRef(false);
+  const qc = useQueryClient();
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
 
   // Initialize map
   useEffect(() => {
@@ -67,21 +73,11 @@ export default function MapShell() {
         
         // This block is now handled by the useEffect hook below
         
-        // Add depot polygons layer
-        if (map && !map.getLayer('depot_polygons')) {
-          map.addLayer({
-            id: 'depot_polygons',
-            type: 'fill',
-            source: 'depots',
-            paint: {
-              'fill-color': '#FF6B35',
-              'fill-opacity': 0.1
-            }
-          });
-          console.log('✅ Depot polygons layer added');
-        }
-        
-        console.log('✅ Depot layers added successfully');
+        // Signal map ready after idle once sources/layers are set up
+        map.once('idle', () => {
+          try { (window as any).__mapReady = true; } catch {}
+          try { window.dispatchEvent(new CustomEvent('map:ready')); } catch {}
+        });
       });
       
       mapRef.current = map;
@@ -98,6 +94,28 @@ export default function MapShell() {
     }
   }, []);
 
+  // TEST HUD: wire SSE/open/error and update train count from React Query cache
+  useEffect(() => {
+    if (!isTestMode) return;
+    const updateCount = () => {
+      const fc = qc.getQueryData<any>(['trains', 'live']);
+      const count = Array.isArray(fc?.features) ? fc.features.length : 0;
+      setTrainCount(count);
+    };
+    updateCount();
+    const onUpdate = () => updateCount();
+    const onOpen = () => setSseConnected(true);
+    const onError = () => setSseConnected(false);
+    window.addEventListener('trains:update', onUpdate as any);
+    window.addEventListener('sse:open', onOpen as any);
+    window.addEventListener('sse:error', onError as any);
+    return () => {
+      window.removeEventListener('trains:update', onUpdate as any);
+      window.removeEventListener('sse:open', onOpen as any);
+      window.removeEventListener('sse:error', onError as any);
+    };
+  }, [qc, isTestMode]);
+
   // Load depot data when map is ready
   useEffect(() => {
     if (!ready || !mapRef.current || depotSourceAddedRef.current) return;
@@ -108,8 +126,9 @@ export default function MapShell() {
         console.log('Loading depot data:', data);
         
         // Only add source if it doesn't exist and hasn't been added before
-        if (!mapRef.current?.getSource('depots') && !depotSourceAddedRef.current) {
-          mapRef.current.addSource('depots', {
+        const m = mapRef.current;
+        if (m && !m.getSource('depots') && !depotSourceAddedRef.current) {
+          m.addSource('depots', {
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
@@ -125,8 +144,8 @@ export default function MapShell() {
           });
           
           // Only add layer if it doesn't exist
-          if (!mapRef.current?.getLayer('depot-symbols')) {
-            mapRef.current.addLayer({
+          if (m && !m.getLayer('depot-symbols')) {
+            m.addLayer({
               id: 'depot-symbols',
               type: 'symbol',
               source: 'depots',
@@ -154,13 +173,14 @@ export default function MapShell() {
       .catch(err => {
         console.error('Failed to load depots:', err);
         // Add fallback depot markers only if source doesn't exist and hasn't been added before
-        if (mapRef.current && !mapRef.current.getSource('depots') && !depotSourceAddedRef.current) {
+        const m = mapRef.current;
+        if (m && !m.getSource('depots') && !depotSourceAddedRef.current) {
           const fallbackDepots = [
             { id: 'langweid', name: 'Langweid', lon: 10.8569, lat: 48.4908 },
             { id: 'essingen', name: 'Essingen', lon: 9.3072, lat: 48.8089 }
           ];
           
-          mapRef.current.addSource('depots', {
+          m.addSource('depots', {
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
@@ -176,8 +196,8 @@ export default function MapShell() {
           });
 
           // Only add layer if it doesn't exist
-          if (!mapRef.current.getLayer('depot-symbols')) {
-            mapRef.current.addLayer({
+          if (m && !m.getLayer('depot-symbols')) {
+            m.addLayer({
               id: 'depot-symbols',
               type: 'symbol',
               source: 'depots',
@@ -209,6 +229,16 @@ export default function MapShell() {
     setSelectedTrain(trainId);
     console.log('🚂 Train selected in MapShell:', trainId);
   };
+
+  // Wire test HUD synthetic select buttons
+  useEffect(() => {
+    const onTestSelect = (e: any) => {
+      const id = e?.detail as string;
+      if (id) handleTrainSelect(id);
+    };
+    window.addEventListener('test:selectTrain', onTestSelect as any);
+    return () => window.removeEventListener('test:selectTrain', onTestSelect as any);
+  }, []);
 
   // Health check system
   const getHealthScore = (trainId: string): number => {
@@ -269,7 +299,7 @@ export default function MapShell() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#0B1F2A] text-white overflow-hidden">
+    <div className="h-screen w-screen bg-[#0B1F2A] text-white overflow-hidden" data-testid="map-root">
       {/* Header */}
       <header className="bg-[#1A2F3A] border-b border-[#2A3F4A] px-6 py-4">
         <div className="flex items-center justify-between">
@@ -339,7 +369,7 @@ export default function MapShell() {
             </div>
             
             {/* Train List */}
-            <div className="space-y-2">
+            <div className="space-y-2" data-testid="train-list">
               {[
                 { id: 'RE9-78001', name: 'RE9 78001', status: 'maintenance', speed: 0, health: 65 },
                 { id: 'RE9-78002', name: 'RE9 78002', status: 'active', speed: 85, health: 92 },
@@ -373,6 +403,19 @@ export default function MapShell() {
                       'bg-gray-400'
                     }`}></div>
                   </div>
+                  {isTestMode && (
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        data-testid="open-details"
+                        className="text-xs bg-white/10 px-2 py-1 rounded hover:bg-white/20"
+                        onClick={(e) => { e.stopPropagation(); handleTrainSelect(train.id); }}
+                        aria-label={`Details anzeigen für ${train.name}`}
+                      >
+                        Details anzeigen
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -396,6 +439,8 @@ export default function MapShell() {
               </svg>
             </button>
           </div>
+
+          {/* Left HUD removed: we use global fixed TestHUD instead */}
 
           {/* Recent Messages Overlay */}
           <div className="absolute top-4 right-4 w-80 bg-[#1A2F3A]/90 backdrop-blur-sm rounded-lg border border-[#2A3F4A]">
@@ -426,7 +471,7 @@ export default function MapShell() {
 
         {/* Right Sidebar - Selected Train Details */}
         {selectedTrain && (
-          <aside className="w-80 bg-[#1A2F3A] border-l border-[#2A3F4A] overflow-y-auto">
+          <aside className="w-80 bg-[#1A2F3A] border-l border-[#2A3F4A] overflow-y-auto" data-testid="train-drawer">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Zug Details</h2>
@@ -511,6 +556,9 @@ export default function MapShell() {
         selectedTrain={selectedTrain}
         onTrainSelect={handleTrainSelect}
       />
+
+      {/* Test HUD */}
+      <TestHUD />
     </div>
   );
 }

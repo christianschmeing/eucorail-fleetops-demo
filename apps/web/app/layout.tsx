@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { ReactNode } from "react";
 import ReactQueryProvider from "./providers/query-client";
+import TestHUD from "../components/TestHUD";
 
 export const metadata = {
   title: "Eucorail FleetOps Demo",
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="h-screen w-screen overflow-hidden bg-[#0B1F2A] text-white">
         <ReactQueryProvider>
           {children}
+          <TestHUD />
         </ReactQueryProvider>
       </body>
     </html>

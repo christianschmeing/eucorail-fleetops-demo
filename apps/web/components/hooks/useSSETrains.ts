@@ -5,13 +5,25 @@ import { useQueryClient } from '@tanstack/react-query';
 export function useSSETrains() {
   const qc = useQueryClient();
   useEffect(() => {
-    const base = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4100';
-    const es = new EventSource(`${base}/events`);
+    // Use same-origin relative endpoint to leverage Next.js rewrites and avoid CORS in tests
+    const endpoint = '/events';
+    const es = new EventSource(endpoint);
+    es.onopen = () => {
+      try { window.dispatchEvent(new CustomEvent('sse:open')); } catch {}
+    };
+    es.onerror = () => {
+      try { window.dispatchEvent(new CustomEvent('sse:error')); } catch {}
+    };
+    let firstUpdateSeen = false;
     const onUpdate = (ev: MessageEvent) => {
       try {
         const fc = JSON.parse(ev.data);
         qc.setQueryData(['trains', 'live'], fc);
         window.dispatchEvent(new CustomEvent('trains:update'));
+        if (!firstUpdateSeen) {
+          firstUpdateSeen = true;
+          try { window.dispatchEvent(new CustomEvent('sse:connected')); } catch {}
+        }
       } catch {}
     };
     es.addEventListener('train:update', onUpdate as any);

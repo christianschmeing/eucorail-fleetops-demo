@@ -1,0 +1,14 @@
+Ziele
+- Vor jedem Commit: „npm run verify“ lokal ausführen. Falls fehlende Baselines: nachfragen, ob Snapshots aktualisiert werden sollen.
+- Bei fehlgeschlagenen Tests: Fokus auf Playwright‑Selektoren mit data-testid, keine flakey Waits einführen.
+- Bei visuellen Diffs: erst Codeänderung prüfen, dann mit „npx playwright test --update-snapshots“ aktualisieren, Commit‑Message „test: update snapshots (rationale)“.
+
+Aufgabenautomatisierung
+- Befehl „cursor:verify“ → führt npm run verify aus, zeigt Report‑Link.
+- Befehl „cursor:update-snapshots“ → führt Update, erstellt Commit mit Message „test: update snapshots – reason: “.
+- Bei neuen UI‑Features automatisch data-testid vorschlagen und in Tests nutzen.
+
+Qualitätsregeln
+- Keine magischen timeouts; stattdessen getByRole/getByTestId mit erwarteten Zuständen.
+- TEST_MODE erzwingen für E2E (Node envs setzen).
+- Bei neuen Seiten mindestens: Render‑Test, Interaktionstest, 1 Screenshot.

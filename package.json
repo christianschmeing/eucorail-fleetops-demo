@@ -15,12 +15,21 @@
     "demo": "node scripts/demo.mjs",
     "stop": "node scripts/stop.mjs",
     "push": "bash scripts/quick-push.sh",
-    "sync": "bash scripts/sync-from-github.sh"
+    "sync": "bash scripts/sync-from-github.sh",
+    "build:all": "npm run build --workspaces",
+    "start:api:test": "npm -w packages/api run start:test",
+    "start:web:test": "npm -w apps/web run start:test",
+    "dev:e2e": "concurrently -k -n api,web \"npm run start:api:test\" \"npm run start:web:test\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "verify": "cross-env NEXT_PUBLIC_TEST_MODE=1 TEST_MODE=1 SEED=42 TICK_MS=500 npm run build:all && start-server-and-test dev:e2e http://localhost:3001 test:e2e"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",
-    "concurrently": "^9.0.1",
+    "concurrently": "^9.2.0",
+    "cross-env": "^10.0.0",
     "puppeteer": "^24.16.1",
-    "puppeteer-core": "^24.16.1"
+    "puppeteer-core": "^24.16.1",
+    "start-server-and-test": "^2.0.13"
   }
 }
