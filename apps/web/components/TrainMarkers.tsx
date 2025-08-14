@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSSETrains } from './hooks/useSSETrains';
 
 interface TrainMarkerProps {
   map: maplibregl.Map | null;
@@ -253,83 +255,25 @@ const computeAllTrainPositions = (): ComputedTrain[] => {
 };
 
 export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: TrainMarkerProps) {
-  const [trainData, setTrainData] = useState(computeAllTrainPositions());
+  const qc = useQueryClient();
+  useSSETrains();
   const hasInitializedRef = useRef(false);
   const eventListenersAddedRef = useRef(false);
-  // Hook SSE to update query cache; also listen to custom event to refresh local state
-  useEffect(() => {
-    const handler = () => {
-      try {
-        // Optionally read from query cache in future; for now recompute local planned positions
-        setTrainData(computeAllTrainPositions());
-      } catch {}
-    };
-    window.addEventListener('trains:update', handler as any);
-    return () => window.removeEventListener('trains:update', handler as any);
-  }, []);
-
-  // Update positions based on current time (every 60 seconds)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTrainData(computeAllTrainPositions());
-    }, 60000); // Update every 60 seconds
-
-    return () => clearInterval(interval);
-  }, []);
+  const didFitRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
+  const lastJsonRef = useRef<string>('');
 
   useEffect(() => {
     if (!map || hasInitializedRef.current) return;
 
     console.log('🚂 Initializing timetable-based train markers...');
 
-    // Add train markers source
+    // Add train markers source (single source, no clustering)
     if (!map.getSource('trains')) {
       map.addSource('trains', {
         type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: trainData.map(train => ({
-            type: 'Feature',
-            properties: {
-              id: train.id,
-              line: train.line,
-              status: train.status,
-              speed: train.speed,
-              description: train.description,
-              selected: selectedTrain === train.id
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [train.lon, train.lat]
-            }
-          }))
-        },
-        cluster: true,
-        clusterRadius: 40,
-        clusterMaxZoom: 9
-      });
-    }
-
-    // Add cluster layer (below markers)
-    if (!map.getLayer('train_clusters')) {
-      map.addLayer({
-        id: 'train_clusters',
-        type: 'circle',
-        source: 'trains',
-        filter: ['has', 'cluster'],
-        paint: {
-          'circle-color': '#FF6B35',
-          'circle-radius': [
-            'step',
-            ['get', 'point_count'],
-            20,
-            10, 30,
-            25, 50,
-            35
-          ],
-          'circle-stroke-color': '#FFFFFF',
-          'circle-stroke-width': 2
-        }
+        data: { type: 'FeatureCollection', features: [] },
+        cluster: false
       });
     }
 
@@ -339,57 +283,27 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         id: 'train_markers',
         type: 'circle',
         source: 'trains',
-        filter: ['!=', ['get', 'cluster'], true],
+        filter: ['all', ['==', ['geometry-type'], 'Point']],
         paint: {
-          'circle-radius': 14,
+          'circle-radius': [
+            'case',
+            ['==', ['get', 'selected'], true], 18,
+            14
+          ],
           'circle-color': [
             'case',
-            ['==', ['get', 'status'], 'maintenance'], '#F59E0B',
-            ['==', ['get', 'status'], 'stationary'], '#6B7280',
-            ['==', ['get', 'status'], 'inspection'], '#3B82F6',
             ['==', ['get', 'line'], 'RE9'], '#3B82F6',
             ['==', ['get', 'line'], 'RE8'], '#10B981',
             ['==', ['get', 'line'], 'MEX16'], '#F59E0B',
             '#6B7280'
           ],
           'circle-stroke-color': '#FFFFFF',
-          'circle-stroke-width': 2,
+          'circle-stroke-width': [
+            'case',
+            ['==', ['get', 'selected'], true], 3,
+            2
+          ],
           'circle-stroke-opacity': 0.9
-        }
-      });
-    }
-
-    // Add cluster count layer (place below markers)
-    if (!map.getLayer('train_cluster_count')) {
-      map.addLayer({
-        id: 'train_cluster_count',
-        type: 'symbol',
-        source: 'trains',
-        filter: ['has', 'cluster'],
-        layout: {
-          'text-field': ['get', 'point_count_abbreviated'],
-          'text-font': ['Inter Bold'],
-          'text-size': 14
-        },
-        paint: {
-          'text-color': '#FFFFFF'
-        }
-      }, 'train_markers');
-    }
-
-    // Selected overlay layer (ring highlight)
-    if (!map.getLayer('train_selected')) {
-      map.addLayer({
-        id: 'train_selected',
-        type: 'circle',
-        source: 'trains',
-        filter: ['all', ['!=', ['get', 'cluster'], true], ['==', ['get', 'selected'], true]],
-        paint: {
-          'circle-radius': 18,
-          'circle-color': 'rgba(0,0,0,0)',
-          'circle-stroke-color': '#FFFFFF',
-          'circle-stroke-width': 4,
-          'circle-stroke-opacity': 0.95
         }
       });
     }
@@ -407,19 +321,6 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         }
       });
 
-      // Click handler for clusters
-      map.on('click', 'train_clusters', (e) => {
-        if (e.features && e.features[0]) {
-          const clusterId = e.features[0].properties?.cluster_id;
-          if (clusterId && map.getSource('trains')) {
-            const source: any = map.getSource('trains');
-            const p: Promise<number> = source.getClusterExpansionZoom(clusterId);
-            p.then((zoom: number) => {
-              if (e.lngLat) map.easeTo({ center: e.lngLat, zoom });
-            }).catch(() => {});
-          }
-        }
-      });
 
       // Change cursor on hover
       map.on('mouseenter', 'train_markers', () => {
@@ -430,77 +331,66 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         map.getCanvas().style.cursor = '';
       });
 
-      map.on('mouseenter', 'train_clusters', () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-
-      map.on('mouseleave', 'train_clusters', () => {
-        map.getCanvas().style.cursor = '';
-      });
 
       eventListenersAddedRef.current = true;
     }
 
-    // Initial map centering on valid trains
-    const bounds = new maplibregl.LngLatBounds();
-    let validCount = 0; let invalidCount = 0;
-    for (const train of trainData) {
-      if (isValidCoord(train.lon, train.lat)) {
-        bounds.extend([train.lon, train.lat]);
-        validCount++;
-      } else {
-        invalidCount++;
-      }
-    }
-    if (validCount > 0) {
-      map.fitBounds(bounds, { padding: 60, duration: 1000 });
-    }
-    console.log(`✅ Trains loaded. valid=${validCount} invalid=${invalidCount}`);
-
-    console.log('✅ Timetable-based train markers initialized:', trainData.length, 'trains');
+    console.log('✅ Timetable-based train markers initialized');
     hasInitializedRef.current = true;
 
     return () => {
       // Cleanup
       if (map.getLayer('train_markers')) map.removeLayer('train_markers');
-      if (map.getLayer('train_clusters')) map.removeLayer('train_clusters');
-      if (map.getLayer('train_cluster_count')) map.removeLayer('train_cluster_count');
-      if (map.getLayer('train_selected')) map.removeLayer('train_selected');
       if (map.getSource('trains')) map.removeSource('trains');
     };
   }, [map, onTrainSelect]); // Removed selectedTrain and trainData from dependencies
 
-  // Update source data when selectedTrain or positions change (no re-initialization)
+  // Update map source from React Query cache; throttle with rAF and compare snapshots
   useEffect(() => {
-    if (!map || !map.getSource('trains')) return;
+    if (!map) return;
+    const update = () => {
+      const fc = qc.getQueryData<any>(['trains', 'live']);
+      if (!fc || !map.getSource('trains')) return;
+      const features = (fc.features || [])
+        .map((f: any) => {
+          const [lon, lat] = f.geometry.coordinates as [number, number];
+          if (!isValidCoord(lon, lat)) return null;
+          return { type: 'Feature', properties: { ...f.properties, selected: selectedTrain === f.properties?.id }, geometry: { type: 'Point', coordinates: [lon, lat] } };
+        })
+        .filter(Boolean);
+      const out = { type: 'FeatureCollection', features };
+      const json = JSON.stringify(out);
+      if (json === (window as any).__lastTrainsJSON) return;
+      (window as any).__lastTrainsJSON = json;
+      requestAnimationFrame(() => {
+        const source = map.getSource('trains') as maplibregl.GeoJSONSource;
+        source.setData(out as any);
+      });
 
-    const features = trainData.filter(t => isValidCoord(t.lon, t.lat)).map(train => ({
-      type: 'Feature' as const,
-      properties: {
-        id: train.id,
-        line: train.line,
-        status: train.status,
-        speed: train.speed,
-        description: train.description,
-        selected: selectedTrain === train.id
-      },
-      geometry: { type: 'Point' as const, coordinates: [train.lon, train.lat] }
-    }));
+      if (!didFitRef.current && features.length > 0) {
+        const bounds = new maplibregl.LngLatBounds();
+        for (const ft of features) bounds.extend(ft.geometry.coordinates as [number, number]);
+        map.fitBounds(bounds, { padding: 60, duration: 500 });
+        didFitRef.current = true;
+      }
+    };
+    update();
+    const handler = () => update();
+    window.addEventListener('trains:update', handler as any);
+    return () => window.removeEventListener('trains:update', handler as any);
+  }, [map, qc, selectedTrain]);
 
-    const source = map.getSource('trains') as maplibregl.GeoJSONSource;
-    source.setData({ type: 'FeatureCollection', features });
-
-    // Keep selected overlay filter in sync if needed (we rely on selected property)
-  }, [map, selectedTrain, trainData]);
-
-  // Fly to selected train on selection change
+  // Fly to selected train on selection change (read from cache)
   useEffect(() => {
     if (!map || !selectedTrain) return;
-    const found = trainData.find(t => t.id === selectedTrain);
-    if (!found || !isValidCoord(found.lon, found.lat)) return;
+    const fc = qc.getQueryData<any>(['trains', 'live']);
+    const found = fc?.features?.find((f: any) => f.properties?.id === selectedTrain);
+    if (!found) return;
+    const [lon, lat] = found.geometry.coordinates as [number, number];
+    if (!isValidCoord(lon, lat)) return;
     const targetZoom = Math.max(map.getZoom(), 12);
-    map.flyTo({ center: [found.lon, found.lat], zoom: targetZoom, duration: 400 });
-  }, [map, selectedTrain, trainData]);
+    map.flyTo({ center: [lon, lat], zoom: targetZoom, duration: 400 });
+  }, [map, selectedTrain, qc]);
 
   return null; // This component doesn't render anything visible
 }
