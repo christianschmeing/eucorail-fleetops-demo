@@ -1,0 +1,56 @@
+{
+  "trainId": "BW-67890",
+  "line": "BW",
+  "region": "BW",
+  "stops": [
+    {
+      "id": "STUTTGART",
+      "name": "Stuttgart Hbf",
+      "lat": 48.7833,
+      "lon": 9.1833,
+      "arr_planned": "08:00",
+      "dep_planned": "08:02",
+      "platform": "12"
+    },
+    {
+      "id": "WAIBLINGEN",
+      "name": "Waiblingen",
+      "lat": 48.8333,
+      "lon": 9.3167,
+      "arr_planned": "08:15",
+      "dep_planned": "08:16",
+      "platform": "3"
+    },
+    {
+      "id": "SCHORNDORF",
+      "name": "Schorndorf",
+      "lat": 48.8167,
+      "lon": 9.5333,
+      "arr_planned": "08:30",
+      "dep_planned": "08:31",
+      "platform": "2"
+    }
+  ],
+  "segments": [
+    {
+      "id": "STUTTGART_WAIBLINGEN",
+      "fromStopId": "STUTTGART",
+      "toStopId": "WAIBLINGEN",
+      "distance": 12.5,
+      "geometry": [
+        [9.1833, 48.7833],
+        [9.3167, 48.8333]
+      ]
+    },
+    {
+      "id": "WAIBLINGEN_SCHORNDORF",
+      "fromStopId": "WAIBLINGEN",
+      "toStopId": "SCHORNDORF",
+      "distance": 15.8,
+      "geometry": [
+        [9.3167, 48.8333],
+        [9.5333, 48.8167]
+      ]
+    }
+  ]
+}

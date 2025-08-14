@@ -1,0 +1,266 @@
+{
+  "trainId": "RE9-78001",
+  "line": "RE9",
+  "region": "BY",
+  "stops": [
+    {
+      "id": "MUC_HBF",
+      "name": "München Hbf",
+      "lat": 48.1408,
+      "lon": 11.5604,
+      "arr_planned": "06:30",
+      "dep_planned": "06:32",
+      "platform": "11"
+    },
+    {
+      "id": "MUC_PAS",
+      "name": "München-Pasing",
+      "lat": 48.1504,
+      "lon": 11.4619,
+      "arr_planned": "06:38",
+      "dep_planned": "06:39",
+      "platform": "4"
+    },
+    {
+      "id": "MUC_AUG",
+      "name": "München-Aubing",
+      "lat": 48.1589,
+      "lon": 11.4214,
+      "arr_planned": "06:43",
+      "dep_planned": "06:44",
+      "platform": "2"
+    },
+    {
+      "id": "FUR",
+      "name": "Fürstenfeldbruck",
+      "lat": 48.1789,
+      "lon": 11.2547,
+      "arr_planned": "06:52",
+      "dep_planned": "06:53",
+      "platform": "3"
+    },
+    {
+      "id": "GEL",
+      "name": "Geltendorf",
+      "lat": 48.1189,
+      "lon": 11.0347,
+      "arr_planned": "07:05",
+      "dep_planned": "07:06",
+      "platform": "2"
+    },
+    {
+      "id": "LAN",
+      "name": "Landsberg (Lech)",
+      "lat": 48.0489,
+      "lon": 10.8847,
+      "arr_planned": "07:18",
+      "dep_planned": "07:19",
+      "platform": "1"
+    },
+    {
+      "id": "KAU",
+      "name": "Kaufering",
+      "lat": 48.0889,
+      "lon": 10.8347,
+      "arr_planned": "07:28",
+      "dep_planned": "07:29",
+      "platform": "2"
+    },
+    {
+      "id": "BUCH",
+      "name": "Buchloe",
+      "lat": 48.0389,
+      "lon": 10.7247,
+      "arr_planned": "07:38",
+      "dep_planned": "07:39",
+      "platform": "3"
+    },
+    {
+      "id": "TUR",
+      "name": "Türkheim (Bay)",
+      "lat": 48.0589,
+      "lon": 10.6347,
+      "arr_planned": "07:48",
+      "dep_planned": "07:49",
+      "platform": "2"
+    },
+    {
+      "id": "MEM",
+      "name": "Memmingen",
+      "lat": 47.9889,
+      "lon": 10.1847,
+      "arr_planned": "08:02",
+      "dep_planned": "08:03",
+      "platform": "4"
+    },
+    {
+      "id": "ULM",
+      "name": "Ulm Hbf",
+      "lat": 48.3989,
+      "lon": 9.9847,
+      "arr_planned": "08:25",
+      "dep_planned": "08:26",
+      "platform": "5"
+    },
+    {
+      "id": "AAL",
+      "name": "Aalen",
+      "lat": 48.8389,
+      "lon": 10.0847,
+      "arr_planned": "08:45",
+      "dep_planned": "08:46",
+      "platform": "3"
+    },
+    {
+      "id": "NUE",
+      "name": "Nürnberg Hbf",
+      "lat": 49.4489,
+      "lon": 11.0847,
+      "arr_planned": "09:15",
+      "dep_planned": "09:16",
+      "platform": "8"
+    }
+  ],
+  "segments": [
+    {
+      "id": "MUC_HBF-MUC_PAS",
+      "fromStopId": "MUC_HBF",
+      "toStopId": "MUC_PAS",
+      "distance": 7.2,
+      "geometry": [
+        [11.5604, 48.1408],
+        [11.5200, 48.1450],
+        [11.4800, 48.1480],
+        [11.4619, 48.1504]
+      ]
+    },
+    {
+      "id": "MUC_PAS-MUC_AUG",
+      "fromStopId": "MUC_PAS",
+      "toStopId": "MUC_AUG",
+      "distance": 3.8,
+      "geometry": [
+        [11.4619, 48.1504],
+        [11.4400, 48.1550],
+        [11.4214, 48.1589]
+      ]
+    },
+    {
+      "id": "MUC_AUG-FUR",
+      "fromStopId": "MUC_AUG",
+      "toStopId": "FUR",
+      "distance": 12.5,
+      "geometry": [
+        [11.4214, 48.1589],
+        [11.3500, 48.1700],
+        [11.2800, 48.1750],
+        [11.2547, 48.1789]
+      ]
+    },
+    {
+      "id": "FUR-GEL",
+      "fromStopId": "FUR",
+      "toStopId": "GEL",
+      "distance": 15.2,
+      "geometry": [
+        [11.2547, 48.1789],
+        [11.1500, 48.1500],
+        [11.0800, 48.1300],
+        [11.0347, 48.1189]
+      ]
+    },
+    {
+      "id": "GEL-LAN",
+      "fromStopId": "GEL",
+      "toStopId": "LAN",
+      "distance": 18.5,
+      "geometry": [
+        [11.0347, 48.1189],
+        [10.9600, 48.0800],
+        [10.9200, 48.0600],
+        [10.8847, 48.0489]
+      ]
+    },
+    {
+      "id": "LAN-KAU",
+      "fromStopId": "LAN",
+      "toStopId": "KAU",
+      "distance": 8.3,
+      "geometry": [
+        [10.8847, 48.0489],
+        [10.8600, 48.0700],
+        [10.8347, 48.0889]
+      ]
+    },
+    {
+      "id": "KAU-BUCH",
+      "fromStopId": "KAU",
+      "toStopId": "BUCH",
+      "distance": 9.8,
+      "geometry": [
+        [10.8347, 48.0889],
+        [10.7800, 48.0600],
+        [10.7247, 48.0389]
+      ]
+    },
+    {
+      "id": "BUCH-TUR",
+      "fromStopId": "BUCH",
+      "toStopId": "TUR",
+      "distance": 11.2,
+      "geometry": [
+        [10.7247, 48.0389],
+        [10.6800, 48.0500],
+        [10.6347, 48.0589]
+      ]
+    },
+    {
+      "id": "TUR-MEM",
+      "fromStopId": "TUR",
+      "toStopId": "MEM",
+      "distance": 18.5,
+      "geometry": [
+        [10.6347, 48.0589],
+        [10.4200, 48.0200],
+        [10.2800, 48.0000],
+        [10.1847, 47.9889]
+      ]
+    },
+    {
+      "id": "MEM-ULM",
+      "fromStopId": "MEM",
+      "toStopId": "ULM",
+      "distance": 35.8,
+      "geometry": [
+        [10.1847, 47.9889],
+        [10.0800, 48.2000],
+        [9.9800, 48.3000],
+        [9.9847, 48.3989]
+      ]
+    },
+    {
+      "id": "ULM-AAL",
+      "fromStopId": "ULM",
+      "toStopId": "AAL",
+      "distance": 28.4,
+      "geometry": [
+        [9.9847, 48.3989],
+        [10.0200, 48.6000],
+        [10.0600, 48.7200],
+        [10.0847, 48.8389]
+      ]
+    },
+    {
+      "id": "AAL-NUE",
+      "fromStopId": "AAL",
+      "toStopId": "NUE",
+      "distance": 42.6,
+      "geometry": [
+        [10.0847, 48.8389],
+        [10.6000, 49.1000],
+        [10.8000, 49.2800],
+        [11.0847, 49.4489]
+      ]
+    }
+  ]
+}

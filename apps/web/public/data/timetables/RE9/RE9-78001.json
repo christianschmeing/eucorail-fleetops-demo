@@ -1,0 +1,132 @@
+{
+  "trainId": "RE9-78001",
+  "line": "RE9",
+  "region": "BY",
+  "stops": [
+    {
+      "id": "MUC_HBF",
+      "name": "München Hbf",
+      "lat": 48.1408,
+      "lon": 11.5604,
+      "arr_planned": "06:00",
+      "dep_planned": "06:02",
+      "platform": "15"
+    },
+    {
+      "id": "MUC_PASING",
+      "name": "München-Pasing",
+      "lat": 48.1500,
+      "lon": 11.4500,
+      "arr_planned": "06:08",
+      "dep_planned": "06:09",
+      "platform": "4"
+    },
+    {
+      "id": "MUC_AUBING",
+      "name": "München-Aubing",
+      "lat": 48.1600,
+      "lon": 11.3500,
+      "arr_planned": "06:15",
+      "dep_planned": "06:16",
+      "platform": "2"
+    },
+    {
+      "id": "FURSTENFELDBRUCK",
+      "name": "Fürstenfeldbruck",
+      "lat": 48.1800,
+      "lon": 11.2500,
+      "arr_planned": "06:25",
+      "dep_planned": "06:26",
+      "platform": "3"
+    },
+    {
+      "id": "BUCHLOE",
+      "name": "Buchloe",
+      "lat": 48.2200,
+      "lon": 11.0000,
+      "arr_planned": "06:45",
+      "dep_planned": "06:46",
+      "platform": "2"
+    },
+    {
+      "id": "KAUFBEUREN",
+      "name": "Kaufbeuren",
+      "lat": 47.8800,
+      "lon": 10.6200,
+      "arr_planned": "07:05",
+      "dep_planned": "07:06",
+      "platform": "1"
+    },
+    {
+      "id": "KEMPTEN",
+      "name": "Kempten",
+      "lat": 47.7200,
+      "lon": 10.3200,
+      "arr_planned": "07:25",
+      "dep_planned": "07:27",
+      "platform": "4"
+    }
+  ],
+  "segments": [
+    {
+      "id": "MUC_HBF_MUC_PASING",
+      "fromStopId": "MUC_HBF",
+      "toStopId": "MUC_PASING",
+      "distance": 8.5,
+      "geometry": [
+        [11.5604, 48.1408],
+        [11.4500, 48.1500]
+      ]
+    },
+    {
+      "id": "MUC_PASING_MUC_AUBING",
+      "fromStopId": "MUC_PASING",
+      "toStopId": "MUC_AUBING",
+      "distance": 7.2,
+      "geometry": [
+        [11.4500, 48.1500],
+        [11.3500, 48.1600]
+      ]
+    },
+    {
+      "id": "MUC_AUBING_FURSTENFELDBRUCK",
+      "fromStopId": "MUC_AUBING",
+      "toStopId": "FURSTENFELDBRUCK",
+      "distance": 12.8,
+      "geometry": [
+        [11.3500, 48.1600],
+        [11.2500, 48.1800]
+      ]
+    },
+    {
+      "id": "FURSTENFELDBRUCK_BUCHLOE",
+      "fromStopId": "FURSTENFELDBRUCK",
+      "toStopId": "BUCHLOE",
+      "distance": 18.5,
+      "geometry": [
+        [11.2500, 48.1800],
+        [11.0000, 48.2200]
+      ]
+    },
+    {
+      "id": "BUCHLOE_KAUFBEUREN",
+      "fromStopId": "BUCHLOE",
+      "toStopId": "KAUFBEUREN",
+      "distance": 22.3,
+      "geometry": [
+        [11.0000, 48.2200],
+        [10.6200, 47.8800]
+      ]
+    },
+    {
+      "id": "KAUFBEUREN_KEMPTEN",
+      "fromStopId": "KAUFBEUREN",
+      "toStopId": "KEMPTEN",
+      "distance": 25.7,
+      "geometry": [
+        [10.6200, 47.8800],
+        [10.3200, 47.7200]
+      ]
+    }
+  ]
+}

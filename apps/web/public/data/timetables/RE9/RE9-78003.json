@@ -1,0 +1,56 @@
+{
+  "trainId": "RE9-78003",
+  "line": "RE9",
+  "region": "BY",
+  "stops": [
+    {
+      "id": "MUC_HBF",
+      "name": "München Hbf",
+      "lat": 48.1408,
+      "lon": 11.5604,
+      "arr_planned": "08:00",
+      "dep_planned": "08:02",
+      "platform": "15"
+    },
+    {
+      "id": "MUC_PASING",
+      "name": "München-Pasing",
+      "lat": 48.1500,
+      "lon": 11.4500,
+      "arr_planned": "08:08",
+      "dep_planned": "08:09",
+      "platform": "4"
+    },
+    {
+      "id": "MUC_AUBING",
+      "name": "München-Aubing",
+      "lat": 48.1600,
+      "lon": 11.3500,
+      "arr_planned": "08:15",
+      "dep_planned": "08:16",
+      "platform": "2"
+    }
+  ],
+  "segments": [
+    {
+      "id": "MUC_HBF_MUC_PASING",
+      "fromStopId": "MUC_HBF",
+      "toStopId": "MUC_PASING",
+      "distance": 8.5,
+      "geometry": [
+        [11.5604, 48.1408],
+        [11.4500, 48.1500]
+      ]
+    },
+    {
+      "id": "MUC_PASING_MUC_AUBING",
+      "fromStopId": "MUC_PASING",
+      "toStopId": "MUC_AUBING",
+      "distance": 7.2,
+      "geometry": [
+        [11.4500, 48.1500],
+        [11.3500, 48.1600]
+      ]
+    }
+  ]
+}

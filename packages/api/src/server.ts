@@ -6,7 +6,13 @@ import { WebSocketServer } from 'ws';
 
 const app = Fastify({ logger: true });
 
-await app.register(cors, { origin: true });
+// CORS für localhost:3001 erlauben
+await app.register(cors, { 
+  origin: ['http://localhost:3001', 'http://localhost:3000', 'http://127.0.0.1:3001'],
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept', 'Cache-Control']
+});
 
 app.get('/api/meta', async () => ({
   name: 'Eucorail FleetOps Demo',
@@ -19,22 +25,20 @@ const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{ ru
 
 // Optional preflight support (not required for EventSource, but harmless)
 app.options('/events', async (req, reply) => {
-  const origin = (req.headers.origin as string) || '*';
-  reply.header('Access-Control-Allow-Origin', origin);
+  reply.header('Access-Control-Allow-Origin', '*');
   reply.header('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  reply.header('Access-Control-Allow-Headers', 'Cache-Control');
+  reply.header('Access-Control-Allow-Headers', 'Cache-Control,Content-Type,Accept');
   reply.status(204).send();
 });
 
 app.get('/events', async (req, reply) => {
   // Ensure Fastify doesn't modify the stream; set correct SSE headers
   reply.hijack();
-  const origin = (req.headers.origin as string) || '*';
   reply.raw.writeHead(200, {
     'Content-Type': 'text/event-stream; charset=utf-8',
     'Cache-Control': 'no-cache, no-transform',
     'Connection': 'keep-alive',
-    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Origin': '*',
     'X-Accel-Buffering': 'no'
   });
   // @ts-ignore
