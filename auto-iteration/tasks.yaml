@@ -1,0 +1,79 @@
+tasks:
+  - id: P1-001
+    title: Stabil sichtbare Züge – DOM-Gates und Holdover finalisieren
+    kind: map
+    acceptance:
+      - sse-status zeigt "connected" zuverlässig
+      - map-status zeigt "ready" nach map.once('idle')
+      - train-count >= 1 konstant; niemals leere FC gesetzt
+    touches:
+      - apps/web/components/TrainMarkers.tsx
+      - apps/web/components/TestHUD.tsx
+      - scripts/auto/smart-verify.mjs
+    done: false
+  - id: P2-001
+    title: Planbasierte Positionen – Dwell an Stationen und Depot über Nacht
+    kind: sim
+    acceptance:
+      - Züge halten an Stops; speed 0 während dwell
+      - Ab 00:00–04:00 Depot-Positionen
+    touches:
+      - packages/api/src/routes/events.ts
+      - packages/api/src/schedules.ts
+    done: false
+  - id: P3-001
+    title: E2E/visuell robust – workers=1, Skip webServer über Runner
+    kind: test
+    acceptance:
+      - Playwright läuft deterministisch mit 1 Worker
+      - PLAYWRIGHT_SKIP_WEBSERVER=1 im Runner gesetzt
+    touches:
+      - scripts/auto/smart-verify.mjs
+      - playwright.config.ts
+    done: false
+  - id: P4-001
+    title: Eucorail CI – Farben/Badges/Focus States
+    kind: ui
+    acceptance:
+      - Primär/Accent Variablen genutzt
+      - Buttons und Badges konsistent
+    touches:
+      - apps/web/styles/eucorail.css
+      - apps/web/components/*
+    done: false
+  - id: P5-001
+    title: Drawer – Technikdaten (Werkstatt/TCMS/Next Steps)
+    kind: ui
+    acceptance:
+      - Drawer zeigt Werkstatt‑Infos, TCMS Alerts, nächste Wartung
+    touches:
+      - apps/web/components/MapShell.tsx
+    done: false
+  - id: P6-001
+    title: Zug‑Icons Siemens/Stadler
+    kind: ui
+    acceptance:
+      - Icons unterscheiden sich nach Hersteller
+      - Rotation auf Fahrtrichtung
+    touches:
+      - apps/web/components/TrainMarkers.tsx
+    done: false
+  - id: P7-001
+    title: Trails klein halten
+    kind: map
+    acceptance:
+      - Max 20 Punkte je Zug, line-opacity angepasst
+    touches:
+      - apps/web/components/TrainMarkers.tsx
+    done: false
+  - id: P8-001
+    title: Stabilität – Ports/Timeouts/Watchdog/Artifacts
+    kind: infra
+    acceptance:
+      - Ports werden vor Start freigemacht
+      - Artifacts pro Run unter auto-iteration/runs/
+    touches:
+      - scripts/auto/smart-verify.mjs
+      - scripts/stop.mjs
+    done: false
+

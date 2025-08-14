@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { ReactNode } from "react";
 import ReactQueryProvider from "./providers/query-client";
 import TestHUD from "../components/TestHUD";
+import ThemeToggle from "../components/ThemeToggle";
 
 export const metadata = {
   title: "Eucorail FleetOps Demo",
@@ -18,18 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <ReactQueryProvider>
           {children}
           <TestHUD />
-          <button
-            type="button"
-            aria-label="Dark Mode Toggle"
-            onClick={() => {
-              try {
-                document.documentElement.classList.toggle('dark');
-              } catch {}
-            }}
-            className="fixed bottom-4 right-4 z-50 bg-white/10 hover:bg-white/20 px-3 py-2 rounded text-xs"
-          >
-            🌓 Theme
-          </button>
+          <ThemeToggle />
         </ReactQueryProvider>
       </body>
     </html>
