@@ -1,0 +1,14 @@
+[
+  {"type":"MIREO","manufacturer":"Siemens","maxSpeedKmh":160,"lengthM":106,"powerKW":2600},
+  {"type":"DESIRO_HC","manufacturer":"Siemens","maxSpeedKmh":160,"lengthM":105,"powerKW":3000},
+  {"type":"FLIRT3","manufacturer":"Stadler","maxSpeedKmh":160,"lengthM":100,"powerKW":2000},
+  {"type":"KISS","manufacturer":"Stadler","maxSpeedKmh":200,"lengthM":150,"powerKW":4000},
+  {"type":"CORADIA","manufacturer":"Alstom","maxSpeedKmh":160,"lengthM":110,"powerKW":2200},
+  {"type":"TALENT2","manufacturer":"Bombardier","maxSpeedKmh":160,"lengthM":90,"powerKW":2250},
+  {"type":"CIVITY","manufacturer":"CAF","maxSpeedKmh":160,"lengthM":95,"powerKW":2200},
+  {"type":"PESA_LINK","manufacturer":"PESA","maxSpeedKmh":160,"lengthM":70,"powerKW":1500},
+  {"type":"REGIOPANTER","manufacturer":"Škoda","maxSpeedKmh":160,"lengthM":80,"powerKW":2000},
+  {"type":"AT200","manufacturer":"Hitachi","maxSpeedKmh":160,"lengthM":100,"powerKW":2400}
+]
+
+

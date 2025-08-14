@@ -4,6 +4,8 @@ import { FastifySSEPlugin } from 'fastify-sse-v2';
 import { readFileSync } from 'node:fs';
 import { RealisticTrainPhysics } from '../simulation/physics.js';
 import { WeatherService } from '../weather/index.js';
+import { EnergyMonitor } from '../energy/monitor.js';
+import { PassengerSimulator } from '../passengers/simulator.js';
 import { schedules } from '../schedules.js';
 
 // Environment-driven test mode configuration
@@ -69,6 +71,8 @@ const physics = new RealisticTrainPhysics();
 const weatherService = new WeatherService();
 const trainStartMs = new Map<string, number>();
 const lastSpeedKmh = new Map<string, number>();
+const energyMonitor = new EnergyMonitor();
+const paxSimByTrain = new Map<string, PassengerSimulator>();
 
 function distanceToNearestStation(line: string, lon: number, lat: number): number {
   const list = (schedules as any)[line] as Array<{ lat: number; lon: number }> | undefined;
@@ -119,6 +123,12 @@ function getNonDeterministicSnapshot() {
     const baseSpeed = physics.calculateRealisticSpeed(distToStation, previous, timeInMotionSec, 0);
     const realSpeed = Math.round(baseSpeed * speedMod);
     lastSpeedKmh.set(t.runId, realSpeed);
+    // Energy + passengers
+    const energyWhTick = energyMonitor.calculateConsumption(realSpeed);
+    let pax = paxSimByTrain.get(t.runId);
+    if (!pax) { pax = new PassengerSimulator(); paxSimByTrain.set(t.runId, pax); }
+    const atStation = distToStation < 80;
+    const paxSnapshot = pax.tick(atStation);
     return {
       type: 'Feature',
       properties: {
@@ -126,6 +136,8 @@ function getNonDeterministicSnapshot() {
         line: t.line,
         status: 'active',
         speed: realSpeed,
+        energyWhTick,
+        loadFactor: paxSnapshot.loadFactor,
         ts: now
       },
       geometry: { type: 'Point', coordinates: [lon, lat] }
