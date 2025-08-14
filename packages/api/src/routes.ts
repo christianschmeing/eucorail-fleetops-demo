@@ -3,10 +3,17 @@ import type { FastifyInstance } from 'fastify';
 
 export async function registerRoutes(app: FastifyInstance) {
   app.get('/api/lines', async () => JSON.parse(readFileSync('data/lines.json', 'utf-8')));
+  // naive in-memory cache for static JSON files
+  let unitsCache: any = null;
+  let energyBudget = { dailyKwh: 125000, usedKwh: 0 };
   app.get('/api/fleet/health', async () => ({
     alerts24h: [{ code: 'DOOR_23', count: 5 }, { code: 'HVAC_12', count: 3 }],
     dueSoon: [{ runId: 'RE9-78001', kmRemaining: 1800 }, { runId: 'MEX16-66012', daysRemaining: 25 }]
   }));
-  app.get('/api/units', async () => JSON.parse(readFileSync('data/units.json', 'utf-8')));
+  app.get('/api/units', async () => {
+    if (!unitsCache) unitsCache = JSON.parse(readFileSync('data/units.json', 'utf-8'));
+    return unitsCache;
+  });
+  app.get('/api/energy/budget', async () => energyBudget);
 }
 

@@ -36,6 +36,8 @@ export default function MapShell() {
   // Global flag to prevent duplicate depot source creation
   const depotSourceAddedRef = useRef(false);
   const qc = useQueryClient();
+  const [showMessages, setShowMessages] = useState(true);
+  const [is3D, setIs3D] = useState(false);
 
   // Initialize map
   useEffect(() => {
@@ -116,6 +118,29 @@ export default function MapShell() {
       console.error('❌ Error creating map:', error);
     }
   }, []);
+
+  // Keyboard shortcuts (disabled in test mode)
+  useEffect(() => {
+    if (isTestMode) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === '3') {
+        setIs3D(v => {
+          const next = !v;
+          const m = mapRef.current;
+          if (m) {
+            try {
+              m.easeTo({ pitch: next ? 60 : 0, duration: 600 });
+            } catch {}
+          }
+          return next;
+        });
+      } else if (e.key.toLowerCase() === 'm') {
+        setShowMessages(v => !v);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isTestMode]);
 
   // In TEST_MODE allow selecting a train via URL query (?select=TRAIN_ID)
   useEffect(() => {
@@ -495,7 +520,7 @@ export default function MapShell() {
 
           {/* Recent Messages Overlay */}
           <div className="absolute top-4 right-4 w-80 bg-[#1A2F3A]/90 backdrop-blur-sm rounded-lg border border-[#2A3F4A]">
-            <div className="p-4" style={{ display: (isTestMode || selectedTrain) ? 'block' : 'none' }}>
+            <div className="p-4" style={{ display: (isTestMode || selectedTrain) && showMessages ? 'block' : 'none' }}>
               <h3 className="text-sm font-semibold mb-3">Letzte Meldungen</h3>
               <div className="space-y-2">
                 {recentMessages.map(message => (
@@ -619,6 +644,15 @@ export default function MapShell() {
         selectedTrain={selectedTrain}
         onTrainSelect={handleTrainSelect}
       />
+
+      {/* Shortcuts helper (only outside test mode) */}
+      {!isTestMode && (
+        <div className="fixed bottom-3 left-3 bg-[#1A2F3A]/95 border border-[#2A3F4A] rounded-md px-3 py-2 text-xs">
+          <div className="opacity-70">Shortcuts</div>
+          <div>3: Toggle 3D camera</div>
+          <div>M: Toggle messages</div>
+        </div>
+      )}
 
     </div>
   );
