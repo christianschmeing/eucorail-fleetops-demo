@@ -49,6 +49,19 @@ setInterval(() => {
   lastHeartbeat = Date.now();
 }, 5000).unref();
 
+// LOCK-Schutz: smart-verify läuft nur, wenn ein LOCK existiert. Falls nicht vorhanden, wird er angelegt.
+const LOCK_PATH = path.join(repoRoot, 'auto-iteration', 'LOCK');
+try {
+  await fsp.mkdir(path.join(repoRoot, 'auto-iteration'), { recursive: true });
+  if (!fs.existsSync(LOCK_PATH)) {
+    await fsp.writeFile(LOCK_PATH, `pid=${process.pid}\nstarted=${new Date().toISOString()}\n`);
+  }
+} catch {}
+if (!fs.existsSync(LOCK_PATH)) {
+  console.error('LOCK missing at auto-iteration/LOCK – aborting smart-verify to avoid parallel runs.');
+  process.exit(2);
+}
+
 function spawnLogged(cmd, args, opts) {
   const child = spawn(cmd, args, { cwd: opts?.cwd || repoRoot, env: { ...process.env, ...opts?.env }, stdio: ['ignore', 'pipe', 'pipe'] });
   const outPath = path.join(RUN_DIR, opts?.logName || `${cmd}.log`);
@@ -173,16 +186,6 @@ async function run() {
     tests.child.on('exit', (code) => { clearTimeout(t); code === 0 ? resolve() : reject(new Error(`Tests failed with code ${code}`)); });
   });
   log('Tests finished');
-
-  // 4b) Promote next todo spec
-  setPhase('promote');
-  try {
-    const promote = spawnLogged('node', ['scripts/auto/promote-next-test.mjs'], { logName: 'promote.log' });
-    await new Promise((resolve) => promote.child.on('exit', () => resolve()));
-    log('Promote step executed');
-  } catch (e) {
-    log(`Promote step failed: ${e?.message || e}`);
-  }
 
   // 5) Shutdown
   setPhase('shutdown');

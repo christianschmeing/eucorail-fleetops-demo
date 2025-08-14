@@ -2,6 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import TrainMarkers from './TrainMarkers';
+import FleetHealthWidget from './dashboard/FleetHealthWidget';
+import MaintenanceCalendar from './dashboard/MaintenanceCalendar';
+import AlertsSummary from './dashboard/AlertsSummary';
+import EnergyGauge from './dashboard/EnergyGauge';
+import PunctualityChart from './dashboard/PunctualityChart';
+import PassengerFlow from './dashboard/PassengerFlow';
+import WeatherPanel from './dashboard/WeatherPanel';
+import PerformanceKPIs from './dashboard/PerformanceKPIs';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function MapShell() {
@@ -510,6 +518,20 @@ export default function MapShell() {
               </div>
             </div>
           </div>
+
+          {/* Dashboard Widgets (hidden in test mode to keep snapshots stable) */}
+          {!isTestMode && (
+            <div className="absolute left-4 bottom-4 right-4 grid grid-cols-4 gap-4 pointer-events-none">
+              <div className="pointer-events-auto"><FleetHealthWidget /></div>
+              <div className="pointer-events-auto"><MaintenanceCalendar /></div>
+              <div className="pointer-events-auto"><AlertsSummary /></div>
+              <div className="pointer-events-auto"><EnergyGauge /></div>
+              <div className="pointer-events-auto col-span-2"><PunctualityChart /></div>
+              <div className="pointer-events-auto"><PassengerFlow /></div>
+              <div className="pointer-events-auto"><WeatherPanel /></div>
+              <div className="pointer-events-auto col-span-4"><PerformanceKPIs /></div>
+            </div>
+          )}
         </main>
 
         {/* Right Sidebar - Selected Train Details (always rendered for stability in tests) */}

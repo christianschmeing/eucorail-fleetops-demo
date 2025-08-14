@@ -453,13 +453,13 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     }
 
     // Train trails source and layer
-    if (!map.getSource('train-trails')) {
+    if (!isTestMode && !map.getSource('train-trails')) {
       map.addSource('train-trails', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] }
       } as any);
     }
-    if (!map.getLayer('train-trails')) {
+    if (!isTestMode && !map.getLayer('train-trails')) {
       map.addLayer({
         id: 'train-trails',
         type: 'line',
@@ -570,7 +570,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     hasInitializedRef.current = true;
 
     // Start animation loop
-    if (!rafRef.current) {
+    if (!isTestMode && !rafRef.current) {
       rafRef.current = requestAnimationFrame(stepAnimation);
     }
 
@@ -638,7 +638,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
           const keep = { ...(prev as any), properties: { ...(prev as any).properties, stale: false } };
           nextFeatures.push(keep);
           const [plon, plat] = (keep.geometry.coordinates as [number, number]);
-          ensureDomMarker(id, plon, plat, keep.properties.line, false);
+          ensureDomMarker(id, plon, plat, keep.properties.line, false, !isTestMode);
           seenIds.add(id);
           continue;
         }
@@ -653,7 +653,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         lastFeatureByIdRef.current.set(id, feature);
         lastUpdateByIdRef.current.set(id, nowMs);
         lastUpdateByTrainRef.current.set(id, nowMs);
-        ensureDomMarker(id, lon, lat, line, false);
+        ensureDomMarker(id, lon, lat, line, false, !isTestMode);
         // Update trail with latest live position
         const arr = trailsByIdRef.current.get(id) ?? [];
         const prev = arr[arr.length - 1];
@@ -672,7 +672,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
           const keep = { ...(feature as any), properties: { ...(feature as any).properties, stale: true } };
           nextFeatures.push(keep);
           const [plon, plat] = (keep.geometry.coordinates as [number, number]);
-          ensureDomMarker(id, plon, plat, keep.properties.line, true);
+          ensureDomMarker(id, plon, plat, keep.properties.line, true, !isTestMode);
         }
       }
 
@@ -690,15 +690,14 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
       if (map && map.getSource('trains')) {
         if (json !== (window as any).__lastTrainsJSON) {
           (window as any).__lastTrainsJSON = json;
-          requestAnimationFrame(() => {
-            const source = map.getSource('trains') as maplibregl.GeoJSONSource;
-            source.setData(JSON.parse(json));
-          });
+          const source = map.getSource('trains') as maplibregl.GeoJSONSource;
+          if (isTestMode) source.setData(JSON.parse(json));
+          else requestAnimationFrame(() => source.setData(JSON.parse(json)));
         }
       }
 
       // Update trails source from accumulated positions
-      if (map && map.getSource('train-trails')) {
+      if (!isTestMode && map && map.getSource('train-trails')) {
         const trailFeatures: any[] = [];
         for (const [id, coords] of trailsByIdRef.current.entries()) {
           if (!coords || coords.length < 2) continue;
@@ -709,10 +708,8 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
           });
         }
         const trailsOut = { type: 'FeatureCollection', features: trailFeatures } as any;
-        requestAnimationFrame(() => {
-          const source = map.getSource('train-trails') as maplibregl.GeoJSONSource;
-          source.setData(trailsOut);
-        });
+        const source = map.getSource('train-trails') as maplibregl.GeoJSONSource;
+        source.setData(trailsOut);
       }
 
       // Remove DOM markers that are no longer present and beyond holdover
