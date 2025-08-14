@@ -268,52 +268,107 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
   useEffect(() => {
     if (!map || hasInitializedRef.current) return;
 
-    console.log('🚂 Initializing timetable-based train markers...');
+    console.log('🚂 Initializing clustered train markers...');
 
-    // Add train markers source (single source, no clustering)
+    // Add clustered trains source
     if (!map.getSource('trains')) {
       map.addSource('trains', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
-        cluster: false
-      });
+        cluster: true,
+        clusterRadius: 40,
+        clusterMaxZoom: 14
+      } as any);
     }
 
-    // Add train markers layer (unclustered)
-    if (!map.getLayer('train_markers')) {
+    // Cluster bubbles
+    if (!map.getLayer('clusters')) {
       map.addLayer({
-        id: 'train_markers',
+        id: 'clusters',
         type: 'circle',
         source: 'trains',
-        filter: ['all', ['==', ['geometry-type'], 'Point']],
+        filter: ['has', 'point_count'],
         paint: {
-          'circle-radius': [
-            'case',
-            ['==', ['get', 'selected'], true], 18,
-            14
-          ],
           'circle-color': [
-            'case',
-            ['==', ['get', 'line'], 'RE9'], '#3B82F6',
-            ['==', ['get', 'line'], 'RE8'], '#10B981',
-            ['==', ['get', 'line'], 'MEX16'], '#F59E0B',
-            '#6B7280'
+            'step', ['get', 'point_count'],
+            '#99c', 10,
+            '#668', 50,
+            '#446'
+          ],
+          'circle-radius': [
+            'step', ['get', 'point_count'],
+            16, 10, 20, 50, 22
           ],
           'circle-stroke-color': '#FFFFFF',
-          'circle-stroke-width': [
-            'case',
-            ['==', ['get', 'selected'], true], 3,
-            2
-          ],
-          'circle-stroke-opacity': 0.9
+          'circle-stroke-width': 2
         }
       });
     }
 
-    // Add event listeners only once
+    // Cluster counts
+    if (!map.getLayer('cluster-count')) {
+      map.addLayer({
+        id: 'cluster-count',
+        type: 'symbol',
+        source: 'trains',
+        filter: ['has', 'point_count'],
+        layout: {
+          'text-field': ['get', 'point_count_abbreviated'],
+          'text-size': 12,
+          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular']
+        },
+        paint: { 'text-color': '#111' }
+      });
+    }
+
+    // Unclustered trains
+    if (!map.getLayer('trains-unclustered')) {
+      map.addLayer({
+        id: 'trains-unclustered',
+        type: 'circle',
+        source: 'trains',
+        filter: ['!', ['has', 'point_count']],
+        paint: {
+          'circle-radius': 14,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#FFFFFF',
+          'circle-color': [
+            'case',
+            ['==', ['get', 'health'], 'ok'], '#10B981',
+            ['==', ['get', 'health'], 'warn'], '#F59E0B',
+            ['==', ['get', 'health'], 'due'], '#EF4444',
+            '#6B7280'
+          ]
+        }
+      });
+    }
+
+    // Selected overlay (top)
+    if (!map.getLayer('train-selected')) {
+      map.addLayer({
+        id: 'train-selected',
+        type: 'circle',
+        source: 'trains',
+        filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'id'], '___none___']],
+        paint: {
+          'circle-radius': 18,
+          'circle-stroke-width': 3,
+          'circle-stroke-color': '#FFFFFF',
+          'circle-opacity': 0.9,
+          'circle-color': [
+            'case',
+            ['==', ['get', 'health'], 'ok'], '#10B981',
+            ['==', ['get', 'health'], 'warn'], '#F59E0B',
+            ['==', ['get', 'health'], 'due'], '#EF4444',
+            '#6B7280'
+          ]
+        }
+      });
+    }
+
+    // Click + hover handlers
     if (!eventListenersAddedRef.current) {
-      // Click handler for unclustered train markers
-      map.on('click', 'train_markers', (e) => {
+      map.on('click', 'trains-unclustered', (e) => {
         if (e.features && e.features[0]) {
           const trainId = e.features[0].properties?.id;
           if (trainId) {
@@ -323,31 +378,48 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         }
       });
 
-
-      // Change cursor on hover
-      map.on('mouseenter', 'train_markers', () => {
+      map.on('mouseenter', 'trains-unclustered', () => {
         map.getCanvas().style.cursor = 'pointer';
       });
-
-      map.on('mouseleave', 'train_markers', () => {
+      map.on('mouseleave', 'trains-unclustered', () => {
         map.getCanvas().style.cursor = '';
       });
 
+      // Zoom into clusters on click
+      map.on('click', 'clusters', async (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+        const clusterId = features[0]?.properties?.cluster_id;
+        const source = map.getSource('trains') as any;
+        if (source && clusterId != null) {
+          source.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
+            if (err) return;
+            const [lng, lat] = (features[0].geometry as any).coordinates as [number, number];
+            if (isTestMode) map.jumpTo({ center: [lng, lat], zoom });
+            else map.easeTo({ center: [lng, lat], zoom });
+          });
+        }
+      });
+
+      // Detect manual interactions to prevent auto-fit after user action
+      map.on('dragstart', () => { didFitRef.current = true; });
+      map.on('zoomstart', () => { didFitRef.current = true; });
 
       eventListenersAddedRef.current = true;
     }
 
-    console.log('✅ Timetable-based train markers initialized');
+    console.log('✅ Clustered train marker layers initialized');
     try { (window as any).__mapReady = true; } catch {}
     try { window.dispatchEvent(new CustomEvent('map:ready')); } catch {}
     hasInitializedRef.current = true;
 
     return () => {
       // Cleanup
-      if (map.getLayer('train_markers')) map.removeLayer('train_markers');
+      for (const layerId of ['train-selected', 'trains-unclustered', 'cluster-count', 'clusters']) {
+        if (map.getLayer(layerId)) map.removeLayer(layerId);
+      }
       if (map.getSource('trains')) map.removeSource('trains');
     };
-  }, [map, onTrainSelect]); // Removed selectedTrain and trainData from dependencies
+  }, [map, onTrainSelect, isTestMode]);
 
   // Update map source from React Query cache; throttle with rAF and compare snapshots
   useEffect(() => {
@@ -359,7 +431,15 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         .map((f: any) => {
           const [lon, lat] = f.geometry.coordinates as [number, number];
           if (!isValidCoord(lon, lat)) return null;
-          return { type: 'Feature', properties: { ...f.properties, selected: selectedTrain === f.properties?.id }, geometry: { type: 'Point', coordinates: [lon, lat] } };
+          const id = f.properties?.id;
+          const line = f.properties?.line;
+          const status = f.properties?.status;
+          const health = status === 'active' ? 'ok' : (status === 'maintenance' ? 'warn' : 'due');
+          return {
+            type: 'Feature',
+            properties: { id, line, health },
+            geometry: { type: 'Point', coordinates: [lon, lat] }
+          };
         })
         .filter(Boolean);
       const out = { type: 'FeatureCollection', features };
@@ -371,10 +451,11 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         source.setData(out as any);
       });
 
+      // Initial fit once after first valid load
       if (!didFitRef.current && features.length > 0) {
         const bounds = new maplibregl.LngLatBounds();
         for (const ft of features) bounds.extend(ft.geometry.coordinates as [number, number]);
-        map.fitBounds(bounds, { padding: 60, duration: isTestMode ? 0 : 500 });
+        map.fitBounds(bounds, { padding: 48, duration: isTestMode ? 0 : 300 });
         didFitRef.current = true;
       }
     };

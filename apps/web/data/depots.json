@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "id": "depot-langweid", "name": "Depot Langweid" },
+      "geometry": { "type": "Point", "coordinates": [10.846, 48.449] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "depot-essingen", "name": "Depot Essingen" },
+      "geometry": { "type": "Point", "coordinates": [10.015, 48.823] }
+    }
+  ]
+}
+
+

@@ -54,22 +54,37 @@ export default function MapShell() {
         console.log('✅ Map loaded successfully');
         setReady(true);
         
-        // Add depot icon to map (only after map is loaded)
-        const depotIcon = new Image();
-        depotIcon.onload = () => {
-          if (map && map.hasImage && !map.hasImage('depot-icon')) {
-            map.addImage('depot-icon', depotIcon);
-            console.log('✅ Depot icon added to map');
+        // Add depots source and layer
+        try {
+          if (!map.getSource('depots')) {
+            map.addSource('depots', {
+              type: 'geojson',
+              data: '/config/depots.json'
+            } as any);
           }
-        };
-        depotIcon.src = 'data:image/svg+xml;base64,' + btoa(`
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" fill="#FF6B35" stroke="#FFFFFF" stroke-width="2"/>
-            <path d="M8 10h8v4H8z" fill="#FFFFFF"/>
-            <path d="M10 14h4v2h-4z" fill="#FFFFFF"/>
-            <path d="M12 6v4" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        `);
+          if (!map.getLayer('depots-symbol')) {
+            map.addLayer({
+              id: 'depots-symbol',
+              type: 'symbol',
+              source: 'depots',
+              layout: {
+                'icon-image': 'marker-15',
+                'icon-size': 1.2,
+                'text-field': ['get', 'name'],
+                'text-size': 12,
+                'text-offset': [0, 1.2],
+                'text-anchor': 'top'
+              },
+              paint: {
+                'text-color': '#FF6B35',
+                'text-halo-color': '#0B1F2A',
+                'text-halo-width': 2
+              }
+            });
+          }
+        } catch (e) {
+          console.warn('Depots layer init failed', e);
+        }
         
         // This block is now handled by the useEffect hook below
         
