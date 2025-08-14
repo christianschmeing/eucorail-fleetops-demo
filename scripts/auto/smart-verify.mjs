@@ -174,6 +174,16 @@ async function run() {
   });
   log('Tests finished');
 
+  // 4b) Promote next todo spec
+  setPhase('promote');
+  try {
+    const promote = spawnLogged('node', ['scripts/auto/promote-next-test.mjs'], { logName: 'promote.log' });
+    await new Promise((resolve) => promote.child.on('exit', () => resolve()));
+    log('Promote step executed');
+  } catch (e) {
+    log(`Promote step failed: ${e?.message || e}`);
+  }
+
   // 5) Shutdown
   setPhase('shutdown');
   log('Shutting down...');

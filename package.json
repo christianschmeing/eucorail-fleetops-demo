@@ -24,7 +24,8 @@
     "test:e2e:ui": "playwright test --ui",
     "verify": "cross-env NEXT_PUBLIC_TEST_MODE=1 TEST_MODE=1 SEED=42 TICK_MS=500 npm run build:all && start-server-and-test dev:e2e http://localhost:3001 test:e2e",
     "verify:smart": "node scripts/auto/smart-verify.mjs",
-    "demo:smart": "node scripts/auto/smart-verify.mjs"
+    "demo:smart": "node scripts/auto/smart-verify.mjs",
+    "auto:loop": "node scripts/auto/auto-iterate.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",
