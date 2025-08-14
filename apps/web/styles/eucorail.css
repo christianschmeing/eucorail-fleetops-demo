@@ -1,0 +1,12 @@
+:root {
+  --eucorail-primary: #003d7a;    /* Eucorail Blau */
+  --eucorail-accent: #ff6600;     /* Eucorail Orange */
+  --font-primary: 'Inter', sans-serif;
+}
+
+.eucorail-header {
+  background: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
+  box-shadow: 0 2px 8px rgba(0, 61, 122, 0.15);
+}
+
+

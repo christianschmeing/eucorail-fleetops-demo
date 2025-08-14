@@ -6,7 +6,7 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 
 export default fp(async (app) => {
-  await app.register(cors, { origin: true });
+  await app.register(cors, { origin: '*' });
   await app.register(rateLimit, { max: 300, timeWindow: '1 minute' });
   await app.register(underPressure, {
     maxEventLoopDelay: 100,

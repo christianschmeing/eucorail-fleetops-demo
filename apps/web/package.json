@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3001",
     "build": "next build",
+    "build:test": "cross-env NEXT_PUBLIC_TEST_MODE=1 NEXT_PUBLIC_API_BASE=http://localhost:4100 next build",
     "start": "next start -p 3001 -H 0.0.0.0",
     "start:test": "cross-env NODE_ENV=production TEST_MODE=1 NEXT_PUBLIC_TEST_MODE=1 NEXT_PUBLIC_API_BASE=http://localhost:4100 next start -p 3001"
   },

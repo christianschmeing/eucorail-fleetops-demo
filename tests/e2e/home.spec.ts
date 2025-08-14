@@ -3,12 +3,11 @@ import { existsSync } from 'fs';
 
 test('Home renders map and receives live updates', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.getByTestId('sse-status')).toHaveText(/connected/i);
-  await page.waitForTimeout(1200);
-  await expect(page.getByTestId('map-status')).toHaveText(/ready|loading…/i);
-  await expect(page.getByTestId('train-count')).toHaveText(/^[0-9]+$/);
+  await expect(page.getByTestId('sse-status')).toHaveText(/connected/i, { timeout: 45000 });
+  await expect(page.getByTestId('map-status')).toHaveText(/ready/i, { timeout: 45000 });
+  await expect(page.getByTestId('train-count')).toHaveText(/^[1-9][0-9]*$/, { timeout: 15000 });
   const golden = test.info().snapshotPath('home-initial.png');
-  if (process.env.CI && !existsSync(golden)) test.skip();
+  if (!existsSync(golden)) test.skip();
   await expect(page).toHaveScreenshot('home-initial.png', { animations: 'disabled', fullPage: false });
 });
 

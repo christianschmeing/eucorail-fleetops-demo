@@ -102,9 +102,12 @@ export default fp(async (app: FastifyInstance) => {
   }
 
   app.get('/events', async (req, reply) => {
+    // Explicit SSE headers incl. CORS for direct connections
     reply.raw.setHeader('Content-Type', 'text/event-stream');
     reply.raw.setHeader('Cache-Control', 'no-cache, no-transform');
     reply.raw.setHeader('Connection', 'keep-alive');
+    reply.raw.setHeader('Access-Control-Allow-Origin', '*');
+    reply.raw.setHeader('X-Accel-Buffering', 'no');
     const lastId = (req.headers['last-event-id'] as string) ?? '0';
     reply.sse({ id: lastId, event: 'ping', data: 'ready' });
 

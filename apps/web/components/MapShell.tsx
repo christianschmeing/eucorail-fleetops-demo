@@ -39,7 +39,8 @@ export default function MapShell() {
     try {
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+        // Use a simple style in test mode for faster, more deterministic loads
+        style: isTestMode ? 'https://demotiles.maplibre.org/style.json' : "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
         center: [10.5, 48.5], // Center of Bavaria/Baden-Württemberg
         zoom: 8,
         maxZoom: 18,
@@ -462,7 +463,7 @@ export default function MapShell() {
 
         {/* Main Map Area */}
         <main className="flex-1 relative">
-          <div ref={mapContainerRef} className="w-full h-full" />
+          <div ref={mapContainerRef} className="w-full h-full" data-testid="map-canvas" />
           
           {/* Map Controls Overlay */}
           <div className="absolute top-4 left-4 space-y-2">

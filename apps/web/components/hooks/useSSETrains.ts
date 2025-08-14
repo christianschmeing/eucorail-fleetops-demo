@@ -5,8 +5,9 @@ import { useQueryClient } from '@tanstack/react-query';
 export function useSSETrains() {
   const qc = useQueryClient();
   useEffect(() => {
-    // Use same-origin relative endpoint to leverage Next.js rewrites and avoid CORS in tests
-    const endpoint = '/events';
+    // Direct connection to API to avoid proxy issues
+    const base = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4100';
+    const endpoint = `${base}/events`;
     const es = new EventSource(endpoint);
     es.onopen = () => {
       try { window.dispatchEvent(new CustomEvent('sse:open')); } catch {}

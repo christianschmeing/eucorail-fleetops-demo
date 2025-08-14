@@ -257,13 +257,85 @@ const computeAllTrainPositions = (): ComputedTrain[] => {
 export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: TrainMarkerProps) {
   const qc = useQueryClient();
   useSSETrains();
+  const lastUpdateByTrainRef = useRef<Map<string, number>>(new Map());
   const hasInitializedRef = useRef(false);
   const eventListenersAddedRef = useRef(false);
   const didFitRef = useRef(false);
   const rafRef = useRef<number | null>(null);
   const lastJsonRef = useRef<string>('');
+  const lastNonEmptyJsonRef = useRef<string>('');
+  const lastFeatureByIdRef = useRef<Map<string, any>>(new Map());
+  const lastUpdateByIdRef = useRef<Map<string, number>>(new Map());
   const lastCenteredIdRef = useRef<string | null>(null);
+  const domMarkersRef = useRef<Map<string, { marker: maplibregl.Marker; el: HTMLDivElement; lastLonLat: [number, number] | null }>>(new Map());
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
+  const holdoverMinutes = Number(process.env.NEXT_PUBLIC_HOLDOVER_MINUTES ?? 5);
+  const holdoverMs = Math.max(0, holdoverMinutes) * 60 * 1000;
+
+  // Helpers for DOM markers
+  const computeBearing = (a: [number, number], b: [number, number]): number => {
+    const toRad = (d: number) => (d * Math.PI) / 180;
+    const toDeg = (r: number) => (r * 180) / Math.PI;
+    const lon1 = toRad(a[0]);
+    const lat1 = toRad(a[1]);
+    const lon2 = toRad(b[0]);
+    const lat2 = toRad(b[1]);
+    const dLon = lon2 - lon1;
+    const y = Math.sin(dLon) * Math.cos(lat2);
+    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+    const brng = Math.atan2(y, x);
+    return (toDeg(brng) + 360) % 360;
+  };
+
+  const renderTrainIconSVG = (type: 'siemens' | 'stadler', directionDeg: number) => {
+    const fill = type === 'siemens' ? '#003d7a' : '#ff6600';
+    return `
+      <svg width="32" height="16" viewBox="0 0 32 16" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(${directionDeg}deg); transform-origin: 50% 50%;">
+        <rect x="2" y="3" width="28" height="10" rx="4" fill="${fill}" />
+        <circle cx="10" cy="13" r="2" fill="#ffffff" opacity="0.9" />
+        <circle cx="22" cy="13" r="2" fill="#ffffff" opacity="0.9" />
+        <path d="M30 8 L25 5 L25 11 Z" fill="#ffffff" opacity="0.85" />
+      </svg>
+    `;
+  };
+
+  const ensureDomMarker = (id: string, lon: number, lat: number, line: string, isStale: boolean) => {
+    if (!map) return;
+    let entry = domMarkersRef.current.get(id);
+    const manufacturer: 'siemens' | 'stadler' = line === 'MEX16' ? 'siemens' : 'stadler';
+    if (!entry) {
+      const el = document.createElement('div');
+      el.setAttribute('data-testid', 'train-marker');
+      el.setAttribute('data-train-id', id);
+      el.style.width = '32px';
+      el.style.height = '16px';
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
+      el.style.cursor = 'pointer';
+      el.style.willChange = 'transform';
+      el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
+      el.title = id;
+      el.innerHTML = renderTrainIconSVG(manufacturer, 0);
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onTrainSelect(id);
+      });
+      const marker = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([lon, lat]).addTo(map);
+      entry = { marker, el, lastLonLat: [lon, lat] };
+      domMarkersRef.current.set(id, entry);
+    } else {
+      entry.el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
+      const prev = entry.lastLonLat;
+      const moved = !prev || Math.abs(prev[0] - lon) > 1e-6 || Math.abs(prev[1] - lat) > 1e-6;
+      if (moved) {
+        const dir = prev ? computeBearing(prev, [lon, lat]) : 0;
+        entry.el.innerHTML = renderTrainIconSVG(manufacturer, dir);
+        entry.marker.setLngLat([lon, lat]);
+        entry.lastLonLat = [lon, lat];
+      }
+    }
+  };
 
   useEffect(() => {
     if (!map || hasInitializedRef.current) return;
@@ -331,7 +403,11 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         paint: {
           'circle-radius': 14,
           'circle-stroke-width': 2,
-          'circle-stroke-color': '#FFFFFF',
+          'circle-stroke-color': [
+            'case',
+            ['==', ['get', 'stale'], true], '#BDBDBD',
+            '#FFFFFF'
+          ],
           'circle-color': [
             'case',
             ['==', ['get', 'health'], 'ok'], '#10B981',
@@ -418,6 +494,11 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         if (map.getLayer(layerId)) map.removeLayer(layerId);
       }
       if (map.getSource('trains')) map.removeSource('trains');
+      // Remove DOM markers
+      for (const [, entry] of domMarkersRef.current.entries()) {
+        entry.marker.remove();
+      }
+      domMarkersRef.current.clear();
     };
   }, [map, onTrainSelect, isTestMode]);
 
@@ -425,36 +506,94 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
   useEffect(() => {
     if (!map) return;
     const update = () => {
+      const now = Date.now();
       const fc = qc.getQueryData<any>(['trains', 'live']);
-      if (!fc || !map.getSource('trains')) return;
-      const features = (fc.features || [])
-        .map((f: any) => {
-          const [lon, lat] = f.geometry.coordinates as [number, number];
-          if (!isValidCoord(lon, lat)) return null;
-          const id = f.properties?.id;
-          const line = f.properties?.line;
-          const status = f.properties?.status;
-          const health = status === 'active' ? 'ok' : (status === 'maintenance' ? 'warn' : 'due');
-          return {
-            type: 'Feature',
-            properties: { id, line, health },
-            geometry: { type: 'Point', coordinates: [lon, lat] }
-          };
-        })
-        .filter(Boolean);
-      const out = { type: 'FeatureCollection', features };
-      const json = JSON.stringify(out);
+      if (!map.getSource('trains')) return;
+      const seenIds = new Set<string>();
+      const nextFeatures: any[] = [];
+
+      const liveFeatures = Array.isArray(fc?.features) ? fc.features : [];
+      for (const f of liveFeatures) {
+        const coords = (f?.geometry?.coordinates || []) as [number, number];
+        const id = f?.properties?.id as string | undefined;
+        const line = f?.properties?.line;
+        const status = f?.properties?.status;
+        if (!id) continue;
+        if (!Array.isArray(coords) || coords.length !== 2) continue;
+        const [lon, lat] = coords;
+        if (!isValidCoord(lon, lat)) continue;
+        // Throttle per-train updates: at most once every 5 seconds
+        const nowMs = Date.now();
+        const last = lastUpdateByTrainRef.current.get(id) ?? 0;
+        if (nowMs - last < 5000 && lastFeatureByIdRef.current.has(id)) {
+          // Use previous feature to avoid rapid jitter
+          const prev = lastFeatureByIdRef.current.get(id)!;
+          const keep = { ...(prev as any), properties: { ...(prev as any).properties, stale: false } };
+          nextFeatures.push(keep);
+          const [plon, plat] = (keep.geometry.coordinates as [number, number]);
+          ensureDomMarker(id, plon, plat, keep.properties.line, false);
+          seenIds.add(id);
+          continue;
+        }
+        const health = status === 'active' ? 'ok' : (status === 'maintenance' ? 'warn' : 'due');
+        const feature = {
+          type: 'Feature',
+          properties: { id, line, health, stale: false },
+          geometry: { type: 'Point', coordinates: [lon, lat] }
+        };
+        nextFeatures.push(feature);
+        seenIds.add(id);
+        lastFeatureByIdRef.current.set(id, feature);
+        lastUpdateByIdRef.current.set(id, nowMs);
+        lastUpdateByTrainRef.current.set(id, nowMs);
+        ensureDomMarker(id, lon, lat, line, false);
+      }
+
+      // Holdover: keep last known feature for a while when missing
+      for (const [id, feature] of lastFeatureByIdRef.current.entries()) {
+        if (seenIds.has(id)) continue;
+        const lastUpdate = lastUpdateByIdRef.current.get(id) ?? 0;
+        if (now - lastUpdate <= holdoverMs) {
+          const keep = { ...(feature as any), properties: { ...(feature as any).properties, stale: true } };
+          nextFeatures.push(keep);
+          const [plon, plat] = (keep.geometry.coordinates as [number, number]);
+          ensureDomMarker(id, plon, plat, keep.properties.line, true);
+        }
+      }
+
+      // Stabilize order
+      nextFeatures.sort((a, b) => String(a.properties.id).localeCompare(String(b.properties.id)));
+
+      // Avoid empty setData if we had a non-empty snapshot previously
+      const out = { type: 'FeatureCollection', features: nextFeatures } as any;
+      let json = JSON.stringify(out);
+      if (nextFeatures.length === 0 && lastNonEmptyJsonRef.current) {
+        json = lastNonEmptyJsonRef.current;
+      }
+      if (nextFeatures.length > 0) lastNonEmptyJsonRef.current = json;
+
       if (json === (window as any).__lastTrainsJSON) return;
       (window as any).__lastTrainsJSON = json;
       requestAnimationFrame(() => {
         const source = map.getSource('trains') as maplibregl.GeoJSONSource;
-        source.setData(out as any);
+        source.setData(JSON.parse(json));
       });
 
-      // Initial fit once after first valid load
-      if (!didFitRef.current && features.length > 0) {
+      // Remove DOM markers that are no longer present and beyond holdover
+      const keepIds = new Set(nextFeatures.map((f: any) => String(f.properties.id)));
+      for (const [id, entry] of domMarkersRef.current.entries()) {
+        if (!keepIds.has(id)) {
+          const lastUpdate = lastUpdateByIdRef.current.get(id) ?? 0;
+          if (now - lastUpdate > holdoverMs) {
+            entry.marker.remove();
+            domMarkersRef.current.delete(id);
+          }
+        }
+      }
+
+      if (!didFitRef.current && nextFeatures.length > 0) {
         const bounds = new maplibregl.LngLatBounds();
-        for (const ft of features) bounds.extend(ft.geometry.coordinates as [number, number]);
+        for (const ft of nextFeatures) bounds.extend(ft.geometry.coordinates as [number, number]);
         map.fitBounds(bounds, { padding: 48, duration: isTestMode ? 0 : 300 });
         didFitRef.current = true;
       }
@@ -490,6 +629,15 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     }
     lastCenteredIdRef.current = selectedTrain;
   }, [map, selectedTrain, qc, isTestMode]);
+
+  // Reflect selection in overlay filter
+  useEffect(() => {
+    if (!map) return;
+    const targetId = selectedTrain ?? '___none___';
+    if (map.getLayer('train-selected')) {
+      map.setFilter('train-selected', ['all', ['!', ['has', 'point_count']], ['==', ['get', 'id'], targetId]] as any);
+    }
+  }, [map, selectedTrain]);
 
   return null; // This component doesn't render anything visible
 }

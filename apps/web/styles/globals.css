@@ -14,6 +14,12 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+/* Disable animations/transitions in Test Mode via body.no-anim */
+.no-anim *, .no-anim *::before, .no-anim *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
 .maplibregl-ctrl-group { 
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   border: 1px solid rgba(255,255,255,0.1);

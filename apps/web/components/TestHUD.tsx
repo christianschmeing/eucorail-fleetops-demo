@@ -6,11 +6,8 @@ import { useQueryClient } from '@tanstack/react-query';
 export default function TestHUD() {
   const qc = useQueryClient();
   const isTest = process.env.NEXT_PUBLIC_TEST_MODE === '1';
-  const [sseConnected, setSseConnected] = useState(isTest);
-  const [mapReady, setMapReady] = useState<boolean>(() => {
-    if (isTest) return true;
-    try { return Boolean((window as any).__mapReady); } catch { return false; }
-  });
+  const [sseConnected, setSseConnected] = useState(false);
+  const [mapReady, setMapReady] = useState<boolean>(false);
   const demoTrains = [
     'RE9-78001','RE9-78002','RE8-79021','RE8-79022','MEX16-66011','MEX16-66012','BY-12345','BW-67890'
   ];
@@ -43,7 +40,7 @@ export default function TestHUD() {
   // Fallback: in test mode, mark map ready after a short grace period to avoid flake
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_TEST_MODE !== '1') return;
-    const t = setTimeout(() => setMapReady(true), 1000);
+    const t = setTimeout(() => setMapReady(true), 1200);
     return () => clearTimeout(t);
   }, []);
 
