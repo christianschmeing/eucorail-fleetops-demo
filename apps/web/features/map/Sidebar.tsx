@@ -1,6 +1,7 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { apiGet } from '@/lib/api';
 
 export function Sidebar({
   activeLines,
@@ -18,6 +19,19 @@ export function Sidebar({
   const qc = useQueryClient();
   const [onlyActive, setOnlyActive] = useState(false);
   const [trains, setTrains] = useState<Array<{ id: string; line: string; status: string; speed: number }>>([]);
+
+  // Load lines list from API to render real filter chips
+  const { data: lines } = useQuery({
+    queryKey: ['lines'],
+    queryFn: () => apiGet<Array<{ id: string; region: string; name: string }>>('/api/lines'),
+    staleTime: 5 * 60 * 1000
+  });
+  // Load full trains list from API to ensure complete catalog (fallback if SSE not yet ready)
+  const { data: trainCatalog } = useQuery({
+    queryKey: ['trains','catalog'],
+    queryFn: () => apiGet<Array<{ id: string; lineId: string; status?: string }>>('/api/trains'),
+    staleTime: 30 * 1000
+  });
 
   const recompute = () => {
     const fc = qc.getQueryData<any>(['trains', 'live']);
@@ -42,12 +56,31 @@ export function Sidebar({
   }, []);
 
   const lineChips = useMemo(() => {
+    // Prefer API-provided lines; fall back to lines from SSE trains if needed
     const set = new Set<string>();
-    for (const t of trains) if (t.line) set.add(t.line);
-    // Fallback defaults
-    if (set.size === 0) ['RE9','RE8','MEX16','BY','BW'].forEach((c) => set.add(c));
+    if (Array.isArray(lines) && lines.length > 0) {
+      for (const l of lines) set.add(l.id.toUpperCase());
+    } else {
+      for (const t of trains) if (t.line) set.add(t.line.toUpperCase());
+    }
+    if (set.size === 0) ['RE9','RE8','MEX16','RE1','RE90','RE72','RE96','RB92','RE80','RE89','RB86','RB87','RB89']
+      .forEach((c) => set.add(c));
     return Array.from(set).sort();
-  }, [trains]);
+  }, [lines, trains]);
+
+  // When API catalog is available but SSE not yet, seed the UI list to display all trains
+  useEffect(() => {
+    if (trains.length === 0 && Array.isArray(trainCatalog) && trainCatalog.length > 0) {
+      const list = trainCatalog.map((t) => ({
+        id: t.id,
+        line: t.lineId.toUpperCase(),
+        status: (t.status ?? 'active'),
+        speed: 0
+      }));
+      list.sort((a, b) => a.id.localeCompare(b.id));
+      setTrains(list);
+    }
+  }, [trainCatalog, trains.length]);
 
   return (
     <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto" data-testid="sidebar">
