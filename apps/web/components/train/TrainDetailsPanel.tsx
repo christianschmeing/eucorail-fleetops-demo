@@ -24,13 +24,23 @@ export default function TrainDetailsPanel({
       </div>
 
       {tab==='technik' && (
-        <div className="grid grid-cols-2 gap-3">
-          {(train.sensors ?? []).map(s => (
-            <div key={s.key} className="bg-black/30 rounded-xl p-3">
-              <div className="text-sm text-euco-muted">{s.key}</div>
-              <div className="text-xl">{String(s.value)}{s.unit?` ${s.unit}`:''}</div>
-            </div>
-          ))}
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            {(train.sensors ?? []).map(s => (
+              <div key={s.key} className="bg-black/30 rounded-xl p-3">
+                <div className="text-sm text-euco-muted">{s.key}</div>
+                <div className="text-xl">{String(s.value)}{s.unit?` ${s.unit}`:''}</div>
+              </div>
+            ))}
+          </div>
+          <details className="bg-black/30 rounded-xl p-3">
+            <summary className="cursor-pointer">Subsystem‑Historie</summary>
+            <ul className="mt-2 text-sm list-disc pl-5">
+              <li>ETCS Reset – 2h zuvor</li>
+              <li>Türen: Sensor‑Kalibrierung – gestern</li>
+              <li>Klima‑Filter gewechselt – vor 3 Tagen</li>
+            </ul>
+          </details>
         </div>
       )}
 
