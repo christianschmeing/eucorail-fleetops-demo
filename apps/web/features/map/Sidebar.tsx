@@ -1,5 +1,6 @@
 "use client";
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function Sidebar({
   activeLines,
@@ -14,6 +15,28 @@ export function Sidebar({
   selectedTrain: string | null;
   onSelect: (id: string) => void;
 }) {
+  const qc = useQueryClient();
+  const trains = useMemo(() => {
+    const fc = qc.getQueryData<any>(['trains', 'live']);
+    const features = Array.isArray(fc?.features) ? fc.features : [];
+    const list = features.map((f: any) => ({
+      id: String(f?.properties?.id ?? ''),
+      line: String(f?.properties?.line ?? ''),
+      status: String(f?.properties?.status ?? 'active'),
+      speed: Number(f?.properties?.speed ?? 0)
+    })).filter((t: any) => t.id);
+    list.sort((a: any, b: any) => a.id.localeCompare(b.id));
+    return list as Array<{ id: string; line: string; status: string; speed: number }>;
+  }, [qc]);
+
+  const lineChips = useMemo(() => {
+    const set = new Set<string>();
+    for (const t of trains) if (t.line) set.add(t.line);
+    // Fallback defaults
+    if (set.size === 0) ['RE9','RE8','MEX16','BY','BW'].forEach((c) => set.add(c));
+    return Array.from(set).sort();
+  }, [trains]);
+
   return (
     <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto" data-testid="sidebar">
       <div className="p-4">
@@ -23,7 +46,7 @@ export function Sidebar({
           <button className="bg-black/30 hover:bg-white/10 px-3 py-2 rounded-xl text-sm transition-colors">Nur Aktiv</button>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
-          {['RE9','RE8','MEX16'].map(code => (
+          {lineChips.map(code => (
             <button
               key={code}
               className={`${activeLines.includes(code) ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-3 py-1 rounded-xl text-xs transition-colors`}
@@ -34,16 +57,20 @@ export function Sidebar({
           ))}
         </div>
         <div className="space-y-2" data-testid="train-list">
-          {[
-            { id: 'RE9-78001', name: 'RE9 78001', status: 'maintenance', speed: 0 },
-            { id: 'RE9-78002', name: 'RE9 78002', status: 'active', speed: 85 },
-            { id: 'RE8-79021', name: 'RE8 79021', status: 'active', speed: 92 },
-            { id: 'RE8-79022', name: 'RE8 79022', status: 'active', speed: 78 },
-            { id: 'MEX16-66011', name: 'MEX16 66011', status: 'active', speed: 95 },
-            { id: 'MEX16-66012', name: 'MEX16 66012', status: 'inspection', speed: 0 },
-            { id: 'BY-12345', name: 'BY 12345', status: 'stationary', speed: 0 },
-            { id: 'BW-67890', name: 'BW 67890', status: 'stationary', speed: 0 }
-          ].map(train => (
+          {(trains.length > 0 ? trains : [
+            { id: 'RE9-78001', line: 'RE9', status: 'maintenance', speed: 0 },
+            { id: 'RE9-78002', line: 'RE9', status: 'active', speed: 85 },
+            { id: 'RE9-78003', line: 'RE9', status: 'active', speed: 80 },
+            { id: 'RE8-79021', line: 'RE8', status: 'active', speed: 92 },
+            { id: 'RE8-79022', line: 'RE8', status: 'active', speed: 78 },
+            { id: 'RE8-79023', line: 'RE8', status: 'active', speed: 76 },
+            { id: 'RE8-79024', line: 'RE8', status: 'active', speed: 74 },
+            { id: 'MEX16-66011', line: 'MEX16', status: 'active', speed: 95 },
+            { id: 'MEX16-66012', line: 'MEX16', status: 'inspection', speed: 0 },
+            { id: 'MEX16-66013', line: 'MEX16', status: 'active', speed: 88 },
+            { id: 'BY-12345', line: 'BY', status: 'stationary', speed: 0 },
+            { id: 'BW-67890', line: 'BW', status: 'stationary', speed: 0 }
+          ]).filter(t => activeLines.length === 0 || activeLines.includes(t.line)).map(train => (
             <div
               key={train.id}
               className={`p-3 rounded-lg cursor-pointer transition-colors ${
@@ -54,7 +81,7 @@ export function Sidebar({
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium">{train.name}</div>
+                  <div className="font-medium">{train.id}</div>
                   <div className="text-xs opacity-75">
                     {train.status === 'active' ? `${train.speed} km/h` : train.status}
                   </div>
@@ -73,7 +100,7 @@ export function Sidebar({
                     data-testid="open-details"
                     className="text-xs bg-white/10 px-2 py-1 rounded hover:bg-white/20"
                     onClick={(e) => { e.stopPropagation(); onSelect(train.id); }}
-                    aria-label={`Details anzeigen für ${train.name}`}
+                    aria-label={`Details anzeigen für ${train.id}`}
                   >
                     Details anzeigen
                   </button>
