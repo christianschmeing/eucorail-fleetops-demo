@@ -14,6 +14,7 @@
     "sim:start": "npm --workspace packages/api run sim:start",
     "setup": "npm install && npm --workspace packages/api install && npm --workspace apps/web install && npm run seed:lines && npm run seed:fleet",
     "demo": "node scripts/demo.mjs",
+    "up": "node scripts/dev/up.mjs",
     "stop": "node scripts/stop.mjs",
     "push": "bash scripts/quick-push.sh",
     "sync": "bash scripts/sync-from-github.sh",
