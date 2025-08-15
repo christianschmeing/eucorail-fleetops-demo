@@ -1,5 +1,6 @@
 import TrainDetailsPanel from '../../../components/train/TrainDetailsPanel';
 import { MaintenanceTimeline } from '../../../components/maintenance/MaintenanceTimeline';
+import { Card, CardBody, CardTitle } from '../../../components/ui/Card';
 import type { Train, MaintenanceTask } from '../../../types/train';
 
 async function getTrain(id: string): Promise<Train> {
@@ -19,12 +20,18 @@ export default async function Page({ params }: { params: { id: string }}) {
   const [train, tasks] = await Promise.all([getTrain(params.id), getTasks(params.id)]);
   return (
     <div className="p-4 space-y-6">
-      <h1 className="text-2xl text-white">{train.name}</h1>
-      <TrainDetailsPanel train={train} tasks={tasks} />
-      <section className="bg-black/30 rounded-xl p-4 text-white">
-        <h2 className="text-xl mb-2">Wartungs-Timeline</h2>
-        <MaintenanceTimeline tasks={tasks} />
-      </section>
+      <Card>
+        <CardBody>
+          <CardTitle className="mb-2 text-white">{train.name}</CardTitle>
+          <TrainDetailsPanel train={train} tasks={tasks} />
+        </CardBody>
+      </Card>
+      <Card>
+        <CardBody className="text-white">
+          <h2 className="text-xl mb-2">Wartungs-Timeline</h2>
+          <MaintenanceTimeline tasks={tasks} />
+        </CardBody>
+      </Card>
     </div>
   );
 }
