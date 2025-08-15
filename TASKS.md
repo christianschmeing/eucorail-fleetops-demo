@@ -1,9 +1,10 @@
 # TASKS
 
 ## P0 (kritisch)
-- [ ] Train Detailseite `/trains/[id]` mit Tabs Technik / Wartung / Zustand
-- [ ] MaintenanceTimeline mit kommenden/überfälligen Services, Farbcodes
-- [ ] Branding: Tailwind Tokens + Badge/Button/Card Variants (Eucorail)
+- [x] Train Detailseite `/trains/[id]` mit Tabs Technik / Wartung / Zustand
+- [x] MaintenanceTimeline mit kommenden/überfälligen Services, Farbcodes
+- [x] Branding: Tailwind Tokens + Badge/Button/Card/Tabs/StatusChip (Eucorail)
+- [x] Startseite KPI-Header (Basis) + konsistente Panels
 - [ ] CI Basis: build, lint, typecheck, smoke (Playwright headless)
 
 ## P1
