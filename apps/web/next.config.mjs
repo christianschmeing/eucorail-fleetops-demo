@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const nextConfig = {
   reactStrictMode: true,
   // Removed: experimental: { appDir: true, },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     // Ensure maplibre-gl resolves from the hoisted root node_modules
     config.resolve.modules = [
       path.resolve(process.cwd(), 'node_modules'),
@@ -14,6 +14,11 @@ const nextConfig = {
       ...(config.resolve.modules || []),
       'node_modules'
     ];
+    // Fix dev server chunk path for server runtime to load from ./chunks/*.js
+    if (isServer) {
+      config.output = config.output || {};
+      config.output.chunkFilename = 'chunks/[id].js';
+    }
     // Do not alias 'maplibre-gl' to a single file to preserve subpath CSS imports
     return config;
   },
