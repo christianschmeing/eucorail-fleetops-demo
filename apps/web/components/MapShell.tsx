@@ -14,7 +14,12 @@ import TrainPopup from './TrainPopup';
 import { useQueryClient } from '@tanstack/react-query';
 import { KPIStat } from './KPIStat';
 
-export default function MapShell() {
+export default function MapShell({
+  externalActiveLines,
+  onlyActive = false,
+  showHeader = true,
+  showSidebar = true
+}: { externalActiveLines?: string[]; onlyActive?: boolean; showHeader?: boolean; showSidebar?: boolean } = {}) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const [ready, setReady] = useState(false);
@@ -373,9 +378,12 @@ export default function MapShell() {
     try { (window as any).__selectedTrain = selectedTrain; } catch {}
   }, [selectedTrain]);
 
+  const effectiveLines = externalActiveLines ?? activeLines;
+
   return (
     <div className="h-screen w-screen bg-euco-bg text-white overflow-hidden" data-testid="map-root">
       {/* Header */}
+      {showHeader && (
       <header className="bg-black/30 border-b border-white/10 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -399,9 +407,11 @@ export default function MapShell() {
           </div>
         </div>
       </header>
+      )}
 
       <div className="flex h-[calc(100vh-80px)]">
         {/* Left Sidebar - Train List */}
+        {showSidebar && (
         <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto">
           <div className="p-4">
             <h2 className="text-lg font-semibold mb-4">Zugliste</h2>
@@ -480,6 +490,7 @@ export default function MapShell() {
             </div>
           </div>
         </aside>
+        )}
 
         {/* Main Map Area */}
         <main className="flex-1 relative">
@@ -524,14 +535,11 @@ export default function MapShell() {
           </div>
 
           {/* Dashboard Widgets (hidden in test mode to keep snapshots stable) */}
-          {!isTestMode && (
-            <div className="absolute left-4 bottom-4 right-4 grid grid-cols-4 gap-4 pointer-events-none">
-              <div className="pointer-events-auto col-span-2"><FleetHealthWidget /></div>
-            </div>
-          )}
+          {/* widgets removed */}
         </main>
 
-        {/* Right Sidebar - Selected Train Details (always rendered for stability in tests) */}
+        {/* Right Sidebar - Selected Train Details */}
+        {selectedTrain && (
         <aside className="w-80 bg-black/30 border-l border-white/10 overflow-y-auto" data-testid="train-drawer">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
@@ -602,6 +610,7 @@ export default function MapShell() {
               </div>
             </div>
           </aside>
+        )}
       </div>
 
       {/* Train Markers Component */}
@@ -618,13 +627,7 @@ export default function MapShell() {
       )}
 
       {/* Shortcuts helper (only outside test mode) */}
-      {!isTestMode && (
-        <div className="fixed bottom-3 left-3 bg-black/40 border border-white/10 rounded-md px-3 py-2 text-xs">
-          <div className="opacity-70">Shortcuts</div>
-          <div>3: Toggle 3D camera</div>
-          <div>M: Toggle messages</div>
-        </div>
-      )}
+      {/* shortcuts removed */}
 
     </div>
   );
