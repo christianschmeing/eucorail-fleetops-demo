@@ -12,7 +12,7 @@ export default function HomePage() {
       <HeaderBar faults={1} />
       <div className="flex h-[calc(100vh-80px)]">
         {/* Leave MapShell to render map and overlays; Sidebar duplicated here for structure in future split */}
-        <Sidebar activeLines={[]} setActiveLines={() => {}} isTestMode={false} selectedTrain={null} onSelect={() => {}} />
+        <Sidebar activeLines={[]} setActiveLines={() => {}} isTestMode={true} selectedTrain={null} onSelect={() => {}} />
         <div className="flex-1">
           <MapShell />
         </div>
