@@ -9,6 +9,7 @@ interface TrainMarkerProps {
   map: maplibregl.Map | null;
   selectedTrain: string | null;
   onTrainSelect: (trainId: string) => void;
+  lineFilter?: string[];
 }
 
 // Types for timetable-based positioning
@@ -254,7 +255,7 @@ const computeAllTrainPositions = (): ComputedTrain[] => {
   return result;
 };
 
-export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: TrainMarkerProps) {
+export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFilter }: TrainMarkerProps) {
   const qc = useQueryClient();
   useSSETrains();
   const lastUpdateByTrainRef = useRef<Map<string, number>>(new Map());
@@ -281,6 +282,8 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
   const holdoverMinutes = Number(process.env.NEXT_PUBLIC_HOLDOVER_MINUTES ?? 5);
   const holdoverMs = Math.max(0, holdoverMinutes) * 60 * 1000;
+  const hasLiveRef = useRef<boolean>(false);
+  const fallbackTimerRef = useRef<number | null>(null);
 
   // Helpers for DOM markers
   const computeBearing = (a: [number, number], b: [number, number]): number => {
@@ -309,7 +312,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     `;
   };
 
-  const ensureDomMarker = (id: string, lon: number, lat: number, line: string, isStale: boolean, acceptNewTarget = true) => {
+  const ensureDomMarker = (id: string, lon: number, lat: number, line: string, isStale: boolean, acceptNewTarget = true, titleText?: string) => {
     if (!map) return;
     let entry = domMarkersRef.current.get(id);
     const manufacturer: 'siemens' | 'stadler' = line === 'MEX16' ? 'siemens' : 'stadler';
@@ -325,7 +328,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
       el.style.cursor = 'pointer';
       el.style.willChange = 'transform';
       el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
-      el.title = id;
+      el.title = titleText ? titleText : id;
       el.innerHTML = renderTrainIconSVG(manufacturer, 0);
       el.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -521,6 +524,15 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
       });
     }
 
+    // Ensure layer order: clusters < cluster-count < trains-unclustered < train-selected < depots-symbol
+    try {
+      if (map.getLayer('clusters')) map.moveLayer('clusters');
+      if (map.getLayer('cluster-count')) map.moveLayer('cluster-count');
+      if (map.getLayer('trains-unclustered')) map.moveLayer('trains-unclustered');
+      if (map.getLayer('train-selected')) map.moveLayer('train-selected');
+      if (map.getLayer('depots-symbol')) map.moveLayer('depots-symbol');
+    } catch {}
+
     // Click + hover handlers
     if (!eventListenersAddedRef.current) {
       map.on('click', 'trains-unclustered', (e) => {
@@ -569,8 +581,8 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
     hasInitializedRef.current = true;
 
-    // Start animation loop
-    if (!isTestMode && !rafRef.current) {
+    // Start animation loop only when live data is present (avoid anim on fallback)
+    if (!isTestMode && !rafRef.current && hasLiveRef.current) {
       rafRef.current = requestAnimationFrame(stepAnimation);
     }
 
@@ -594,6 +606,50 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
     };
   }, [map, onTrainSelect, isTestMode]);
 
+  // Track SSE connectivity to decide whether to animate/trail
+  useEffect(() => {
+    const onConnected = () => { hasLiveRef.current = true; if (!isTestMode && map && !rafRef.current) rafRef.current = requestAnimationFrame(stepAnimation); };
+    const onError = () => { /* keep last state */ };
+    window.addEventListener('sse:connected', onConnected as any);
+    window.addEventListener('sse:error', onError as any);
+    return () => {
+      window.removeEventListener('sse:connected', onConnected as any);
+      window.removeEventListener('sse:error', onError as any);
+    };
+  }, [map, isTestMode]);
+
+  // Periodic fallback recompute every 45s when no live data yet
+  useEffect(() => {
+    if (isTestMode) return;
+    const setup = () => {
+      if (hasLiveRef.current) return;
+      if (fallbackTimerRef.current) return;
+      const tick = () => {
+        if (hasLiveRef.current) return;
+        const bootstrap = computeAllTrainPositions();
+        const bootstrapFc = {
+          type: 'FeatureCollection',
+          features: bootstrap.map((t) => ({
+            type: 'Feature',
+            properties: { id: t.id, line: t.line, status: t.status, speed: t.speed, ts: Date.now(), desc: t.description, estimated: true },
+            geometry: { type: 'Point', coordinates: [t.lon, t.lat] }
+          }))
+        } as any;
+        qc.setQueryData(['trains', 'live'], bootstrapFc);
+        try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
+      };
+      tick();
+      fallbackTimerRef.current = window.setInterval(tick, 45000);
+    };
+    setup();
+    return () => {
+      if (fallbackTimerRef.current) {
+        clearInterval(fallbackTimerRef.current);
+        fallbackTimerRef.current = null;
+      }
+    };
+  }, [qc, isTestMode]);
+
   // Update map source from React Query cache; throttle with rAF and compare snapshots
   useEffect(() => {
     if (!map) return;
@@ -602,6 +658,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
       let fc = qc.getQueryData<any>(['trains', 'live']);
       const seenIds = new Set<string>();
       const nextFeatures: any[] = [];
+      let invalidCount = 0;
 
       // Fallback bootstrap if SSE has not populated anything yet
       let liveFeatures = Array.isArray(fc?.features) ? fc.features : [];
@@ -611,7 +668,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
           type: 'FeatureCollection',
           features: bootstrap.map((t) => ({
             type: 'Feature',
-            properties: { id: t.id, line: t.line, status: t.status, speed: t.speed, ts: Date.now() },
+            properties: { id: t.id, line: t.line, status: t.status, speed: t.speed, ts: Date.now(), desc: t.description, estimated: true },
             geometry: { type: 'Point', coordinates: [t.lon, t.lat] }
           }))
         } as any;
@@ -625,10 +682,14 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         const id = f?.properties?.id as string | undefined;
         const line = f?.properties?.line;
         const status = f?.properties?.status;
+        const title = f?.properties?.estimated && f?.properties?.desc ? `Fahrplan-Position (geschätzt) – ${id}: ${f.properties.desc}` : id;
         if (!id) continue;
-        if (!Array.isArray(coords) || coords.length !== 2) continue;
+        if (!Array.isArray(coords) || coords.length !== 2) { invalidCount++; continue; }
         const [lon, lat] = coords;
-        if (!isValidCoord(lon, lat)) continue;
+        if (!isValidCoord(lon, lat)) { invalidCount++; continue; }
+        if (Array.isArray(lineFilter) && lineFilter.length > 0 && line && !lineFilter.includes(String(line))) {
+          continue;
+        }
         // Throttle per-train updates: at most once every 5 seconds
         const nowMs = Date.now();
         const last = lastUpdateByTrainRef.current.get(id) ?? 0;
@@ -638,7 +699,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
           const keep = { ...(prev as any), properties: { ...(prev as any).properties, stale: false } };
           nextFeatures.push(keep);
           const [plon, plat] = (keep.geometry.coordinates as [number, number]);
-          ensureDomMarker(id, plon, plat, keep.properties.line, false, !isTestMode);
+          ensureDomMarker(id, plon, plat, keep.properties.line, false, !isTestMode, title);
           seenIds.add(id);
           continue;
         }
@@ -653,7 +714,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         lastFeatureByIdRef.current.set(id, feature);
         lastUpdateByIdRef.current.set(id, nowMs);
         lastUpdateByTrainRef.current.set(id, nowMs);
-        ensureDomMarker(id, lon, lat, line, false, !isTestMode);
+        ensureDomMarker(id, lon, lat, line, false, !isTestMode, title);
         // Update trail with latest live position
         const arr = trailsByIdRef.current.get(id) ?? [];
         const prev = arr[arr.length - 1];
@@ -730,6 +791,9 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect }: Trai
         map.fitBounds(bounds, { padding: 48, duration: isTestMode ? 0 : 300 });
         didFitRef.current = true;
       }
+
+      // Data quality event for UI banner
+      try { window.dispatchEvent(new CustomEvent('trains:quality', { detail: { valid: nextFeatures.length, invalid: invalidCount } })); } catch {}
     };
     update();
     const handler = () => update();

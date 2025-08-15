@@ -20,6 +20,7 @@ export default function MapShell() {
   const [selectedTrain, setSelectedTrain] = useState<string | null>(isTestMode ? 'RE9-78001' : null);
   const [trainCount, setTrainCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
+  const [activeLines, setActiveLines] = useState<string[]>([]);
   const [fleetHealth, setFleetHealth] = useState({
     active: 7,
     maintenance: 2,
@@ -432,15 +433,15 @@ export default function MapShell() {
             
             {/* Line Filter */}
             <div className="flex flex-wrap gap-2 mb-4">
-              <button className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs transition-colors">
-                RE9
-              </button>
-              <button className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-xs transition-colors">
-                RE8
-              </button>
-              <button className="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-xs transition-colors">
-                MEX16
-              </button>
+              {['RE9','RE8','MEX16'].map(code => (
+                <button
+                  key={code}
+                  className={`${activeLines.includes(code) ? 'bg-[#FF6B35]' : 'bg-[#2A3F4A] hover:bg-[#3A4F5A]'} px-3 py-1 rounded text-xs transition-colors`}
+                  onClick={() => setActiveLines(prev => prev.includes(code) ? prev.filter(x => x !== code) : [...prev, code])}
+                >
+                  {code}
+                </button>
+              ))}
             </div>
             
             {/* Train List */}
@@ -643,6 +644,7 @@ export default function MapShell() {
         map={mapRef.current} 
         selectedTrain={selectedTrain}
         onTrainSelect={handleTrainSelect}
+        lineFilter={activeLines}
       />
 
       {/* Shortcuts helper (only outside test mode) */}
