@@ -19,7 +19,7 @@ export default function TrainDetailsPanel({
             { key: 'zustand', label: 'ZUSTAND' }
           ]}
           active={tab}
-          onChange={setTab}
+          onChange={(k) => setTab(k as typeof tab)}
         />
       </div>
 
