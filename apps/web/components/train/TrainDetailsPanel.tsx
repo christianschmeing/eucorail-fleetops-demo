@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
-import type { Train, MaintenanceTask } from '../../types/train';
+import type { Train, MaintenanceTask } from '@/types/train';
+import { Tabs } from '@/components/ui/Tabs';
+import { StatusChip } from '@/components/ui/StatusChip';
 
 export default function TrainDetailsPanel({
   train, tasks
@@ -9,18 +11,16 @@ export default function TrainDetailsPanel({
 
   return (
     <div className="rounded-xl p-4 bg-euco-bg/70 text-white" data-testid="train-details-panel">
-      <div className="flex gap-2 mb-3" role="tablist" aria-label="Train tabs">
-        {(['technik','wartung','zustand'] as const).map(t => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            role="tab"
-            aria-selected={tab===t}
-            className={`px-3 py-1 rounded-xl focus:outline-none focus:ring-2 focus:ring-euco-accent ${tab===t?'bg-euco-accent text-black':'bg-black/30'}`}
-          >
-            {t.toUpperCase()}
-          </button>
-        ))}
+      <div className="mb-3">
+        <Tabs
+          tabs={[
+            { key: 'technik', label: 'TECHNIK' },
+            { key: 'wartung', label: 'WARTUNG' },
+            { key: 'zustand', label: 'ZUSTAND' }
+          ]}
+          active={tab}
+          onChange={setTab}
+        />
       </div>
 
       {tab==='technik' && (
@@ -52,9 +52,10 @@ export default function TrainDetailsPanel({
       )}
 
       {tab==='zustand' && (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="text-sm text-euco-muted">Health</div>
           <div className="text-2xl">{train.healthScore ?? 100}%</div>
+          <StatusChip status={(train.healthScore ?? 100) < 60 ? 'CRIT' : (train.healthScore ?? 100) < 85 ? 'WARN' : 'OK'} />
         </div>
       )}
     </div>

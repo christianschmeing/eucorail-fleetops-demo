@@ -1,12 +1,17 @@
+/* Eucorail Tokens mapped to Tailwind equivalents */
 :root {
-  --eucorail-primary: #003d7a;    /* Eucorail Blau */
-  --eucorail-accent: #ff6600;     /* Eucorail Orange */
+  --euco-bg: #0B1F2A;
+  --euco-accent: #0AA8E6;
+  --euco-accent2: #27D3A2;
+  --euco-warn: #F59E0B;
+  --euco-danger: #EF4444;
+  --euco-muted: #9FB3C8;
   --font-primary: 'Inter', sans-serif;
 }
 
 .eucorail-header {
-  background: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
-  box-shadow: 0 2px 8px rgba(0, 61, 122, 0.15);
+  background: linear-gradient(135deg, var(--euco-bg) 0%, #0e2a3a 100%);
+  box-shadow: 0 2px 8px rgba(10, 20, 30, 0.35);
 }
 
 
