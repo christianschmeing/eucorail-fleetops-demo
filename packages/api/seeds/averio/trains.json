@@ -1,0 +1,2228 @@
+[
+  {
+    "id": "BW-flirt3-3-001",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.522Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-002",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-003",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-001",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-002",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-003",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-004",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-005",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-001",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-002",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-001",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-002",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-003",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-004",
+    "fleetId": "averio-bw",
+    "lineId": "re1",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.526Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-004",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-005",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-006",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-006",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-007",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-008",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-009",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-010",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-003",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-004",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-005",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-006",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-007",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-008",
+    "fleetId": "averio-bw",
+    "lineId": "mex13",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-007",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-008",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-009",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-011",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-012",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-013",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-014",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-015",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-005",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-006",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-009",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-010",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-011",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-012",
+    "fleetId": "averio-bw",
+    "lineId": "mex16",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Stuttgart",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-010",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-011",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-012",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-3-013",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-3",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-016",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-017",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-018",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-5-019",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-5",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-007",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-4-008",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-013",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-014",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-6-015",
+    "fleetId": "averio-bw",
+    "lineId": "re8",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-6",
+    "series": "FLIRT³",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "6-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-001",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-002",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-003",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-004",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-005",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-006",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-007",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-008",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-009",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-010",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BW-flirt3-xl-3-011",
+    "fleetId": "averio-bw",
+    "lineId": "re90",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-xl-3",
+    "series": "FLIRT³ XL",
+    "buildYear": 2019,
+    "depot": "Essingen",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car",
+      "etcsPrepared": true
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-001",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-002",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-003",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-004",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-005",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-006",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-007",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-008",
+    "fleetId": "averio-by",
+    "lineId": "re72",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-009",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-010",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-011",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-012",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-013",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-014",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-015",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-016",
+    "fleetId": "averio-by",
+    "lineId": "re96",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-017",
+    "fleetId": "averio-by",
+    "lineId": "rb92",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-018",
+    "fleetId": "averio-by",
+    "lineId": "rb92",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-019",
+    "fleetId": "averio-by",
+    "lineId": "rb92",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-020",
+    "fleetId": "averio-by",
+    "lineId": "rb92",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-021",
+    "fleetId": "averio-by",
+    "lineId": "rb92",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-flirt3-4-allgaeu-022",
+    "fleetId": "averio-by",
+    "lineId": "rb92",
+    "manufacturerId": "stadler",
+    "typeKey": "flirt3-4-allgaeu",
+    "series": "FLIRT³",
+    "buildYear": 2020,
+    "depot": "Kempten",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "4-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-001",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-002",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-003",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-004",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-005",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-006",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-007",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-008",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-001",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-002",
+    "fleetId": "averio-by",
+    "lineId": "re9",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-009",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-010",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-011",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-012",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-013",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-014",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-015",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-016",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-003",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-004",
+    "fleetId": "averio-by",
+    "lineId": "re80",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-017",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-018",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-019",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-020",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-021",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-022",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-023",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-005",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-006",
+    "fleetId": "averio-by",
+    "lineId": "re89",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-024",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-025",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-026",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-027",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-028",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-029",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-030",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-007",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-008",
+    "fleetId": "averio-by",
+    "lineId": "rb86",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-031",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-032",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-033",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-034",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-035",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-036",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-037",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-009",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-010",
+    "fleetId": "averio-by",
+    "lineId": "rb87",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-038",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "standby",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-039",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-040",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-041",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-042",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-043",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-mireo-3-044",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "mireo-3",
+    "series": "Mireo",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "3-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-011",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "maintenance",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  },
+  {
+    "id": "BY-desirohc-5-012",
+    "fleetId": "averio-by",
+    "lineId": "rb89",
+    "manufacturerId": "siemens",
+    "typeKey": "desirohc-5",
+    "series": "Desiro HC",
+    "buildYear": 2021,
+    "depot": "Augsburg",
+    "status": "active",
+    "lastSeen": "2025-08-15T15:25:32.527Z",
+    "meta": {
+      "formation": "5-car"
+    }
+  }
+]

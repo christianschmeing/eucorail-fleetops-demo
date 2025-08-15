@@ -1,0 +1,17 @@
+[
+  { "id": "re1", "region": "BW", "name": "RE1 Residenzbahn", "color": "#1f77b4" },
+  { "id": "mex13", "region": "BW", "name": "MEX13 Remsbahn", "color": "#ff7f0e" },
+  { "id": "mex16", "region": "BW", "name": "MEX16 Filstalbahn", "color": "#2ca02c" },
+  { "id": "re8", "region": "BW", "name": "RE8 Frankenbahn", "color": "#d62728" },
+  { "id": "re90", "region": "BW", "name": "RE90 Murrbahn", "color": "#9467bd" },
+
+  { "id": "re72", "region": "BY", "name": "RE72 E-Netz Allgäu", "color": "#17becf" },
+  { "id": "re96", "region": "BY", "name": "RE96 E-Netz Allgäu", "color": "#8c564b" },
+  { "id": "rb92", "region": "BY", "name": "RB92 E-Netz Allgäu", "color": "#7f7f7f" },
+  { "id": "re9", "region": "BY", "name": "RE9 Augsburger Netze", "color": "#bcbd22" },
+  { "id": "re80", "region": "BY", "name": "RE80 Augsburger Netze", "color": "#e377c2" },
+  { "id": "re89", "region": "BY", "name": "RE89 Augsburger Netze", "color": "#1f77b4" },
+  { "id": "rb86", "region": "BY", "name": "RB86 Augsburger Netze", "color": "#ff7f0e" },
+  { "id": "rb87", "region": "BY", "name": "RB87 Augsburger Netze", "color": "#2ca02c" },
+  { "id": "rb89", "region": "BY", "name": "RB89 Augsburger Netze", "color": "#d62728" }
+]
