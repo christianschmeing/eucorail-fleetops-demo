@@ -7,6 +7,7 @@ import { WeatherService } from '../weather/index.js';
 import { EnergyMonitor } from '../energy/monitor.js';
 import { PassengerSimulator } from '../passengers/simulator.js';
 import { schedules } from '../schedules.js';
+import { railPolylineByLine } from './rail.js';
 
 // Environment-driven test mode configuration
 const TEST_MODE = process.env.TEST_MODE === '1' || process.env.NODE_ENV === 'test';
@@ -176,7 +177,28 @@ function getNonDeterministicSnapshot() {
     }
     // Path-following
     let bearing: number | undefined = undefined;
-    if (lineStops && lineStops.length >= 2) {
+    const railPath = (railPolylineByLine as any)[t.line] as [number, number][] | undefined;
+    if (railPath && railPath.length >= 2) {
+      // snap-progress along rail polyline based on metersPerTick
+      let segIdx = trainSegIdxById.get(t.runId) ?? 0;
+      const target = railPath[Math.min(segIdx + 1, railPath.length - 1)];
+      distToStation = haversineMeters([lon, lat], target);
+      if ((trainDwellMsById.get(t.runId) ?? 0) === 0) {
+        const metersPerTick = (realSpeed * 1000 * TICK_MS) / 3600000;
+        if (metersPerTick >= distToStation && distToStation > 0) {
+          lon = target[0];
+          lat = target[1];
+          trainPosById.set(t.runId, [lon, lat]);
+          trainSegIdxById.set(t.runId, Math.min(segIdx + 1, railPath.length - 2));
+        } else if (metersPerTick > 0) {
+          bearing = bearingDegrees([lon, lat], target);
+          const nextPos = destinationPoint([lon, lat], bearing, metersPerTick);
+          lon = nextPos[0];
+          lat = nextPos[1];
+          trainPosById.set(t.runId, [lon, lat]);
+        }
+      }
+    } else if (lineStops && lineStops.length >= 2) {
       let segIdx = trainSegIdxById.get(t.runId) ?? 0;
       const nextIdx = (segIdx + 1) % lineStops.length;
       const target: [number, number] = [lineStops[nextIdx].lon, lineStops[nextIdx].lat];

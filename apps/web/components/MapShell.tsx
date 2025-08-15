@@ -10,6 +10,7 @@ import PunctualityChart from './dashboard/PunctualityChart';
 import PassengerFlow from './dashboard/PassengerFlow';
 import WeatherPanel from './dashboard/WeatherPanel';
 import PerformanceKPIs from './dashboard/PerformanceKPIs';
+import TrainPopup from './TrainPopup';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function MapShell() {
@@ -17,6 +18,8 @@ export default function MapShell() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const [ready, setReady] = useState(false);
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
+  // Ensure API base is visible for debugging fetch failures
+  try { (window as any).__apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4100'; } catch {}
   const [selectedTrain, setSelectedTrain] = useState<string | null>(isTestMode ? 'RE9-78001' : null);
   const [trainCount, setTrainCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
@@ -37,7 +40,7 @@ export default function MapShell() {
   // Global flag to prevent duplicate depot source creation
   const depotSourceAddedRef = useRef(false);
   const qc = useQueryClient();
-  const [showMessages, setShowMessages] = useState(true);
+  const [showMessages, setShowMessages] = useState(false);
   const [is3D, setIs3D] = useState(false);
 
   // Initialize map
@@ -125,23 +128,18 @@ export default function MapShell() {
     if (isTestMode) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === '3') {
-        setIs3D(v => {
-          const next = !v;
-          const m = mapRef.current;
-          if (m) {
-            try {
-              m.easeTo({ pitch: next ? 60 : 0, duration: 600 });
-            } catch {}
-          }
-          return next;
-        });
+        const m = mapRef.current;
+        if (!m) return;
+        const next = !is3D;
+        setIs3D(next);
+        try { m.easeTo({ pitch: next ? 60 : 0, duration: 600 }); } catch {}
       } else if (e.key.toLowerCase() === 'm') {
         setShowMessages(v => !v);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [isTestMode]);
+  }, [is3D, isTestMode]);
 
   // In TEST_MODE allow selecting a train via URL query (?select=TRAIN_ID)
   useEffect(() => {
@@ -548,14 +546,15 @@ export default function MapShell() {
           {/* Dashboard Widgets (hidden in test mode to keep snapshots stable) */}
           {!isTestMode && (
             <div className="absolute left-4 bottom-4 right-4 grid grid-cols-4 gap-4 pointer-events-none">
-              <div className="pointer-events-auto"><FleetHealthWidget /></div>
-              <div className="pointer-events-auto"><MaintenanceCalendar /></div>
-              <div className="pointer-events-auto"><AlertsSummary /></div>
-              <div className="pointer-events-auto"><EnergyGauge /></div>
-              <div className="pointer-events-auto col-span-2"><PunctualityChart /></div>
-              <div className="pointer-events-auto"><PassengerFlow /></div>
-              <div className="pointer-events-auto"><WeatherPanel /></div>
-              <div className="pointer-events-auto col-span-4"><PerformanceKPIs /></div>
+              {/* Keep the map uncluttered: show only one slim card by default */}
+              <div className="pointer-events-auto col-span-2"><FleetHealthWidget /></div>
+              {/* Reduce default overlays to declutter map; keep core cards */}
+              {/* <div className="pointer-events-auto"><AlertsSummary /></div> */}
+              {/* <div className="pointer-events-auto"><EnergyGauge /></div> */}
+              {/* <div className="pointer-events-auto col-span-2"><PunctualityChart /></div> */}
+              {/* <div className="pointer-events-auto"><PassengerFlow /></div> */}
+              {/* <div className="pointer-events-auto"><WeatherPanel /></div> */}
+              {/* <div className="pointer-events-auto col-span-4"><PerformanceKPIs /></div> */}
             </div>
           )}
         </main>
@@ -646,6 +645,11 @@ export default function MapShell() {
         onTrainSelect={handleTrainSelect}
         lineFilter={activeLines}
       />
+
+      {/* Train maintenance popup with focus on technical condition */}
+      {selectedTrain && (
+        <TrainPopup trainId={selectedTrain} onClose={() => setSelectedTrain(null)} />
+      )}
 
       {/* Shortcuts helper (only outside test mode) */}
       {!isTestMode && (

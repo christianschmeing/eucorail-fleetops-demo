@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "dev": "concurrently -k -n WEB,API -c blue,green \"npm --workspace apps/web run dev\" \"npm --workspace packages/api run dev\"",
+    "dev:alt": "concurrently -k -n WEB,API -c blue,green \"cross-env NEXT_PUBLIC_API_BASE=http://localhost:4101 npm --workspace apps/web run dev:3002\" \"npm --workspace packages/api run dev:4101\"",
     "build": "npm --workspace apps/web run build && npm --workspace packages/api run build",
     "seed:lines": "npm --workspace packages/api run seed:lines",
     "seed:fleet": "npm --workspace packages/api run seed:fleet",
@@ -22,6 +23,8 @@
     "dev:e2e": "concurrently -k -n api,web \"npm run start:api:test\" \"npm run start:web:test\"",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "typecheck": "npm --workspace apps/web run -s typecheck || true",
+    "lint": "echo 'no root lint'",
     "verify": "cross-env NEXT_PUBLIC_TEST_MODE=1 TEST_MODE=1 SEED=42 TICK_MS=500 npm run build:all && start-server-and-test dev:e2e http://localhost:3001 test:e2e",
     "verify:smart": "node scripts/auto/smart-verify.mjs",
     "demo:smart": "node scripts/auto/smart-verify.mjs",

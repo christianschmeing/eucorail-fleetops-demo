@@ -1,31 +1,45 @@
+import { getSpecForUnit, generateDoorFaults, MaintenanceLevel } from './models.js';
+
 export type MaintenanceItem = {
-  component: string;
+  component: MaintenanceLevel | 'Wheelset';
   dueAtKm: number;
   lastServiceKm: number;
   status: 'ok' | 'due-soon' | 'overdue';
 };
 
 export class MaintenanceSystem {
-  generateMaintenanceSchedule(trainId: string): MaintenanceItem[] {
-    // Simple deterministic schedule based on trainId hash
+  generateMaintenanceSchedule(trainId: string, unitType = 'MIREO', currentKm = 50000): MaintenanceItem[] {
+    const spec = getSpecForUnit(unitType);
+    const items: MaintenanceItem[] = [];
+    if (spec) {
+      for (const p of spec.policies) {
+        const last = currentKm - Math.floor((currentKm % p.kmInterval));
+        const due = last + p.kmInterval;
+        const status = currentKm >= due ? 'overdue' : (due - currentKm) < p.kmInterval * 0.1 ? 'due-soon' : 'ok';
+        items.push({ component: p.level, dueAtKm: due, lastServiceKm: last, status });
+      }
+    }
+    // Add wheelset as illustrative long-interval item
     const base = this.hash(trainId) % 10000;
-    return [
-      { component: 'IS100', dueAtKm: 20000 + base, lastServiceKm: base, status: 'ok' },
-      { component: 'IS600', dueAtKm: 120000 + base, lastServiceKm: base - 3000, status: 'due-soon' },
-      { component: 'Wheelset', dueAtKm: 300000 + base, lastServiceKm: base - 10000, status: 'ok' }
-    ];
+    items.push({ component: 'Wheelset', dueAtKm: 300000 + base, lastServiceKm: Math.max(0, currentKm - 40000), status: 'ok' });
+    return items;
   }
 
-  predictNextMaintenance(currentKm: number): { type: string; atKm: number } {
-    // Every 20k km small service
-    const remainder = currentKm % 20000;
-    return { type: 'IS100', atKm: currentKm + (20000 - remainder) };
+  predictNextMaintenance(currentKm: number, unitType = 'MIREO'): { type: MaintenanceLevel; atKm: number } {
+    const spec = getSpecForUnit(unitType);
+    const first = spec?.policies[0];
+    const interval = first?.kmInterval ?? 20000;
+    const remainder = currentKm % interval;
+    return { type: (first?.level ?? 'IS100') as MaintenanceLevel, atKm: currentKm + (interval - remainder) };
   }
 
   calculateWearAndTear(kmSinceService: number): number {
-    // Percent wear with diminishing slope
     const x = Math.max(0, kmSinceService / 20000);
     return Math.max(0, Math.min(100, Math.round(100 * (1 - Math.exp(-x)))));
+  }
+
+  listCurrentFaults(trainId: string) {
+    return generateDoorFaults(this.hash(trainId));
   }
 
   private hash(str: string): number {

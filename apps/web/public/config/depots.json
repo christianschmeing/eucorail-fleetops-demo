@@ -2,10 +2,10 @@
   "depots": [
     {
       "id": "langweid",
-      "name": "Depot Langweid",
+      "name": "Depot Langweid (Eucorail)",
       "region": "BY",
-      "lat": 48.4858,
-      "lon": 10.8603,
+      "lat": 48.4908,
+      "lon": 10.8569,
       "slots": [
         { "lat": 48.4858, "lon": 10.8603 },
         { "lat": 48.4860, "lon": 10.8605 },
@@ -24,7 +24,7 @@
     },
     {
       "id": "essingen",
-      "name": "Depot Essingen",
+      "name": "Depot Essingen (Eucorail)",
       "region": "BW",
       "lat": 48.8089,
       "lon": 9.3072,

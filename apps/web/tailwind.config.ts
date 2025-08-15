@@ -9,6 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        euco: {
+          bg: '#0B1F2A',
+          accent: '#0AA8E6',
+          accent2: '#27D3A2',
+          warn: '#F59E0B',
+          danger: '#EF4444',
+          muted: '#9FB3C8'
+        },
         navy: "#0B1F2A",
         accent: "#1E90FF",
         re9: "#2563EB",

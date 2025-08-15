@@ -14,9 +14,9 @@ function killPort(port) {
 }
 
 // Kill both IPv4/IPv6 listeners if any, and repeat once for stragglers
-[3000, 4100].forEach(killPort);
+[3000, 3001, 4100].forEach(killPort);
 setTimeout(() => {
-  [3000, 4100].forEach(killPort);
+  [3000, 3001, 4100].forEach(killPort);
   console.log('Stop complete.');
 }, 200);
 
