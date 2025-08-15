@@ -6,13 +6,27 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 
 export default fp(async (app) => {
+  const TEST_MODE = process.env.TEST_MODE === '1' || process.env.NODE_ENV === 'test';
+
   await app.register(cors, { origin: '*' });
-  await app.register(rateLimit, { max: 300, timeWindow: '1 minute' });
-  await app.register(underPressure, {
-    maxEventLoopDelay: 100,
-    healthCheck: async () => ({ ok: true }),
-    healthCheckInterval: 5000
-  });
+
+  // In TEST_MODE, avoid rate limiting and pressure 503s to keep the dev loop stable
+  if (!TEST_MODE) {
+    await app.register(rateLimit, { max: 300, timeWindow: '1 minute' });
+    await app.register(underPressure, {
+      maxEventLoopDelay: 100,
+      healthCheck: async () => ({ ok: true }),
+      healthCheckInterval: 5000
+    });
+  } else {
+    // Register under-pressure with very relaxed thresholds just for a /health endpoint if needed
+    await app.register(underPressure, {
+      maxEventLoopDelay: 2000,
+      healthCheck: async () => ({ ok: true }),
+      healthCheckInterval: 5000
+    });
+  }
+
   await app.register(swagger, {
     openapi: { info: { title: 'Eucorail FleetOps Demo API', version: '1.0.0' } }
   });
