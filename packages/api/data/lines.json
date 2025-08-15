@@ -31,5 +31,49 @@
       10,
       49.9
     ]
+  },
+  {
+    "id": "re7",
+    "name": "RE7 Stuttgart–Tübingen",
+    "code": "RE7",
+    "bbox": [
+      8.9,
+      48.45,
+      9.4,
+      48.85
+    ]
+  },
+  {
+    "id": "re10",
+    "name": "RE10 Nürnberg–Ingolstadt",
+    "code": "RE10",
+    "bbox": [
+      10.9,
+      48.6,
+      11.6,
+      49.6
+    ]
+  },
+  {
+    "id": "mex14",
+    "name": "MEX14 München–Garmisch-Partenkirchen",
+    "code": "MEX14",
+    "bbox": [
+      10.9,
+      47.4,
+      11.7,
+      48.2
+    ]
+  },
+  {
+    "id": "mex15",
+    "name": "MEX15 München–Rosenheim",
+    "code": "MEX15",
+    "bbox": [
+      11.3,
+      47.7,
+      12.3,
+      48.2
+    ]
   }
 ]

@@ -24,6 +24,26 @@ export const railPolylineByLine: Record<string, [number, number][]> = {
     [9.4270, 48.9500],
     [9.7370, 49.1110],
     [9.9530, 49.7940] // Würzburg (approx)
+  ],
+  RE7: [
+    [9.1829, 48.7834], // Stuttgart
+    [9.1500, 48.6700], // Böblingen approx
+    [9.0522, 48.5216]  // Tübingen
+  ],
+  RE10: [
+    [11.0770, 49.4521], // Nürnberg
+    [11.3500, 49.0000], // Allersberg approx
+    [11.4250, 48.7650]  // Ingolstadt
+  ],
+  MEX14: [
+    [11.5610, 48.1402], // München Hbf
+    [11.2610, 47.7300], // Murnau
+    [11.1100, 47.4920]  // Garmisch-Partenkirchen
+  ],
+  MEX15: [
+    [11.5610, 48.1402], // München Hbf
+    [11.9500, 47.9900], // Holzkirchen/Rosenheim corridor approx
+    [12.1241, 47.8564]  // Rosenheim
   ]
 };
 

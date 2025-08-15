@@ -49,4 +49,29 @@
     "line": "RE8",
     "unitType": "FLIRT3"
   }
+  ,{
+    "runId": "RE7-77011",
+    "line": "RE7",
+    "unitType": "FLIRT3"
+  },
+  {
+    "runId": "RE7-77012",
+    "line": "RE7",
+    "unitType": "FLIRT3"
+  },
+  {
+    "runId": "RE10-70021",
+    "line": "RE10",
+    "unitType": "MIREO"
+  },
+  {
+    "runId": "MEX14-64011",
+    "line": "MEX14",
+    "unitType": "DESIRO_HC"
+  },
+  {
+    "runId": "MEX15-65031",
+    "line": "MEX15",
+    "unitType": "DESIRO_HC"
+  }
 ]
