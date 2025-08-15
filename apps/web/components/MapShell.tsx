@@ -11,6 +11,7 @@ import PassengerFlow from './dashboard/PassengerFlow';
 import WeatherPanel from './dashboard/WeatherPanel';
 import PerformanceKPIs from './dashboard/PerformanceKPIs';
 import TrainPopup from './TrainPopup';
+import { KPIStat } from './KPIStat';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function MapShell() {
@@ -373,12 +374,12 @@ export default function MapShell() {
   }, [selectedTrain]);
 
   return (
-    <div className="h-screen w-screen bg-[#0B1F2A] text-white overflow-hidden" data-testid="map-root">
+    <div className="h-screen w-screen bg-euco-bg text-white overflow-hidden" data-testid="map-root">
       {/* Header */}
-      <header className="bg-[#1A2F3A] border-b border-[#2A3F4A] px-6 py-4">
+      <header className="bg-black/30 border-b border-white/10 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-[#FF6B35] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-euco-accent rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">E</span>
             </div>
             <div>
@@ -387,22 +388,10 @@ export default function MapShell() {
             </div>
           </div>
           
-          <div className="flex items-center space-x-6">
-            {/* Fleet Health Overview */}
-            <div className="flex items-center space-x-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-400">{fleetHealth.active}</div>
-                <div className="text-xs text-gray-400">Aktiv</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-400">{fleetHealth.maintenance}</div>
-                <div className="text-xs text-gray-400">Wartung</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-red-400">{fleetHealth.inspection}</div>
-                <div className="text-xs text-gray-400">Prüfung</div>
-              </div>
-            </div>
+          <div className="flex items-center gap-3">
+            <KPIStat label="Verfügbarkeit" value="97.2%" trend="up" data-testid="kpi-availability" />
+            <KPIStat label="Ø Verspätung" value="+2.8 min" trend="down" data-testid="kpi-delay" />
+            <KPIStat label="Störungen aktiv" value={`${fleetHealth.inspection}`} trend="flat" data-testid="kpi-faults" />
             
             {/* Status Indicator */}
             <div className="flex items-center space-x-2">
@@ -415,16 +404,16 @@ export default function MapShell() {
 
       <div className="flex h-[calc(100vh-80px)]">
         {/* Left Sidebar - Train List */}
-        <aside className="w-80 bg-[#1A2F3A] border-r border-[#2A3F4A] overflow-y-auto">
+        <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto">
           <div className="p-4">
             <h2 className="text-lg font-semibold mb-4">Zugliste</h2>
             
             {/* Filter Tiles */}
             <div className="grid grid-cols-2 gap-2 mb-4">
-              <button className="bg-[#2A3F4A] hover:bg-[#3A4F5A] px-3 py-2 rounded text-sm transition-colors">
+              <button className="bg-black/30 hover:bg-white/10 px-3 py-2 rounded-xl text-sm transition-colors">
                 Alle Züge
               </button>
-              <button className="bg-[#2A3F4A] hover:bg-[#3A4F5A] px-3 py-2 rounded text-sm transition-colors">
+              <button className="bg-black/30 hover:bg-white/10 px-3 py-2 rounded-xl text-sm transition-colors">
                 Nur Aktiv
               </button>
             </div>
@@ -434,7 +423,7 @@ export default function MapShell() {
               {['RE9','RE8','MEX16'].map(code => (
                 <button
                   key={code}
-                  className={`${activeLines.includes(code) ? 'bg-[#FF6B35]' : 'bg-[#2A3F4A] hover:bg-[#3A4F5A]'} px-3 py-1 rounded text-xs transition-colors`}
+                  className={`${activeLines.includes(code) ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-3 py-1 rounded-xl text-xs transition-colors`}
                   onClick={() => setActiveLines(prev => prev.includes(code) ? prev.filter(x => x !== code) : [...prev, code])}
                 >
                   {code}
@@ -458,8 +447,8 @@ export default function MapShell() {
                   key={train.id}
                   className={`p-3 rounded-lg cursor-pointer transition-colors ${
                     selectedTrain === train.id 
-                      ? 'bg-[#FF6B35] text-white' 
-                      : 'bg-[#2A3F4A] hover:bg-[#3A4F5A]'
+                      ? 'bg-euco-accent text-black' 
+                      : 'bg-black/30 hover:bg-white/10'
                   }`}
                   data-testid="train-item"
                   onClick={() => handleTrainSelect(train.id)}
@@ -518,7 +507,7 @@ export default function MapShell() {
           {/* Left HUD removed: we use global fixed TestHUD instead */}
 
           {/* Recent Messages Overlay */}
-          <div className="absolute top-4 right-4 w-80 bg-[#1A2F3A]/90 backdrop-blur-sm rounded-lg border border-[#2A3F4A]">
+          <div className="absolute top-4 right-4 w-80 bg-black/40 backdrop-blur-sm rounded-xl border border-white/10">
             <div className="p-4" style={{ display: (isTestMode || selectedTrain) && showMessages ? 'block' : 'none' }}>
               <h3 className="text-sm font-semibold mb-3">Letzte Meldungen</h3>
               <div className="space-y-2">
