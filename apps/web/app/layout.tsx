@@ -3,7 +3,6 @@ import "../styles/eucorail.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { ReactNode } from "react";
 import ReactQueryProvider from "./providers/query-client";
-import TestHUD from "../components/TestHUD";
 import ThemeToggle from "../components/ThemeToggle";
 
 export const metadata = {
@@ -18,7 +17,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={`${isTest ? 'no-anim' : ''} h-screen w-screen overflow-hidden bg-[#0B1F2A] text-white`}>
         <ReactQueryProvider>
           {children}
-          <TestHUD />
           <ThemeToggle />
         </ReactQueryProvider>
       </body>
