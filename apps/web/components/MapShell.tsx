@@ -11,8 +11,8 @@ import PassengerFlow from './dashboard/PassengerFlow';
 import WeatherPanel from './dashboard/WeatherPanel';
 import PerformanceKPIs from './dashboard/PerformanceKPIs';
 import TrainPopup from './TrainPopup';
-import { KPIStat } from './KPIStat';
 import { useQueryClient } from '@tanstack/react-query';
+import { KPIStat } from './KPIStat';
 
 export default function MapShell() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -380,23 +380,21 @@ export default function MapShell() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="w-8 h-8 bg-euco-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">E</span>
+              <span className="text-black font-bold text-sm">E</span>
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">Eucorail FleetOps</h1>
-              <p className="text-sm text-gray-400">Live-Map für Regionalzüge in Bayern und Baden-Württemberg</p>
+              <p className="text-sm text-euco-muted">Live-Map für Regionalzüge in Bayern und Baden-Württemberg</p>
             </div>
           </div>
-          
           <div className="flex items-center gap-3">
             <KPIStat label="Verfügbarkeit" value="97.2%" trend="up" data-testid="kpi-availability" />
             <KPIStat label="Ø Verspätung" value="+2.8 min" trend="down" data-testid="kpi-delay" />
             <KPIStat label="Störungen aktiv" value={`${fleetHealth.inspection}`} trend="flat" data-testid="kpi-faults" />
-            
             {/* Status Indicator */}
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-sm text-green-400">System Online</span>
+              <div className="w-3 h-3 bg-euco-accent2 rounded-full animate-pulse"></div>
+              <span className="text-sm text-euco-accent2">System Online</span>
             </div>
           </div>
         </div>
@@ -407,7 +405,6 @@ export default function MapShell() {
         <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto">
           <div className="p-4">
             <h2 className="text-lg font-semibold mb-4">Zugliste</h2>
-            
             {/* Filter Tiles */}
             <div className="grid grid-cols-2 gap-2 mb-4">
               <button className="bg-black/30 hover:bg-white/10 px-3 py-2 rounded-xl text-sm transition-colors">
@@ -417,7 +414,6 @@ export default function MapShell() {
                 Nur Aktiv
               </button>
             </div>
-            
             {/* Line Filter */}
             <div className="flex flex-wrap gap-2 mb-4">
               {['RE9','RE8','MEX16'].map(code => (
@@ -430,7 +426,6 @@ export default function MapShell() {
                 </button>
               ))}
             </div>
-            
             {/* Train List */}
             <div className="space-y-2" data-testid="train-list">
               {[
@@ -489,7 +484,6 @@ export default function MapShell() {
         {/* Main Map Area */}
         <main className="flex-1 relative">
           <div ref={mapContainerRef} className="w-full h-full" data-testid="map-canvas" />
-          
           {/* Map Controls Overlay */}
           <div className="absolute top-4 left-4 space-y-2">
             <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 p-2 rounded-lg transition-colors">
@@ -503,9 +497,6 @@ export default function MapShell() {
               </svg>
             </button>
           </div>
-
-          {/* Left HUD removed: we use global fixed TestHUD instead */}
-
           {/* Recent Messages Overlay */}
           <div className="absolute top-4 right-4 w-80 bg-black/40 backdrop-blur-sm rounded-xl border border-white/10">
             <div className="p-4" style={{ display: (isTestMode || selectedTrain) && showMessages ? 'block' : 'none' }}>
@@ -535,60 +526,48 @@ export default function MapShell() {
           {/* Dashboard Widgets (hidden in test mode to keep snapshots stable) */}
           {!isTestMode && (
             <div className="absolute left-4 bottom-4 right-4 grid grid-cols-4 gap-4 pointer-events-none">
-              {/* Keep the map uncluttered: show only one slim card by default */}
               <div className="pointer-events-auto col-span-2"><FleetHealthWidget /></div>
-              {/* Reduce default overlays to declutter map; keep core cards */}
-              {/* <div className="pointer-events-auto"><AlertsSummary /></div> */}
-              {/* <div className="pointer-events-auto"><EnergyGauge /></div> */}
-              {/* <div className="pointer-events-auto col-span-2"><PunctualityChart /></div> */}
-              {/* <div className="pointer-events-auto"><PassengerFlow /></div> */}
-              {/* <div className="pointer-events-auto"><WeatherPanel /></div> */}
-              {/* <div className="pointer-events-auto col-span-4"><PerformanceKPIs /></div> */}
             </div>
           )}
         </main>
 
         {/* Right Sidebar - Selected Train Details (always rendered for stability in tests) */}
-        <aside className="w-80 bg-[#1A2F3A] border-l border-[#2A3F4A] overflow-y-auto" data-testid="train-drawer">
+        <aside className="w-80 bg-black/30 border-l border-white/10 overflow-y-auto" data-testid="train-drawer">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Zug Details</h2>
                 <button 
                   onClick={() => setSelectedTrain(null)}
-                  className="text-gray-400 hover:text-white"
+                  className="text-euco-muted hover:text-white"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              
               <div className="space-y-4">
-                {/* Train Info */}
-                <div className="bg-[#2A3F4A] p-4 rounded-lg">
+                <div className="bg-black/30 p-4 rounded-lg">
                   <h3 className="font-semibold mb-2">{selectedTrain || 'RE9-78001'}</h3>
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                      <span className="text-gray-400">Status:</span>
+                      <span className="text-euco-muted">Status:</span>
                       <span className="ml-2 text-green-400">Aktiv</span>
                     </div>
                     <div>
-                      <span className="text-gray-400">Geschwindigkeit:</span>
+                      <span className="text-euco-muted">Geschwindigkeit:</span>
                       <span className="ml-2">85 km/h</span>
                     </div>
                     <div>
-                      <span className="text-gray-400">Position:</span>
+                      <span className="text-euco-muted">Position:</span>
                       <span className="ml-2">48.5°N, 10.5°E</span>
                     </div>
                     <div>
-                      <span className="text-gray-400">Route:</span>
+                      <span className="text-euco-muted">Route:</span>
                       <span className="ml-2">München Hbf → Nürnberg Hbf</span>
                     </div>
                   </div>
                 </div>
-                
-                {/* Health Status */}
-                <div className="bg-[#2A3F4A] p-4 rounded-lg">
+                <div className="bg-black/30 p-4 rounded-lg">
                   <h3 className="font-semibold mb-2">Systemstatus</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -605,9 +584,7 @@ export default function MapShell() {
                     </div>
                   </div>
                 </div>
-                
-                {/* Subsystem Status */}
-                <div className="bg-[#2A3F4A] p-4 rounded-lg">
+                <div className="bg-black/30 p-4 rounded-lg">
                   <h3 className="font-semibold mb-2">Teilsysteme</h3>
                   <div className="space-y-2">
                      {Object.entries(getSubsystemStatus(selectedTrain || 'RE9-78001')).map(([system, status]) => (
@@ -642,7 +619,7 @@ export default function MapShell() {
 
       {/* Shortcuts helper (only outside test mode) */}
       {!isTestMode && (
-        <div className="fixed bottom-3 left-3 bg-[#1A2F3A]/95 border border-[#2A3F4A] rounded-md px-3 py-2 text-xs">
+        <div className="fixed bottom-3 left-3 bg-black/40 border border-white/10 rounded-md px-3 py-2 text-xs">
           <div className="opacity-70">Shortcuts</div>
           <div>3: Toggle 3D camera</div>
           <div>M: Toggle messages</div>
