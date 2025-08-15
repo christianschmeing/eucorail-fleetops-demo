@@ -1,9 +1,13 @@
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import type { FastifyInstance } from 'fastify';
 import { MaintenanceSystem } from './maintenance/index.js';
 
 export async function registerRoutes(app: FastifyInstance) {
-  app.get('/api/lines', async () => JSON.parse(readFileSync('data/lines.json', 'utf-8')));
+  app.get('/api/lines', async () => {
+    const p = path.join(process.cwd(), 'seeds', 'averio', 'lines.json');
+    return JSON.parse(readFileSync(p, 'utf-8'));
+  });
   // naive in-memory cache for static JSON files
   let unitsCache: any = null;
   let energyBudget = { dailyKwh: 125000, usedKwh: 0 };
