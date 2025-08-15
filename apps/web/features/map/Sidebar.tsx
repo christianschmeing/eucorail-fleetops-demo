@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function Sidebar({
@@ -16,7 +16,10 @@ export function Sidebar({
   onSelect: (id: string) => void;
 }) {
   const qc = useQueryClient();
-  const trains = useMemo(() => {
+  const [onlyActive, setOnlyActive] = useState(false);
+  const [trains, setTrains] = useState<Array<{ id: string; line: string; status: string; speed: number }>>([]);
+
+  const recompute = () => {
     const fc = qc.getQueryData<any>(['trains', 'live']);
     const features = Array.isArray(fc?.features) ? fc.features : [];
     const list = features.map((f: any) => ({
@@ -26,8 +29,17 @@ export function Sidebar({
       speed: Number(f?.properties?.speed ?? 0)
     })).filter((t: any) => t.id);
     list.sort((a: any, b: any) => a.id.localeCompare(b.id));
-    return list as Array<{ id: string; line: string; status: string; speed: number }>;
-  }, [qc]);
+    setTrains(list);
+  };
+
+  useEffect(() => {
+    // initial and on every trains:update event (SSE) recompute list
+    recompute();
+    const handler = () => recompute();
+    window.addEventListener('trains:update', handler as any);
+    return () => window.removeEventListener('trains:update', handler as any);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const lineChips = useMemo(() => {
     const set = new Set<string>();
@@ -41,9 +53,15 @@ export function Sidebar({
     <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto" data-testid="sidebar">
       <div className="p-4">
         <h2 className="text-lg font-semibold mb-4">Zugliste</h2>
-        <div className="grid grid-cols-2 gap-2 mb-4">
-          <button className="bg-black/30 hover:bg-white/10 px-3 py-2 rounded-xl text-sm transition-colors">Alle Züge</button>
-          <button className="bg-black/30 hover:bg-white/10 px-3 py-2 rounded-xl text-sm transition-colors">Nur Aktiv</button>
+        <div className="grid grid-cols-2 gap-2 mb-4" role="group" aria-label="Filter Aktivität">
+          <button
+            className={`${!onlyActive ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-3 py-2 rounded-xl text-sm transition-colors`}
+            onClick={() => setOnlyActive(false)}
+          >Alle Züge</button>
+          <button
+            className={`${onlyActive ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-3 py-2 rounded-xl text-sm transition-colors`}
+            onClick={() => setOnlyActive(true)}
+          >Nur Aktiv</button>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
           {lineChips.map(code => (
@@ -70,7 +88,10 @@ export function Sidebar({
             { id: 'MEX16-66013', line: 'MEX16', status: 'active', speed: 88 },
             { id: 'BY-12345', line: 'BY', status: 'stationary', speed: 0 },
             { id: 'BW-67890', line: 'BW', status: 'stationary', speed: 0 }
-          ]).filter(t => activeLines.length === 0 || activeLines.includes(t.line)).map(train => (
+          ])
+            .filter(t => (activeLines.length === 0 || activeLines.includes(t.line)))
+            .filter(t => (!onlyActive || t.status === 'active'))
+            .map(train => (
             <div
               key={train.id}
               className={`p-3 rounded-lg cursor-pointer transition-colors ${
