@@ -1,0 +1,19 @@
+[
+  {
+    "id": "depot-essingen",
+    "name": "Eucorail Depot Essingen",
+    "address": "Bahnhof 2, 73457 Essingen",
+    "lat": 48.8089,
+    "lon": 9.3072,
+    "region": "BW"
+  },
+  {
+    "id": "depot-langweid",
+    "name": "Eucorail Depot Langweid",
+    "address": "Parkstraße 20, 86462 Langweid am Lech",
+    "lat": 48.4908,
+    "lon": 10.8569,
+    "region": "BY"
+  }
+]
+

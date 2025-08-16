@@ -8,6 +8,10 @@ export async function registerRoutes(app: FastifyInstance) {
     const p = path.join(process.cwd(), 'seeds', 'averio', 'lines.json');
     return JSON.parse(readFileSync(p, 'utf-8'));
   });
+  app.get('/api/depots', async () => {
+    const p = path.join(process.cwd(), 'seeds', 'core', 'depots.json');
+    return JSON.parse(readFileSync(p, 'utf-8'));
+  });
   // naive in-memory cache for static JSON files
   let unitsCache: any = null;
   let energyBudget = { dailyKwh: 125000, usedKwh: 0 };

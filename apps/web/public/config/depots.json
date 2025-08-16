@@ -1,5 +1,11 @@
 {
   "depots": [
+    { "id": "depot-essingen", "name": "Eucorail Depot Essingen", "lat": 48.8089, "lon": 9.3072 },
+    { "id": "depot-langweid", "name": "Eucorail Depot Langweid", "lat": 48.4908, "lon": 10.8569 }
+  ]
+}
+{
+  "depots": [
     {
       "id": "langweid",
       "name": "Depot Langweid (Eucorail)",
