@@ -19,12 +19,7 @@ export default fp(async (app) => {
       healthCheckInterval: 5000
     });
   } else {
-    // Register under-pressure with very relaxed thresholds just for a /health endpoint if needed
-    await app.register(underPressure, {
-      maxEventLoopDelay: 2000,
-      healthCheck: async () => ({ ok: true }),
-      healthCheckInterval: 5000
-    });
+    // Do not register under-pressure in TEST_MODE to avoid intermittent 503 during dev/e2e
   }
 
   await app.register(swagger, {
