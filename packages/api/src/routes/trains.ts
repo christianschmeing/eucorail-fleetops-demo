@@ -37,12 +37,7 @@ export default fp(async (app: FastifyInstance) => {
   const LINES: SeedLine[] = loadSeeds<SeedLine[]>('lines.json');
   const TRAINS: SeedTrain[] = loadSeeds<SeedTrain[]>('trains.json');
 
-  // List lines
-  route.get('/api/lines', {
-    schema: {
-      response: { 200: z.array(z.object({ id: z.string(), region: z.string(), name: z.string(), color: z.string().optional() })) }
-    }
-  }, async () => LINES);
+  // Lines are served from routes.ts to avoid duplication
 
   // List trains (optionally filtered)
   route.get('/api/trains', {
