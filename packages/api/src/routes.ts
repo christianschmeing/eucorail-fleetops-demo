@@ -12,6 +12,26 @@ export async function registerRoutes(app: FastifyInstance) {
     const p = path.join(process.cwd(), 'seeds', 'core', 'depots.json');
     return JSON.parse(readFileSync(p, 'utf-8'));
   });
+
+  // Trains list and by id (seed-backed, no zod validation)
+  app.get('/api/trains', async (req: any) => {
+    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains.json');
+    const trains = JSON.parse(readFileSync(p, 'utf-8')) as Array<any>;
+    const { fleetId, lineId, status } = (req.query ?? {}) as Record<string, string | undefined>;
+    let list = trains;
+    if (fleetId) list = list.filter(t => String(t.fleetId).toLowerCase() === fleetId.toLowerCase());
+    if (lineId) list = list.filter(t => String(t.lineId).toLowerCase() === lineId.toLowerCase());
+    if (status) list = list.filter(t => String(t.status ?? '').toLowerCase() === status.toLowerCase());
+    return list;
+  });
+  app.get('/api/trains/:id', async (req: any, reply) => {
+    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains.json');
+    const trains = JSON.parse(readFileSync(p, 'utf-8')) as Array<any>;
+    const id = String(req.params?.id ?? '');
+    const t = trains.find(x => String(x.id) === id);
+    if (!t) return reply.code(404).send({ error: 'not_found' });
+    return t;
+  });
   // naive in-memory cache for static JSON files
   let unitsCache: any = null;
   let energyBudget = { dailyKwh: 125000, usedKwh: 0 };

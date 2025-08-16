@@ -20,3 +20,9 @@ This document logs assumptions, skips, and follow-ups while implementing the Euc
  - Extend KPI cards with real data and add non-flaky screenshot test.
 
 
+
+
+### Averio seeds generated
+- BW total: 66 per line: {"mex13":14,"mex16":14,"re1":14,"re8":13,"re90":11}
+- BY total: 78 per line: {"rb86":9,"rb87":9,"rb89":9,"rb92":6,"re72":8,"re80":10,"re89":9,"re9":10,"re96":8}
+- Reserve ratio: 0.12

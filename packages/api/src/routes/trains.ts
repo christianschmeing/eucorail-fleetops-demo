@@ -1,17 +1,10 @@
 import fp from 'fastify-plugin';
 import { FastifyInstance } from 'fastify';
-import { z } from 'zod';
-import { TrainFC } from '../schemas/train.js';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { validatorCompiler, serializerCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
+// Keep endpoints simple in TEST_MODE: avoid zod compilers to prevent runtime issues
 
 export default fp(async (app: FastifyInstance) => {
-  app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
-
-  const zQuery = z.object({ line: z.string().optional(), region: z.string().optional(), status: z.string().optional() });
-  const route = app.withTypeProvider<ZodTypeProvider>();
 
   // Seed-backed data loaders (sync, cached in-memory)
   type SeedTrain = {
@@ -40,13 +33,8 @@ export default fp(async (app: FastifyInstance) => {
   // Lines are served from routes.ts to avoid duplication
 
   // List trains (optionally filtered)
-  route.get('/api/trains', {
-    schema: {
-      querystring: zQuery,
-      response: { 200: z.array(z.any()) }
-    }
-  }, async (req) => {
-    const { line, region, status } = req.query as z.infer<typeof zQuery>;
+  app.get('/api/trains', async (req: any) => {
+    const { line, region, status } = (req.query ?? {}) as { line?: string; region?: string; status?: string };
     let list = TRAINS;
     if (line) list = list.filter(t => t.lineId.toLowerCase() === line.toLowerCase());
     if (region) list = list.filter(t => t.fleetId.toLowerCase().includes(region.toLowerCase()));
@@ -55,27 +43,14 @@ export default fp(async (app: FastifyInstance) => {
   });
 
   // Train by id
-  route.get('/api/trains/:id', {
-    schema: {
-      params: z.object({ id: z.string() }),
-      response: { 200: z.any(), 404: z.object({ error: z.string() }) }
-    }
-  }, async (req, reply) => {
-    const { id } = req.params as { id: string };
+  app.get('/api/trains/:id', async (req: any, reply) => {
+    const { id } = (req.params ?? {}) as { id: string };
     const t = TRAINS.find(x => x.id === id);
     if (!t) return reply.code(404).send({ error: 'not_found' });
     return t;
   });
 
-  route.get('/api/trains/live', {
-    schema: {
-      querystring: zQuery,
-      response: { 200: TrainFC }
-    }
-  }, async () => {
-    const fc: TrainFC = { type: 'FeatureCollection', features: [] };
-    return fc;
-  });
+  app.get('/api/trains/live', async () => ({ type: 'FeatureCollection', features: [] }));
 });
 
 

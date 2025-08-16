@@ -2,7 +2,6 @@ import Fastify from 'fastify';
 import { registerRoutes } from './routes.js';
 import core from './plugins/core.js';
 import events from './routes/events.js';
-import trains from './routes/trains.js';
 import { readFileSync } from 'node:fs';
 import { WebSocketServer } from 'ws';
 
@@ -23,13 +22,19 @@ const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{ ru
 // legacy /events route removed; handled by routes/events plugin
 
 await app.register(events);
-await app.register(trains);
 await registerRoutes(app);
 
 const port = Number(process.env.PORT || 4100);
 app.listen({ port, host: '0.0.0.0' }).catch((err) => {
   app.log.error(err);
   process.exit(1);
+});
+
+// Log registered routes once server is ready
+app.ready(() => {
+  try {
+    app.log.info(app.printRoutes());
+  } catch {}
 });
 
 // WebSocket fallback for browsers with strict SSE behaviour
