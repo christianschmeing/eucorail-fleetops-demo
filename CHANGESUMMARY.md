@@ -22,6 +22,7 @@ Impact:
 Enhancements:
 - Badge rule: shows `main@<sha>` when branch is `main`, otherwise `<branch>@<sha>`; color scheme success=brightgreen, failed=red, skipped/unknown=orange.
 - State workflow supports `workflow_dispatch` for manual runs; optional `schedule` added (commented) with hourly cron.
+ - data_version fetched from STAGING_META_URL with 4s timeout; supports JSON {version|dataVersion} or raw string.
 
 Fix CI:
 - Remove Playwright/E2E from `.github/workflows/ci.yml`; chain now: checkout → setup-node@20 → npm ci → typecheck → lint → build → test:int (non-blocking).
