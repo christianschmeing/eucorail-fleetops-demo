@@ -93,13 +93,24 @@ async function getDataVersion() {
   const base = env('STAGING_META_URL', '');
   if (!base) return null;
   const ctl = new AbortController();
-  const to = setTimeout(() => ctl.abort(), 3000);
+  const to = setTimeout(() => ctl.abort(), 4000);
   try {
     const r = await fetch(`${base.replace(/\/$/, '')}/api/meta/version`, { signal: ctl.signal });
     clearTimeout(to);
     if (!r.ok) return null;
-    const txt = (await r.text()).trim();
-    return txt || null;
+    let body = null;
+    const text = await r.text();
+    try {
+      body = JSON.parse(text);
+    } catch {
+      // if top-level is raw string, accept as version
+      if (text && /^\s*"?.+"?\s*$/.test(text)) return text.replace(/^\s*"|"\s*$/g, '').trim();
+    }
+    if (body && typeof body === 'object') {
+      if (typeof body.version === 'string') return body.version;
+      if (typeof body.dataVersion === 'string') return body.dataVersion;
+    }
+    return null;
   } catch {
     clearTimeout(to);
     return null;
@@ -117,8 +128,8 @@ async function main() {
     getDataVersion()
   ]);
 
-  const ciStatus = (env('CI_STATUS') || '').toLowerCase();
-  const status = ciStatus === 'success' || ciStatus === 'failed' || ciStatus === 'skipped' ? ciStatus : 'success';
+  let ciStatus = (env('CI_STATUS') || '').toLowerCase();
+  let status = ciStatus === 'success' || ciStatus === 'failed' || ciStatus === 'skipped' ? ciStatus : 'success';
 
   const state = {
     repo: `/${owner}/${repo}`,
@@ -130,7 +141,8 @@ async function main() {
     prs: { open: prs },
     data_version: dataVersion,
     release: { latest_tag: latestTag },
-    generated_at: nowIso
+    generated_at: nowIso,
+    default_branch_hint: 'main'
   };
 
   mkdirSync('state', { recursive: true });
@@ -139,7 +151,8 @@ async function main() {
   const short = commit.sha?.slice(0, 7) || '';
   const symbol = status === 'success' ? '✓' : (status === 'skipped' ? '•' : '✗');
   const color = status === 'success' ? 'brightgreen' : (status === 'skipped' ? 'orange' : 'red');
-  const badge = { schemaVersion: 1, label: 'state', message: `${branch}@${short} ${symbol}`.trim(), color };
+  const branchLabel = branch === 'main' ? 'main' : branch;
+  const badge = { schemaVersion: 1, label: 'state', message: `${branchLabel}@${short} ${symbol}`.trim(), color };
   writeFileSync('state/badge.json', JSON.stringify(badge, null, 2));
 
   console.log('State generated at ./state');

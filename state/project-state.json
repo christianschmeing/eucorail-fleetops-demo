@@ -2,10 +2,10 @@
   "repo": "/ChristianSchmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "36a08bd43931c1a33af47b796393c38a7b9c2452",
-    "message": "feat(api/web): add Averio-backed /api/trains & /api/trains/:id, serve /api/lines & /api/depots; wire Sidebar to endpoints; disable pressure in TEST_MODE",
-    "author": "",
-    "timestamp": "2025-08-17T11:45:03.909Z"
+    "sha": "1e1ec5219faf26a31c2d7416e11e46d8cb1e40ca",
+    "message": "feat(ci): AI-observable project state (state.yml, ci.yml, badge+state generator, README badges, docs)",
+    "author": "Christian Schmeing",
+    "timestamp": "2025-08-17T11:49:55Z"
   },
   "ci": {
     "status": "success",
@@ -13,10 +13,10 @@
     "run_id": ""
   },
   "changes": {
-    "apps_web": false,
+    "apps_web": true,
     "packages_api": true,
-    "scripts": false,
-    "docs": false
+    "scripts": true,
+    "docs": true
   },
   "issues": {
     "p0_open": 0,
@@ -30,5 +30,6 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-17T11:45:03.909Z"
+  "generated_at": "2025-08-17T12:01:35.394Z",
+  "default_branch_hint": "main"
 }

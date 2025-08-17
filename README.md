@@ -6,6 +6,8 @@
   </a>
 </p>
 
+<sub>Badge zeigt bei <code>main</code> explizit <code>main@…</code>, auf Feature-Branches <code>&lt;branch&gt;@…</code>.</sub>
+
 Ein professionelles Web-Mockup einer Flottenplattform für Zugwartung und Asset-Management mit simulierten Positions- und Zustandsdaten entlang realer Linien in Bayern (BY) und Baden-Württemberg (BW).
 
 ## 🎯 Projektziel
@@ -179,9 +181,9 @@ node test-robust-v2.js
 ## 🤖 AI Entry Points
 
 - State JSON: https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages/state/project-state.json
+- (main) State JSON Hinweis: Badge zeigt `main@…`, sobald der State von `main` stammt.
 - Badge Endpoint: https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages/state/badge.json
-- Bedeutung: JSON enthält Commit/Branch, CI-Status, geänderte Bereiche (`apps_web`, `packages_api`, `scripts`, `docs`), offene P0/P1/PRs, optional `data_version`, sowie Zeitstempel.
-- Siehe auch: `docs/AI_README.md`
+- Bedeutung: JSON enthält Commit/Branch, CI-Status, geänderte Bereiche (`apps_web`, `packages_api`, `scripts`, `docs`), offene P0/P1/PRs, optional `data_version`, sowie Zeitstempel. Siehe `docs/AI_README.md`.
 
 ## 📝 Disclaimer
 
