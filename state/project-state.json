@@ -1,0 +1,34 @@
+{
+  "repo": "/christianschmeing/eucorail-fleetops-demo",
+  "branch": "feat/train-tracker-p0",
+  "commit": {
+    "sha": "1e1ec5219faf26a31c2d7416e11e46d8cb1e40ca",
+    "message": "feat(ci): AI-observable project state (state.yml, ci.yml, badge+state generator, README badges, docs)",
+    "author": "Christian Schmeing",
+    "timestamp": "2025-08-17T11:49:55Z"
+  },
+  "ci": {
+    "status": "success",
+    "workflow": "state",
+    "run_id": "17020662455"
+  },
+  "changes": {
+    "apps_web": false,
+    "packages_api": false,
+    "scripts": false,
+    "docs": false
+  },
+  "issues": {
+    "p0_open": 0,
+    "p1_open": 0,
+    "all_open": 0
+  },
+  "prs": {
+    "open": 0
+  },
+  "data_version": null,
+  "release": {
+    "latest_tag": null
+  },
+  "generated_at": "2025-08-17T11:50:57.699Z"
+}
