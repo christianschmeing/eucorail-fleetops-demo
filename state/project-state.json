@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "42a7f408cab42442d6582fbb859d67d8a25bf5fa",
-    "message": "chore(state): robust badge + data_version fetch (4s timeout), workflow_dispatch + concurrency; README note",
+    "sha": "4967816ddb636f71a6e8f95182345062d8f62518",
+    "message": "feat(ui): prepare DS tokens and primitives baseline; will roll out ECM-first IA next",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-17T12:01:38Z"
+    "timestamp": "2025-08-17T12:06:51Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17020749490"
+    "run_id": "17020800573"
   },
   "changes": {
     "apps_web": false,
@@ -30,6 +30,6 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-17T12:02:26.332Z",
+  "generated_at": "2025-08-17T12:07:36.786Z",
   "default_branch_hint": "main"
 }
