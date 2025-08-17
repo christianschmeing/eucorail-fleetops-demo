@@ -1,36 +1,8 @@
 {
   "depots": [
-    { "id": "depot-essingen", "name": "Eucorail Depot Essingen", "lat": 48.8089, "lon": 9.3072 },
-    { "id": "depot-langweid", "name": "Eucorail Depot Langweid", "lat": 48.4908, "lon": 10.8569 }
-  ]
-}
-{
-  "depots": [
     {
-      "id": "langweid",
-      "name": "Depot Langweid (Eucorail)",
-      "region": "BY",
-      "lat": 48.4908,
-      "lon": 10.8569,
-      "slots": [
-        { "lat": 48.4858, "lon": 10.8603 },
-        { "lat": 48.4860, "lon": 10.8605 },
-        { "lat": 48.4856, "lon": 10.8601 },
-        { "lat": 48.4862, "lon": 10.8607 },
-        { "lat": 48.4854, "lon": 10.8599 },
-        { "lat": 48.4864, "lon": 10.8609 }
-      ],
-      "polygon": [
-        [10.8590, 48.4850],
-        [10.8616, 48.4850],
-        [10.8616, 48.4866],
-        [10.8590, 48.4866],
-        [10.8590, 48.4850]
-      ]
-    },
-    {
-      "id": "essingen",
-      "name": "Depot Essingen (Eucorail)",
+      "id": "depot-essingen",
+      "name": "Eucorail Depot Essingen",
       "region": "BW",
       "lat": 48.8089,
       "lon": 9.3072,
@@ -48,6 +20,28 @@
         [9.3084, 48.8098],
         [9.3060, 48.8098],
         [9.3060, 48.8080]
+      ]
+    },
+    {
+      "id": "depot-langweid",
+      "name": "Eucorail Depot Langweid",
+      "region": "BY",
+      "lat": 48.4908,
+      "lon": 10.8569,
+      "slots": [
+        { "lat": 48.4858, "lon": 10.8603 },
+        { "lat": 48.4860, "lon": 10.8605 },
+        { "lat": 48.4856, "lon": 10.8601 },
+        { "lat": 48.4862, "lon": 10.8607 },
+        { "lat": 48.4854, "lon": 10.8599 },
+        { "lat": 48.4864, "lon": 10.8609 }
+      ],
+      "polygon": [
+        [10.8590, 48.4850],
+        [10.8616, 48.4850],
+        [10.8616, 48.4866],
+        [10.8590, 48.4866],
+        [10.8590, 48.4850]
       ]
     }
   ]

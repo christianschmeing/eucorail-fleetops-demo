@@ -12,7 +12,7 @@ async function getTrain(id: string): Promise<Train> {
     };
   }
   try {
-    return await apiGet<Train>(`/api/train/${id}`);
+    return await apiGet<Train>(`/api/trains/${id}`);
   } catch {
     return { id, name: `RE9-${id}`, depot: 'Köln', healthScore: 92,
       sensors: [{ key: 'Öltemp', value: 78, unit: '°C' }, { key: 'Bremsdruck', value: 6.1, unit: 'bar' }]
@@ -35,7 +35,9 @@ async function getTasks(id: string): Promise<MaintenanceTask[]> {
 }
 
 export default async function Page({ params }: { params: { id: string }}) {
-  const [train, tasks] = await Promise.all([getTrain(params.id), getTasks(params.id)]);
+  // Avoid destructuring on Promise.all to prevent SSR runtime issues in certain environments
+  const train = await getTrain(params.id);
+  const tasks = await getTasks(params.id);
   return (
     <div className="p-4 space-y-6">
       <Card>

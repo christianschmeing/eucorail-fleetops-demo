@@ -1,5 +1,11 @@
 # Eucorail FleetOps Demo (BY/BW)
 
+<p>
+  <a href="https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages/state/badge.json">
+    <img alt="state" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages/state/badge.json" />
+  </a>
+</p>
+
 Ein professionelles Web-Mockup einer Flottenplattform für Zugwartung und Asset-Management mit simulierten Positions- und Zustandsdaten entlang realer Linien in Bayern (BY) und Baden-Württemberg (BW).
 
 ## 🎯 Projektziel
@@ -169,6 +175,13 @@ node test-simple.js
 # Robuster Test mit automatischer Prozessverwaltung
 node test-robust-v2.js
 ```
+
+## 🤖 AI Entry Points
+
+- State JSON: https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages/state/project-state.json
+- Badge Endpoint: https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages/state/badge.json
+- Bedeutung: JSON enthält Commit/Branch, CI-Status, geänderte Bereiche (`apps_web`, `packages_api`, `scripts`, `docs`), offene P0/P1/PRs, optional `data_version`, sowie Zeitstempel.
+- Siehe auch: `docs/AI_README.md`
 
 ## 📝 Disclaimer
 

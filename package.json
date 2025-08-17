@@ -13,6 +13,8 @@
     "seed:fleet": "npm --workspace packages/api run seed:fleet",
     "sim:start": "npm --workspace packages/api run sim:start",
     "setup": "npm install && npm --workspace packages/api install && npm --workspace apps/web install && npm run seed:lines && npm run seed:fleet",
+    "ingest:gtfs": "npm --workspace packages/api run ingest:gtfs",
+    "data:from:gtfs": "cross-env DEMO_SYNTHETIC_COUNTS=0 npm run ingest:gtfs && echo 'GTFS ingested'",
     "demo": "node scripts/demo.mjs",
     "up": "node scripts/dev/up.mjs",
     "stop": "node scripts/stop.mjs",
@@ -28,6 +30,8 @@
     "lint": "echo 'no root lint'",
     "kill-ports": "bash -c 'lsof -ti:3001,3002,4100 | xargs -r kill -9'",
     "verify": "cross-env NEXT_PUBLIC_TEST_MODE=1 TEST_MODE=1 SEED=42 TICK_MS=500 npm run kill-ports && npm run build:all && start-server-and-test dev:e2e http://localhost:3001 test:e2e",
+    "test:quick": "bash quick-test.sh",
+    "test:smart": "node test-smart-runner.js",
     "verify:smart": "node scripts/auto/smart-verify.mjs",
     "demo:smart": "node scripts/auto/smart-verify.mjs",
     "auto:loop": "node scripts/auto/auto-iterate.mjs"

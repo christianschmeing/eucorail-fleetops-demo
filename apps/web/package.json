@@ -7,8 +7,8 @@
     "dev:3002": "node ../../scripts/dev/patch-next-server-chunks.mjs --watch & next dev -H 0.0.0.0 -p 3002",
     "build": "next build",
     "build:test": "cross-env NEXT_PUBLIC_TEST_MODE=1 NEXT_PUBLIC_API_BASE=http://localhost:4100 next build",
-    "start": "next start -p 3001 -H 0.0.0.0",
-    "start:test": "cross-env NODE_ENV=production TEST_MODE=1 NEXT_PUBLIC_TEST_MODE=1 NEXT_PUBLIC_API_BASE=http://localhost:4100 next start -p 3001",
+    "start": "node scripts/link-webpack-fallback.mjs && next start -p 3001 -H 0.0.0.0",
+    "start:test": "cross-env NODE_ENV=production TEST_MODE=1 NEXT_PUBLIC_TEST_MODE=1 NEXT_PUBLIC_API_BASE=http://localhost:4100 node scripts/link-webpack-fallback.mjs && next start -p 3001",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "next lint || exit 0"
   },

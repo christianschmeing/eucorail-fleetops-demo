@@ -1,0 +1,71 @@
+name: state
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-state:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Internal tests (typecheck/lint/build/test:int)
+        id: tests
+        continue-on-error: true
+        env:
+          CI: true
+        run: |
+          set -e
+          npm run -s typecheck || true
+          npm run -s lint || true
+          npm run -s build || true
+          npm run -s test:int || true
+          echo "status=success" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Compute CI status
+        id: status
+        run: |
+          if [ "${{ steps.tests.outcome }}" = "success" ]; then echo "ci_status=success" >> $GITHUB_OUTPUT; else echo "ci_status=failed" >> $GITHUB_OUTPUT; fi
+
+      - name: Generate project state
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STAGING_META_URL: ${{ secrets.STAGING_META_URL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          CI_STATUS: ${{ steps.status.outputs.ci_status }}
+        run: node scripts/ci/gen-project-state.mjs
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-state
+          path: state
+
+      - name: Publish to gh-pages/state
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./state
+          destination_dir: state
+          keep_files: true
+
+

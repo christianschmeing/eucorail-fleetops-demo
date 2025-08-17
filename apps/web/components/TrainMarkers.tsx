@@ -402,191 +402,186 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
   useEffect(() => {
     if (!map || hasInitializedRef.current) return;
 
-    console.log('🚂 Initializing clustered train markers...');
-
-    // Add clustered trains source
-    if (!map.getSource('trains')) {
-      map.addSource('trains', {
-        type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] },
-        cluster: true,
-        clusterRadius: 40,
-        clusterMaxZoom: 14
-      } as any);
-    }
-
-    // Cluster bubbles
-    if (!map.getLayer('clusters')) {
-      map.addLayer({
-        id: 'clusters',
-        type: 'circle',
-        source: 'trains',
-        filter: ['has', 'point_count'],
-        paint: {
-          'circle-color': [
-            'step', ['get', 'point_count'],
-            '#99c', 10,
-            '#668', 50,
-            '#446'
-          ],
-          'circle-radius': [
-            'step', ['get', 'point_count'],
-            16, 10, 20, 50, 22
-          ],
-          'circle-stroke-color': '#FFFFFF',
-          'circle-stroke-width': 2
-        }
-      });
-    }
-
-    // Cluster counts
-    if (!map.getLayer('cluster-count')) {
-      map.addLayer({
-        id: 'cluster-count',
-        type: 'symbol',
-        source: 'trains',
-        filter: ['has', 'point_count'],
-        layout: {
-          'text-field': ['get', 'point_count_abbreviated'],
-          'text-size': 12,
-          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular']
-        },
-        paint: { 'text-color': '#111' }
-      });
-    }
-
-    // Train trails source and layer
-    if (!isTestMode && !map.getSource('train-trails')) {
-      map.addSource('train-trails', {
-        type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] }
-      } as any);
-    }
-    if (!isTestMode && !map.getLayer('train-trails')) {
-      map.addLayer({
-        id: 'train-trails',
-        type: 'line',
-        source: 'train-trails',
-        paint: {
-          'line-color': '#4ADE80',
-          'line-width': 3,
-          'line-opacity': 0.5
-        }
-      });
-    }
-
-    // Unclustered trains
-    if (!map.getLayer('trains-unclustered')) {
-      map.addLayer({
-        id: 'trains-unclustered',
-        type: 'circle',
-        source: 'trains',
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-radius': 14,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': [
-            'case',
-            ['==', ['get', 'stale'], true], '#BDBDBD',
-            '#FFFFFF'
-          ],
-          'circle-color': [
-            'case',
-            ['==', ['get', 'health'], 'ok'], '#10B981',
-            ['==', ['get', 'health'], 'warn'], '#F59E0B',
-            ['==', ['get', 'health'], 'due'], '#EF4444',
-            '#6B7280'
-          ]
-        }
-      });
-    }
-
-    // Selected overlay (top)
-    if (!map.getLayer('train-selected')) {
-      map.addLayer({
-        id: 'train-selected',
-        type: 'circle',
-        source: 'trains',
-        filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'id'], '___none___']],
-        paint: {
-          'circle-radius': 18,
-          'circle-stroke-width': 3,
-          'circle-stroke-color': '#FFFFFF',
-          'circle-opacity': 0.9,
-          'circle-color': [
-            'case',
-            ['==', ['get', 'health'], 'ok'], '#10B981',
-            ['==', ['get', 'health'], 'warn'], '#F59E0B',
-            ['==', ['get', 'health'], 'due'], '#EF4444',
-            '#6B7280'
-          ]
-        }
-      });
-    }
-
-    // Ensure layer order: clusters < cluster-count < trains-unclustered < train-selected < depots-symbol
-    try {
-      if (map.getLayer('clusters')) map.moveLayer('clusters');
-      if (map.getLayer('cluster-count')) map.moveLayer('cluster-count');
-      if (map.getLayer('trains-unclustered')) map.moveLayer('trains-unclustered');
-      if (map.getLayer('train-selected')) map.moveLayer('train-selected');
-      if (map.getLayer('depots-symbol')) map.moveLayer('depots-symbol');
-    } catch {}
-
-    // Click + hover handlers
-    if (!eventListenersAddedRef.current) {
-      map.on('click', 'trains-unclustered', (e) => {
-        if (e.features && e.features[0]) {
-          const trainId = e.features[0].properties?.id;
-          if (trainId) {
-            onTrainSelect(trainId);
-            console.log('🚂 Train selected:', trainId);
+    const initLayers = () => {
+      if (!map || hasInitializedRef.current) return;
+      console.log('🚂 Initializing clustered train markers...');
+      // Add clustered trains source
+      if (!map.getSource('trains')) {
+        map.addSource('trains', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] },
+          cluster: true,
+          clusterRadius: 40,
+          clusterMaxZoom: 14
+        } as any);
+      }
+      // Cluster bubbles
+      if (!map.getLayer('clusters')) {
+        map.addLayer({
+          id: 'clusters',
+          type: 'circle',
+          source: 'trains',
+          filter: ['has', 'point_count'],
+          paint: {
+            'circle-color': [
+              'step', ['get', 'point_count'],
+              '#99c', 10,
+              '#668', 50,
+              '#446'
+            ],
+            'circle-radius': [
+              'step', ['get', 'point_count'],
+              16, 10, 20, 50, 22
+            ],
+            'circle-stroke-color': '#FFFFFF',
+            'circle-stroke-width': 2
           }
-        }
-      });
+        });
+      }
+      // Cluster counts
+      if (!map.getLayer('cluster-count')) {
+        map.addLayer({
+          id: 'cluster-count',
+          type: 'symbol',
+          source: 'trains',
+          filter: ['has', 'point_count'],
+          layout: {
+            'text-field': ['get', 'point_count_abbreviated'],
+            'text-size': 12,
+            'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular']
+          },
+          paint: { 'text-color': '#111' }
+        });
+      }
+      // Train trails source and layer
+      if (!isTestMode && !map.getSource('train-trails')) {
+        map.addSource('train-trails', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] }
+        } as any);
+      }
+      if (!isTestMode && !map.getLayer('train-trails')) {
+        map.addLayer({
+          id: 'train-trails',
+          type: 'line',
+          source: 'train-trails',
+          paint: {
+            'line-color': '#4ADE80',
+            'line-width': 3,
+            'line-opacity': 0.5
+          }
+        });
+      }
+      // Unclustered trains
+      if (!map.getLayer('trains-unclustered')) {
+        map.addLayer({
+          id: 'trains-unclustered',
+          type: 'circle',
+          source: 'trains',
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-radius': 14,
+            'circle-stroke-width': 2,
+            'circle-stroke-color': [
+              'case',
+              ['==', ['get', 'stale'], true], '#BDBDBD',
+              '#FFFFFF'
+            ],
+            'circle-color': [
+              'case',
+              ['==', ['get', 'health'], 'ok'], '#10B981',
+              ['==', ['get', 'health'], 'warn'], '#F59E0B',
+              ['==', ['get', 'health'], 'due'], '#EF4444',
+              '#6B7280'
+            ]
+          }
+        });
+      }
+      // Selected overlay (top)
+      if (!map.getLayer('train-selected')) {
+        map.addLayer({
+          id: 'train-selected',
+          type: 'circle',
+          source: 'trains',
+          filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'id'], '___none___']],
+          paint: {
+            'circle-radius': 18,
+            'circle-stroke-width': 3,
+            'circle-stroke-color': '#FFFFFF',
+            'circle-opacity': 0.9,
+            'circle-color': [
+              'case',
+              ['==', ['get', 'health'], 'ok'], '#10B981',
+              ['==', ['get', 'health'], 'warn'], '#F59E0B',
+              ['==', ['get', 'health'], 'due'], '#EF4444',
+              '#6B7280'
+            ]
+          }
+        });
+      }
+      // Ensure layer order
+      try {
+        if (map.getLayer('clusters')) map.moveLayer('clusters');
+        if (map.getLayer('cluster-count')) map.moveLayer('cluster-count');
+        if (map.getLayer('trains-unclustered')) map.moveLayer('trains-unclustered');
+        if (map.getLayer('train-selected')) map.moveLayer('train-selected');
+        if (map.getLayer('depots-symbol')) map.moveLayer('depots-symbol');
+      } catch {}
+      // Click + hover handlers
+      if (!eventListenersAddedRef.current) {
+        map.on('click', 'trains-unclustered', (e) => {
+          if (e.features && e.features[0]) {
+            const trainId = e.features[0].properties?.id;
+            if (trainId) {
+              onTrainSelect(trainId);
+              console.log('🚂 Train selected:', trainId);
+            }
+          }
+        });
+        map.on('mouseenter', 'trains-unclustered', () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseleave', 'trains-unclustered', () => { map.getCanvas().style.cursor = ''; });
+        map.on('click', 'clusters', async (e) => {
+          const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+          const clusterId = features[0]?.properties?.cluster_id;
+          const source = map.getSource('trains') as any;
+          if (source && clusterId != null) {
+            source.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
+              if (err) return;
+              const [lng, lat] = (features[0].geometry as any).coordinates as [number, number];
+              if (isTestMode) map.jumpTo({ center: [lng, lat], zoom });
+              else map.easeTo({ center: [lng, lat], zoom });
+            });
+          }
+        });
+        map.on('dragstart', () => { didFitRef.current = true; });
+        map.on('zoomstart', () => { didFitRef.current = true; });
+        eventListenersAddedRef.current = true;
+      }
+      console.log('✅ Clustered train marker layers initialized');
+      try { (window as any).__mapReady = true; } catch {}
+      try { window.dispatchEvent(new CustomEvent('map:ready')); } catch {}
+      try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
+      hasInitializedRef.current = true;
+      if (!isTestMode && !rafRef.current && hasLiveRef.current) {
+        rafRef.current = requestAnimationFrame(stepAnimation);
+      }
+    };
 
-      map.on('mouseenter', 'trains-unclustered', () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-      map.on('mouseleave', 'trains-unclustered', () => {
-        map.getCanvas().style.cursor = '';
-      });
-
-      // Zoom into clusters on click
-      map.on('click', 'clusters', async (e) => {
-        const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-        const clusterId = features[0]?.properties?.cluster_id;
-        const source = map.getSource('trains') as any;
-        if (source && clusterId != null) {
-          source.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
-            if (err) return;
-            const [lng, lat] = (features[0].geometry as any).coordinates as [number, number];
-            if (isTestMode) map.jumpTo({ center: [lng, lat], zoom });
-            else map.easeTo({ center: [lng, lat], zoom });
-          });
-        }
-      });
-
-      // Detect manual interactions to prevent auto-fit after user action
-      map.on('dragstart', () => { didFitRef.current = true; });
-      map.on('zoomstart', () => { didFitRef.current = true; });
-
-      eventListenersAddedRef.current = true;
-    }
-
-    console.log('✅ Clustered train marker layers initialized');
-    try { (window as any).__mapReady = true; } catch {}
-    try { window.dispatchEvent(new CustomEvent('map:ready')); } catch {}
-    // Trigger an immediate data update now that sources/layers exist
-    try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
-    hasInitializedRef.current = true;
-
-    // Start animation loop only when live data is present (avoid anim on fallback)
-    if (!isTestMode && !rafRef.current && hasLiveRef.current) {
-      rafRef.current = requestAnimationFrame(stepAnimation);
+    let loadHandler: any = null;
+    if ((map as any).isStyleLoaded && map.isStyleLoaded()) {
+      initLayers();
+    } else {
+      loadHandler = () => {
+        try { map.off('load', loadHandler); } catch {}
+        initLayers();
+      };
+      map.on('load', loadHandler);
     }
 
     return () => {
+      if (loadHandler) {
+        try { map.off('load', loadHandler); } catch {}
+      }
       // Cleanup
       for (const layerId of ['train-selected', 'trains-unclustered', 'cluster-count', 'clusters']) {
         if (map.getLayer(layerId)) map.removeLayer(layerId);
@@ -594,15 +589,9 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
       if (map.getLayer('train-trails')) map.removeLayer('train-trails');
       if (map.getSource('trains')) map.removeSource('trains');
       if (map.getSource('train-trails')) map.removeSource('train-trails');
-      // Remove DOM markers
-      for (const [, entry] of domMarkersRef.current.entries()) {
-        entry.marker.remove();
-      }
+      for (const [, entry] of domMarkersRef.current.entries()) { entry.marker.remove(); }
       domMarkersRef.current.clear();
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
+      if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
     };
   }, [map, onTrainSelect, isTestMode]);
 

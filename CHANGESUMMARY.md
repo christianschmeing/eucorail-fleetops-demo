@@ -1,28 +1,20 @@
-# Change Summary
+# Change Summary – AI Observable State + Modern UI adjustments
 
-This document logs assumptions, skips, and follow-ups while implementing the Eucorail Train-Tracker enhancements.
+Scope of this commit series:
+- Add GitHub Actions workflow `state.yml` to generate and publish project state to `gh-pages/state/` on push/PR.
+- Add internal CI workflow `ci.yml` limited to typecheck/lint/build/test:int (no UI/E2E).
+- Implement `scripts/ci/gen-project-state.mjs` for JSON snapshot and Shields endpoint badge.
+- Ensure `/state` is not ignored and add docs `docs/AI_README.md`.
+- Update `README.md` with State badge and AI Entry Points.
+- Modernized homepage UI to `ModernHeader`/`ModernSidebar`, fixed hydration time rendering.
 
-## Assumptions
-- Use Next.js App Router in `apps/web` with existing structure.
-- Adopt Eucorail dark theme with tokens aligned to provided palette.
-- Use mock data on `/trains/[id]` until API endpoints are wired.
- - Keep Playwright smokes minimal and stable; avoid brittle assertions in headless CI.
+Assumptions/Skips:
+- If `STAGING_META_URL` is not set, `data_version` is `null` by design.
+- If GitHub API rate limits hit, counts fall back to `-1` and badge shows `•` orange; documented in generator.
+- `gh-pages` branch is created/published by `peaceiris/actions-gh-pages` if it does not exist.
+- No Playwright/UI steps in CI to honor requirement; only internal checks run best-effort (`|| true`).
 
-## Skipped/Timeouts
-- [SKIPPED:verify@home-KPI] KPI header smoke proved flaky in headless; removed in favor of existing HUD/home tests.
-- Dev server on OneDrive mount can intermittently miss server chunks. Workaround added:
-  - `apps/web/next.config.mjs` sets server `output.chunkFilename = 'chunks/[id].js'`.
-  - `scripts/dev/patch-next-server-chunks.mjs` symlinks files from `server/chunks/*.js` into `server/`.
-
-## Follow-ups
-- Replace mock data with API adapter and seeds.
-- Add more a11y coverage (keyboard nav across tabs/timeline markers).
- - Extend KPI cards with real data and add non-flaky screenshot test.
-
-
-
-
-### Averio seeds generated
-- BW total: 66 per line: {"mex13":14,"mex16":14,"re1":14,"re8":13,"re90":11}
-- BY total: 78 per line: {"rb86":9,"rb87":9,"rb89":9,"rb92":6,"re72":8,"re80":10,"re89":9,"re9":10,"re96":8}
-- Reserve ratio: 0.12
+Impact:
+- After next push to default branch, files available at:
+  - `gh-pages/state/project-state.json`
+  - `gh-pages/state/badge.json` (used in README badge)

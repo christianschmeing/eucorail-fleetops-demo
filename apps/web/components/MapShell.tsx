@@ -18,12 +18,14 @@ export default function MapShell({
   externalActiveLines,
   onlyActive = false,
   showHeader = true,
-  showSidebar = true
-}: { externalActiveLines?: string[]; onlyActive?: boolean; showHeader?: boolean; showSidebar?: boolean } = {}) {
+  showSidebar = true,
+  showDetails = true
+}: { externalActiveLines?: string[]; onlyActive?: boolean; showHeader?: boolean; showSidebar?: boolean; showDetails?: boolean } = {}) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const [ready, setReady] = useState(false);
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === '1';
+  const debugLogs = process.env.NEXT_PUBLIC_DEBUG === '1';
   // Ensure API base is visible for debugging fetch failures
   try { (window as any).__apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4100'; } catch {}
   const [selectedTrain, setSelectedTrain] = useState<string | null>(isTestMode ? 'RE9-78001' : null);
@@ -53,60 +55,27 @@ export default function MapShell({
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
-    console.log('🗺️ Creating map instance...');
+    if (debugLogs) console.log('🗺️ Creating map instance...');
     
     try {
+      const mapStyle = process.env.NEXT_PUBLIC_MAP_STYLE || "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
-        // Use a simple style in test mode for faster, more deterministic loads
-        style: isTestMode ? 'https://demotiles.maplibre.org/style.json' : "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+        // Always use a neutral basemap to avoid yellow background in tests
+        style: mapStyle,
         center: [10.5, 48.5], // Center of Bavaria/Baden-Württemberg
         zoom: 8,
         maxZoom: 18,
         minZoom: 6
       });
       
-      console.log('🗺️ Map instance created, adding controls...');
+      if (debugLogs) console.log('🗺️ Map instance created, adding controls...');
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
       
       // Add rail layer when map loads
       map.on("load", () => {
-        console.log('✅ Map loaded successfully');
+        if (debugLogs) console.log('✅ Map loaded successfully');
         setReady(true);
-        
-        // Add depots source and layer
-        try {
-          if (!map.getSource('depots')) {
-            map.addSource('depots', {
-              type: 'geojson',
-              data: '/config/depots.json'
-            } as any);
-          }
-          if (!map.getLayer('depots-symbol')) {
-            map.addLayer({
-              id: 'depots-symbol',
-              type: 'symbol',
-              source: 'depots',
-              layout: {
-                'icon-image': 'marker-15',
-                'icon-size': 1.2,
-                'text-field': ['get', 'name'],
-                'text-size': 12,
-                'text-offset': [0, 1.2],
-                'text-anchor': 'top'
-              },
-              paint: {
-                'text-color': '#FF6B35',
-                'text-halo-color': '#0B1F2A',
-                'text-halo-width': 2
-              }
-            });
-          }
-        } catch (e) {
-          console.warn('Depots layer init failed', e);
-        }
-        
-        // This block is now handled by the useEffect hook below
         
         // Signal map ready after idle once sources/layers are set up
         map.once('idle', () => {
@@ -119,13 +88,13 @@ export default function MapShell({
       
       return () => {
         if (mapRef.current) {
-          console.log('🗺️ Cleaning up map on unmount...');
+          if (debugLogs) console.log('🗺️ Cleaning up map on unmount...');
           mapRef.current.remove();
           mapRef.current = null;
         }
       };
     } catch (error) {
-      console.error('❌ Error creating map:', error);
+      if (debugLogs) console.error('❌ Error creating map:', error);
     }
   }, []);
 
@@ -188,13 +157,13 @@ export default function MapShell({
   useEffect(() => {
     if (!ready || !mapRef.current || depotSourceAddedRef.current) return;
 
-    fetch('/config/depots.json')
+    const initDepots = () => {
+      const m = mapRef.current;
+      if (!m || depotSourceAddedRef.current) return;
+      fetch('/config/depots.json')
       .then(res => res.json())
       .then(data => {
         console.log('Loading depot data:', data);
-        
-        // Only add source if it doesn't exist and hasn't been added before
-        const m = mapRef.current;
         if (m && !m.getSource('depots') && !depotSourceAddedRef.current) {
           m.addSource('depots', {
             type: 'geojson',
@@ -210,20 +179,29 @@ export default function MapShell({
               }))
             }
           });
-          
-          // Only add layer if it doesn't exist
-          if (m && !m.getLayer('depot-symbols')) {
+          // Add circle layer for depots (no external sprite needed)
+          if (m && !m.getLayer('depots-circles')) {
             m.addLayer({
-              id: 'depot-symbols',
+              id: 'depots-circles',
+              type: 'circle',
+              source: 'depots',
+              paint: {
+                'circle-radius': 6,
+                'circle-color': '#FF6B35',
+                'circle-stroke-color': '#0B1F2A',
+                'circle-stroke-width': 2
+              }
+            });
+          }
+          if (m && !m.getLayer('depots-labels')) {
+            m.addLayer({
+              id: 'depots-labels',
               type: 'symbol',
               source: 'depots',
               layout: {
-                'icon-image': 'depot-icon',
-                'icon-size': 1.2,
-                'icon-allow-overlap': true,
                 'text-field': ['get', 'name'],
                 'text-size': 12,
-                'text-offset': [0, 1.5],
+                'text-offset': [0, 1.0],
                 'text-anchor': 'top'
               },
               paint: {
@@ -235,19 +213,17 @@ export default function MapShell({
           }
           
           depotSourceAddedRef.current = true;
-          console.log('✅ Depot source and layer added successfully');
+          console.log('✅ Depot source and layers added successfully');
         }
       })
       .catch(err => {
-        console.error('Failed to load depots:', err);
-        // Add fallback depot markers only if source doesn't exist and hasn't been added before
+        if (debugLogs) console.error('Failed to load depots:', err);
         const m = mapRef.current;
         if (m && !m.getSource('depots') && !depotSourceAddedRef.current) {
           const fallbackDepots = [
             { id: 'langweid', name: 'Langweid', lon: 10.8569, lat: 48.4908 },
             { id: 'essingen', name: 'Essingen', lon: 9.3072, lat: 48.8089 }
           ];
-          
           m.addSource('depots', {
             type: 'geojson',
             data: {
@@ -262,34 +238,30 @@ export default function MapShell({
               }))
             }
           });
-
-          // Only add layer if it doesn't exist
-          if (m && !m.getLayer('depot-symbols')) {
-            m.addLayer({
-              id: 'depot-symbols',
-              type: 'symbol',
-              source: 'depots',
-              layout: {
-                'icon-image': 'depot-icon',
-                'icon-size': 1.2,
-                'icon-allow-overlap': true,
-                'text-field': ['get', 'name'],
-                'text-size': 12,
-                'text-offset': [0, 1.5],
-                'text-anchor': 'top'
-              },
-              paint: {
-                'text-color': '#FF6B35',
-                'text-halo-color': '#0B1F2A',
-                'text-halo-width': 2
-              }
-            });
+          if (m && !m.getLayer('depots-circles')) {
+            m.addLayer({ id: 'depots-circles', type: 'circle', source: 'depots', paint: { 'circle-radius': 6, 'circle-color': '#FF6B35', 'circle-stroke-color': '#0B1F2A', 'circle-stroke-width': 2 } });
+          }
+          if (m && !m.getLayer('depots-labels')) {
+            m.addLayer({ id: 'depots-labels', type: 'symbol', source: 'depots', layout: { 'text-field': ['get', 'name'], 'text-size': 12, 'text-offset': [0, 1.0], 'text-anchor': 'top' }, paint: { 'text-color': '#FF6B35', 'text-halo-color': '#0B1F2A', 'text-halo-width': 2 } });
           }
           
           depotSourceAddedRef.current = true;
-          console.log('✅ Fallback depot source and layer added successfully');
+          if (debugLogs) console.log('✅ Fallback depot source and layers added successfully');
         }
       });
+    };
+
+    // Ensure style is fully loaded before mutating sources/layers
+    if (!mapRef.current.isStyleLoaded()) {
+      const onLoad = () => {
+        try { mapRef.current?.off('load', onLoad as any); } catch {}
+        initDepots();
+      };
+      mapRef.current.on('load', onLoad as any);
+      return () => { try { mapRef.current?.off('load', onLoad as any); } catch {} };
+    }
+
+    initDepots();
   }, [ready]);
 
   // Handle train selection
@@ -297,7 +269,7 @@ export default function MapShell({
     setSelectedTrain(trainId);
     try { (window as any).__selectedTrain = trainId; } catch {}
     try { window.dispatchEvent(new CustomEvent('selected:train', { detail: trainId })); } catch {}
-    console.log('🚂 Train selected in MapShell:', trainId);
+    if (debugLogs) console.log('🚂 Train selected in MapShell:', trainId);
   };
 
   // Wire test HUD synthetic select buttons
@@ -384,7 +356,7 @@ export default function MapShell({
     <div className="h-screen w-screen bg-euco-bg text-white overflow-hidden" data-testid="map-root">
       {/* Header */}
       {showHeader && (
-      <header className="bg-black/30 border-b border-white/10 px-6 py-4">
+      <header className="bg-black/30 border-b border-white/10 px-6 py-4 relative z-20">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="w-8 h-8 bg-euco-accent rounded-lg flex items-center justify-center">
@@ -409,11 +381,11 @@ export default function MapShell({
       </header>
       )}
 
-      <div className="flex h-[calc(100vh-80px)]">
+      <div className={showHeader ? "flex h-[calc(100vh-80px)]" : "flex h-[100vh]"}>
         {/* Left Sidebar - Train List */}
         {showSidebar && (
-        <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto">
-          <div className="p-4">
+        <aside className="w-80 bg-black/40 border-r border-white/10 overflow-y-auto flex-shrink-0" aria-label="Zugliste" data-testid="sidebar">
+          <div className="p-4 sticky top-0 z-10 bg-black/50 backdrop-blur-sm border-b border-white/10">
             <h2 className="text-lg font-semibold mb-4">Zugliste</h2>
             {/* Filter Tiles */}
             <div className="grid grid-cols-2 gap-2 mb-4">
@@ -437,7 +409,7 @@ export default function MapShell({
               ))}
             </div>
             {/* Train List */}
-            <div className="space-y-2" data-testid="train-list">
+            <div className="space-y-2 pt-4" data-testid="train-list">
               {[
                 { id: 'RE9-78001', name: 'RE9 78001', status: 'maintenance', speed: 0, health: 65 },
                 { id: 'RE9-78002', name: 'RE9 78002', status: 'active', speed: 85, health: 92 },
@@ -509,7 +481,7 @@ export default function MapShell({
             </button>
           </div>
           {/* Recent Messages Overlay */}
-          <div className="absolute top-4 right-4 w-80 bg-black/40 backdrop-blur-sm rounded-xl border border-white/10">
+          <div className="absolute top-4 right-4 lg:right-96 w-80 bg-black/40 backdrop-blur-sm rounded-xl border border-white/10 z-20">
             <div className="p-4" style={{ display: (isTestMode || selectedTrain) && showMessages ? 'block' : 'none' }}>
               <h3 className="text-sm font-semibold mb-3">Letzte Meldungen</h3>
               <div className="space-y-2">
@@ -538,78 +510,71 @@ export default function MapShell({
           {/* widgets removed */}
         </main>
 
-        {/* Right Sidebar - Selected Train Details */}
-        {selectedTrain && (
-        <aside className="w-80 bg-black/30 border-l border-white/10 overflow-y-auto" data-testid="train-drawer">
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold">Zug Details</h2>
-                <button 
-                  onClick={() => setSelectedTrain(null)}
-                  className="text-euco-muted hover:text-white"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <div className="space-y-4">
-                <div className="bg-black/30 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">{selectedTrain || 'RE9-78001'}</h3>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>
-                      <span className="text-euco-muted">Status:</span>
-                      <span className="ml-2 text-green-400">Aktiv</span>
-                    </div>
-                    <div>
-                      <span className="text-euco-muted">Geschwindigkeit:</span>
-                      <span className="ml-2">85 km/h</span>
-                    </div>
-                    <div>
-                      <span className="text-euco-muted">Position:</span>
-                      <span className="ml-2">48.5°N, 10.5°E</span>
-                    </div>
-                    <div>
-                      <span className="text-euco-muted">Route:</span>
-                      <span className="ml-2">München Hbf → Nürnberg Hbf</span>
-                    </div>
-                  </div>
+        {/* Right Sidebar - Selected Train Details (collapsible) */}
+        {showDetails && (
+          <aside className="w-96 bg-black/30 border-l border-white/10 overflow-y-auto sticky top-0 h-full z-10" data-testid="train-drawer" aria-label="Zug Details">
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold">Zug Details</h2>
+                  <div className="text-xs text-euco-muted">{selectedTrain ? 'Ausgewählt' : 'Kein Zug ausgewählt'}</div>
                 </div>
-                <div className="bg-black/30 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Systemstatus</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Gesundheit</span>
-                      <span className={`text-sm font-medium ${getHealthColor(getHealthScore(selectedTrain || 'RE9-78001'))}`}>
-                        {getHealthScore(selectedTrain || 'RE9-78001')}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                      <div 
-                        className="bg-green-400 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${getHealthScore(selectedTrain || 'RE9-78001')}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-black/30 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Teilsysteme</h3>
-                  <div className="space-y-2">
-                     {Object.entries(getSubsystemStatus(selectedTrain || 'RE9-78001')).map(([system, status]) => (
-                      <div key={system} className="flex items-center justify-between">
-                        <span className="text-sm capitalize">{system}</span>
-                        <div className={`w-3 h-3 rounded-full ${
-                          status === 'ok' ? 'bg-green-400' :
-                          status === 'warning' ? 'bg-yellow-400' :
-                          'bg-red-400'
-                        }`}></div>
+                <div className="space-y-4">
+                  <div className="bg-black/30 p-4 rounded-lg">
+                    <h3 className="font-semibold mb-2">{selectedTrain || 'Bitte einen Zug auswählen'}</h3>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <span className="text-euco-muted">Status:</span>
+                        <span className="ml-2 text-green-400">{selectedTrain ? 'Aktiv' : '–'}</span>
                       </div>
-                    ))}
+                      <div>
+                        <span className="text-euco-muted">Geschwindigkeit:</span>
+                        <span className="ml-2">{selectedTrain ? '85 km/h' : '–'}</span>
+                      </div>
+                      <div>
+                        <span className="text-euco-muted">Position:</span>
+                        <span className="ml-2">{selectedTrain ? '48.5°N, 10.5°E' : '–'}</span>
+                      </div>
+                      <div>
+                        <span className="text-euco-muted">Route:</span>
+                        <span className="ml-2">{selectedTrain ? 'München Hbf → Nürnberg Hbf' : '–'}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-black/30 p-4 rounded-lg">
+                    <h3 className="font-semibold mb-2">Systemstatus</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Gesundheit</span>
+                        <span className={`text-sm font-medium ${getHealthColor(getHealthScore(selectedTrain || 'RE9-78001'))}`}>
+                          {selectedTrain ? getHealthScore(selectedTrain || 'RE9-78001') : '–'}{selectedTrain ? '%' : ''}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-700 rounded-full h-2">
+                        <div 
+                          className="bg-green-400 h-2 rounded-full transition-all duration-300"
+                          style={{ width: selectedTrain ? `${getHealthScore(selectedTrain || 'RE9-78001')}%` : '0%' }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-black/30 p-4 rounded-lg">
+                    <h3 className="font-semibold mb-2">Teilsysteme</h3>
+                    <div className="space-y-2">
+                       {Object.entries(getSubsystemStatus(selectedTrain || 'RE9-78001')).map(([system, status]) => (
+                        <div key={system} className="flex items-center justify-between">
+                          <span className="text-sm capitalize">{system}</span>
+                          <div className={`w-3 h-3 rounded-full ${
+                            status === 'ok' ? 'bg-green-400' :
+                            status === 'warning' ? 'bg-yellow-400' :
+                            'bg-red-400'
+                          }`}></div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </aside>
+            </aside>
         )}
       </div>
 

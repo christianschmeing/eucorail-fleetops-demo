@@ -11,7 +11,8 @@
     "start:test": "cross-env NODE_ENV=test TEST_MODE=1 SEED=42 TICK_MS=500 node dist/server.js",
     "seed:lines": "tsx src/seeds/seed-lines.ts",
     "seed:fleet": "tsx src/seeds/seed-fleet.ts",
-    "sim:start": "tsx src/sim/run-sim.ts"
+    "sim:start": "tsx src/sim/run-sim.ts",
+    "ingest:gtfs": "node ./scripts/ingest-gtfs.mjs"
   },
   "dependencies": {
     "@fastify/cors": "^10.1.0",
@@ -22,7 +23,6 @@
     "eventsource-parser": "^1.1.2",
     "fastify": "^5.0.0",
     "fastify-sse-v2": "^4.2.1",
-    "fastify-type-provider-zod": "^5.0.3",
     "nanoid": "^5.0.7",
     "ws": "^8.18.0",
     "zod": "^3.25.76"

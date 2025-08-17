@@ -2,6 +2,7 @@ import fp from 'fastify-plugin';
 import { FastifyInstance } from 'fastify';
 import { FastifySSEPlugin } from 'fastify-sse-v2';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { RealisticTrainPhysics } from '../simulation/physics.js';
 import { WeatherService } from '../weather/index.js';
 import { EnergyMonitor } from '../energy/monitor.js';
@@ -16,12 +17,49 @@ const TICK_MS = Number(process.env.TICK_MS ?? 500);
 
 // Fleet data loaded once
 type FleetItem = { runId: string; line: string };
-let FLEET: FleetItem[] = [];
-try {
-  FLEET = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as FleetItem[];
-} catch {
-  FLEET = [];
+
+function computeFleetFromSeeds(): FleetItem[] {
+  try {
+    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains.json');
+    const trains = JSON.parse(readFileSync(p, 'utf-8')) as Array<any>;
+
+    const TARGETS: Record<string, { count: number; prefix: string; base: number }> = {
+      MEX16: { count: 66, prefix: 'MEX16-66', base: 1 },
+      RE8: { count: 39, prefix: 'RE8-79', base: 1 },
+      RE9: { count: 39, prefix: 'RE9-78', base: 1 }
+    };
+
+    const byLine: Record<string, any[]> = {};
+    for (const t of trains) {
+      const key = String(t.lineId || t.line || 'UNKNOWN').toUpperCase();
+      (byLine[key] ||= []).push(t);
+    }
+
+    function pad3(n: number): string { return String(n).padStart(3, '0'); }
+
+    for (const [lineId, target] of Object.entries(TARGETS)) {
+      const current = byLine[lineId]?.length ?? 0;
+      if (current < target.count) {
+        byLine[lineId] ||= [];
+        for (let i = current; i < target.count; i++) {
+          const runId = `${target.prefix}${pad3(i + 1)}`;
+          byLine[lineId].push({ id: runId, lineId });
+        }
+      }
+    }
+
+    const full = Object.entries(byLine)
+      .filter(([id]) => id in TARGETS)
+      .flatMap(([line, list]) => list.map((t) => ({ runId: String(t.id), line })));
+
+    return full;
+  } catch {
+    return [];
+  }
 }
+
+const DEMO_SYNTH = process.env.DEMO_SYNTHETIC_COUNTS === '1';
+let FLEET: FleetItem[] = computeFleetFromSeeds();
 
 // Deterministic PRNG (Mulberry32)
 function mulberry32(seed: number) {

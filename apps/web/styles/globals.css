@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import './theme.css';
+@import './modern.css';
 
 html, body, #__next {
   height: 100%;
