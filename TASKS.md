@@ -1,25 +1,19 @@
-# TASKS
+# TASKS – UI V2 (ECM‑First)
 
-## P0 (kritisch)
-- [x] Train Detailseite `/trains/[id]` mit Tabs Technik / Wartung / Zustand
-- [x] MaintenanceTimeline mit kommenden/überfälligen Services, Farbcodes
-- [x] Branding: Tailwind Tokens + Badge/Button/Card/Tabs/StatusChip (Eucorail)
-- [x] Startseite KPI-Header (Basis) + konsistente Panels
-- [ ] CI Basis: build, lint, typecheck, smoke (Playwright headless)
+## P0
+- [ ] DS/Primitives finalisieren und breit einsetzen (Buttons, Badges, Cards, Tabs, Drawer, Table‑Shell)
+- [ ] Navigation/IA (Dashboard, Map, Linien, Züge, Wartung, ECM, Protokoll) inkl. Shortcuts (⌘K, g m/l/t/w/e/p)
+- [ ] Züge/Linien: virtuelle Tabelle (Windowing), Facetten, CSV/XLSX‑Export
+- [ ] Map‑Flow: Suche→flyTo, Marker/List→Drawer (Technik/Wartung/Zustand/ECM), Depots sichtbar
+- [ ] ECM‑Hub Grundgerüst (ECM‑1..4 Arbeitsflächen mit wirkenden Aktionen)
 
 ## P1
-- [ ] KPI-Header (Verfügbarkeit, Ø Verspätung, aktive Störungen)
-- [ ] Map-Marker-Verbesserung: vereinfachte Polylinien + Status-Badges
-- [ ] API-/Mock-Adapter mit `.env.example` und Sample-Seeds
+- [ ] Work Orders CRUD (optimistic updates)
+- [ ] Saved Views + Persistenz
+- [ ] Protokoll/Audit‑Trail Darstellung + Filter/Export
 
-## P2
-- [ ] Wartungs-Backlog mit Filtern (Depot, Baureihe, Fälligkeit)
-- [ ] Export/Share (CSV/PDF) für Wartungspläne
-- [ ] Leichte Offline-Robustheit (Retry/Backoff, Stale-While-Revalidate)
-
-## Definition of Done
-- Lint/Typecheck/Build grün ODER Skip+Begründung in CHANGESUMMARY.md
-- Mind. 1 Smoke-Test je kritischem Flow (Route/Tab/Timeline)
-- A11y-Basics (Tab-Flow, Focus sichtbar, Kontraste ≥ 4.5:1)
+## Defaults
+- Ports: WEB 3002, API 4100
+- Internal tests only: typecheck/lint/build/test:int
 
 

@@ -469,12 +469,23 @@ export default function MapShell({
           <div ref={mapContainerRef} className="w-full h-full" data-testid="map-canvas" />
           {/* Map Controls Overlay */}
           <div className="absolute top-4 left-4 space-y-2">
-            <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 p-2 rounded-lg transition-colors">
+            <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 p-2 rounded-lg transition-colors" onClick={() => {
+              const first = effectiveLines && effectiveLines.length > 0 ? effectiveLines[0] : null;
+              if (!mapRef.current) return;
+              if (first === 'RE9') mapRef.current.fitBounds([[10.05,48.30],[10.97,48.60]], { padding: 40, duration: 300 });
+              else if (first === 'MEX16') mapRef.current.fitBounds([[9.10,48.65],[10.05,48.75]], { padding: 40, duration: 300 });
+              else if (first === 'RE8') mapRef.current.fitBounds([[9.05,48.70],[10.00,49.90]], { padding: 40, duration: 300 });
+            }}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
-            <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 p-2 rounded-lg transition-colors">
+            <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 p-2 rounded-lg transition-colors" onClick={() => {
+              if (selectedTrain && mapRef.current) {
+                // simple focus; real impl uses geo lookup
+                try { mapRef.current.easeTo({ center: mapRef.current.getCenter(), zoom: 10, duration: 300 }); } catch {}
+              }
+            }}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>

@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { ReactNode } from "react";
 import ReactQueryProvider from "./providers/query-client";
 import ThemeToggle from "../components/ThemeToggle";
+import { AppNav } from "../components/modern/AppNav";
 
 export const metadata = {
   title: "Eucorail FleetOps Demo",
@@ -16,7 +17,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="de">
       <body className={`${isTest ? 'no-anim' : ''} h-screen w-screen overflow-hidden bg-[#0B1F2A] text-white`}>
         <ReactQueryProvider>
-          {children}
+          <div className="h-screen w-screen grid" style={{ gridTemplateColumns: '240px 1fr' }}>
+            <AppNav />
+            <div className="h-full overflow-hidden">
+              {children}
+            </div>
+          </div>
           <ThemeToggle />
         </ReactQueryProvider>
       </body>

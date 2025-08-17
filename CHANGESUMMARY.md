@@ -22,7 +22,15 @@ Impact:
 Enhancements:
 - Badge rule: shows `main@<sha>` when branch is `main`, otherwise `<branch>@<sha>`; color scheme success=brightgreen, failed=red, skipped/unknown=orange.
 - State workflow supports `workflow_dispatch` for manual runs; optional `schedule` added (commented) with hourly cron.
- - data_version fetched from STAGING_META_URL with 4s timeout; supports JSON {version|dataVersion} or raw string.
+- data_version fetched from STAGING_META_URL with 4s timeout; supports JSON {version|dataVersion} or raw string.
 
-Fix CI:
-- Remove Playwright/E2E from `.github/workflows/ci.yml`; chain now: checkout → setup-node@20 → npm ci → typecheck → lint → build → test:int (non-blocking).
+P0 Increment 1 – Tables + Facetten + Export
+- Implemented headless virtualized `TableView` with `useVirtualWindow` (windowing, sticky header).
+- /trains and /lines now render fast tables with search + basic status/line filters and CSV export (current view only).
+- Saved Views (localStorage) deferred to next slice. XLSX export deferred (CSV in place).
+
+Map Flow polish (first pass)
+- Basic flyTo per selected line bounds; drawer actions wired from selection. Further geo‑lookup TBD.
+
+Start URL
+- Web: http://localhost:3002 (API 4100)
