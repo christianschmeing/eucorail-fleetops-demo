@@ -3,77 +3,42 @@
     "id": "re9",
     "name": "RE9 Ulm–Augsburg",
     "code": "RE9",
-    "bbox": [
-      10.05,
-      48.3,
-      10.97,
-      48.6
-    ]
+    "bbox": [10.05, 48.3, 10.97, 48.6]
   },
   {
     "id": "mex16",
     "name": "MEX16 Stuttgart–Ulm",
     "code": "MEX16",
-    "bbox": [
-      9.1,
-      48.65,
-      10.05,
-      48.75
-    ]
+    "bbox": [9.1, 48.65, 10.05, 48.75]
   },
   {
     "id": "re8",
     "name": "RE8 Stuttgart–Würzburg",
     "code": "RE8",
-    "bbox": [
-      9.05,
-      48.7,
-      10,
-      49.9
-    ]
+    "bbox": [9.05, 48.7, 10, 49.9]
   },
   {
     "id": "re7",
     "name": "RE7 Stuttgart–Tübingen",
     "code": "RE7",
-    "bbox": [
-      8.9,
-      48.45,
-      9.4,
-      48.85
-    ]
+    "bbox": [8.9, 48.45, 9.4, 48.85]
   },
   {
     "id": "re10",
     "name": "RE10 Nürnberg–Ingolstadt",
     "code": "RE10",
-    "bbox": [
-      10.9,
-      48.6,
-      11.6,
-      49.6
-    ]
+    "bbox": [10.9, 48.6, 11.6, 49.6]
   },
   {
     "id": "mex14",
     "name": "MEX14 München–Garmisch-Partenkirchen",
     "code": "MEX14",
-    "bbox": [
-      10.9,
-      47.4,
-      11.7,
-      48.2
-    ]
+    "bbox": [10.9, 47.4, 11.7, 48.2]
   },
   {
     "id": "mex15",
     "name": "MEX15 München–Rosenheim",
     "code": "MEX15",
-    "bbox": [
-      11.3,
-      47.7,
-      12.3,
-      48.2
-    ]
+    "bbox": [11.3, 47.7, 12.3, 48.2]
   }
 ]

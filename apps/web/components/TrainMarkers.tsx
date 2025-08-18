@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
@@ -52,7 +52,7 @@ type ComputedTrain = {
 // Simple depots for slotting maintenance/stationary trains
 const DEPOTS = {
   langweid: { id: 'langweid', name: 'Langweid', lon: 10.8569, lat: 48.4908 },
-  essingen: { id: 'essingen', name: 'Essingen', lon: 9.3072, lat: 48.8089 }
+  essingen: { id: 'essingen', name: 'Essingen', lon: 9.3072, lat: 48.8089 },
 };
 
 // Base train definitions + simplified timetables (repeating cycles)
@@ -62,56 +62,121 @@ const TRAIN_DEFINITIONS: TrainDefinition[] = [
 
   // RE9-78002: München → Augsburg → Nürnberg (cycle ~120m)
   {
-    id: 'RE9-78002', line: 'RE9', region: 'BY', status: 'active', cycleMinutes: 120,
+    id: 'RE9-78002',
+    line: 'RE9',
+    region: 'BY',
+    status: 'active',
+    cycleMinutes: 120,
     stops: [
-      { id: 'muc', name: 'München Hbf', lon: 11.5610, lat: 48.1402, arr: 0, dep: 5 },
-      { id: 'aux', name: 'Augsburg Hbf', lon: 10.8978, lat: 48.3650, arr: 55, dep: 60 },
-      { id: 'nue', name: 'Nürnberg Hbf', lon: 11.0829, lat: 49.4460, arr: 115, dep: 120 }
+      { id: 'muc', name: 'München Hbf', lon: 11.561, lat: 48.1402, arr: 0, dep: 5 },
+      { id: 'aux', name: 'Augsburg Hbf', lon: 10.8978, lat: 48.365, arr: 55, dep: 60 },
+      { id: 'nue', name: 'Nürnberg Hbf', lon: 11.0829, lat: 49.446, arr: 115, dep: 120 },
     ],
     segments: [
-      { fromStopId: 'muc', toStopId: 'aux', geometry: [[11.5610,48.1402],[10.8978,48.3650]] },
-      { fromStopId: 'aux', toStopId: 'nue', geometry: [[10.8978,48.3650],[11.0829,49.4460]] }
-    ]
+      {
+        fromStopId: 'muc',
+        toStopId: 'aux',
+        geometry: [
+          [11.561, 48.1402],
+          [10.8978, 48.365],
+        ],
+      },
+      {
+        fromStopId: 'aux',
+        toStopId: 'nue',
+        geometry: [
+          [10.8978, 48.365],
+          [11.0829, 49.446],
+        ],
+      },
+    ],
   },
 
   // RE8-79021: Stuttgart → Ulm → München (cycle ~130m)
   {
-    id: 'RE8-79021', line: 'RE8', region: 'BW', status: 'active', cycleMinutes: 130,
+    id: 'RE8-79021',
+    line: 'RE8',
+    region: 'BW',
+    status: 'active',
+    cycleMinutes: 130,
     stops: [
       { id: 'str', name: 'Stuttgart Hbf', lon: 9.1829, lat: 48.7834, arr: 0, dep: 5 },
       { id: 'ulm', name: 'Ulm Hbf', lon: 10.0006, lat: 48.3984, arr: 55, dep: 60 },
-      { id: 'muc', name: 'München Hbf', lon: 11.5610, lat: 48.1402, arr: 125, dep: 130 }
+      { id: 'muc', name: 'München Hbf', lon: 11.561, lat: 48.1402, arr: 125, dep: 130 },
     ],
     segments: [
-      { fromStopId: 'str', toStopId: 'ulm', geometry: [[9.1829,48.7834],[10.0006,48.3984]] },
-      { fromStopId: 'ulm', toStopId: 'muc', geometry: [[10.0006,48.3984],[11.5610,48.1402]] }
-    ]
+      {
+        fromStopId: 'str',
+        toStopId: 'ulm',
+        geometry: [
+          [9.1829, 48.7834],
+          [10.0006, 48.3984],
+        ],
+      },
+      {
+        fromStopId: 'ulm',
+        toStopId: 'muc',
+        geometry: [
+          [10.0006, 48.3984],
+          [11.561, 48.1402],
+        ],
+      },
+    ],
   },
 
   // RE8-79022: Ulm → München (short cycle ~70m)
   {
-    id: 'RE8-79022', line: 'RE8', region: 'BW', status: 'active', cycleMinutes: 70,
+    id: 'RE8-79022',
+    line: 'RE8',
+    region: 'BW',
+    status: 'active',
+    cycleMinutes: 70,
     stops: [
       { id: 'ulm', name: 'Ulm Hbf', lon: 10.0006, lat: 48.3984, arr: 0, dep: 5 },
-      { id: 'muc', name: 'München Hbf', lon: 11.5610, lat: 48.1402, arr: 65, dep: 70 }
+      { id: 'muc', name: 'München Hbf', lon: 11.561, lat: 48.1402, arr: 65, dep: 70 },
     ],
     segments: [
-      { fromStopId: 'ulm', toStopId: 'muc', geometry: [[10.0006,48.3984],[11.5610,48.1402]] }
-    ]
+      {
+        fromStopId: 'ulm',
+        toStopId: 'muc',
+        geometry: [
+          [10.0006, 48.3984],
+          [11.561, 48.1402],
+        ],
+      },
+    ],
   },
 
   // MEX16-66011: München → Augsburg → Ulm (cycle ~110m)
   {
-    id: 'MEX16-66011', line: 'MEX16', region: 'BY', status: 'active', cycleMinutes: 110,
+    id: 'MEX16-66011',
+    line: 'MEX16',
+    region: 'BY',
+    status: 'active',
+    cycleMinutes: 110,
     stops: [
-      { id: 'muc', name: 'München Hbf', lon: 11.5610, lat: 48.1402, arr: 0, dep: 5 },
-      { id: 'aux', name: 'Augsburg Hbf', lon: 10.8978, lat: 48.3650, arr: 45, dep: 50 },
-      { id: 'ulm', name: 'Ulm Hbf', lon: 10.0006, lat: 48.3984, arr: 105, dep: 110 }
+      { id: 'muc', name: 'München Hbf', lon: 11.561, lat: 48.1402, arr: 0, dep: 5 },
+      { id: 'aux', name: 'Augsburg Hbf', lon: 10.8978, lat: 48.365, arr: 45, dep: 50 },
+      { id: 'ulm', name: 'Ulm Hbf', lon: 10.0006, lat: 48.3984, arr: 105, dep: 110 },
     ],
     segments: [
-      { fromStopId: 'muc', toStopId: 'aux', geometry: [[11.5610,48.1402],[10.8978,48.3650]] },
-      { fromStopId: 'aux', toStopId: 'ulm', geometry: [[10.8978,48.3650],[10.0006,48.3984]] }
-    ]
+      {
+        fromStopId: 'muc',
+        toStopId: 'aux',
+        geometry: [
+          [11.561, 48.1402],
+          [10.8978, 48.365],
+        ],
+      },
+      {
+        fromStopId: 'aux',
+        toStopId: 'ulm',
+        geometry: [
+          [10.8978, 48.365],
+          [10.0006, 48.3984],
+        ],
+      },
+    ],
   },
 
   // MEX16-66012: inspection at Augsburg Hbf
@@ -120,7 +185,7 @@ const TRAIN_DEFINITIONS: TrainDefinition[] = [
   // BY-12345: stationary in BY depot area
   { id: 'BY-12345', line: 'BY', region: 'BY', status: 'stationary' },
   // BW-67890: stationary in BW depot area
-  { id: 'BW-67890', line: 'BW', region: 'BW', status: 'stationary' }
+  { id: 'BW-67890', line: 'BW', region: 'BW', status: 'stationary' },
 ];
 
 // Helpers
@@ -128,26 +193,26 @@ const toMinutesSinceMidnight = (d: Date): number => d.getHours() * 60 + d.getMin
 
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
-const haversine = (a: [number,number], b: [number,number]): number => {
+const haversine = (a: [number, number], b: [number, number]): number => {
   const R = 6371000; // meters
   const toRad = (x: number) => (x * Math.PI) / 180;
   const dLat = toRad(b[1] - a[1]);
   const dLon = toRad(b[0] - a[0]);
   const lat1 = toRad(a[1]);
   const lat2 = toRad(b[1]);
-  const sinDLat = Math.sin(dLat/2);
-  const sinDLon = Math.sin(dLon/2);
-  const h = sinDLat*sinDLat + Math.cos(lat1)*Math.cos(lat2)*sinDLon*sinDLon;
+  const sinDLat = Math.sin(dLat / 2);
+  const sinDLon = Math.sin(dLon / 2);
+  const h = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon;
   return 2 * R * Math.asin(Math.sqrt(h));
 };
 
-const pointAlongLine = (line: [number,number][], fraction: number): [number,number] => {
-  if (line.length === 0) return [0,0];
+const pointAlongLine = (line: [number, number][], fraction: number): [number, number] => {
+  if (line.length === 0) return [0, 0];
   if (line.length === 1) return line[0];
   const segLengths = [] as number[];
   let total = 0;
   for (let i = 0; i < line.length - 1; i++) {
-    const d = haversine(line[i], line[i+1]);
+    const d = haversine(line[i], line[i + 1]);
     segLengths.push(d);
     total += d;
   }
@@ -158,7 +223,7 @@ const pointAlongLine = (line: [number,number][], fraction: number): [number,numb
       const remain = target - acc;
       const t = segLengths[i] === 0 ? 0 : remain / segLengths[i];
       const [lon1, lat1] = line[i];
-      const [lon2, lat2] = line[i+1];
+      const [lon2, lat2] = line[i + 1];
       return [lon1 + (lon2 - lon1) * t, lat1 + (lat2 - lat1) * t];
     }
     acc += segLengths[i];
@@ -190,9 +255,13 @@ const isValidCoord = (lon: number, lat: number): boolean => {
   return lon >= 7 && lon <= 13 && lat >= 47 && lat <= 51;
 };
 
-const getDepotForRegion = (region: 'BY' | 'BW') => (region === 'BY' ? DEPOTS.langweid : DEPOTS.essingen);
+const getDepotForRegion = (region: 'BY' | 'BW') =>
+  region === 'BY' ? DEPOTS.langweid : DEPOTS.essingen;
 
-const computeSchedulePosition = (train: TrainDefinition, tMinutes: number): { lon: number; lat: number; speed: number; atStop: boolean; description: string } => {
+const computeSchedulePosition = (
+  train: TrainDefinition,
+  tMinutes: number
+): { lon: number; lat: number; speed: number; atStop: boolean; description: string } => {
   if (!train.stops || !train.segments || !train.cycleMinutes) {
     // Fallback: place at depot
     const depot = getDepotForRegion(train.region);
@@ -200,12 +269,18 @@ const computeSchedulePosition = (train: TrainDefinition, tMinutes: number): { lo
   }
   const cycle = train.cycleMinutes;
   const t = tMinutes % cycle;
-  const stopsById = new Map(train.stops.map(s => [s.id, s] as const));
+  const stopsById = new Map(train.stops.map((s) => [s.id, s] as const));
 
   // Dwell handling
   for (const s of train.stops) {
     if (t >= s.arr && t <= s.dep) {
-      return { lon: s.lon, lat: s.lat, speed: 0, atStop: true, description: `${train.stops[0].name} → ${train.stops[train.stops.length - 1].name}` };
+      return {
+        lon: s.lon,
+        lat: s.lat,
+        speed: 0,
+        atStop: true,
+        description: `${train.stops[0].name} → ${train.stops[train.stops.length - 1].name}`,
+      };
     }
   }
   // Find active segment
@@ -217,16 +292,35 @@ const computeSchedulePosition = (train: TrainDefinition, tMinutes: number): { lo
       const [lon, lat] = pointAlongLine(seg.geometry, progress);
       const segLenM = haversine(seg.geometry[0], seg.geometry[seg.geometry.length - 1]);
       const minutes = to.arr - from.dep;
-      const speedMs = minutes > 0 ? (segLenM / (minutes * 60)) : 0;
+      const speedMs = minutes > 0 ? segLenM / (minutes * 60) : 0;
       const speedKmH = speedMs * 3.6;
-      return { lon, lat, speed: Math.round(speedKmH), atStop: false, description: `${train.stops[0].name} → ${train.stops[train.stops.length - 1].name}` };
+      return {
+        lon,
+        lat,
+        speed: Math.round(speedKmH),
+        atStop: false,
+        description: `${train.stops[0].name} → ${train.stops[train.stops.length - 1].name}`,
+      };
     }
   }
   // Before first dep or after last arr in cycle: park at nearest logical stop
   const first = train.stops[0];
   const last = train.stops[train.stops.length - 1];
-  if (t <= first.dep) return { lon: first.lon, lat: first.lat, speed: 0, atStop: true, description: `${first.name} → ${last.name}` };
-  return { lon: last.lon, lat: last.lat, speed: 0, atStop: true, description: `${first.name} → ${last.name}` };
+  if (t <= first.dep)
+    return {
+      lon: first.lon,
+      lat: first.lat,
+      speed: 0,
+      atStop: true,
+      description: `${first.name} → ${last.name}`,
+    };
+  return {
+    lon: last.lon,
+    lat: last.lat,
+    speed: 0,
+    atStop: true,
+    description: `${first.name} → ${last.name}`,
+  };
 };
 
 const computeAllTrainPositions = (): ComputedTrain[] => {
@@ -240,22 +334,55 @@ const computeAllTrainPositions = (): ComputedTrain[] => {
       const { dLon, dLat } = metersToDegrees(30, depot.lat); // 30m grid spacing
       const lon = depot.lon + dLon * (slot.dx / 30);
       const lat = depot.lat + dLat * (slot.dy / 30);
-      result.push({ id: def.id, line: def.line, region: def.region, status: def.status, lon, lat, speed: 0, description: `${depot.name} (Depot)` });
+      result.push({
+        id: def.id,
+        line: def.line,
+        region: def.region,
+        status: def.status,
+        lon,
+        lat,
+        speed: 0,
+        description: `${depot.name} (Depot)`,
+      });
       continue;
     }
     if (def.status === 'inspection') {
       // Park at Augsburg Hbf for demo
-      const lon = 10.8978; const lat = 48.3650;
-      result.push({ id: def.id, line: def.line, region: def.region, status: def.status, lon, lat, speed: 0, description: 'Augsburg Hbf (Inspektion)' });
+      const lon = 10.8978;
+      const lat = 48.365;
+      result.push({
+        id: def.id,
+        line: def.line,
+        region: def.region,
+        status: def.status,
+        lon,
+        lat,
+        speed: 0,
+        description: 'Augsburg Hbf (Inspektion)',
+      });
       continue;
     }
     const { lon, lat, speed, description } = computeSchedulePosition(def, t);
-    result.push({ id: def.id, line: def.line, region: def.region, status: def.status, lon, lat, speed, description });
+    result.push({
+      id: def.id,
+      line: def.line,
+      region: def.region,
+      status: def.status,
+      lon,
+      lat,
+      speed,
+      description,
+    });
   }
   return result;
 };
 
-export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFilter }: TrainMarkerProps) {
+export default function TrainMarkers({
+  map,
+  selectedTrain,
+  onTrainSelect,
+  lineFilter,
+}: TrainMarkerProps) {
   const qc = useQueryClient();
   useSSETrains();
   const lastUpdateByTrainRef = useRef<Map<string, number>>(new Map());
@@ -312,7 +439,15 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
     `;
   };
 
-  const ensureDomMarker = (id: string, lon: number, lat: number, line: string, isStale: boolean, acceptNewTarget = true, titleText?: string) => {
+  const ensureDomMarker = (
+    id: string,
+    lon: number,
+    lat: number,
+    line: string,
+    isStale: boolean,
+    acceptNewTarget = true,
+    titleText?: string
+  ) => {
     if (!map) return;
     let entry = domMarkersRef.current.get(id);
     const manufacturer: 'siemens' | 'stadler' = line === 'MEX16' ? 'siemens' : 'stadler';
@@ -328,14 +463,35 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
       el.style.cursor = 'pointer';
       el.style.willChange = 'transform';
       el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
-      el.title = titleText ? titleText : id;
+      // Unified tooltip: FZ • Slot • UIC + Line + ECM + Next due (best-effort)
+      if (titleText) {
+        el.title = titleText;
+      } else {
+        const meta: any = (lastFeatureByIdRef.current.get(id) as any)?.properties || {};
+        const slot = meta.slot ? ` • ${meta.slot}` : '';
+        const uic = meta.uic ? ` • ${meta.uic}` : '';
+        const ecm = meta.health ? ` • ECM:${meta.health}` : '';
+        const next = meta.nextDue ? ` • Next:${meta.nextDue}` : '';
+        const sched = meta.estimated ? ' • SCHED' : '';
+        el.title = `${id}${slot}${uic} • ${line || ''}${ecm}${next}${sched}`;
+      }
       el.innerHTML = renderTrainIconSVG(manufacturer, 0);
       el.addEventListener('click', (e) => {
         e.stopPropagation();
         onTrainSelect(id);
       });
-      const marker = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([lon, lat]).addTo(map);
-      entry = { marker, el, lastLonLat: [lon, lat], animFrom: null, animTo: null, animStartMs: 0, animDurationMs: 0 };
+      const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
+        .setLngLat([lon, lat])
+        .addTo(map);
+      entry = {
+        marker,
+        el,
+        lastLonLat: [lon, lat],
+        animFrom: null,
+        animTo: null,
+        animStartMs: 0,
+        animDurationMs: 0,
+      };
       domMarkersRef.current.set(id, entry);
     } else {
       entry.el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
@@ -382,7 +538,9 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
         const lastDir = computeBearing(entry.lastLonLat, [lon, lat]);
         if (Math.abs(lastDir - dir) > 5) {
           // keep manufacturer color based on id prefix
-          const manufacturer: 'siemens' | 'stadler' = id.startsWith('MEX16') ? 'siemens' : 'stadler';
+          const manufacturer: 'siemens' | 'stadler' = id.startsWith('MEX16')
+            ? 'siemens'
+            : 'stadler';
           entry.el.innerHTML = renderTrainIconSVG(manufacturer, dir);
         }
       }
@@ -406,40 +564,32 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
       if (!map || hasInitializedRef.current) return;
       console.log('🚂 Initializing clustered train markers...');
       // Add clustered trains source
-      if (!map.getSource('trains')) {
+      if (typeof map.getSource === 'function' && !map.getSource('trains')) {
         map.addSource('trains', {
           type: 'geojson',
           data: { type: 'FeatureCollection', features: [] },
           cluster: true,
           clusterRadius: 40,
-          clusterMaxZoom: 14
+          clusterMaxZoom: 14,
         } as any);
       }
       // Cluster bubbles
-      if (!map.getLayer('clusters')) {
+      if (typeof map.getLayer === 'function' && !map.getLayer('clusters')) {
         map.addLayer({
           id: 'clusters',
           type: 'circle',
           source: 'trains',
           filter: ['has', 'point_count'],
           paint: {
-            'circle-color': [
-              'step', ['get', 'point_count'],
-              '#99c', 10,
-              '#668', 50,
-              '#446'
-            ],
-            'circle-radius': [
-              'step', ['get', 'point_count'],
-              16, 10, 20, 50, 22
-            ],
+            'circle-color': ['step', ['get', 'point_count'], '#99c', 10, '#668', 50, '#446'],
+            'circle-radius': ['step', ['get', 'point_count'], 16, 10, 20, 50, 22],
             'circle-stroke-color': '#FFFFFF',
-            'circle-stroke-width': 2
-          }
+            'circle-stroke-width': 2,
+          },
         });
       }
       // Cluster counts
-      if (!map.getLayer('cluster-count')) {
+      if (typeof map.getLayer === 'function' && !map.getLayer('cluster-count')) {
         map.addLayer({
           id: 'cluster-count',
           type: 'symbol',
@@ -448,19 +598,19 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
           layout: {
             'text-field': ['get', 'point_count_abbreviated'],
             'text-size': 12,
-            'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular']
+            'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
           },
-          paint: { 'text-color': '#111' }
+          paint: { 'text-color': '#111' },
         });
       }
       // Train trails source and layer
-      if (!isTestMode && !map.getSource('train-trails')) {
+      if (!isTestMode && typeof map.getSource === 'function' && !map.getSource('train-trails')) {
         map.addSource('train-trails', {
           type: 'geojson',
-          data: { type: 'FeatureCollection', features: [] }
+          data: { type: 'FeatureCollection', features: [] },
         } as any);
       }
-      if (!isTestMode && !map.getLayer('train-trails')) {
+      if (!isTestMode && typeof map.getLayer === 'function' && !map.getLayer('train-trails')) {
         map.addLayer({
           id: 'train-trails',
           type: 'line',
@@ -468,12 +618,12 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
           paint: {
             'line-color': '#4ADE80',
             'line-width': 3,
-            'line-opacity': 0.5
-          }
+            'line-opacity': 0.5,
+          },
         });
       }
       // Unclustered trains
-      if (!map.getLayer('trains-unclustered')) {
+      if (typeof map.getLayer === 'function' && !map.getLayer('trains-unclustered')) {
         map.addLayer({
           id: 'trains-unclustered',
           type: 'circle',
@@ -482,23 +632,22 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
           paint: {
             'circle-radius': 14,
             'circle-stroke-width': 2,
-            'circle-stroke-color': [
-              'case',
-              ['==', ['get', 'stale'], true], '#BDBDBD',
-              '#FFFFFF'
-            ],
+            'circle-stroke-color': ['case', ['==', ['get', 'stale'], true], '#BDBDBD', '#FFFFFF'],
             'circle-color': [
               'case',
-              ['==', ['get', 'health'], 'ok'], '#10B981',
-              ['==', ['get', 'health'], 'warn'], '#F59E0B',
-              ['==', ['get', 'health'], 'due'], '#EF4444',
-              '#6B7280'
-            ]
-          }
+              ['==', ['get', 'health'], 'ok'],
+              '#10B981',
+              ['==', ['get', 'health'], 'warn'],
+              '#F59E0B',
+              ['==', ['get', 'health'], 'due'],
+              '#EF4444',
+              '#6B7280',
+            ],
+          },
         });
       }
       // Selected overlay (top)
-      if (!map.getLayer('train-selected')) {
+      if (typeof map.getLayer === 'function' && !map.getLayer('train-selected')) {
         map.addLayer({
           id: 'train-selected',
           type: 'circle',
@@ -511,21 +660,29 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
             'circle-opacity': 0.9,
             'circle-color': [
               'case',
-              ['==', ['get', 'health'], 'ok'], '#10B981',
-              ['==', ['get', 'health'], 'warn'], '#F59E0B',
-              ['==', ['get', 'health'], 'due'], '#EF4444',
-              '#6B7280'
-            ]
-          }
+              ['==', ['get', 'health'], 'ok'],
+              '#10B981',
+              ['==', ['get', 'health'], 'warn'],
+              '#F59E0B',
+              ['==', ['get', 'health'], 'due'],
+              '#EF4444',
+              '#6B7280',
+            ],
+          },
         });
       }
       // Ensure layer order
       try {
-        if (map.getLayer('clusters')) map.moveLayer('clusters');
-        if (map.getLayer('cluster-count')) map.moveLayer('cluster-count');
-        if (map.getLayer('trains-unclustered')) map.moveLayer('trains-unclustered');
-        if (map.getLayer('train-selected')) map.moveLayer('train-selected');
-        if (map.getLayer('depots-symbol')) map.moveLayer('depots-symbol');
+        if (typeof map.getLayer === 'function' && map.getLayer('clusters'))
+          map.moveLayer('clusters');
+        if (typeof map.getLayer === 'function' && map.getLayer('cluster-count'))
+          map.moveLayer('cluster-count');
+        if (typeof map.getLayer === 'function' && map.getLayer('trains-unclustered'))
+          map.moveLayer('trains-unclustered');
+        if (typeof map.getLayer === 'function' && map.getLayer('train-selected'))
+          map.moveLayer('train-selected');
+        if (typeof map.getLayer === 'function' && map.getLayer('depots-symbol'))
+          map.moveLayer('depots-symbol');
       } catch {}
       // Click + hover handlers
       if (!eventListenersAddedRef.current) {
@@ -538,8 +695,12 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
             }
           }
         });
-        map.on('mouseenter', 'trains-unclustered', () => { map.getCanvas().style.cursor = 'pointer'; });
-        map.on('mouseleave', 'trains-unclustered', () => { map.getCanvas().style.cursor = ''; });
+        map.on('mouseenter', 'trains-unclustered', () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'trains-unclustered', () => {
+          map.getCanvas().style.cursor = '';
+        });
         map.on('click', 'clusters', async (e) => {
           const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
           const clusterId = features[0]?.properties?.cluster_id;
@@ -553,14 +714,24 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
             });
           }
         });
-        map.on('dragstart', () => { didFitRef.current = true; });
-        map.on('zoomstart', () => { didFitRef.current = true; });
+        map.on('dragstart', () => {
+          didFitRef.current = true;
+        });
+        map.on('zoomstart', () => {
+          didFitRef.current = true;
+        });
         eventListenersAddedRef.current = true;
       }
       console.log('✅ Clustered train marker layers initialized');
-      try { (window as any).__mapReady = true; } catch {}
-      try { window.dispatchEvent(new CustomEvent('map:ready')); } catch {}
-      try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
+      try {
+        (window as any).__mapReady = true;
+      } catch {}
+      try {
+        window.dispatchEvent(new CustomEvent('map:ready'));
+      } catch {}
+      try {
+        window.dispatchEvent(new CustomEvent('trains:update'));
+      } catch {}
       hasInitializedRef.current = true;
       if (!isTestMode && !rafRef.current && hasLiveRef.current) {
         rafRef.current = requestAnimationFrame(stepAnimation);
@@ -572,7 +743,9 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
       initLayers();
     } else {
       loadHandler = () => {
-        try { map.off('load', loadHandler); } catch {}
+        try {
+          map.off('load', loadHandler);
+        } catch {}
         initLayers();
       };
       map.on('load', loadHandler);
@@ -580,25 +753,41 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
 
     return () => {
       if (loadHandler) {
-        try { map.off('load', loadHandler); } catch {}
+        try {
+          map.off('load', loadHandler);
+        } catch {}
       }
       // Cleanup
       for (const layerId of ['train-selected', 'trains-unclustered', 'cluster-count', 'clusters']) {
-        if (map.getLayer(layerId)) map.removeLayer(layerId);
+        if (typeof map.getLayer === 'function' && map.getLayer(layerId)) map.removeLayer(layerId);
       }
-      if (map.getLayer('train-trails')) map.removeLayer('train-trails');
-      if (map.getSource('trains')) map.removeSource('trains');
-      if (map.getSource('train-trails')) map.removeSource('train-trails');
-      for (const [, entry] of domMarkersRef.current.entries()) { entry.marker.remove(); }
+      if (typeof map.getLayer === 'function' && map.getLayer('train-trails'))
+        map.removeLayer('train-trails');
+      if (typeof map.getSource === 'function' && map.getSource('trains'))
+        map.removeSource('trains');
+      if (typeof map.getSource === 'function' && map.getSource('train-trails'))
+        map.removeSource('train-trails');
+      for (const [, entry] of domMarkersRef.current.entries()) {
+        entry.marker.remove();
+      }
       domMarkersRef.current.clear();
-      if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     };
   }, [map, onTrainSelect, isTestMode]);
 
   // Track SSE connectivity to decide whether to animate/trail
   useEffect(() => {
-    const onConnected = () => { hasLiveRef.current = true; if (!isTestMode && map && !rafRef.current) rafRef.current = requestAnimationFrame(stepAnimation); };
-    const onError = () => { /* keep last state */ };
+    const onConnected = () => {
+      hasLiveRef.current = true;
+      if (!isTestMode && map && !rafRef.current)
+        rafRef.current = requestAnimationFrame(stepAnimation);
+    };
+    const onError = () => {
+      /* keep last state */
+    };
     window.addEventListener('sse:connected', onConnected as any);
     window.addEventListener('sse:error', onError as any);
     return () => {
@@ -620,12 +809,22 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
           type: 'FeatureCollection',
           features: bootstrap.map((t) => ({
             type: 'Feature',
-            properties: { id: t.id, line: t.line, status: t.status, speed: t.speed, ts: Date.now(), desc: t.description, estimated: true },
-            geometry: { type: 'Point', coordinates: [t.lon, t.lat] }
-          }))
+            properties: {
+              id: t.id,
+              line: t.line,
+              status: t.status,
+              speed: t.speed,
+              ts: Date.now(),
+              desc: t.description,
+              estimated: true,
+            },
+            geometry: { type: 'Point', coordinates: [t.lon, t.lat] },
+          })),
         } as any;
         qc.setQueryData(['trains', 'live'], bootstrapFc);
-        try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
+        try {
+          window.dispatchEvent(new CustomEvent('trains:update'));
+        } catch {}
       };
       tick();
       fallbackTimerRef.current = window.setInterval(tick, 45000);
@@ -657,12 +856,22 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
           type: 'FeatureCollection',
           features: bootstrap.map((t) => ({
             type: 'Feature',
-            properties: { id: t.id, line: t.line, status: t.status, speed: t.speed, ts: Date.now(), desc: t.description, estimated: true },
-            geometry: { type: 'Point', coordinates: [t.lon, t.lat] }
-          }))
+            properties: {
+              id: t.id,
+              line: t.line,
+              status: t.status,
+              speed: t.speed,
+              ts: Date.now(),
+              desc: t.description,
+              estimated: true,
+            },
+            geometry: { type: 'Point', coordinates: [t.lon, t.lat] },
+          })),
         } as any;
         qc.setQueryData(['trains', 'live'], bootstrapFc);
-        try { window.dispatchEvent(new CustomEvent('trains:update')); } catch {}
+        try {
+          window.dispatchEvent(new CustomEvent('trains:update'));
+        } catch {}
         fc = bootstrapFc;
         liveFeatures = bootstrapFc.features;
       }
@@ -671,12 +880,26 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
         const id = f?.properties?.id as string | undefined;
         const line = f?.properties?.line;
         const status = f?.properties?.status;
-        const title = f?.properties?.estimated && f?.properties?.desc ? `Fahrplan-Position (geschätzt) – ${id}: ${f.properties.desc}` : id;
+        const title =
+          f?.properties?.estimated && f?.properties?.desc
+            ? `Fahrplan-Position (geschätzt) – ${id}: ${f.properties.desc}`
+            : id;
         if (!id) continue;
-        if (!Array.isArray(coords) || coords.length !== 2) { invalidCount++; continue; }
+        if (!Array.isArray(coords) || coords.length !== 2) {
+          invalidCount++;
+          continue;
+        }
         const [lon, lat] = coords;
-        if (!isValidCoord(lon, lat)) { invalidCount++; continue; }
-        if (Array.isArray(lineFilter) && lineFilter.length > 0 && line && !lineFilter.includes(String(line))) {
+        if (!isValidCoord(lon, lat)) {
+          invalidCount++;
+          continue;
+        }
+        if (
+          Array.isArray(lineFilter) &&
+          lineFilter.length > 0 &&
+          line &&
+          !lineFilter.includes(String(line))
+        ) {
           continue;
         }
         // Throttle per-train updates: at most once every 5 seconds
@@ -685,18 +908,21 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
         if (nowMs - last < 5000 && lastFeatureByIdRef.current.has(id)) {
           // Use previous feature to avoid rapid jitter
           const prev = lastFeatureByIdRef.current.get(id)!;
-          const keep = { ...(prev as any), properties: { ...(prev as any).properties, stale: false } };
+          const keep = {
+            ...(prev as any),
+            properties: { ...(prev as any).properties, stale: false },
+          };
           nextFeatures.push(keep);
-          const [plon, plat] = (keep.geometry.coordinates as [number, number]);
+          const [plon, plat] = keep.geometry.coordinates as [number, number];
           ensureDomMarker(id, plon, plat, keep.properties.line, false, !isTestMode, title);
           seenIds.add(id);
           continue;
         }
-        const health = status === 'active' ? 'ok' : (status === 'maintenance' ? 'warn' : 'due');
+        const health = status === 'active' ? 'ok' : status === 'maintenance' ? 'warn' : 'due';
         const feature = {
           type: 'Feature',
           properties: { id, line, health, stale: false },
-          geometry: { type: 'Point', coordinates: [lon, lat] }
+          geometry: { type: 'Point', coordinates: [lon, lat] },
         };
         nextFeatures.push(feature);
         seenIds.add(id);
@@ -719,9 +945,12 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
         if (seenIds.has(id)) continue;
         const lastUpdate = lastUpdateByIdRef.current.get(id) ?? 0;
         if (now - lastUpdate <= holdoverMs) {
-          const keep = { ...(feature as any), properties: { ...(feature as any).properties, stale: true } };
+          const keep = {
+            ...(feature as any),
+            properties: { ...(feature as any).properties, stale: true },
+          };
           nextFeatures.push(keep);
-          const [plon, plat] = (keep.geometry.coordinates as [number, number]);
+          const [plon, plat] = keep.geometry.coordinates as [number, number];
           ensureDomMarker(id, plon, plat, keep.properties.line, true, !isTestMode);
         }
       }
@@ -754,7 +983,7 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
           trailFeatures.push({
             type: 'Feature',
             properties: { id },
-            geometry: { type: 'LineString', coordinates: coords }
+            geometry: { type: 'LineString', coordinates: coords },
           });
         }
         const trailsOut = { type: 'FeatureCollection', features: trailFeatures } as any;
@@ -782,7 +1011,13 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
       }
 
       // Data quality event for UI banner
-      try { window.dispatchEvent(new CustomEvent('trains:quality', { detail: { valid: nextFeatures.length, invalid: invalidCount } })); } catch {}
+      try {
+        window.dispatchEvent(
+          new CustomEvent('trains:quality', {
+            detail: { valid: nextFeatures.length, invalid: invalidCount },
+          })
+        );
+      } catch {}
     };
     update();
     const handler = () => update();
@@ -822,11 +1057,14 @@ export default function TrainMarkers({ map, selectedTrain, onTrainSelect, lineFi
   useEffect(() => {
     if (!map) return;
     const targetId = selectedTrain ?? '___none___';
-    if (map.getLayer('train-selected')) {
-      map.setFilter('train-selected', ['all', ['!', ['has', 'point_count']], ['==', ['get', 'id'], targetId]] as any);
+    if (typeof map.getLayer === 'function' && map.getLayer('train-selected')) {
+      map.setFilter('train-selected', [
+        'all',
+        ['!', ['has', 'point_count']],
+        ['==', ['get', 'id'], targetId],
+      ] as any);
     }
   }, [map, selectedTrain]);
 
   return null; // This component doesn't render anything visible
 }
-

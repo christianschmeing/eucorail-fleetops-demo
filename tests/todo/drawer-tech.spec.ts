@@ -7,5 +7,3 @@ test.skip('drawer shows technical details placeholders', async ({ page }) => {
   await page.getByTestId('hud-open-details').first().click();
   await expect(page.getByTestId('train-drawer')).toBeVisible();
 });
-
-

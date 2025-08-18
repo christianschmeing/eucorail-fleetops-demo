@@ -1,38 +1,68 @@
-"use client";
-import { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
+import { apiGet } from '@/lib/api-client';
 
 export function useSSETrains() {
-  const qc = useQueryClient();
+  const [trains, setTrains] = useState<any[]>([]);
+  const [status, setStatus] = useState<'connecting' | 'connected' | 'reconnecting' | 'polling'>(
+    'connecting'
+  );
+  const esRef = useRef<EventSource | null>(null);
+  const backoff = useRef(0);
+
   useEffect(() => {
-    // Direct connection to API to avoid proxy issues
-    const base = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4100';
-    const endpoint = `${base}/events`;
-    const es = new EventSource(endpoint);
-    es.onopen = () => {
-      try { window.dispatchEvent(new CustomEvent('sse:open')); } catch {}
-    };
-    es.onerror = () => {
-      try { window.dispatchEvent(new CustomEvent('sse:error')); } catch {}
-    };
-    let firstUpdateSeen = false;
-    const onUpdate = (ev: MessageEvent) => {
+    let cancelled = false;
+    const connect = () => {
       try {
-        const fc = JSON.parse(ev.data);
-        qc.setQueryData(['trains', 'live'], fc);
-        window.dispatchEvent(new CustomEvent('trains:update'));
-        if (!firstUpdateSeen) {
-          firstUpdateSeen = true;
-          try { window.dispatchEvent(new CustomEvent('sse:connected')); } catch {}
-        }
-      } catch {}
+        esRef.current = new EventSource('/api/events');
+        esRef.current.onopen = () => {
+          if (!cancelled) {
+            setStatus('connected');
+            backoff.current = 0;
+          }
+        };
+        esRef.current.onmessage = (ev) => {
+          try {
+            const d = JSON.parse(ev.data);
+            if (d?.runId) {
+              setTrains((prev) => {
+                const i = prev.findIndex((p) => p.runId === d.runId);
+                if (i >= 0) {
+                  const c = prev.slice();
+                  c[i] = { ...c[i], ...d };
+                  return c;
+                }
+                return [...prev, d];
+              });
+            }
+          } catch {}
+        };
+        esRef.current.onerror = () => {
+          esRef.current?.close();
+          if (!cancelled) {
+            setStatus('reconnecting');
+            backoff.current = Math.min(30000, (backoff.current || 1000) * 2);
+            setTimeout(connect, backoff.current);
+          }
+        };
+      } catch {
+        setStatus('polling');
+      }
     };
-    es.addEventListener('train:update', onUpdate as any);
+    connect();
+
+    const poll = setInterval(async () => {
+      if (status !== 'connected') {
+        const r = await apiGet<any>('/trains?limit=500');
+        if (r.ok && Array.isArray((r.data as any).items)) setTrains((r.data as any).items);
+      }
+    }, 5000);
+
     return () => {
-      es.removeEventListener('train:update', onUpdate as any);
-      es.close();
+      cancelled = true;
+      esRef.current?.close();
+      clearInterval(poll);
     };
-  }, [qc]);
+  }, [status]);
+
+  return { trains, status };
 }
-
-

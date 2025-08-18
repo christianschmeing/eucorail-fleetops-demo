@@ -1,10 +1,13 @@
-"use client";
+'use client';
 import { useEffect, useState } from 'react';
 
 export default function EnergyGauge() {
   const [consumption, setConsumption] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setConsumption((c) => Math.round((c + Math.random() * 2) % 100)), 1500);
+    const id = setInterval(
+      () => setConsumption((c) => Math.round((c + Math.random() * 2) % 100)),
+      1500
+    );
     return () => clearInterval(id);
   }, []);
 
@@ -20,5 +23,3 @@ export default function EnergyGauge() {
     </div>
   );
 }
-
-

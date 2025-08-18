@@ -14,7 +14,7 @@ class RobustFinalTester {
       'pkill -9 -f "node scripts/demo.mjs"',
       'lsof -ti:3000 | xargs kill -9',
       'lsof -ti:3001 | xargs kill -9',
-      'lsof -ti:4100 | xargs kill -9'
+      'lsof -ti:4100 | xargs kill -9',
     ];
 
     for (const cmd of commands) {
@@ -24,7 +24,7 @@ class RobustFinalTester {
         // Ignore errors
       }
     }
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     console.log('✅ Cleanup completed');
   }
 
@@ -41,11 +41,11 @@ class RobustFinalTester {
 
   async startDemo() {
     console.log('🚀 Starting demo...');
-    
+
     return new Promise((resolve, reject) => {
       this.demoProcess = spawn('npm', ['run', 'demo'], {
         stdio: 'pipe',
-        shell: true
+        shell: true,
       });
 
       let ready = false;
@@ -53,7 +53,7 @@ class RobustFinalTester {
 
       this.demoProcess.stdout.on('data', (data) => {
         const text = data.toString();
-        
+
         if (text.includes('Ready in')) {
           ready = true;
           console.log('✅ Demo ready');
@@ -65,10 +65,14 @@ class RobustFinalTester {
         if (text.includes('GET / 200')) {
           console.log('✅ Page served successfully');
         }
-        
+
         // Log important messages
-        if (text.includes('Ready in') || text.includes('Server listening') || 
-            text.includes('Compiled / in') || text.includes('GET / 200')) {
+        if (
+          text.includes('Ready in') ||
+          text.includes('Server listening') ||
+          text.includes('Compiled / in') ||
+          text.includes('GET / 200')
+        ) {
           console.log(`[DEMO] ${text.trim()}`);
         }
       });
@@ -126,81 +130,79 @@ class RobustFinalTester {
 
   async testWithPuppeteer() {
     console.log('🧪 Starting visual test...');
-    
-    const browser = await puppeteer.launch({ 
-      headless: false, 
+
+    const browser = await puppeteer.launch({
+      headless: false,
       defaultViewport: { width: 1280, height: 720 },
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    
+
     try {
       const page = await browser.newPage();
-      
+
       // Enable console logging
-      page.on('console', msg => {
+      page.on('console', (msg) => {
         console.log(`[BROWSER] ${msg.type()}: ${msg.text()}`);
       });
-      
+
       console.log('📱 Loading page...');
-      await page.goto('http://localhost:3001', { 
+      await page.goto('http://localhost:3001', {
         waitUntil: 'networkidle2',
-        timeout: 45000 
+        timeout: 45000,
       });
-      
+
       console.log('✅ Page loaded');
-      
+
       // Wait for map
       console.log('🗺️ Waiting for map...');
       await page.waitForSelector('[data-testid="map-canvas"]', { timeout: 20000 });
       console.log('✅ Map found');
-      
+
       // Wait for markers with very long timeout
       console.log('🚂 Waiting for train markers (up to 120 seconds)...');
       try {
         await page.waitForSelector('[data-testid="train-marker"]', { timeout: 120000 });
         console.log('✅ Train markers found!');
-        
-        const markerCount = await page.$$eval('[data-testid="train-marker"]', els => els.length);
+
+        const markerCount = await page.$$eval('[data-testid="train-marker"]', (els) => els.length);
         console.log(`📊 Found ${markerCount} train markers`);
-        
+
         await page.screenshot({ path: 'test-success.png', fullPage: true });
         console.log('📸 Screenshot saved as test-success.png');
-        
+
         return { success: true, markerCount };
-        
       } catch (e) {
         console.log('❌ No train markers found within 120 seconds');
-        
+
         // Take screenshot for debugging
         await page.screenshot({ path: 'test-no-markers.png', fullPage: true });
         console.log('📸 Screenshot saved as test-no-markers.png');
-        
+
         // Check what's on the page
         const title = await page.title();
         const url = page.url();
         console.log('🔍 Page title:', title);
         console.log('🔍 Page URL:', url);
-        
+
         // Check for any elements with data-testid
-        const testElements = await page.$$eval('[data-testid]', els => 
-          els.map(el => ({ 
+        const testElements = await page.$$eval('[data-testid]', (els) =>
+          els.map((el) => ({
             testid: el.getAttribute('data-testid'),
             tagName: el.tagName,
             className: el.className,
-            visible: el.offsetWidth > 0 && el.offsetHeight > 0
+            visible: el.offsetWidth > 0 && el.offsetHeight > 0,
           }))
         );
         console.log('🔍 Elements with data-testid:', testElements);
-        
+
         // Check for any console errors
         const logs = await page.evaluate(() => {
           return window.console.logs || [];
         });
         console.log('🔍 Console logs:', logs);
-        
+
         return { success: false, error: 'No markers found' };
       }
-      
     } catch (error) {
       console.error('❌ Puppeteer test failed:', error.message);
       return { success: false, error: error.message };
@@ -211,16 +213,16 @@ class RobustFinalTester {
 
   async run() {
     console.log('🎯 Starting robust final test...');
-    
+
     try {
       await this.forceKillAll();
       await this.startDemo();
-      
+
       console.log('⏳ Waiting 30 seconds for everything to settle...');
-      await new Promise(resolve => setTimeout(resolve, 30000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+
       const result = await this.testWithPuppeteer();
-      
+
       if (result.success) {
         console.log(`🎉 SUCCESS! Found ${result.markerCount} train markers`);
         this.killDemo();
@@ -230,7 +232,6 @@ class RobustFinalTester {
         this.killDemo();
         return result;
       }
-      
     } catch (error) {
       console.error(`❌ Test failed:`, error.message);
       this.killDemo();
@@ -241,8 +242,9 @@ class RobustFinalTester {
 
 // Run the robust final test
 const tester = new RobustFinalTester();
-tester.run()
-  .then(result => {
+tester
+  .run()
+  .then((result) => {
     if (result.success) {
       console.log('🎯 Test suite completed successfully!');
       process.exit(0);
@@ -251,9 +253,7 @@ tester.run()
       process.exit(1);
     }
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('💥 Test suite failed:', error.message);
     process.exit(1);
   });
-
-

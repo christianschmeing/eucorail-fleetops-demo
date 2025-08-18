@@ -17,12 +17,19 @@ test.describe('Sidebar filters & catalog', () => {
     expect(count).toBeGreaterThan(100);
 
     // Wait until UI lists >100 items (catalog merged)
-    await page.waitForFunction(() => document.querySelectorAll('[data-testid="train-item"]').length > 100, null, { timeout: 60000 });
+    await page.waitForFunction(
+      () => document.querySelectorAll('[data-testid="train-item"]').length > 100,
+      null,
+      { timeout: 60000 }
+    );
     const total = await page.locator('[data-testid="train-item"]').count();
     expect(total).toBeGreaterThan(100);
 
     // Status filter
-    await page.waitForSelector('[role="group"][aria-label="Status"]', { state: 'visible', timeout: 30000 });
+    await page.waitForSelector('[role="group"][aria-label="Status"]', {
+      state: 'visible',
+      timeout: 30000,
+    });
     const statusGroup = page.getByRole('group', { name: 'Status' });
     await expect(statusGroup).toBeVisible({ timeout: 30000 });
     await statusGroup.getByRole('button', { name: 'maintenance' }).click();
@@ -31,7 +38,10 @@ test.describe('Sidebar filters & catalog', () => {
     expect(afterStatus).toBeLessThan(total);
 
     // Region filter (if present)
-    await page.waitForSelector('[role="group"][aria-label="Region"]', { state: 'visible', timeout: 30000 });
+    await page.waitForSelector('[role="group"][aria-label="Region"]', {
+      state: 'visible',
+      timeout: 30000,
+    });
     const regionGroup = page.getByRole('group', { name: 'Region' });
     await expect(regionGroup).toBeVisible({ timeout: 30000 });
     const regionButtons = await regionGroup.getByRole('button').allTextContents();

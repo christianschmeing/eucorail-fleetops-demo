@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 export default function ThemeToggle() {
   return (
@@ -16,5 +16,3 @@ export default function ThemeToggle() {
     </button>
   );
 }
-
-

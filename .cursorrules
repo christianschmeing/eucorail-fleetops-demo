@@ -1,3 +1,44 @@
+# Cursor Rules for Eucorail FleetOps
+
+## Response Format
+Always respond with:
+1. WHAT was implemented
+2. WHERE (file paths)
+3. STATUS (✅ Complete / ⚠️ Partial / ❌ Failed)
+4. TEST_COMMAND to verify
+5. NEXT_STEP instruction
+
+## Code Standards
+- TypeScript strict mode
+- ESLint + Prettier
+- Component tests required
+- API endpoints documented
+- Commits: conventional format
+
+## File Structure
+- Components: /apps/web/components/
+- API: /packages/api/src/
+- Tests: /__tests__/
+- Styles: /apps/web/styles/
+
+## Auto-Response Template
+```
+STATUS: [✅/⚠️/❌]
+IMPLEMENTED:
+- [Feature 1]
+- [Feature 2]
+
+FILES_CHANGED:
+- path/to/file1.ts
+- path/to/file2.tsx
+
+TEST_WITH:
+npm run test:all
+
+READY_FOR_NEXT: [YES/NO]
+BLOCKING_ISSUE: [None/Description]
+```
+
 Ziele
 - Vor jedem Commit: „npm run verify“ lokal ausführen. Falls fehlende Baselines: nachfragen, ob Snapshots aktualisiert werden sollen.
 - Bei fehlgeschlagenen Tests: Fokus auf Playwright‑Selektoren mit data-testid, keine flakey Waits einführen.

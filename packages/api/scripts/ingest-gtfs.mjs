@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Minimal GTFS ingestion: downloads zip(s), extracts routes/trips, maps to Averio lines, exports trains.json
+// Minimal GTFS ingestion: downloads zip(s), extracts routes/trips, maps to Averio lines, exports trains.json and updates lines/depots seeds
 // Dependencies: node >=18 (built-in fetch), no external packages required for basic zip streaming
 
 import fs from 'node:fs';
@@ -20,7 +20,9 @@ if (SOURCES.length === 0) {
 }
 
 const workDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gtfs-'));
-const target = path.resolve('packages/api/seeds/averio/trains.json');
+const trainsTarget = path.resolve('packages/api/seeds/averio/trains.json');
+const linesTarget = path.resolve('packages/api/seeds/averio/lines.json');
+const depotsTarget = path.resolve('packages/api/seeds/core/depots.json');
 
 function unzip(zipFile, outDir) {
   execSync(`unzip -o ${JSON.stringify(zipFile)} -d ${JSON.stringify(outDir)}`);
@@ -100,8 +102,41 @@ for (const src of SOURCES) {
 const seen = new Set();
 const unique = trains.filter((t) => (seen.has(t.id) ? false : (seen.add(t.id), true)));
 
-fs.mkdirSync(path.dirname(target), { recursive: true });
-fs.writeFileSync(target, JSON.stringify(unique, null, 2));
-console.log(`Saved ${unique.length} trains to ${target}`);
+fs.mkdirSync(path.dirname(trainsTarget), { recursive: true });
+fs.writeFileSync(trainsTarget, JSON.stringify(unique, null, 2));
+console.log(`Saved ${unique.length} trains to ${trainsTarget}`);
+
+// Update lines.json minimally by ensuring present mapped codes exist
+const existingLines = fs.existsSync(linesTarget) ? JSON.parse(fs.readFileSync(linesTarget, 'utf-8')) : [];
+const byId = new Map(existingLines.map(l => [String(l.id).toLowerCase(), l]));
+const required = Array.from(new Set(unique.map(t => String(t.lineId || t.line).toLowerCase())));
+const defaults = {
+  re9: { id: 're9', region: 'BY', name: 'RE9 Augsburger Netze', color: '#bcbd22' },
+  mex16: { id: 'mex16', region: 'BW', name: 'MEX16 Filstalbahn', color: '#2ca02c' },
+  re8: { id: 're8', region: 'BW', name: 'RE8 Frankenbahn', color: '#d62728' }
+};
+for (const code of required) {
+  if (!byId.has(code)) {
+    const val = defaults[code] || { id: code, region: 'BW', name: code.toUpperCase(), color: '#999999' };
+    existingLines.push(val);
+    byId.set(code, val);
+  }
+}
+fs.mkdirSync(path.dirname(linesTarget), { recursive: true });
+fs.writeFileSync(linesTarget, JSON.stringify(existingLines, null, 2));
+console.log(`Ensured ${existingLines.length} lines in ${linesTarget}`);
+
+// Ensure core depots exist (Essingen, Langweid)
+const depots = fs.existsSync(depotsTarget) ? JSON.parse(fs.readFileSync(depotsTarget, 'utf-8')) : [];
+const need = [
+  { id: 'depot-essingen', name: 'Eucorail Depot Essingen', address: 'Bahnhof 2, 73457 Essingen', lat: 48.8089, lon: 9.3072, region: 'BW' },
+  { id: 'depot-langweid', name: 'Eucorail Depot Langweid', address: 'Parkstraße 20, 86462 Langweid am Lech', lat: 48.4908, lon: 10.8569, region: 'BY' }
+];
+const depotsById = new Set(depots.map((d) => d.id));
+for (const d of need) if (!depotsById.has(d.id)) depots.push(d);
+fs.mkdirSync(path.dirname(depotsTarget), { recursive: true });
+fs.writeFileSync(depotsTarget, JSON.stringify(depots, null, 2));
+console.log(`Ensured depots in ${depotsTarget}`);
+
 
 

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useEffect } from 'react';
 
 export default function Error({ error }: { error: Error & { digest?: string } }) {
@@ -14,5 +14,3 @@ export default function Error({ error }: { error: Error & { digest?: string } })
     </div>
   );
 }
-
-

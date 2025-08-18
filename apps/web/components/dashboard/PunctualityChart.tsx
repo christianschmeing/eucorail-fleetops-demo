@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useEffect, useMemo, useState } from 'react';
 
 type Stat = { onTime: number; delayed: number; canceled: number };
@@ -18,17 +18,23 @@ export default function PunctualityChart() {
     return () => clearInterval(id);
   }, [isTest]);
 
-  const bars = useMemo(() => ([
-    { label: 'On time', value: stat.onTime, color: 'bg-green-400' },
-    { label: 'Delayed', value: stat.delayed, color: 'bg-yellow-400' },
-    { label: 'Canceled', value: stat.canceled, color: 'bg-red-400' }
-  ]), [stat]);
+  const bars = useMemo(
+    () => [
+      { label: 'On time', value: stat.onTime, color: 'bg-green-400' },
+      { label: 'Delayed', value: stat.delayed, color: 'bg-yellow-400' },
+      { label: 'Canceled', value: stat.canceled, color: 'bg-red-400' },
+    ],
+    [stat]
+  );
 
   return (
-    <div className="bg-[#1A2F3A] border border-[#2A3F4A] rounded-lg p-4" data-testid="widget-punctuality">
+    <div
+      className="bg-[#1A2F3A] border border-[#2A3F4A] rounded-lg p-4"
+      data-testid="widget-punctuality"
+    >
       <h3 className="text-sm font-semibold mb-3">Pünktlichkeit</h3>
       <div className="space-y-2">
-        {bars.map(b => (
+        {bars.map((b) => (
           <div key={b.label} className="text-xs">
             <div className="flex items-center justify-between mb-1">
               <span className="text-gray-300">{b.label}</span>
@@ -43,5 +49,3 @@ export default function PunctualityChart() {
     </div>
   );
 }
-
-

@@ -16,17 +16,15 @@ export default fp(async (app) => {
     await app.register(underPressure, {
       maxEventLoopDelay: 100,
       healthCheck: async () => ({ ok: true }),
-      healthCheckInterval: 5000
+      healthCheckInterval: 5000,
     });
   } else {
     // Do not register under-pressure in TEST_MODE to avoid intermittent 503 during dev/e2e
   }
 
   await app.register(swagger, {
-    openapi: { info: { title: 'Eucorail FleetOps Demo API', version: '1.0.0' } }
+    openapi: { info: { title: 'Eucorail FleetOps Demo API', version: '1.0.0' } },
   });
   await app.register(swaggerUi, { routePrefix: '/docs' });
   app.get('/health', async () => ({ status: 'ok' }));
 });
-
-

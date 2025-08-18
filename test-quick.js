@@ -13,7 +13,7 @@ class QuickTester {
     exec('pkill -9 -f "tsx watch"', () => {});
     exec('lsof -ti:3001 | xargs kill -9', () => {});
     exec('lsof -ti:4100 | xargs kill -9', () => {});
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
   }
 
   async startAPI() {
@@ -21,7 +21,7 @@ class QuickTester {
     return new Promise((resolve, reject) => {
       this.apiProcess = spawn('npm', ['--workspace', 'packages/api', 'run', 'dev'], {
         env: { ...process.env, PORT: '4100' },
-        stdio: 'pipe'
+        stdio: 'pipe',
       });
 
       this.apiProcess.stdout.on('data', (data) => {
@@ -50,7 +50,7 @@ class QuickTester {
     return new Promise((resolve, reject) => {
       this.webProcess = spawn('npm', ['--workspace', 'apps/web', 'run', 'dev'], {
         env: { ...process.env, PORT: '3001' },
-        stdio: 'pipe'
+        stdio: 'pipe',
       });
 
       this.webProcess.stdout.on('data', (data) => {
@@ -76,64 +76,62 @@ class QuickTester {
 
   async testWithPuppeteer() {
     console.log('🧪 Testing with Puppeteer...');
-    
-    const browser = await puppeteer.launch({ 
-      headless: false, 
+
+    const browser = await puppeteer.launch({
+      headless: false,
       defaultViewport: { width: 1280, height: 720 },
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    
+
     try {
       const page = await browser.newPage();
-      
+
       // Enable console logging
-      page.on('console', msg => {
+      page.on('console', (msg) => {
         console.log(`[BROWSER] ${msg.type()}: ${msg.text()}`);
       });
-      
+
       console.log('📱 Loading page...');
-      await page.goto('http://localhost:3001', { 
+      await page.goto('http://localhost:3001', {
         waitUntil: 'networkidle2',
-        timeout: 30000 
+        timeout: 30000,
       });
-      
+
       console.log('✅ Page loaded');
-      
+
       // Wait for map
       console.log('🗺️ Waiting for map...');
       await page.waitForSelector('[data-testid="map-canvas"]', { timeout: 20000 });
       console.log('✅ Map found');
-      
+
       // Wait for markers
       console.log('🚂 Waiting for train markers...');
       try {
         await page.waitForSelector('[data-testid="train-marker"]', { timeout: 60000 });
         console.log('✅ Train markers found!');
-        
-        const markerCount = await page.$$eval('[data-testid="train-marker"]', els => els.length);
+
+        const markerCount = await page.$$eval('[data-testid="train-marker"]', (els) => els.length);
         console.log(`📊 Found ${markerCount} train markers`);
-        
+
         await page.screenshot({ path: 'test-success.png', fullPage: true });
         console.log('📸 Screenshot saved as test-success.png');
-        
+
         return { success: true, markerCount };
-        
       } catch (e) {
         console.log('❌ No train markers found');
-        
+
         // Take screenshot for debugging
         await page.screenshot({ path: 'test-no-markers.png', fullPage: true });
         console.log('📸 Screenshot saved as test-no-markers.png');
-        
+
         // Check what's on the page
         const title = await page.title();
         const url = page.url();
         console.log('🔍 Page title:', title);
         console.log('🔍 Page URL:', url);
-        
+
         return { success: false, error: 'No markers found' };
       }
-      
     } catch (error) {
       console.error('❌ Puppeteer test failed:', error.message);
       return { success: false, error: error.message };
@@ -144,10 +142,10 @@ class QuickTester {
 
   async run() {
     console.log('🎯 Starting quick test...');
-    
+
     try {
       await this.cleanup();
-      
+
       // Run seeds
       console.log('🌱 Running seeds...');
       await new Promise((resolve, reject) => {
@@ -156,23 +154,22 @@ class QuickTester {
           else resolve();
         });
       });
-      
+
       await this.startAPI();
       await this.startWeb();
-      
+
       console.log('⏳ Waiting 10 seconds for everything to settle...');
-      await new Promise(resolve => setTimeout(resolve, 10000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
       const result = await this.testWithPuppeteer();
-      
+
       if (result.success) {
         console.log(`🎉 SUCCESS! Found ${result.markerCount} train markers`);
       } else {
         console.log(`⚠️ Test failed: ${result.error}`);
       }
-      
+
       return result;
-      
     } catch (error) {
       console.error(`❌ Test failed:`, error.message);
       return { success: false, error: error.message };
@@ -186,8 +183,9 @@ class QuickTester {
 
 // Run the test
 const tester = new QuickTester();
-tester.run()
-  .then(result => {
+tester
+  .run()
+  .then((result) => {
     if (result.success) {
       console.log('🎯 Test completed successfully!');
       process.exit(0);
@@ -196,9 +194,7 @@ tester.run()
       process.exit(1);
     }
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('💥 Test failed:', error.message);
     process.exit(1);
   });
-
-

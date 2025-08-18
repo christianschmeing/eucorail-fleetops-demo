@@ -5,7 +5,7 @@
  – Never throws; always writes a state snapshot
 */
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
 const nowIso = new Date().toISOString();
@@ -118,6 +118,71 @@ async function getDataVersion() {
 }
 
 async function main() {
+  // Helper: fetch with timeout
+  async function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
+    const ctl = new AbortController();
+    const id = setTimeout(() => ctl.abort(), timeoutMs);
+    try { return await fetch(url, { ...opts, signal: ctl.signal }); }
+    finally { clearTimeout(id); }
+  }
+
+  // Validate a candidate preview URL
+  async function validatePreview(url) {
+    if (!url) return { ok: false, root: 0, health: 0 };
+    const base = url.replace(/\/$/, '');
+    let root = 0, health = 0;
+    try { const r = await fetchWithTimeout(`${base}/`, {}, 5000); root = r.status; } catch {}
+    try { const r = await fetchWithTimeout(`${base}/api/health`, {}, 5000); health = r.status; } catch {}
+    const ok = ((root === 200 || root === 401) && health === 200);
+    return { ok, root, health };
+  }
+
+  // Resolve preview URL (Vercel API → candidates → CHANGESUMMARY)
+  async function resolvePreviewUrl() {
+    // a) Vercel API
+    try {
+      const token = env('VERCEL_TOKEN', '');
+      const app = env('VERCEL_APP', 'eucorail-fleetops-demo-web');
+      if (token && app) {
+        const r = await fetch(`https://api.vercel.com/v6/deployments?app=${encodeURIComponent(app)}&limit=1`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (r.ok) {
+          const j = await r.json();
+          const d = Array.isArray(j?.deployments) ? j.deployments[0] : (j?.deployments || [])[0];
+          const url = d?.url ? `https://${d.url}` : '';
+          if (url) {
+            const v = await validatePreview(url);
+            if (v.ok) return { url, root: v.root, health: v.health };
+          }
+        }
+      }
+    } catch {}
+    // b) Known candidates
+    const candidates = [
+      'https://eucorail-fleetops-demo.vercel.app',
+      'https://eucorail-fleetops-demo-christianschmeing.vercel.app',
+      'https://eucorail-fleetops.vercel.app',
+      'https://christianschmeing-eucorail-fleetops-demo.vercel.app',
+      'https://eucorail-fleetops-demo-web.vercel.app'
+    ];
+    for (const u of candidates) {
+      const v = await validatePreview(u);
+      if (v.ok) return { url: u, root: v.root, health: v.health };
+    }
+    // c) Fallback to CHANGESUMMARY
+    try {
+      const txt = readFileSync('CHANGESUMMARY.md', 'utf-8');
+      const m = txt.match(/Preview Web:\s*(https?:\/\/[^\s]+)\s*\(status=(\d+)\)/);
+      if (m) {
+        const u = m[1];
+        const v = await validatePreview(u);
+        if (v.ok) return { url: u, root: v.root, health: v.health };
+      }
+    } catch {}
+    return { url: '', root: 0, health: 0 };
+  }
+
   const commit = await getCommit(sha);
   const [p0, p1, allIssues, prs, latestTag, dataVersion] = await Promise.all([
     searchIssues(`repo:${owner}/${repo} is:issue is:open label:P0`),
@@ -142,11 +207,34 @@ async function main() {
     data_version: dataVersion,
     release: { latest_tag: latestTag },
     generated_at: nowIso,
-    default_branch_hint: 'main'
+    default_branch_hint: 'main',
+    preview: undefined
   };
+
+  // Attempt to resolve a valid public preview URL
+  let previewResolved = await resolvePreviewUrl();
+  if (previewResolved.url) {
+    const auth = process.env.PREVIEW_ENABLE_AUTH === '1' ? 'basic' : null;
+    state.preview = { web: previewResolved.url, api: null, auth };
+  }
+
+  // Agent onboarding links (tolerant)
+  try {
+    const base = 'https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages';
+    // Prefer gh-pages raw URLs for stability; fallback to repo paths
+    const rulesRaw = 'https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md';
+    const seedRaw = 'https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt';
+    (state).agent_rules_url = rulesRaw;
+    (state).agent_seed_url = seedRaw;
+  } catch {}
 
   mkdirSync('state', { recursive: true });
   writeFileSync('state/project-state.json', JSON.stringify(state, null, 2));
+  // Write a small redirecting index.html to make a stable preview link
+  try {
+    const html = `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>State Preview Redirect</title><style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;background:#0b1f2a;color:#fff;padding:2rem}a{color:#7cc}</style></head><body><h1>Preview</h1><div id="out">Loading state…</div><script>(async()=>{const out=document.getElementById('out');try{const r=await fetch('./project-state.json?t='+Date.now(),{cache:'no-store'});if(!r.ok){out.textContent='Failed to load project-state.json ('+r.status+')';return;}const j=await r.json();const url=(j&&j.preview&&j.preview.web)||'';const auth=(j&&j.preview&&j.preview.auth)||null;if(url){out.innerHTML='Redirecting to preview… <a href="'+url+'">'+url+'</a>'+(auth==='basic'?' (Basic-Auth required)':'');location.replace(url);}else{out.innerHTML='Preview not available yet. See <a href="./project-state.json">project-state.json</a>.'}}catch(e){out.textContent='Preview not available yet.';}})();</script></body></html>`;
+    writeFileSync('state/index.html', html);
+  } catch {}
 
   const short = commit.sha?.slice(0, 7) || '';
   const symbol = status === 'success' ? '✓' : (status === 'skipped' ? '•' : '✗');
@@ -156,6 +244,14 @@ async function main() {
   writeFileSync('state/badge.json', JSON.stringify(badge, null, 2));
 
   console.log('State generated at ./state');
+
+  try {
+    if (previewResolved.url) {
+      writeFileSync('CHANGESUMMARY.md', `\nPreview Web: ${previewResolved.url} (status=${previewResolved.root || 200})\n`, { flag: 'a' });
+    } else {
+      writeFileSync('CHANGESUMMARY.md', `\n[SKIPPED:preview-missing] No valid preview resolved\n`, { flag: 'a' });
+    }
+  } catch {}
 }
 
 await main().catch((e) => {
@@ -173,6 +269,7 @@ await main().catch((e) => {
     generated_at: nowIso
   };
   writeFileSync('state/project-state.json', JSON.stringify(fallback, null, 2));
+  try { writeFileSync('state/index.html', '<!doctype html><html><body><p>Preview not available yet. See <a href="./project-state.json">project-state.json</a>.</p></body></html>'); } catch {}
   const badge = { schemaVersion: 1, label: 'state', message: `${branch}@${sha.slice(0,7)} •`, color: 'orange' };
   writeFileSync('state/badge.json', JSON.stringify(badge, null, 2));
   console.error('State generation failed softly:', e?.message || String(e));

@@ -1,0 +1,56 @@
+name: Publish State to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, feat/train-tracker-p0]
+  workflow_run:
+    workflows: ["Verify + Perf + Preview", "state"]
+    types: [completed]
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
+
+concurrency: pages-state-${{ github.ref }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install (ci or fallback)
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm i --prefer-offline; fi
+      - name: Build Pages State
+        run: node scripts/ci/build-pages-state.mjs
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Append Pages URL to CHANGESUMMARY
+        if: always()
+        run: |
+          echo "" >> CHANGESUMMARY.md
+          echo "Pages URL: ${{ steps.deploy.outputs.page_url }}" >> CHANGESUMMARY.md
+
+

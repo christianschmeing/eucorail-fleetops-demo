@@ -10,5 +10,3 @@ test('@smoke train details page shows timeline and wartung tab', async ({ page }
   const panel = page.getByTestId('train-details-panel');
   await expect(panel.getByText(/Bremsen-Check/i)).toBeVisible();
 });
-
-

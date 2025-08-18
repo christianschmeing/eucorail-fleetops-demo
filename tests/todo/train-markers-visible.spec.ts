@@ -6,5 +6,3 @@ test.skip('train markers visible and count >= 1', async ({ page }) => {
   await expect(page.getByTestId('map-status')).toHaveText(/ready/i, { timeout: 45000 });
   await expect(page.getByTestId('train-count')).toHaveText(/^[1-9][0-9]*$/, { timeout: 15000 });
 });
-
-

@@ -1,0 +1,14 @@
+node_modules
+.next
+dist
+build
+coverage
+*.min.js
+*.min.css
+test-report-*.json
+test-screenshots
+playwright-report
+test-results
+packages/api/dist
+apps/web/.next
+

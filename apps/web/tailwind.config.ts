@@ -1,10 +1,11 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./styles/**/*.css"
+    './app/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './styles/**/*.css',
+    '../../packages/ui/src/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
@@ -15,21 +16,20 @@ const config: Config = {
           accent2: '#27D3A2',
           warn: '#F59E0B',
           danger: '#EF4444',
-          muted: '#9FB3C8'
+          muted: '#9FB3C8',
         },
-        navy: "#0B1F2A",
-        accent: "#1E90FF",
-        re9: "#2563EB",
-        mex16: "#059669",
-        re8: "#EAB308",
-        ok: "#16A34A",
-        warn: "#F59E0B",
-        crit: "#DC2626"
-      }
-    }
+        navy: '#0B1F2A',
+        accent: '#1E90FF',
+        re9: '#2563EB',
+        mex16: '#059669',
+        re8: '#EAB308',
+        ok: '#16A34A',
+        warn: '#F59E0B',
+        crit: '#DC2626',
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };
 
 export default config;
-

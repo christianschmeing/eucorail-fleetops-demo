@@ -17,5 +17,3 @@ export class PassengerSimulator {
     return { onboard: this.onboard, boarding, alighting, loadFactor };
   }
 }
-
-

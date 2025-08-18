@@ -1,9 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  Wifi, WifiOff, Bell, Settings, User, Moon, Sun, 
-  Activity, Zap, Users, AlertTriangle, CheckCircle
+import {
+  Wifi,
+  WifiOff,
+  Bell,
+  Settings,
+  User,
+  Moon,
+  Sun,
+  Activity,
+  Zap,
+  Users,
+  AlertTriangle,
+  CheckCircle,
 } from 'lucide-react';
 
 interface ModernHeaderProps {
@@ -22,54 +32,54 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, []);
 
   // Glassmorphism styling
-  const glassStyle = "bg-black/20 backdrop-blur-xl border-b border-white/10";
-  
+  const glassStyle = 'bg-black/20 backdrop-blur-xl border-b border-white/10';
+
   // Live Status Indicators
   const statusIndicators = [
     { icon: Activity, label: 'System', status: 'online', color: 'text-emerald-400' },
     { icon: Zap, label: 'API', status: 'connected', color: 'text-blue-400' },
-    { icon: Users, label: '247 Active', status: 'users', color: 'text-purple-400' }
+    { icon: Users, label: '247 Active', status: 'users', color: 'text-purple-400' },
   ];
 
   // KPI Cards
   const kpiData = [
-    { 
-      label: 'Pünktlichkeit', 
-      value: '97.2%', 
-      trend: '+2.3%', 
+    {
+      label: 'Pünktlichkeit',
+      value: '97.2%',
+      trend: '+2.3%',
       color: 'from-emerald-400 to-emerald-600',
-      icon: CheckCircle 
+      icon: CheckCircle,
     },
-    { 
-      label: 'Auslastung', 
-      value: '84.5%', 
-      trend: '+5.1%', 
+    {
+      label: 'Auslastung',
+      value: '84.5%',
+      trend: '-1.2%',
       color: 'from-blue-400 to-blue-600',
-      icon: Users 
+      icon: Users,
     },
-    { 
-      label: 'Energie', 
-      value: '412 kW', 
-      trend: '-8.2%', 
+    {
+      label: 'Energie',
+      value: '412 kW',
+      trend: '-8.2%',
       color: 'from-amber-400 to-amber-600',
-      icon: Zap 
+      icon: Zap,
     },
-    { 
-      label: 'Störungen', 
-      value: faults.toString(), 
-      trend: faults > 0 ? 'Aktiv' : 'Keine', 
+    {
+      label: 'Störungen',
+      value: faults.toString(),
+      trend: faults > 0 ? 'Aktiv' : 'Keine',
       color: faults > 0 ? 'from-red-400 to-red-600' : 'from-gray-400 to-gray-600',
-      icon: AlertTriangle 
-    }
+      icon: AlertTriangle,
+    },
   ];
 
   return (
-    <header className={`${glassStyle} px-6 py-4`}>
+    <header className={`${glassStyle} px-6 py-4`} data-testid="header-bar">
       <div className="flex items-center justify-between">
         {/* Logo & Brand */}
         <div className="flex items-center gap-6">
@@ -89,7 +99,7 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
               <p className="text-xs text-white/50">Live Fleet Management</p>
             </div>
           </div>
-          
+
           {/* Live Status Indicators */}
           <div className="flex items-center gap-4 pl-6 border-l border-white/10">
             {statusIndicators.map((indicator, idx) => (
@@ -107,7 +117,7 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
         {/* KPI Cards */}
         <div className="flex items-center gap-3">
           {kpiData.map((kpi, idx) => (
-            <div 
+            <div
               key={idx}
               className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-3 
                 hover:bg-white/10 transition-all duration-300 cursor-pointer group"
@@ -119,11 +129,15 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
                 <div>
                   <p className="text-xs text-white/50 mb-1">{kpi.label}</p>
                   <p className="text-lg font-bold text-white">{kpi.value}</p>
-                  <p className={`text-xs ${
-                    kpi.trend.startsWith('+') ? 'text-emerald-400' : 
-                    kpi.trend.startsWith('-') ? 'text-red-400' : 
-                    'text-white/50'
-                  }`}>
+                  <p
+                    className={`text-xs ${
+                      kpi.trend.startsWith('+')
+                        ? 'text-emerald-400'
+                        : kpi.trend.startsWith('-')
+                          ? 'text-red-400'
+                          : 'text-white/50'
+                    }`}
+                  >
                     {kpi.trend}
                   </p>
                 </div>
@@ -138,12 +152,20 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
           <div className="text-right px-4 border-r border-white/10">
             <time className="text-sm font-medium text-white" suppressHydrationWarning>
               {isClient
-                ? currentTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                ? currentTime.toLocaleTimeString('de-DE', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                  })
                 : '–:–:–'}
             </time>
             <time className="text-xs text-white/50" suppressHydrationWarning>
               {isClient
-                ? currentTime.toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' })
+                ? currentTime.toLocaleDateString('de-DE', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  })
                 : '—'}
             </time>
           </div>
@@ -161,15 +183,17 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
           <button className="relative p-2 rounded-lg hover:bg-white/10 transition-colors">
             <Bell className="w-5 h-5 text-white/70" />
             {notifications > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full 
-                text-xs text-white flex items-center justify-center font-bold">
+              <span
+                className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full 
+                text-xs text-white flex items-center justify-center font-bold"
+              >
                 {notifications}
               </span>
             )}
           </button>
 
           {/* Theme Toggle */}
-          <button 
+          <button
             onClick={() => setIsDarkMode(!isDarkMode)}
             className="p-2 rounded-lg hover:bg-white/10 transition-colors"
           >
@@ -187,8 +211,10 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
 
           {/* User Profile */}
           <button className="flex items-center gap-2 p-2 px-3 rounded-lg hover:bg-white/10 transition-colors">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full 
-              flex items-center justify-center">
+            <div
+              className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full 
+              flex items-center justify-center"
+            >
               <User className="w-4 h-4 text-white" />
             </div>
             <span className="text-sm text-white/70">Admin</span>

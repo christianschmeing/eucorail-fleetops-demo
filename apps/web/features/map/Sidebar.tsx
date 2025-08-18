@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiGet } from '@/lib/api';
@@ -8,7 +8,7 @@ export function Sidebar({
   setActiveLines,
   isTestMode,
   selectedTrain,
-  onSelect
+  onSelect,
 }: {
   activeLines: string[];
   setActiveLines: Dispatch<SetStateAction<string[]>>;
@@ -17,13 +17,17 @@ export function Sidebar({
   onSelect: (id: string) => void;
 }) {
   const qc = useQueryClient();
-  const [statusFilter, setStatusFilter] = useState<'ALL'|'active'|'standby'|'maintenance'>('ALL');
+  const [statusFilter, setStatusFilter] = useState<'ALL' | 'active' | 'standby' | 'maintenance'>(
+    'ALL'
+  );
   const [regionFilter, setRegionFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [query, setQuery] = useState('');
-  const [trains, setTrains] = useState<Array<{ id: string; line: string; status: string; speed: number; region?: 'BW'|'BY' }>>([]);
+  const [trains, setTrains] = useState<
+    Array<{ id: string; line: string; status: string; speed: number; region?: 'BW' | 'BY' }>
+  >([]);
 
-  const regionFromFleetId = (fleetId?: string): 'BW'|'BY'|undefined => {
+  const regionFromFleetId = (fleetId?: string): 'BW' | 'BY' | undefined => {
     const id = fleetId || '';
     if (id.endsWith('-bw')) return 'BW';
     if (id.endsWith('-by')) return 'BY';
@@ -34,13 +38,16 @@ export function Sidebar({
   const { data: lines } = useQuery({
     queryKey: ['lines'],
     queryFn: () => apiGet<Array<{ id: string; region: string; name: string }>>('/api/lines'),
-    staleTime: 5 * 60 * 1000
+    staleTime: 5 * 60 * 1000,
   });
   // Load full trains list from API to ensure complete catalog (fallback if SSE not yet ready)
   const { data: trainCatalog } = useQuery({
-    queryKey: ['trains','catalog'],
-    queryFn: () => apiGet<Array<{ id: string; lineId: string; status?: string; fleetId?: string }>>('/api/trains'),
-    staleTime: 30 * 1000
+    queryKey: ['trains', 'catalog'],
+    queryFn: () =>
+      apiGet<Array<{ id: string; lineId: string; status?: string; fleetId?: string }>>(
+        '/api/trains'
+      ),
+    staleTime: 30 * 1000,
   });
 
   const recompute = () => {
@@ -51,7 +58,13 @@ export function Sidebar({
       const id = String(f?.properties?.id ?? '');
       if (id) liveById.set(id, f);
     }
-    let list: Array<{ id: string; line: string; status: string; speed: number; region?: 'BW'|'BY' }> = [];
+    let list: Array<{
+      id: string;
+      line: string;
+      status: string;
+      speed: number;
+      region?: 'BW' | 'BY';
+    }> = [];
     if (Array.isArray(trainCatalog) && trainCatalog.length > 0) {
       list = trainCatalog.map((t) => {
         const live = liveById.get(t.id);
@@ -61,16 +74,18 @@ export function Sidebar({
           line: String(t.lineId || '').toUpperCase(),
           status: String(live?.properties?.status ?? t.status ?? 'active'),
           speed: Number(live?.properties?.speed ?? 0),
-          region
+          region,
         };
       });
     } else {
-      list = features.map((f: any) => ({
-        id: String(f?.properties?.id ?? ''),
-        line: String(f?.properties?.line ?? '').toUpperCase(),
-        status: String(f?.properties?.status ?? 'active'),
-        speed: Number(f?.properties?.speed ?? 0)
-      })).filter((t: any) => t.id);
+      list = features
+        .map((f: any) => ({
+          id: String(f?.properties?.id ?? ''),
+          line: String(f?.properties?.line ?? '').toUpperCase(),
+          status: String(f?.properties?.status ?? 'active'),
+          speed: Number(f?.properties?.speed ?? 0),
+        }))
+        .filter((t: any) => t.id);
     }
     list.sort((a: any, b: any) => a.id.localeCompare(b.id));
     setTrains(list);
@@ -90,7 +105,10 @@ export function Sidebar({
     if (trains.length > 0) return;
     const fetchCatalog = async () => {
       try {
-        const base = (typeof window !== 'undefined' && (window as any).__apiBase) || process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4100';
+        const base =
+          (typeof window !== 'undefined' && (window as any).__apiBase) ||
+          process.env.NEXT_PUBLIC_API_BASE ||
+          'http://localhost:4100';
         // try relative first (in case a reverse proxy is in front), then absolute
         let arr: any = null;
         try {
@@ -103,12 +121,18 @@ export function Sidebar({
         }
         if (!Array.isArray(arr)) return;
         if (Array.isArray(arr) && arr.length > 0) {
-          const seeded: Array<{ id: string; line: string; status: string; speed: number; region?: 'BW'|'BY' }> = arr.map((t: any) => ({
+          const seeded: Array<{
+            id: string;
+            line: string;
+            status: string;
+            speed: number;
+            region?: 'BW' | 'BY';
+          }> = arr.map((t: any) => ({
             id: String(t.id),
             line: String(t.lineId || '').toUpperCase(),
             status: String(t.status || 'active'),
             speed: 0,
-            region: regionFromFleetId(t.fleetId)
+            region: regionFromFleetId(t.fleetId),
           }));
           seeded.sort((a, b) => a.id.localeCompare(b.id));
           setTrains(seeded);
@@ -117,7 +141,9 @@ export function Sidebar({
     };
     // immediate attempt and a backup retry shortly after
     fetchCatalog();
-    const retry = setTimeout(() => { if (trains.length === 0) fetchCatalog(); }, 1200);
+    const retry = setTimeout(() => {
+      if (trains.length === 0) fetchCatalog();
+    }, 1200);
     return () => clearTimeout(retry);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trains.length]);
@@ -130,8 +156,22 @@ export function Sidebar({
     } else {
       for (const t of trains) if (t.line) set.add(t.line.toUpperCase());
     }
-    if (set.size === 0) ['RE9','RE8','MEX16','RE1','RE90','RE72','RE96','RB92','RE80','RE89','RB86','RB87','RB89']
-      .forEach((c) => set.add(c));
+    if (set.size === 0)
+      [
+        'RE9',
+        'RE8',
+        'MEX16',
+        'RE1',
+        'RE90',
+        'RE72',
+        'RE96',
+        'RB92',
+        'RE80',
+        'RE89',
+        'RB86',
+        'RB87',
+        'RB89',
+      ].forEach((c) => set.add(c));
     return Array.from(set).sort();
   }, [lines, trains]);
 
@@ -161,12 +201,18 @@ export function Sidebar({
   // Fallback: if no trains yet but catalog is available, seed from catalog
   useEffect(() => {
     if (trains.length === 0 && Array.isArray(trainCatalog) && trainCatalog.length > 0) {
-      const seeded: Array<{ id: string; line: string; status: string; speed: number; region?: 'BW'|'BY' }> = trainCatalog.map((t: any) => ({
+      const seeded: Array<{
+        id: string;
+        line: string;
+        status: string;
+        speed: number;
+        region?: 'BW' | 'BY';
+      }> = trainCatalog.map((t: any) => ({
         id: String(t.id),
         line: String(t.lineId || '').toUpperCase(),
         status: String(t.status || 'active'),
         speed: 0,
-        region: regionFromFleetId(t.fleetId)
+        region: regionFromFleetId(t.fleetId),
       }));
       seeded.sort((a, b) => a.id.localeCompare(b.id));
       setTrains(seeded);
@@ -178,15 +224,25 @@ export function Sidebar({
     const base = trains.length > 0 ? trains : [];
     const q = query.trim().toLowerCase();
     return base
-      .filter(t => (activeLines.length === 0 || activeLines.includes(t.line)))
-      .filter(t => (statusFilter === 'ALL' ? true : t.status === statusFilter))
-      .filter(t => (regionFilter.length === 0 ? true : (t.region ? regionFilter.includes(t.region) : true)))
-      .filter(t => (typeFilter.length === 0 ? true : (() => {
-        const match = (Array.isArray(trainCatalog) ? (trainCatalog as any) : []).find((x: any) => x.id === t.id);
-        const keyOrSeries = match?.typeKey || match?.series;
-        return keyOrSeries ? typeFilter.includes(String(keyOrSeries)) : true;
-      })()))
-      .filter(t => (q === '' || t.id.toLowerCase().includes(q) || t.line.toLowerCase().includes(q)));
+      .filter((t) => activeLines.length === 0 || activeLines.includes(t.line))
+      .filter((t) => (statusFilter === 'ALL' ? true : t.status === statusFilter))
+      .filter((t) =>
+        regionFilter.length === 0 ? true : t.region ? regionFilter.includes(t.region) : true
+      )
+      .filter((t) =>
+        typeFilter.length === 0
+          ? true
+          : (() => {
+              const match = (Array.isArray(trainCatalog) ? (trainCatalog as any) : []).find(
+                (x: any) => x.id === t.id
+              );
+              const keyOrSeries = match?.typeKey || match?.series;
+              return keyOrSeries ? typeFilter.includes(String(keyOrSeries)) : true;
+            })()
+      )
+      .filter(
+        (t) => q === '' || t.id.toLowerCase().includes(q) || t.line.toLowerCase().includes(q)
+      );
   }, [trains, activeLines, statusFilter, regionFilter, typeFilter, query, trainCatalog]);
 
   const groupedByLine = useMemo(() => {
@@ -200,7 +256,11 @@ export function Sidebar({
   }, [filtered]);
 
   return (
-    <aside className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto flex-shrink-0" data-testid="sidebar" style={{minWidth: '320px', display: 'block'}}>
+    <aside
+      className="w-80 bg-black/30 border-r border-white/10 overflow-y-auto flex-shrink-0"
+      data-testid="sidebar"
+      style={{ minWidth: '320px', display: 'block' }}
+    >
       <div className="p-4">
         <h2 className="text-lg font-semibold mb-4">Zugliste</h2>
         <div className="mb-3">
@@ -211,39 +271,67 @@ export function Sidebar({
             className="w-full px-3 py-2 rounded-xl bg-black/30 border border-white/10 outline-none focus:ring-2 focus:ring-euco-accent"
           />
         </div>
-        <div className="grid grid-cols-4 gap-2 mb-3" role="group" aria-label="Status" style={{display: 'grid'}}>
-          {['ALL','active','standby','maintenance'].map((s) => (
+        <div
+          className="grid grid-cols-4 gap-2 mb-3"
+          role="group"
+          aria-label="Status"
+          style={{ display: 'grid' }}
+        >
+          {['ALL', 'active', 'standby', 'maintenance'].map((s) => (
             <button
               key={s}
-              className={`${statusFilter===s ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-2 py-2 rounded-xl text-xs transition-colors`}
+              className={`${statusFilter === s ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-2 py-2 rounded-xl text-xs transition-colors`}
               onClick={() => setStatusFilter(s as any)}
-            >{s === 'ALL' ? 'Alle' : s}</button>
+            >
+              {s === 'ALL' ? 'Alle' : s}
+            </button>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2 mb-2" role="group" aria-label="Region" style={{display: 'flex'}}>
-          {regionChips.map(r => (
+        <div
+          className="flex flex-wrap gap-2 mb-2"
+          role="group"
+          aria-label="Region"
+          style={{ display: 'flex' }}
+        >
+          {regionChips.map((r) => (
             <button
               key={r}
               className={`${regionFilter.includes(r) ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-3 py-1 rounded-xl text-xs transition-colors`}
-              onClick={() => setRegionFilter(prev => prev.includes(r) ? prev.filter(x => x !== r) : [...prev, r])}
-            >{r}</button>
+              onClick={() =>
+                setRegionFilter((prev) =>
+                  prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
+                )
+              }
+            >
+              {r}
+            </button>
           ))}
         </div>
         <div className="flex flex-wrap gap-2 mb-3" role="group" aria-label="Zugtyp">
-          {typeChips.map(t => (
+          {typeChips.map((t) => (
             <button
               key={t}
               className={`${typeFilter.includes(t) ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-3 py-1 rounded-xl text-xs transition-colors`}
-              onClick={() => setTypeFilter(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t])}
-            >{t}</button>
+              onClick={() =>
+                setTypeFilter((prev) =>
+                  prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+                )
+              }
+            >
+              {t}
+            </button>
           ))}
         </div>
         <div className="flex flex-wrap gap-2 mb-2">
-          {lineChips.map(code => (
+          {lineChips.map((code) => (
             <button
               key={code}
               className={`${activeLines.includes(code) ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'} px-3 py-1 rounded-xl text-xs transition-colors`}
-              onClick={() => setActiveLines(prev => prev.includes(code) ? prev.filter(x => x !== code) : [...prev, code])}
+              onClick={() =>
+                setActiveLines((prev) =>
+                  prev.includes(code) ? prev.filter((x) => x !== code) : [...prev, code]
+                )
+              }
             >
               {code}
             </button>
@@ -264,7 +352,9 @@ export function Sidebar({
                 <div
                   key={train.id}
                   className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                    selectedTrain === train.id ? 'bg-euco-accent text-black' : 'bg-black/30 hover:bg-white/10'
+                    selectedTrain === train.id
+                      ? 'bg-euco-accent text-black'
+                      : 'bg-black/30 hover:bg-white/10'
                   }`}
                   data-testid="train-item"
                   onClick={() => onSelect(train.id)}
@@ -276,12 +366,17 @@ export function Sidebar({
                         {train.status === 'active' ? `${train.speed} km/h` : train.status}
                       </div>
                     </div>
-                    <div className={`w-3 h-3 rounded-full ${
-                      train.status === 'active' ? 'bg-green-400' :
-                      train.status === 'maintenance' ? 'bg-yellow-400' :
-                      train.status === 'inspection' ? 'bg-red-400' :
-                      'bg-gray-400'
-                    }`}></div>
+                    <div
+                      className={`w-3 h-3 rounded-full ${
+                        train.status === 'active'
+                          ? 'bg-green-400'
+                          : train.status === 'maintenance'
+                            ? 'bg-yellow-400'
+                            : train.status === 'inspection'
+                              ? 'bg-red-400'
+                              : 'bg-gray-400'
+                      }`}
+                    ></div>
                   </div>
                   {isTestMode && (
                     <div className="mt-2">
@@ -289,7 +384,10 @@ export function Sidebar({
                         type="button"
                         data-testid="open-details"
                         className="text-xs bg-white/10 px-2 py-1 rounded hover:bg-white/20"
-                        onClick={(e) => { e.stopPropagation(); onSelect(train.id); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelect(train.id);
+                        }}
                         aria-label={`Details anzeigen für ${train.id}`}
                       >
                         Details anzeigen
@@ -305,5 +403,3 @@ export function Sidebar({
     </aside>
   );
 }
-
-

@@ -19,11 +19,31 @@ export const UNIT_MAINTENANCE_SPECS: UnitMaintenanceSpec[] = [
     unitType: 'MIREO',
     manufacturer: 'Siemens',
     policies: [
-      { level: 'IS100', kmInterval: 10000, dayInterval: 30, notes: 'Kurzinspektion, Sicht-/Funktionsprüfung' },
-      { level: 'IS200', kmInterval: 30000, dayInterval: 90, notes: 'Erweiterte Inspektion inkl. Systeme' },
-      { level: 'IS300', kmInterval: 60000, dayInterval: 180, notes: 'Umfangreichere Prüfung inkl. Drehgestell-Sichtprüfung' },
-      { level: 'IS600', kmInterval: 120000, dayInterval: 365, notes: 'Große Inspektion mit Komponentenwechsel nach Vorgaben' }
-    ]
+      {
+        level: 'IS100',
+        kmInterval: 10000,
+        dayInterval: 30,
+        notes: 'Kurzinspektion, Sicht-/Funktionsprüfung',
+      },
+      {
+        level: 'IS200',
+        kmInterval: 30000,
+        dayInterval: 90,
+        notes: 'Erweiterte Inspektion inkl. Systeme',
+      },
+      {
+        level: 'IS300',
+        kmInterval: 60000,
+        dayInterval: 180,
+        notes: 'Umfangreichere Prüfung inkl. Drehgestell-Sichtprüfung',
+      },
+      {
+        level: 'IS600',
+        kmInterval: 120000,
+        dayInterval: 365,
+        notes: 'Große Inspektion mit Komponentenwechsel nach Vorgaben',
+      },
+    ],
   },
   {
     unitType: 'DESIRO_HC',
@@ -32,8 +52,8 @@ export const UNIT_MAINTENANCE_SPECS: UnitMaintenanceSpec[] = [
       { level: 'IS100', kmInterval: 15000, dayInterval: 45 },
       { level: 'IS200', kmInterval: 40000, dayInterval: 120 },
       { level: 'IS300', kmInterval: 80000, dayInterval: 240 },
-      { level: 'IS600', kmInterval: 160000, dayInterval: 480 }
-    ]
+      { level: 'IS600', kmInterval: 160000, dayInterval: 480 },
+    ],
   },
   {
     unitType: 'FLIRT3',
@@ -42,9 +62,9 @@ export const UNIT_MAINTENANCE_SPECS: UnitMaintenanceSpec[] = [
       { level: 'IS100', kmInterval: 12000, dayInterval: 30 },
       { level: 'IS200', kmInterval: 35000, dayInterval: 120 },
       { level: 'IS300', kmInterval: 70000, dayInterval: 240 },
-      { level: 'IS600', kmInterval: 140000, dayInterval: 480 }
-    ]
-  }
+      { level: 'IS600', kmInterval: 140000, dayInterval: 480 },
+    ],
+  },
 ];
 
 export function getSpecForUnit(unitType: string): UnitMaintenanceSpec | undefined {
@@ -65,7 +85,7 @@ export function seededRandom(seed: number): () => number {
   let a = seed >>> 0;
   return () => {
     a |= 0;
-    a = (a + 0x6D2B79F5) | 0;
+    a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
@@ -84,10 +104,13 @@ export function generateDoorFaults(seed: number): FaultCode[] {
       subsystem: 'doors',
       severity: sev,
       since: Date.now() - Math.floor(rnd() * 72) * 3600 * 1000,
-      message: code === 'DOOR_23' ? 'Türe schließt nicht vollständig (Lichtschranke)' : code === 'DOOR_17' ? 'Türflügel blockiert' : 'Türsteuerung sporadische Störung'
+      message:
+        code === 'DOOR_23'
+          ? 'Türe schließt nicht vollständig (Lichtschranke)'
+          : code === 'DOOR_17'
+            ? 'Türflügel blockiert'
+            : 'Türsteuerung sporadische Störung',
     });
   }
   return faults;
 }
-
-

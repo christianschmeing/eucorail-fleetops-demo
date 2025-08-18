@@ -1,10 +1,68 @@
 {
-  "flirt3-3": { "vmax_kmh":160, "length_m":58.6, "seats_total":173, "seats_first":9, "seats_second":155, "notes":"BW Los 2; TSI PRM; WLAN" },
-  "flirt3-4": { "vmax_kmh":160, "length_m":74.7, "seats_total":216, "seats_first":9, "seats_second":207, "notes":"BW Los 3" },
-  "flirt3-5": { "vmax_kmh":160, "length_m":90.8, "seats_total":272, "seats_first":9, "seats_second":263, "notes":"BW Los 2" },
-  "flirt3-6": { "vmax_kmh":160, "length_m":106.9, "seats_total":328, "seats_first":9, "seats_second":319, "notes":"BW Los 3" },
-  "flirt3-xl-3": { "vmax_kmh":160, "length_m":67.6, "seats_total":210, "seats_first":8, "seats_second":202, "notes":"Murrbahn RE90; XL verlängert" },
-  "flirt3-4-allgaeu": { "vmax_kmh":160, "length_m":74.0, "seats_total":216, "seats_first":16, "seats_second":200, "notes":"Allgäu 4-tlg" },
-  "mireo-3": { "vmax_kmh":160, "length_m":69.86, "seats_total":216, "seats_first":16, "seats_second":200, "power_kw":2600, "notes":"Augsburger Netze; gemischte Traktion mit Desiro HC" },
-  "desirohc-5": { "vmax_kmh":160, "length_m":131.0, "seats_total":538, "seats_first":38, "seats_second":500, "power_kw":4000, "notes":"Doppelstock; 45 Fahrradplätze" }
+  "flirt3-3": {
+    "vmax_kmh": 160,
+    "length_m": 58.6,
+    "seats_total": 173,
+    "seats_first": 9,
+    "seats_second": 155,
+    "notes": "BW Los 2; TSI PRM; WLAN"
+  },
+  "flirt3-4": {
+    "vmax_kmh": 160,
+    "length_m": 74.7,
+    "seats_total": 216,
+    "seats_first": 9,
+    "seats_second": 207,
+    "notes": "BW Los 3"
+  },
+  "flirt3-5": {
+    "vmax_kmh": 160,
+    "length_m": 90.8,
+    "seats_total": 272,
+    "seats_first": 9,
+    "seats_second": 263,
+    "notes": "BW Los 2"
+  },
+  "flirt3-6": {
+    "vmax_kmh": 160,
+    "length_m": 106.9,
+    "seats_total": 328,
+    "seats_first": 9,
+    "seats_second": 319,
+    "notes": "BW Los 3"
+  },
+  "flirt3-xl-3": {
+    "vmax_kmh": 160,
+    "length_m": 67.6,
+    "seats_total": 210,
+    "seats_first": 8,
+    "seats_second": 202,
+    "notes": "Murrbahn RE90; XL verlängert"
+  },
+  "flirt3-4-allgaeu": {
+    "vmax_kmh": 160,
+    "length_m": 74.0,
+    "seats_total": 216,
+    "seats_first": 16,
+    "seats_second": 200,
+    "notes": "Allgäu 4-tlg"
+  },
+  "mireo-3": {
+    "vmax_kmh": 160,
+    "length_m": 69.86,
+    "seats_total": 216,
+    "seats_first": 16,
+    "seats_second": 200,
+    "power_kw": 2600,
+    "notes": "Augsburger Netze; gemischte Traktion mit Desiro HC"
+  },
+  "desirohc-5": {
+    "vmax_kmh": 160,
+    "length_m": 131.0,
+    "seats_total": 538,
+    "seats_first": 38,
+    "seats_second": 500,
+    "power_kw": 4000,
+    "notes": "Doppelstock; 45 Fahrradplätze"
+  }
 }

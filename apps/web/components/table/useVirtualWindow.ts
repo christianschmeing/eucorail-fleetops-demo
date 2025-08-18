@@ -13,7 +13,10 @@ export function useVirtualWindow(total: number, rowHeight = 40) {
     onResize();
     el.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
-    return () => { el.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize); };
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   const { start, end, offset } = useMemo(() => {
@@ -26,5 +29,3 @@ export function useVirtualWindow(total: number, rowHeight = 40) {
 
   return { containerRef, start, end, offset, totalHeight: total * rowHeight };
 }
-
-

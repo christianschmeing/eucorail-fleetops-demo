@@ -35,7 +35,9 @@ export class RealisticTrainPhysics {
 
     // Compute ideal speed to stop at station: v^2 = 2 a d → v = sqrt(2 * a * d)
     // Use service braking decel as a
-    const targetStopSpeedMs = Math.sqrt(Math.max(0, 2 * serviceDecel * Math.max(0, distanceToNextStation)));
+    const targetStopSpeedMs = Math.sqrt(
+      Math.max(0, 2 * serviceDecel * Math.max(0, distanceToNextStation))
+    );
 
     // When within braking distance window, limit speed to targetStopSpeedMs
     const brakingWindow = 2500; // m
@@ -73,5 +75,3 @@ export class RealisticTrainPhysics {
     return max * y;
   }
 }
-
-

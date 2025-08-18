@@ -15,8 +15,8 @@
     {
       "id": "MUC_PASING",
       "name": "München-Pasing",
-      "lat": 48.1500,
-      "lon": 11.4500,
+      "lat": 48.15,
+      "lon": 11.45,
       "arr_planned": "09:38",
       "dep_planned": "09:39",
       "platform": "4"
@@ -24,8 +24,8 @@
     {
       "id": "MUC_AUBING",
       "name": "München-Aubing",
-      "lat": 48.1600,
-      "lon": 11.3500,
+      "lat": 48.16,
+      "lon": 11.35,
       "arr_planned": "09:45",
       "dep_planned": "09:46",
       "platform": "2"
@@ -39,7 +39,7 @@
       "distance": 8.5,
       "geometry": [
         [11.5604, 48.1408],
-        [11.4500, 48.1500]
+        [11.45, 48.15]
       ]
     },
     {
@@ -48,8 +48,8 @@
       "toStopId": "MUC_AUBING",
       "distance": 7.2,
       "geometry": [
-        [11.4500, 48.1500],
-        [11.3500, 48.1600]
+        [11.45, 48.15],
+        [11.35, 48.16]
       ]
     }
   ]

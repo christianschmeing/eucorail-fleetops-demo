@@ -8,29 +8,45 @@ export type MaintenanceItem = {
 };
 
 export class MaintenanceSystem {
-  generateMaintenanceSchedule(trainId: string, unitType = 'MIREO', currentKm = 50000): MaintenanceItem[] {
+  generateMaintenanceSchedule(
+    trainId: string,
+    unitType = 'MIREO',
+    currentKm = 50000
+  ): MaintenanceItem[] {
     const spec = getSpecForUnit(unitType);
     const items: MaintenanceItem[] = [];
     if (spec) {
       for (const p of spec.policies) {
-        const last = currentKm - Math.floor((currentKm % p.kmInterval));
+        const last = currentKm - Math.floor(currentKm % p.kmInterval);
         const due = last + p.kmInterval;
-        const status = currentKm >= due ? 'overdue' : (due - currentKm) < p.kmInterval * 0.1 ? 'due-soon' : 'ok';
+        const status =
+          currentKm >= due ? 'overdue' : due - currentKm < p.kmInterval * 0.1 ? 'due-soon' : 'ok';
         items.push({ component: p.level, dueAtKm: due, lastServiceKm: last, status });
       }
     }
     // Add wheelset as illustrative long-interval item
     const base = this.hash(trainId) % 10000;
-    items.push({ component: 'Wheelset', dueAtKm: 300000 + base, lastServiceKm: Math.max(0, currentKm - 40000), status: 'ok' });
+    items.push({
+      component: 'Wheelset',
+      dueAtKm: 300000 + base,
+      lastServiceKm: Math.max(0, currentKm - 40000),
+      status: 'ok',
+    });
     return items;
   }
 
-  predictNextMaintenance(currentKm: number, unitType = 'MIREO'): { type: MaintenanceLevel; atKm: number } {
+  predictNextMaintenance(
+    currentKm: number,
+    unitType = 'MIREO'
+  ): { type: MaintenanceLevel; atKm: number } {
     const spec = getSpecForUnit(unitType);
     const first = spec?.policies[0];
     const interval = first?.kmInterval ?? 20000;
     const remainder = currentKm % interval;
-    return { type: (first?.level ?? 'IS100') as MaintenanceLevel, atKm: currentKm + (interval - remainder) };
+    return {
+      type: (first?.level ?? 'IS100') as MaintenanceLevel,
+      atKm: currentKm + (interval - remainder),
+    };
   }
 
   calculateWearAndTear(kmSinceService: number): number {
@@ -51,5 +67,3 @@ export class MaintenanceSystem {
     return h >>> 0;
   }
 }
-
-

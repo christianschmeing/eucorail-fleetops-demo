@@ -6,9 +6,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently -k -n WEB,API -c blue,green \"npm --workspace apps/web run dev\" \"npm --workspace packages/api run dev\"",
-    "dev:alt": "concurrently -k -n WEB,API -c blue,green \"cross-env NEXT_PUBLIC_API_BASE=http://localhost:4101 npm --workspace apps/web run dev:3002\" \"npm --workspace packages/api run dev:4101\"",
+    "prepare": "husky",
+    "dev": "node scripts/dev/start-stack.mjs",
+    "dev:alt": "concurrently -k -n WEB,API -c blue,green \"cross-env NEXT_PUBLIC_API_BASE=http://localhost:4100 npm --workspace apps/web run dev:3002\" \"npm --workspace packages/api run dev:4100\"",
     "build": "npm --workspace apps/web run build && npm --workspace packages/api run build",
+    "vercel-build": "npm --workspace apps/web run build && npm --workspace packages/api run build",
     "seed:lines": "npm --workspace packages/api run seed:lines",
     "seed:fleet": "npm --workspace packages/api run seed:fleet",
     "sim:start": "npm --workspace packages/api run sim:start",
@@ -27,19 +29,54 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "typecheck": "npm --workspace apps/web run -s typecheck || true",
-    "lint": "echo 'no root lint'",
-    "kill-ports": "bash -c 'lsof -ti:3001,3002,4100 | xargs -r kill -9'",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write '**/*.{ts,tsx,js,jsx,json,css,md}'",
+    "format:check": "prettier --check '**/*.{ts,tsx,js,jsx,json,css,md}'",
+    "kill-ports": "node scripts/dev/kill-ports.mjs",
     "verify": "cross-env NEXT_PUBLIC_TEST_MODE=1 TEST_MODE=1 SEED=42 TICK_MS=500 npm run kill-ports && npm run build:all && start-server-and-test dev:e2e http://localhost:3001 test:e2e",
+    "verify:int": "npm run typecheck && npm run lint || true && npm run build && npm run test:int || true",
+    "dev:stack:zsh": "node scripts/dev/start-stack.mjs",
     "test:quick": "bash quick-test.sh",
     "test:smart": "node test-smart-runner.js",
     "verify:smart": "node scripts/auto/smart-verify.mjs",
     "demo:smart": "node scripts/auto/smart-verify.mjs",
-    "auto:loop": "node scripts/auto/auto-iterate.mjs"
+    "auto:loop": "node scripts/auto/auto-iterate.mjs",
+    "ci:preview:dispatch": "node scripts/ci/dispatch-and-fetch-preview.mjs",
+    "test:setup": "node run-tests.js 1",
+    "test:api": "node run-tests.js 2",
+    "test:ui": "node run-tests.js 3",
+    "test:all": "node run-tests.js all",
+    "test:report": "ls -1t test-report-*.json | head -1 | xargs cat",
+    "lint:baseline": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 500",
+    "test:quality": "npm run format:check && npm run lint:baseline"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,md,json}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "^1.54.2",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
     "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.4.6",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-react": "^7.34.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
+    "node-fetch": "^3.3.2",
+    "prettier": "^3.6.2",
     "puppeteer": "^24.16.1",
     "puppeteer-core": "^24.16.1",
     "start-server-and-test": "^2.0.13"

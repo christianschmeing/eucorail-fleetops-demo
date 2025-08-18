@@ -1,29 +1,30 @@
 :root {
   /* Eucorail Brand Colors */
-  --eucorail-primary: #1E3A8A;
-  --eucorail-secondary: #3B82F6;
-  --eucorail-accent: #FF6B35;
-  --eucorail-success: #10B981;
-  --eucorail-warning: #F59E0B;
-  --eucorail-error: #EF4444;
-  --eucorail-neutral: #6B7280;
-  
+  --eucorail-primary: #1e3a8a;
+  --eucorail-secondary: #3b82f6;
+  --eucorail-accent: #ff6b35;
+  --eucorail-success: #10b981;
+  --eucorail-warning: #f59e0b;
+  --eucorail-error: #ef4444;
+  --eucorail-neutral: #6b7280;
+
   /* Dark Mode Colors */
-  --eucorail-dark-bg: #0B1F2A;
-  --eucorail-dark-surface: #1F2937;
+  --eucorail-dark-bg: #0b1f2a;
+  --eucorail-dark-surface: #1f2937;
   --eucorail-dark-border: rgba(255, 255, 255, 0.1);
-  --eucorail-dark-text: #FFFFFF;
+  --eucorail-dark-text: #ffffff;
   --eucorail-dark-text-secondary: rgba(255, 255, 255, 0.6);
-  
+
   /* Light Mode Colors */
-  --eucorail-light-bg: #FFFFFF;
-  --eucorail-light-surface: #F9FAFB;
-  --eucorail-light-border: #E5E7EB;
+  --eucorail-light-bg: #ffffff;
+  --eucorail-light-surface: #f9fafb;
+  --eucorail-light-border: #e5e7eb;
   --eucorail-light-text: #111827;
-  --eucorail-light-text-secondary: #6B7280;
-  
+  --eucorail-light-text-secondary: #6b7280;
+
   /* Typography */
-  --eucorail-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --eucorail-font-family:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --eucorail-font-size-xs: 0.75rem;
   --eucorail-font-size-sm: 0.875rem;
   --eucorail-font-size-base: 1rem;
@@ -31,7 +32,7 @@
   --eucorail-font-size-xl: 1.25rem;
   --eucorail-font-size-2xl: 1.5rem;
   --eucorail-font-size-3xl: 1.875rem;
-  
+
   /* Spacing */
   --eucorail-spacing-1: 0.25rem;
   --eucorail-spacing-2: 0.5rem;
@@ -42,7 +43,7 @@
   --eucorail-spacing-8: 2rem;
   --eucorail-spacing-10: 2.5rem;
   --eucorail-spacing-12: 3rem;
-  
+
   /* Border Radius */
   --eucorail-radius-sm: 0.25rem;
   --eucorail-radius-md: 0.375rem;
@@ -50,46 +51,46 @@
   --eucorail-radius-xl: 0.75rem;
   --eucorail-radius-2xl: 1rem;
   --eucorail-radius-full: 9999px;
-  
+
   /* Shadows */
   --eucorail-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --eucorail-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --eucorail-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --eucorail-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  
+
   /* Transitions */
   --eucorail-transition-fast: 150ms ease-in-out;
   --eucorail-transition-normal: 300ms ease-in-out;
   --eucorail-transition-slow: 500ms ease-in-out;
-  
+
   /* Z-Index */
   --eucorail-z-dropdown: 1000;
   --eucorail-z-modal: 2000;
   --eucorail-z-tooltip: 3000;
   --eucorail-z-map-controls: 100;
-  
+
   /* Train Status Colors */
-  --train-status-active: #10B981;
-  --train-status-maintenance: #F59E0B;
-  --train-status-inspection: #3B82F6;
-  --train-status-stationary: #6B7280;
-  --train-status-error: #EF4444;
-  
+  --train-status-active: #10b981;
+  --train-status-maintenance: #f59e0b;
+  --train-status-inspection: #3b82f6;
+  --train-status-stationary: #6b7280;
+  --train-status-error: #ef4444;
+
   /* Health Score Colors */
-  --health-score-good: #10B981;
-  --health-score-warning: #F59E0B;
-  --health-score-critical: #EF4444;
-  
+  --health-score-good: #10b981;
+  --health-score-warning: #f59e0b;
+  --health-score-critical: #ef4444;
+
   /* Line Colors */
-  --line-re9: #1E40AF;
-  --line-re8: #7C3AED;
-  --line-mex16: #DC2626;
+  --line-re9: #1e40af;
+  --line-re8: #7c3aed;
+  --line-mex16: #dc2626;
   --line-by: #059669;
-  --line-bw: #D97706;
+  --line-bw: #d97706;
 }
 
 /* Dark Mode */
-[data-theme="dark"] {
+[data-theme='dark'] {
   --eucorail-bg: var(--eucorail-dark-bg);
   --eucorail-surface: var(--eucorail-dark-surface);
   --eucorail-border: var(--eucorail-dark-border);
@@ -98,7 +99,7 @@
 }
 
 /* Light Mode */
-[data-theme="light"] {
+[data-theme='light'] {
   --eucorail-bg: var(--eucorail-light-bg);
   --eucorail-surface: var(--eucorail-light-surface);
   --eucorail-border: var(--eucorail-light-border);
@@ -142,8 +143,8 @@
 }
 
 .eucorail-button-primary:hover {
-  background: #1E40AF;
-  border-color: #1E40AF;
+  background: #1e40af;
+  border-color: #1e40af;
 }
 
 .eucorail-button-secondary {

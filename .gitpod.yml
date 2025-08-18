@@ -1,0 +1,24 @@
+tasks:
+  - name: Setup
+    init: |
+      npm install
+      npm run build
+    command: |
+      npm run demo
+      gp url 3001
+
+ports:
+  - port: 3001
+    visibility: public
+    onOpen: open-browser
+  - port: 4100
+    visibility: public
+
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint
+    - esbenp.prettier-vscode
+
+
+
+

@@ -7,5 +7,3 @@ test.skip('markers have data-testid and rotate', async ({ page }) => {
   const markers = await page.$$('[data-testid="train-marker"]');
   expect(markers.length).toBeGreaterThan(0);
 });
-
-

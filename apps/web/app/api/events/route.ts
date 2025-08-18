@@ -1,52 +1,23 @@
 // apps/web/app/api/events/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-
-// GET Handler für SSE
-export async function GET(request: NextRequest) {
-  console.log('🔵 API Route /api/events wurde aufgerufen');
-  
-  try {
-    // Backend-API aufrufen (Server-ENV, kein NEXT_PUBLIC_* verwenden)
-    const apiBase = process.env.API_BASE || 'http://localhost:4100';
-    const backendUrl = `${apiBase}/events`;
-    console.log('🔗 Verbinde zu Backend:', backendUrl);
-    
-    const response = await fetch(backendUrl, {
-      headers: {
-        'Accept': 'text/event-stream',
-      },
-      // Wichtig: Signal für Streaming
-      signal: request.signal,
-    });
-
-    if (!response.ok) {
-      console.error('❌ Backend-Verbindung fehlgeschlagen:', response.status);
-      return NextResponse.json(
-        { error: 'Backend nicht erreichbar' },
-        { status: 502 }
-      );
-    }
-
-    console.log('✅ Backend-Verbindung erfolgreich');
-    
-    // Stream mit korrekten Headers weiterleiten
-    return new Response(response.body, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache, no-transform',
-        'Connection': 'keep-alive',
-        'X-Accel-Buffering': 'no',
-      },
-    });
-  } catch (error) {
-    console.error('❌ Fehler in API Route:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
-  }
-}
-
-// Route muss dynamisch sein
-export const dynamic = 'force-dynamic';
+import { API_UPSTREAM } from '@/lib/config';
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export async function GET() {
+  try {
+    const r = await fetch(`${API_UPSTREAM}/events`, { cache: 'no-store' });
+    if (r.ok && r.body)
+      return new Response(r.body, {
+        headers: { 'content-type': 'text/event-stream', 'cache-control': 'no-store' },
+      });
+  } catch {}
+  const { readable, writable } = new TransformStream();
+  const w = writable.getWriter();
+  const enc = new TextEncoder();
+  const ping = () => w.write(enc.encode('event: ping\ndata: {}\n\n'));
+  const id = setInterval(ping, 5000);
+  ping();
+  return new Response(readable, {
+    headers: { 'content-type': 'text/event-stream', 'cache-control': 'no-store' },
+  });
+}

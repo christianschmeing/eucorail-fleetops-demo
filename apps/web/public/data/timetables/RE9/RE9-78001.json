@@ -15,8 +15,8 @@
     {
       "id": "MUC_PASING",
       "name": "München-Pasing",
-      "lat": 48.1500,
-      "lon": 11.4500,
+      "lat": 48.15,
+      "lon": 11.45,
       "arr_planned": "06:08",
       "dep_planned": "06:09",
       "platform": "4"
@@ -24,8 +24,8 @@
     {
       "id": "MUC_AUBING",
       "name": "München-Aubing",
-      "lat": 48.1600,
-      "lon": 11.3500,
+      "lat": 48.16,
+      "lon": 11.35,
       "arr_planned": "06:15",
       "dep_planned": "06:16",
       "platform": "2"
@@ -33,8 +33,8 @@
     {
       "id": "FURSTENFELDBRUCK",
       "name": "Fürstenfeldbruck",
-      "lat": 48.1800,
-      "lon": 11.2500,
+      "lat": 48.18,
+      "lon": 11.25,
       "arr_planned": "06:25",
       "dep_planned": "06:26",
       "platform": "3"
@@ -42,8 +42,8 @@
     {
       "id": "BUCHLOE",
       "name": "Buchloe",
-      "lat": 48.2200,
-      "lon": 11.0000,
+      "lat": 48.22,
+      "lon": 11.0,
       "arr_planned": "06:45",
       "dep_planned": "06:46",
       "platform": "2"
@@ -51,8 +51,8 @@
     {
       "id": "KAUFBEUREN",
       "name": "Kaufbeuren",
-      "lat": 47.8800,
-      "lon": 10.6200,
+      "lat": 47.88,
+      "lon": 10.62,
       "arr_planned": "07:05",
       "dep_planned": "07:06",
       "platform": "1"
@@ -60,8 +60,8 @@
     {
       "id": "KEMPTEN",
       "name": "Kempten",
-      "lat": 47.7200,
-      "lon": 10.3200,
+      "lat": 47.72,
+      "lon": 10.32,
       "arr_planned": "07:25",
       "dep_planned": "07:27",
       "platform": "4"
@@ -75,7 +75,7 @@
       "distance": 8.5,
       "geometry": [
         [11.5604, 48.1408],
-        [11.4500, 48.1500]
+        [11.45, 48.15]
       ]
     },
     {
@@ -84,8 +84,8 @@
       "toStopId": "MUC_AUBING",
       "distance": 7.2,
       "geometry": [
-        [11.4500, 48.1500],
-        [11.3500, 48.1600]
+        [11.45, 48.15],
+        [11.35, 48.16]
       ]
     },
     {
@@ -94,8 +94,8 @@
       "toStopId": "FURSTENFELDBRUCK",
       "distance": 12.8,
       "geometry": [
-        [11.3500, 48.1600],
-        [11.2500, 48.1800]
+        [11.35, 48.16],
+        [11.25, 48.18]
       ]
     },
     {
@@ -104,8 +104,8 @@
       "toStopId": "BUCHLOE",
       "distance": 18.5,
       "geometry": [
-        [11.2500, 48.1800],
-        [11.0000, 48.2200]
+        [11.25, 48.18],
+        [11.0, 48.22]
       ]
     },
     {
@@ -114,8 +114,8 @@
       "toStopId": "KAUFBEUREN",
       "distance": 22.3,
       "geometry": [
-        [11.0000, 48.2200],
-        [10.6200, 47.8800]
+        [11.0, 48.22],
+        [10.62, 47.88]
       ]
     },
     {
@@ -124,8 +124,8 @@
       "toStopId": "KEMPTEN",
       "distance": 25.7,
       "geometry": [
-        [10.6200, 47.8800],
-        [10.3200, 47.7200]
+        [10.62, 47.88],
+        [10.32, 47.72]
       ]
     }
   ]

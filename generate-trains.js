@@ -13,32 +13,32 @@ for (let i = 1; i <= 66; i++) {
   const id = `MEX16-66${String(i).padStart(3, '0')}`;
   trains.push({
     id: id,
-    lineId: "MEX16",
-    line: "MEX16",
+    lineId: 'MEX16',
+    line: 'MEX16',
     name: id,
-    fleetId: i % 2 === 0 ? "flirt3-3" : "mireo-3",
-    manufacturerId: i % 2 === 0 ? "stadler" : "siemens",
-    typeKey: i % 2 === 0 ? "flirt3-3" : "mireo-3",
-    series: i % 2 === 0 ? "FLIRT³" : "Mireo",
+    fleetId: i % 2 === 0 ? 'flirt3-3' : 'mireo-3',
+    manufacturerId: i % 2 === 0 ? 'stadler' : 'siemens',
+    typeKey: i % 2 === 0 ? 'flirt3-3' : 'mireo-3',
+    series: i % 2 === 0 ? 'FLIRT³' : 'Mireo',
     buildYear: 2020 + (i % 3),
-    depot: i % 2 === 0 ? "München" : "Augsburg",
-    status: ["active", "standby", "maintenance"][i % 3],
+    depot: i % 2 === 0 ? 'München' : 'Augsburg',
+    status: ['active', 'standby', 'maintenance'][i % 3],
     lastSeen: new Date().toISOString(),
     position: {
       lat: 48.1351 + (Math.random() - 0.5) * 2,
-      lng: 11.5820 + (Math.random() - 0.5) * 2
+      lng: 11.582 + (Math.random() - 0.5) * 2,
     },
     speed: Math.floor(Math.random() * 160),
     direction: Math.floor(Math.random() * 360),
     delay: Math.floor(Math.random() * 10) - 5,
-    nextStop: ["München Hbf", "Augsburg Hbf", "Ingolstadt", "Nürnberg"][i % 4],
+    nextStop: ['München Hbf', 'Augsburg Hbf', 'Ingolstadt', 'Nürnberg'][i % 4],
     occupancy: Math.floor(Math.random() * 100),
     temperature: 20 + Math.floor(Math.random() * 10),
     healthScore: 85 + Math.floor(Math.random() * 15),
     meta: {
-      formation: "3-car",
-      etcsPrepared: true
-    }
+      formation: '3-car',
+      etcsPrepared: true,
+    },
   });
 }
 
@@ -47,32 +47,32 @@ for (let i = 1; i <= 39; i++) {
   const id = `RE8-79${String(i).padStart(3, '0')}`;
   trains.push({
     id: id,
-    lineId: "RE8",
-    line: "RE8",
+    lineId: 'RE8',
+    line: 'RE8',
     name: id,
-    fleetId: i % 2 === 0 ? "talent2" : "flirt3-3",
-    manufacturerId: i % 2 === 0 ? "bombardier" : "stadler",
-    typeKey: i % 2 === 0 ? "talent2" : "flirt3-3",
-    series: i % 2 === 0 ? "Talent 2" : "FLIRT³",
+    fleetId: i % 2 === 0 ? 'talent2' : 'flirt3-3',
+    manufacturerId: i % 2 === 0 ? 'bombardier' : 'stadler',
+    typeKey: i % 2 === 0 ? 'talent2' : 'flirt3-3',
+    series: i % 2 === 0 ? 'Talent 2' : 'FLIRT³',
     buildYear: 2020 + (i % 3),
-    depot: i % 2 === 0 ? "Stuttgart" : "Karlsruhe",
-    status: ["active", "standby", "maintenance"][i % 3],
+    depot: i % 2 === 0 ? 'Stuttgart' : 'Karlsruhe',
+    status: ['active', 'standby', 'maintenance'][i % 3],
     lastSeen: new Date().toISOString(),
     position: {
       lat: 48.7758 + (Math.random() - 0.5) * 2,
-      lng: 9.1829 + (Math.random() - 0.5) * 2
+      lng: 9.1829 + (Math.random() - 0.5) * 2,
     },
     speed: Math.floor(Math.random() * 140),
     direction: Math.floor(Math.random() * 360),
     delay: Math.floor(Math.random() * 10) - 5,
-    nextStop: ["Stuttgart Hbf", "Karlsruhe Hbf", "Mannheim", "Ulm"][i % 4],
+    nextStop: ['Stuttgart Hbf', 'Karlsruhe Hbf', 'Mannheim', 'Ulm'][i % 4],
     occupancy: Math.floor(Math.random() * 100),
     temperature: 20 + Math.floor(Math.random() * 10),
     healthScore: 85 + Math.floor(Math.random() * 15),
     meta: {
-      formation: "3-car",
-      etcsPrepared: true
-    }
+      formation: '3-car',
+      etcsPrepared: true,
+    },
   });
 }
 
@@ -81,32 +81,32 @@ for (let i = 1; i <= 39; i++) {
   const id = `RE9-78${String(i).padStart(3, '0')}`;
   trains.push({
     id: id,
-    lineId: "RE9",
-    line: "RE9",
+    lineId: 'RE9',
+    line: 'RE9',
     name: id,
-    fleetId: i % 2 === 0 ? "talent2" : "mireo-3",
-    manufacturerId: i % 2 === 0 ? "bombardier" : "siemens",
-    typeKey: i % 2 === 0 ? "talent2" : "mireo-3",
-    series: i % 2 === 0 ? "Talent 2" : "Mireo",
+    fleetId: i % 2 === 0 ? 'talent2' : 'mireo-3',
+    manufacturerId: i % 2 === 0 ? 'bombardier' : 'siemens',
+    typeKey: i % 2 === 0 ? 'talent2' : 'mireo-3',
+    series: i % 2 === 0 ? 'Talent 2' : 'Mireo',
     buildYear: 2020 + (i % 3),
-    depot: i % 2 === 0 ? "Stuttgart" : "Karlsruhe",
-    status: ["active", "standby", "maintenance"][i % 3],
+    depot: i % 2 === 0 ? 'Stuttgart' : 'Karlsruhe',
+    status: ['active', 'standby', 'maintenance'][i % 3],
     lastSeen: new Date().toISOString(),
     position: {
       lat: 48.7758 + (Math.random() - 0.5) * 2,
-      lng: 9.1829 + (Math.random() - 0.5) * 2
+      lng: 9.1829 + (Math.random() - 0.5) * 2,
     },
     speed: Math.floor(Math.random() * 140),
     direction: Math.floor(Math.random() * 360),
     delay: Math.floor(Math.random() * 10) - 5,
-    nextStop: ["Stuttgart Hbf", "Karlsruhe Hbf", "Heilbronn", "Heidelberg"][i % 4],
+    nextStop: ['Stuttgart Hbf', 'Karlsruhe Hbf', 'Heilbronn', 'Heidelberg'][i % 4],
     occupancy: Math.floor(Math.random() * 100),
     temperature: 20 + Math.floor(Math.random() * 10),
     healthScore: 85 + Math.floor(Math.random() * 15),
     meta: {
-      formation: "3-car",
-      etcsPrepared: true
-    }
+      formation: '3-car',
+      etcsPrepared: true,
+    },
   });
 }
 
@@ -119,9 +119,9 @@ console.log('✅ 144 Züge erfolgreich generiert!');
 console.log(`📁 Gespeichert in: ${outputPath}`);
 console.log('');
 console.log('📊 Verteilung:');
-console.log(`   • MEX16: ${trains.filter(t => t.lineId === 'MEX16').length} Züge`);
-console.log(`   • RE8:   ${trains.filter(t => t.lineId === 'RE8').length} Züge`);
-console.log(`   • RE9:   ${trains.filter(t => t.lineId === 'RE9').length} Züge`);
+console.log(`   • MEX16: ${trains.filter((t) => t.lineId === 'MEX16').length} Züge`);
+console.log(`   • RE8:   ${trains.filter((t) => t.lineId === 'RE8').length} Züge`);
+console.log(`   • RE9:   ${trains.filter((t) => t.lineId === 'RE9').length} Züge`);
 console.log(`   • TOTAL: ${trains.length} Züge`);
 console.log('');
 console.log('🔄 Server muss NEUGESTARTET werden!');

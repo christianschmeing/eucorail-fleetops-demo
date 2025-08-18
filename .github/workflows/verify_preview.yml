@@ -1,0 +1,129 @@
+name: Verify + Perf + Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, feat/train-tracker-p0]
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    concurrency: verify-preview-${{ github.ref }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies (npm ci)
+        id: npmci
+        run: npm ci
+        continue-on-error: true
+
+      - name: Install dependencies (fallback)
+        if: steps.npmci.outcome == 'failure'
+        run: npm i --prefer-offline
+
+      - name: Run verify + perf + preview runner
+        run: node scripts/ci/verify-int-perf-preview.mjs || true
+
+      - name: Upload CHANGESUMMARY.md
+        uses: actions/upload-artifact@v4
+        with:
+          name: changesummary
+          path: CHANGESUMMARY.md
+          if-no-files-found: ignore
+
+      - name: Upload state
+        uses: actions/upload-artifact@v4
+        with:
+          name: state
+          path: state/**
+          if-no-files-found: ignore
+
+      - name: Upload VC_READINESS (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: vc_readiness
+          path: docs/VC_READINESS.md
+          if-no-files-found: ignore
+
+      - name: Comment preview + perf to PR (if available)
+        uses: actions/github-script@v7
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const summary = fs.existsSync('CHANGESUMMARY.md') ? fs.readFileSync('CHANGESUMMARY.md','utf-8') : '';
+            let preview = '';
+            const m = summary.match(/Preview Web:\s*(https?:\/\/[^\s]+)\s*\(status=(\d+)\)/);
+            if (m) preview = m[1];
+            // Parse p95 from API latencies table (best-effort)
+            const rows = {};
+            const pick = (label) => {
+              const re = new RegExp(`\\| \\${label.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')} \\|`, 'i');
+              const line = summary.split(/\r?\n/).find((l) => re.test(l));
+              if (!line) return null;
+              const cells = line.split('|').map(s => s.trim());
+              // cells: ['', '/api/...', 'p50', 'p95', 'ok', '']
+              return { p50: cells[2], p95: cells[3], ok: cells[4] };
+            };
+            const metrics = {
+              health: pick('/api/health'),
+              trains: pick('/api/trains?limit=1'),
+              lines: pick('/api/lines'),
+              depots: pick('/api/depots'),
+              kpi: pick('/api/metrics/kpi'),
+              expLines: pick('export lines'),
+              expTrains: pick('export trains')
+            };
+
+            // Find or infer PR number for current branch
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            let prNumber = undefined;
+            try {
+              const prs = await github.rest.pulls.list({ owner, repo, state: 'open', head: `${owner}:${process.env.GITHUB_REF_NAME}` });
+              if (prs.data && prs.data.length) prNumber = prs.data[0].number;
+            } catch {}
+            if (!prNumber) {
+              try {
+                const r = await github.rest.repos.listPullRequestsAssociatedWithCommit({ owner, repo, commit_sha: context.sha });
+                if (r.data && r.data.length) prNumber = r.data[0].number;
+              } catch {}
+            }
+
+            if (!prNumber || !preview) {
+              core.info('No PR or preview URL found; skipping PR comment.');
+              return;
+            }
+
+            const lines = [];
+            lines.push(`Preview: ${preview}`);
+            lines.push('');
+            lines.push('| Endpoint | p95 (ms) | ok |');
+            lines.push('| --- | --- | --- |');
+            const add = (label, key) => { const it = metrics[key]; if (it) lines.push(`| ${label} | ${it.p95} | ${it.ok} |`); };
+            add('/api/health','health');
+            add('/api/trains?limit=1','trains');
+            add('/api/lines','lines');
+            add('/api/depots','depots');
+            add('/api/metrics/kpi','kpi');
+            add('export lines (CSV)','expLines');
+            add('export trains (XLSX)','expTrains');
+
+            const body = lines.join('\n');
+            await github.rest.issues.createComment({ owner, repo, issue_number: prNumber, body });
+
+

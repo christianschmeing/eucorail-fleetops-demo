@@ -1,0 +1,34 @@
+slot,fz_id,uic,series,region,depot,status
+4.20,BY-2462-420,94 80 2462 420-5,2462,BY,depot-langweid,active
+4.21,BY-2463-421,94 80 2463 421-3,2463,BY,depot-langweid,active
+4.22,BY-2462-422,94 80 2462 422-1,2462,BY,depot-langweid,active
+4.23,BY-2463-423,94 80 2463 423-9,2463,BY,depot-langweid,active
+4.24,BY-2462-424,94 80 2462 424-7,2462,BY,depot-langweid,active
+4.25,BY-2463-425,94 80 2463 425-4,2463,BY,depot-langweid,active
+4.26,BY-2462-426,94 80 2462 426-2,2462,BY,depot-langweid,active
+4.27,BY-2463-427,94 80 2463 427-0,2463,BY,depot-langweid,active
+4.28,BY-2462-428,94 80 2462 428-8,2462,BY,depot-langweid,active
+4.29,BY-2463-429,94 80 2463 429-6,2463,BY,depot-langweid,active
+4.30,BY-2462-430,94 80 2462 430-4,2462,BY,depot-langweid,active
+4.31,BY-2463-431,94 80 2463 431-2,2463,BY,depot-langweid,active
+4.32,BY-2462-432,94 80 2462 432-0,2462,BY,depot-langweid,active
+4.33,BY-2463-433,94 80 2463 433-8,2463,BY,depot-langweid,active
+4.34,BY-2462-434,94 80 2462 434-6,2462,BY,depot-langweid,active
+4.35,BY-2463-435,94 80 2463 435-3,2463,BY,depot-langweid,active
+4.36,BY-2462-436,94 80 2462 436-1,2462,BY,depot-langweid,active
+4.37,BY-2463-437,94 80 2463 437-9,2463,BY,depot-langweid,active
+4.38,BY-2462-438,94 80 2462 438-7,2462,BY,depot-langweid,active
+4.39,BY-2463-439,94 80 2463 439-5,2463,BY,depot-langweid,active
+4.40,BY-2462-440,94 80 2462 440-3,2462,BY,depot-langweid,active
+4.41,BY-2463-441,94 80 2463 441-1,2463,BY,depot-langweid,active
+4.42,BY-2462-442,94 80 2462 442-9,2462,BY,depot-langweid,active
+4.43,BY-2463-443,94 80 2463 443-7,2463,BY,depot-langweid,active
+4.44,BY-2462-444,94 80 2462 444-5,2462,BY,depot-langweid,active
+4.45,BY-2463-445,94 80 2463 445-2,2463,BY,depot-langweid,standby
+4.46,BY-2462-446,94 80 2462 446-0,2462,BY,depot-langweid,standby
+4.47,BY-2463-447,94 80 2463 447-8,2463,BY,depot-langweid,standby
+4.48,BY-2462-448,94 80 2462 448-6,2462,BY,depot-langweid,maintenance
+4.49,BY-2463-449,94 80 2463 449-4,2463,BY,depot-langweid,maintenance
+4.50,BY-2462-450,94 80 2462 450-2,2462,BY,depot-langweid,maintenance
+
+

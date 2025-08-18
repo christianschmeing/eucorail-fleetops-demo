@@ -1,0 +1,53 @@
+name: Preview Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.VERCEL_TOKEN && secrets.VERCEL_ORG_ID && secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Build web
+        run: npm --workspace apps/web run build
+      - name: Deploy to Vercel
+        run: |
+          npx vercel --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --prod=false --cwd apps/web --env NEXT_PUBLIC_API_BASE=${{ steps.api.outputs.url || '' }} --yes > vercel.out
+          URL=$(tail -n 1 vercel.out | sed -n 's/.*\(https:\/\/.*\.vercel\.app\).*/\1/p')
+          echo "url=$URL" >> $GITHUB_OUTPUT
+        id: web
+  api:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.RENDER_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy API (placeholder)
+        run: |
+          echo "Skipping real deploy – configure Render API here" 
+          echo "url=https://api-preview.example.com" >> $GITHUB_OUTPUT
+        id: api
+  annotate:
+    runs-on: ubuntu-latest
+    needs: [web, api]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comment PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            Web Preview: ${{ needs.web.outputs.url || 'n/a' }}
+            API Preview: ${{ needs.api.outputs.url || 'n/a' }}
+            (Basic-Auth aktiv, falls konfiguriert)
+      - name: Update state preview fields (skip if gh-pages locked)
+        run: |
+          echo "[SKIPPED:preview-no-secrets] or state update deferred"  
+
+
+

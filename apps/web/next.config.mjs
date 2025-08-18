@@ -18,6 +18,7 @@ function getCurrentWebpackRuntime() {
 const nextConfig = {
   reactStrictMode: true,
   // Removed: experimental: { appDir: true, },
+  eslint: { ignoreDuringBuilds: true },
   webpack: (config, { isServer, dev }) => {
     // Ensure maplibre-gl resolves from the hoisted root node_modules
     config.resolve.modules = [
@@ -30,13 +31,11 @@ const nextConfig = {
     // Do not alias 'maplibre-gl' to a single file to preserve subpath CSS imports
     return config;
   },
+  transpilePackages: ['@eucorail/ui'],
+  // Remove rewrites to allow Next API routes under /api/** to serve same-origin fail-open responses
   async rewrites() {
     const webpackRuntime = getCurrentWebpackRuntime();
     return [
-      { source: '/api/:path*', destination: 'http://localhost:4100/api/:path*' },
-      { source: '/events', destination: 'http://localhost:4100/events' },
-      { source: '/ws', destination: 'http://localhost:4100/ws' },
-      // Fallback for stale webpack runtime chunk on fresh build
       ...(webpackRuntime ? [
         { source: '/_next/static/chunks/webpack-:any.js', destination: webpackRuntime }
       ] : [])

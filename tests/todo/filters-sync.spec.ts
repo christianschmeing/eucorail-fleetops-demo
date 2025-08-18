@@ -7,5 +7,3 @@ test.skip('line filter buttons update list', async ({ page }) => {
   const list = page.getByTestId('train-list');
   await expect(list).toBeVisible();
 });
-
-

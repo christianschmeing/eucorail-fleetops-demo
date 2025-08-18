@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -9,7 +9,14 @@ export default function TestHUD() {
   const [sseConnected, setSseConnected] = useState(false);
   const [mapReady, setMapReady] = useState<boolean>(false);
   const demoTrains = [
-    'RE9-78001','RE9-78002','RE8-79021','RE8-79022','MEX16-66011','MEX16-66012','BY-12345','BW-67890'
+    'RE9-78001',
+    'RE9-78002',
+    'RE8-79021',
+    'RE8-79022',
+    'MEX16-66011',
+    'MEX16-66012',
+    'BY-12345',
+    'BW-67890',
   ];
   const [trainCount, setTrainCount] = useState(0);
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -50,12 +57,24 @@ export default function TestHUD() {
   }, []);
 
   return (
-    <div className="fixed top-3 right-3 z-50 bg-[#1A2F3A]/95 border border-[#2A3F4A] rounded-md px-3 py-2 space-y-1 text-xs" data-testid="test-hud">
-      <div><span className="opacity-70">SSE:</span> <span data-testid="sse-status">{sseConnected ? 'connected' : 'connecting…'}</span></div>
-      <div><span className="opacity-70">Map:</span> <span data-testid="map-status">{mapReady ? 'ready' : 'loading…'}</span></div>
-      <div><span className="opacity-70">Trains:</span> <span data-testid="train-count">{trainCount}</span></div>
+    <div
+      className="fixed top-3 right-3 z-50 bg-[#1A2F3A]/95 border border-[#2A3F4A] rounded-md px-3 py-2 space-y-1 text-xs"
+      data-testid="test-hud"
+    >
+      <div>
+        <span className="opacity-70">SSE:</span>{' '}
+        <span data-testid="sse-status">{sseConnected ? 'connected' : 'connecting…'}</span>
+      </div>
+      <div>
+        <span className="opacity-70">Map:</span>{' '}
+        <span data-testid="map-status">{mapReady ? 'ready' : 'loading…'}</span>
+      </div>
+      <div>
+        <span className="opacity-70">Trains:</span>{' '}
+        <span data-testid="train-count">{trainCount}</span>
+      </div>
       <ul data-testid="hud-train-list" className="mt-1 space-y-1">
-        {demoTrains.map(id => (
+        {demoTrains.map((id) => (
           <li key={id}>
             <button
               type="button"
@@ -63,7 +82,9 @@ export default function TestHUD() {
               aria-label="details öffnen"
               className="bg-white/10 px-2 py-1 rounded hover:bg-white/20"
               onClick={() => {
-                try { window.dispatchEvent(new CustomEvent('test:selectTrain', { detail: id })); } catch {}
+                try {
+                  window.dispatchEvent(new CustomEvent('test:selectTrain', { detail: id }));
+                } catch {}
                 setDrawerVisible(true);
               }}
             >
@@ -82,5 +103,3 @@ export default function TestHUD() {
     </div>
   );
 }
-
-

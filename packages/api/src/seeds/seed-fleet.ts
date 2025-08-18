@@ -17,10 +17,9 @@ const fleet: TrainSeed[] = [
   { runId: 'RE8-79021', line: 'RE8', unitType: 'FLIRT3' },
   { runId: 'RE8-79022', line: 'RE8', unitType: 'FLIRT3' },
   { runId: 'RE8-79023', line: 'RE8', unitType: 'FLIRT3' },
-  { runId: 'RE8-79024', line: 'RE8', unitType: 'FLIRT3' }
+  { runId: 'RE8-79024', line: 'RE8', unitType: 'FLIRT3' },
 ];
 
 mkdirSync('data', { recursive: true });
 writeFileSync(join('data', 'fleet.json'), JSON.stringify(fleet, null, 2));
 console.log('Wrote data/fleet.json');
-

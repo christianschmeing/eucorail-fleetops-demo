@@ -10,6 +10,12 @@
 
 Ein professionelles Web-Mockup einer Flottenplattform für Zugwartung und Asset-Management mit simulierten Positions- und Zustandsdaten entlang realer Linien in Bayern (BY) und Baden-Württemberg (BW).
 
+## 🧭 Agent Operating Manual
+
+- Agent System Rules: docs/AGENT_SYSTEM_RULES.md
+- Copy this seed (for new Cursor tab): .agent/SEED.prompt
+- Hinweis: Start ausschließlich via Supervisor; kein integriertes Terminal.
+
 ## 🎯 Projektziel
 
 - **Map-first UI** mit klaren KPIs und dezenter Branding-Optik
@@ -17,14 +23,14 @@ Ein professionelles Web-Mockup einer Flottenplattform für Zugwartung und Asset-
 - **Responsive Design** mit A11y AA Standards
 - **Demo-tauglich** mit Suche, Filtern und Detail-Ansichten
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Supervisor auf Port 3002)
 
 ### Voraussetzungen
 
 - Node.js 20.17.0 oder höher
 - npm 9.0.0 oder höher
 
-### Installation
+### Installation & Start
 
 ```bash
 # Repository klonen
@@ -34,18 +40,19 @@ cd Geolocation-Mockup
 # Dependencies installieren
 npm install
 
-# Demo starten
-npm run demo
+# Supervisor starten (Always‑Fresh Build + Self‑Heal)
+npm run dev:stack:zsh
 ```
 
-Die Demo ist dann verfügbar unter:
-- **Web**: http://localhost:3001
+Erreichbarkeit:
+
+- **Web**: http://localhost:3002
 - **API**: http://localhost:4100
 
 ### Alternative Befehle
 
 ```bash
-# Nur Entwicklungsserver
+# Nur Entwicklungsserver (reiner Dev‑Modus, 3001) – empfohlen ist Supervisor
 npm run dev
 
 # Build erstellen
@@ -93,6 +100,7 @@ Geolocation-Mockup/
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Next.js 14** (App Router)
 - **React 18**
 - **MapLibre GL JS** (Karten)
@@ -101,6 +109,7 @@ Geolocation-Mockup/
 - **Zod** (Typen-Sicherheit)
 
 ### Backend
+
 - **Fastify** (Node.js)
 - **WebSocket/SSE** (Real-time Updates)
 - **In-Memory Data** (MVP)
@@ -108,6 +117,7 @@ Geolocation-Mockup/
 ## 📊 Features
 
 ### MVP Features
+
 - ✅ Vollbildkarte mit Train-Markern
 - ✅ Real-time Positions-Updates (1 Hz)
 - ✅ 3 Linien (RE9, MEX16, RE8) mit korrekten Bounds
@@ -116,6 +126,7 @@ Geolocation-Mockup/
 - ✅ Automatische Prozessverwaltung
 
 ### Geplante Features
+
 - 🔄 Suche nach Zugnummer (Autocomplete)
 - 🔄 Kartenfilter (BY/BW/Linie)
 - 🔄 Detail-Drawer für Züge
@@ -125,16 +136,19 @@ Geolocation-Mockup/
 ## 🗺️ Linien & Daten
 
 ### Simulierte Linien
+
 - **RE9** (BY): Ulm–Augsburg
-- **MEX16** (BW): Stuttgart–Ulm  
+- **MEX16** (BW): Stuttgart–Ulm
 - **RE8** (BW): Stuttgart–Würzburg
 
 ### Fleet-Komposition
+
 - **RE9**: Mireo/Desiro HC (4-5 Einheiten)
 - **MEX16**: FLIRT 3 (3-4 Einheiten)
 - **RE8**: FLIRT 3 (3-4 Einheiten)
 
 ### Zugnummern-Schema
+
 - RE9: 78xxx
 - MEX16: 66xxx
 - RE8: 79xxx
@@ -168,14 +182,10 @@ npm run stop            # Alle Prozesse stoppen
 - `GET /events` - SSE Stream für Real-time Updates
 - `WS /ws` - WebSocket für Real-time Updates
 
-## 🧪 Testing
+## 🧪 Testing (intern)
 
 ```bash
-# Visueller Test mit Puppeteer
-node test-simple.js
-
-# Robuster Test mit automatischer Prozessverwaltung
-node test-robust-v2.js
+Interne Checks (typecheck/lint/build/test:int) – keine E2E/Playwright im CI.
 ```
 
 ## 🤖 AI Entry Points
@@ -184,6 +194,28 @@ node test-robust-v2.js
 - (main) State JSON Hinweis: Badge zeigt `main@…`, sobald der State von `main` stammt.
 - Badge Endpoint: https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/gh-pages/state/badge.json
 - Bedeutung: JSON enthält Commit/Branch, CI-Status, geänderte Bereiche (`apps_web`, `packages_api`, `scripts`, `docs`), offene P0/P1/PRs, optional `data_version`, sowie Zeitstempel. Siehe `docs/AI_README.md`.
+- Agent Rules URL (state.agent_rules_url) und Seed URL (state.agent_seed_url) werden im State ergänzt.
+- Open latest Preview (auto‑redirect): https://christianschmeing.github.io/eucorail-fleetops-demo/state/
+- Hinweis: Falls Basic‑Auth aktiv ist, bitte Zugangsdaten verwenden.
+
+## ✅ CI Preview & Verify
+
+- Starte in GitHub Actions den Workflow „Verify + Perf + Preview“. Der Lauf führt interne Checks (typecheck/lint/build/test:int sofern vorhanden), misst Performance (p50/p95), veröffentlicht optional eine Preview‑URL (Quick‑Tunnel) und aktualisiert `state/project-state.json`.
+- Ergebnisse: `CHANGESUMMARY.md` (Verify‑Status, initialJS.gz je Route, p50/p95‑Tabelle, Preview‑URL/Status, Skips), `state/project-state.json`, optional `docs/VC_READINESS.md`.
+- Der Workflow läuft zusätzlich bei Push auf `main`/`feat/train-tracker-p0` sowie alle 10 Minuten via Cron; die Preview‑URL steht in `gh-pages/state/project-state.json` unter `preview.web`.
+- Stabiler Link: https://christianschmeing.github.io/eucorail-fleetops-demo/state/ (führt auf die aktuelle Preview; zeigt Fallback, falls noch keine Preview).
+- Pages Root: https://christianschmeing.github.io/eucorail-fleetops-demo/
+- Hinweis: Die konkrete Pages URL wird nach Deploy automatisch in `CHANGESUMMARY.md` geloggt ("Pages URL: …").
+- One‑Shot Workflow „Preview + Pages“ erzeugt Preview und veröffentlicht die Pages‑Site in einem Zug.
+
+## 🌍 Public Preview (Stream & PR Preview)
+
+- Stream‑Mode (lokal):
+  - Voraussetzungen: `cloudflared` installiert, `CLOUDFLARE_TUNNEL_TOKEN` gesetzt (oder Single‑URL Modus).
+  - Start: `npm run dev:stack:zsh -- --stream`
+  - Ergebnis: Öffentliche URL wird in `CHANGESUMMARY.md` geloggt; Basic‑Auth optional via `PREVIEW_ENABLE_AUTH=1`, `PREVIEW_BASIC_USER/PASS`.
+- PR‑Preview (CI):
+  - Web via Vercel, API via Render/Fly (Platzhalter vorhanden). Secrets erforderlich (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`).
 
 ## 📝 Disclaimer
 
@@ -204,6 +236,7 @@ Dieses Projekt ist für interne Eucorail-Demos bestimmt.
 ## 🆘 Support
 
 Bei Fragen oder Problemen:
+
 1. Issues auf GitHub erstellen
 2. Dokumentation prüfen
 3. Team kontaktieren

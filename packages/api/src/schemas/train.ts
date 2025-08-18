@@ -6,19 +6,17 @@ export const TrainFeature = z.object({
     id: z.string(),
     line: z.string(),
     bearing: z.number().optional(),
-    health: z.enum(['ok','warn','due'])
+    health: z.enum(['ok', 'warn', 'due']),
   }),
   geometry: z.object({
     type: z.literal('Point'),
-    coordinates: z.tuple([z.number(), z.number()])
-  })
+    coordinates: z.tuple([z.number(), z.number()]),
+  }),
 });
 
 export const TrainFC = z.object({
   type: z.literal('FeatureCollection'),
-  features: z.array(TrainFeature)
+  features: z.array(TrainFeature),
 });
 
 export type TrainFC = z.infer<typeof TrainFC>;
-
-

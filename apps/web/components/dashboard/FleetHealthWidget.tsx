@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -7,7 +7,10 @@ export default function FleetHealthWidget() {
   const stats = useMemo(() => {
     const fc = qc.getQueryData<any>(['trains', 'live']);
     const features = Array.isArray(fc?.features) ? fc.features : [];
-    const totals = { total: 0, active: 0, maintenance: 0, inspection: 0, stationary: 0 } as Record<string, number>;
+    const totals = { total: 0, active: 0, maintenance: 0, inspection: 0, stationary: 0 } as Record<
+      string,
+      number
+    >;
     for (const f of features) {
       totals.total++;
       const status = String(f?.properties?.status ?? 'active');
@@ -38,5 +41,3 @@ function Stat({ label, value, color }: { label: string; value: number; color: st
     </div>
   );
 }
-
-

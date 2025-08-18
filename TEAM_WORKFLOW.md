@@ -3,12 +3,14 @@
 ## 🔄 Bidirektionale Synchronisation
 
 ### Von Cursor zu GitHub (Push):
+
 ```bash
 # Änderungen zu GitHub übertragen
 npm run push "Beschreibung der Änderungen"
 ```
 
 ### Von GitHub zu Cursor (Pull):
+
 ```bash
 # Änderungen von GitHub holen
 npm run sync
@@ -17,6 +19,7 @@ npm run sync
 ## 👥 Teamarbeit Workflow
 
 ### 1. **Täglicher Start:**
+
 ```bash
 # Neueste Änderungen holen
 npm run sync
@@ -26,6 +29,7 @@ npm run demo
 ```
 
 ### 2. **Entwicklung:**
+
 ```bash
 # Neuen Feature-Branch erstellen
 git checkout -b feature/neue-funktion
@@ -38,6 +42,7 @@ npm run push "Neue Funktion implementiert"
 ```
 
 ### 3. **Pull Request erstellen:**
+
 ```bash
 # Branch zu GitHub pushen
 git push -u origin feature/neue-funktion
@@ -46,6 +51,7 @@ git push -u origin feature/neue-funktion
 ```
 
 ### 4. **Nach Code Review:**
+
 ```bash
 # Zurück zu main
 git checkout main
@@ -60,6 +66,7 @@ git branch -d feature/neue-funktion
 ## 🚨 Konflikte lösen
 
 ### Wenn es Merge-Konflikte gibt:
+
 ```bash
 # Status prüfen
 git status
@@ -96,12 +103,14 @@ npm run sync
 ## 🔧 Automatisierung
 
 ### Git Hooks für automatische Synchronisation:
+
 ```bash
 # Pre-commit Hook (optional)
 # Verhindert Commits wenn nicht gesynced
 ```
 
 ### GitHub Actions für CI/CD:
+
 - Automatische Tests bei jedem Push
 - Automatisches Deployment
 - Code Quality Checks
@@ -109,6 +118,7 @@ npm run sync
 ## 📞 Team-Kommunikation
 
 ### Best Practices:
+
 1. **Regelmäßig syncen** (mindestens täglich)
 2. **Klare Commit-Messages** verwenden
 3. **Feature-Branches** für neue Funktionen
@@ -116,6 +126,7 @@ npm run sync
 5. **Issues** für Bug-Tracking
 
 ### Kommunikationskanäle:
+
 - GitHub Issues für Bugs/Features
 - GitHub Discussions für Fragen
 - Team-Chat für schnelle Absprachen
@@ -123,4 +134,3 @@ npm run sync
 ---
 
 **Wichtig**: Immer vor dem Entwickeln `npm run sync` ausführen! 🔄
-

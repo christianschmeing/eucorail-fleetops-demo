@@ -28,11 +28,13 @@ git push -u origin main
 ### 3. GitHub Repository konfigurieren
 
 #### Repository-Einstellungen
+
 1. Gehen Sie zu "Settings" → "General"
 2. Scrollen Sie zu "Danger Zone"
 3. Aktivieren Sie "Restrict pushes that create files that are larger than 100 MB"
 
 #### Branch Protection (Optional)
+
 1. "Settings" → "Branches"
 2. "Add rule" für `main` Branch
 3. Aktivieren Sie:
@@ -49,41 +51,43 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.17.0'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Build project
-      run: npm run build
-    
-    - name: Run tests
-      run: npm test
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.17.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
 ```
 
 ### 5. README.md aktualisieren
 
 Ersetzen Sie in der README.md:
+
 ```markdown
 git clone <your-github-repo-url>
 ```
 
 Durch:
+
 ```markdown
 git clone https://github.com/YOUR_USERNAME/eucorail-fleetops-demo.git
 ```
@@ -97,6 +101,7 @@ git clone https://github.com/YOUR_USERNAME/eucorail-fleetops-demo.git
 ### 7. Issues und Projects (Optional)
 
 #### Issue Templates erstellen
+
 Erstellen Sie `.github/ISSUE_TEMPLATE/bug_report.md`:
 
 ```markdown
@@ -106,7 +111,6 @@ about: Create a report to help us improve
 title: ''
 labels: bug
 assignees: ''
-
 ---
 
 **Describe the bug**
@@ -114,6 +118,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. See error
@@ -125,14 +130,16 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment:**
- - OS: [e.g. macOS, Windows]
- - Browser: [e.g. Chrome, Safari]
- - Version: [e.g. 22]
+
+- OS: [e.g. macOS, Windows]
+- Browser: [e.g. Chrome, Safari]
+- Version: [e.g. 22]
 ```
 
 ### 8. Deployment (Optional)
 
 #### Vercel Deployment
+
 1. Gehen Sie zu [Vercel.com](https://vercel.com)
 2. "New Project" → GitHub Repository auswählen
 3. Framework Preset: "Next.js"
@@ -142,6 +149,7 @@ If applicable, add screenshots to help explain your problem.
 7. Deploy
 
 #### Railway Deployment (für API)
+
 1. Gehen Sie zu [Railway.app](https://railway.app)
 2. "New Project" → "Deploy from GitHub repo"
 3. Repository auswählen
@@ -180,6 +188,7 @@ Erstellen Sie zusätzliche Dokumentation:
 ## 📞 Support
 
 Bei Problemen:
+
 1. GitHub Issues nutzen
 2. Team-Chat (Slack/Teams)
 3. Dokumentation prüfen

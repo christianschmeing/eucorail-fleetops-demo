@@ -6,6 +6,7 @@ Maschinenlesbarer Zustands-Snapshot wird auf dem Branch gh-pages unter state/ ve
 - Badge (Shields endpoint): https://raw.githubusercontent.com/<owner>/<repo>/gh-pages/state/badge.json
 
 Felder in project-state.json:
+
 - repo, branch, commit (sha, message, author, timestamp)
 - ci (status: success|failed|skipped, workflow, run_id)
 - changes (apps_web, packages_api, scripts, docs)
@@ -14,4 +15,3 @@ Felder in project-state.json:
 - release.latest_tag, generated_at
 
 Aktualität: Datei wird bei jedem Push/PR neu generiert; Veröffentlichung auf gh-pages/state/ bei Push auf Default-Branch.
-

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useEffect, useState } from 'react';
 
 type Weather = { condition: string; temperatureC: number; windSpeedKmh: number };
@@ -10,18 +10,21 @@ export default function WeatherPanel() {
   useEffect(() => {
     if (isTest) return;
     const id = setInterval(() => {
-      const conditions = ['sunny','cloudy','rainy','snowy','foggy'];
+      const conditions = ['sunny', 'cloudy', 'rainy', 'snowy', 'foggy'];
       setW({
-        condition: conditions[Math.floor(Math.random()*conditions.length)],
-        temperatureC: Math.round((Math.random()*35-5)*10)/10,
-        windSpeedKmh: Math.round(Math.random()*60)
+        condition: conditions[Math.floor(Math.random() * conditions.length)],
+        temperatureC: Math.round((Math.random() * 35 - 5) * 10) / 10,
+        windSpeedKmh: Math.round(Math.random() * 60),
       });
     }, 7000);
     return () => clearInterval(id);
   }, [isTest]);
 
   return (
-    <div className="bg-[#1A2F3A] border border-[#2A3F4A] rounded-lg p-4" data-testid="widget-weather">
+    <div
+      className="bg-[#1A2F3A] border border-[#2A3F4A] rounded-lg p-4"
+      data-testid="widget-weather"
+    >
       <h3 className="text-sm font-semibold mb-3">Wetter</h3>
       <div className="grid grid-cols-3 gap-3 text-center">
         <div>
@@ -40,5 +43,3 @@ export default function WeatherPanel() {
     </div>
   );
 }
-
-

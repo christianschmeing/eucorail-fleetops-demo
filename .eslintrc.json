@@ -1,0 +1,45 @@
+{
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/.next/**",
+    "**/build/**",
+    "playwright-report/**",
+    "test-results/**",
+    "test-screenshots/**",
+    "node_modules/**",
+    "*.min.js",
+    "*.min.css",
+    "coverage/**"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "next/no-html-link-for-pages": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.js", "scripts/**/*.js", "test-*.js", "run-*.js", "smart-*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "no-console": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    },
+    {
+      "files": ["packages/api/**/*.ts"],
+      "rules": { "no-console": "off" }
+    }
+  ],
+  "settings": { "next": { "rootDir": ["apps/web"] } }
+}

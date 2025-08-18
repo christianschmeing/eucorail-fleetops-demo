@@ -13,7 +13,7 @@ const trainDefinitions = {
     line: 'RE9',
     depot: 'Augsburg',
     manufacturer: 'siemens',
-    series: 'Mireo'
+    series: 'Mireo',
   },
   MEX16: {
     prefix: 'MEX16-66',
@@ -22,7 +22,7 @@ const trainDefinitions = {
     line: 'MEX16',
     depot: 'Stuttgart',
     manufacturer: 'stadler',
-    series: 'FLIRT³'
+    series: 'FLIRT³',
   },
   RE8: {
     prefix: 'RE8-79',
@@ -31,8 +31,8 @@ const trainDefinitions = {
     line: 'RE8',
     depot: 'Stuttgart',
     manufacturer: 'stadler',
-    series: 'FLIRT³'
-  }
+    series: 'FLIRT³',
+  },
 };
 
 // Weitere Linien für mehr Vielfalt
@@ -41,7 +41,7 @@ const additionalLines = {
   RE72: { prefix: 'RE72-72', count: 8, region: 'BY', line: 'RE72', depot: 'München' },
   RE80: { prefix: 'RE80-80', count: 7, region: 'BW', line: 'RE80', depot: 'Karlsruhe' },
   RE90: { prefix: 'RE90-90', count: 6, region: 'BY', line: 'RE90', depot: 'Nürnberg' },
-  RE96: { prefix: 'RE96-96', count: 5, region: 'BY', line: 'RE96', depot: 'Regensburg' }
+  RE96: { prefix: 'RE96-96', count: 5, region: 'BY', line: 'RE96', depot: 'Regensburg' },
 };
 
 const allDefinitions = { ...trainDefinitions, ...additionalLines };
@@ -51,7 +51,7 @@ const statusDistribution = [
   { status: 'active', weight: 70 },
   { status: 'standby', weight: 15 },
   { status: 'maintenance', weight: 10 },
-  { status: 'inspection', weight: 5 }
+  { status: 'inspection', weight: 5 },
 ];
 
 function getRandomStatus() {
@@ -72,7 +72,7 @@ for (const [lineKey, config] of Object.entries(allDefinitions)) {
   for (let i = 1; i <= config.count; i++) {
     const id = `${config.prefix}${String(i).padStart(3, '0')}`;
     const fleetId = `averio-${config.region.toLowerCase()}`;
-    
+
     trains.push({
       id,
       fleetId,
@@ -88,8 +88,8 @@ for (const [lineKey, config] of Object.entries(allDefinitions)) {
         formation: '3-car',
         etcsPrepared: true,
         kmTotal: Math.floor(Math.random() * 500000) + 100000,
-        lastMaintenance: new Date(Date.now() - Math.random() * 30 * 86400000).toISOString()
-      }
+        lastMaintenance: new Date(Date.now() - Math.random() * 30 * 86400000).toISOString(),
+      },
     });
   }
 }
@@ -102,5 +102,7 @@ console.log(`✅ Generiert: ${trains.length} Züge`);
 console.log(`   - RE9: ${trainDefinitions.RE9.count} Züge`);
 console.log(`   - MEX16: ${trainDefinitions.MEX16.count} Züge`);
 console.log(`   - RE8: ${trainDefinitions.RE8.count} Züge`);
-console.log(`   - Weitere: ${Object.values(additionalLines).reduce((sum, l) => sum + l.count, 0)} Züge`);
+console.log(
+  `   - Weitere: ${Object.values(additionalLines).reduce((sum, l) => sum + l.count, 0)} Züge`
+);
 console.log(`📁 Gespeichert in: ${outputPath}`);

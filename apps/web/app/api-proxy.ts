@@ -8,4 +8,3 @@ export async function fetchAPI(path: string) {
   }
   return response.json();
 }
-

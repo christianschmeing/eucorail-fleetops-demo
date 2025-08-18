@@ -26,7 +26,7 @@ function computeFleetFromSeeds(): FleetItem[] {
     const TARGETS: Record<string, { count: number; prefix: string; base: number }> = {
       MEX16: { count: 66, prefix: 'MEX16-66', base: 1 },
       RE8: { count: 39, prefix: 'RE8-79', base: 1 },
-      RE9: { count: 39, prefix: 'RE9-78', base: 1 }
+      RE9: { count: 39, prefix: 'RE9-78', base: 1 },
     };
 
     const byLine: Record<string, any[]> = {};
@@ -35,7 +35,9 @@ function computeFleetFromSeeds(): FleetItem[] {
       (byLine[key] ||= []).push(t);
     }
 
-    function pad3(n: number): string { return String(n).padStart(3, '0'); }
+    function pad3(n: number): string {
+      return String(n).padStart(3, '0');
+    }
 
     for (const [lineId, target] of Object.entries(TARGETS)) {
       const current = byLine[lineId]?.length ?? 0;
@@ -59,14 +61,14 @@ function computeFleetFromSeeds(): FleetItem[] {
 }
 
 const DEMO_SYNTH = process.env.DEMO_SYNTHETIC_COUNTS === '1';
-let FLEET: FleetItem[] = computeFleetFromSeeds();
+const FLEET: FleetItem[] = computeFleetFromSeeds();
 
 // Deterministic PRNG (Mulberry32)
 function mulberry32(seed: number) {
   let a = seed >>> 0;
   return function () {
     a |= 0;
-    a = (a + 0x6D2B79F5) | 0;
+    a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
@@ -84,11 +86,11 @@ function hashString(str: string): number {
 }
 
 const bboxByLine: Record<string, [number, number, number, number]> = {
-  RE9: [10.05, 48.30, 10.97, 48.60],
-  MEX16: [9.10, 48.65, 10.05, 48.75],
-  RE8: [9.05, 48.70, 10.00, 49.90],
+  RE9: [10.05, 48.3, 10.97, 48.6],
+  MEX16: [9.1, 48.65, 10.05, 48.75],
+  RE8: [9.05, 48.7, 10.0, 49.9],
   BY: [10.0, 48.3, 12.0, 49.2],
-  BW: [8.5, 48.4, 9.9, 49.1]
+  BW: [8.5, 48.4, 9.9, 49.1],
 };
 
 // Simple haversine distance in meters
@@ -105,26 +107,37 @@ function haversineMeters(a: [number, number], b: [number, number]): number {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
-function toRad(deg: number): number { return (deg * Math.PI) / 180; }
-function toDeg(rad: number): number { return (rad * 180) / Math.PI; }
+function toRad(deg: number): number {
+  return (deg * Math.PI) / 180;
+}
+function toDeg(rad: number): number {
+  return (rad * 180) / Math.PI;
+}
 function bearingDegrees(from: [number, number], to: [number, number]): number {
   const lon1 = toRad(from[0]);
   const lat1 = toRad(from[1]);
   const lon2 = toRad(to[0]);
   const lat2 = toRad(to[1]);
   const y = Math.sin(lon2 - lon1) * Math.cos(lat2);
-  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
+  const x =
+    Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
   const brng = Math.atan2(y, x);
   return (toDeg(brng) + 360) % 360;
 }
-function destinationPoint(start: [number, number], bearingDeg: number, distanceM: number): [number, number] {
+function destinationPoint(
+  start: [number, number],
+  bearingDeg: number,
+  distanceM: number
+): [number, number] {
   const R = 6371000;
   const δ = distanceM / R;
   const θ = toRad(bearingDeg);
   const λ1 = toRad(start[0]);
   const φ1 = toRad(start[1]);
-  const sinφ1 = Math.sin(φ1), cosφ1 = Math.cos(φ1);
-  const sinδ = Math.sin(δ), cosδ = Math.cos(δ);
+  const sinφ1 = Math.sin(φ1),
+    cosφ1 = Math.cos(φ1);
+  const sinδ = Math.sin(δ),
+    cosδ = Math.cos(δ);
   const sinφ2 = sinφ1 * cosδ + cosφ1 * sinδ * Math.cos(θ);
   const φ2 = Math.asin(sinφ2);
   const y = Math.sin(θ) * sinδ * cosφ1;
@@ -169,9 +182,9 @@ function getDeterministicSnapshot(seed: number) {
         line: t.line,
         status: 'active',
         speed: 0,
-        ts: Date.now()
+        ts: Date.now(),
       },
-      geometry: { type: 'Point', coordinates: [lon, lat] }
+      geometry: { type: 'Point', coordinates: [lon, lat] },
     } as const;
   });
   return { type: 'FeatureCollection', features } as const;
@@ -191,18 +204,25 @@ function getNonDeterministicSnapshot() {
         pos = [s0.lon, s0.lat];
         trainSegIdxById.set(t.runId, 0);
       } else {
-        pos = [minLon + Math.random() * (maxLon - minLon), minLat + Math.random() * (maxLat - minLat)];
+        pos = [
+          minLon + Math.random() * (maxLon - minLon),
+          minLat + Math.random() * (maxLat - minLat),
+        ];
       }
       trainPosById.set(t.runId, pos);
       trainDwellMsById.set(t.runId, 0);
-      if (!trainStartMs.has(t.runId)) trainStartMs.set(t.runId, now - Math.floor(Math.random() * 60000));
+      if (!trainStartMs.has(t.runId))
+        trainStartMs.set(t.runId, now - Math.floor(Math.random() * 60000));
     }
     let lon = pos[0];
     let lat = pos[1];
     // Physics-driven speed estimation with dwell
     let distToStation = distanceToNearestStation(t.line, lon, lat);
     const previous = lastSpeedKmh.get(t.runId) ?? 60;
-    let timeInMotionSec = Math.max(0, Math.round((now - (trainStartMs.get(t.runId) as number)) / 1000));
+    let timeInMotionSec = Math.max(
+      0,
+      Math.round((now - (trainStartMs.get(t.runId) as number)) / 1000)
+    );
     let realSpeed = 0;
     const dwell = trainDwellMsById.get(t.runId) ?? 0;
     if (dwell > 0) {
@@ -210,15 +230,21 @@ function getNonDeterministicSnapshot() {
       trainDwellMsById.set(t.runId, Math.max(0, dwell - TICK_MS));
       timeInMotionSec = 0;
     } else {
-      const baseSpeed = physics.calculateRealisticSpeed(distToStation, previous, timeInMotionSec, 0);
+      const baseSpeed = physics.calculateRealisticSpeed(
+        distToStation,
+        previous,
+        timeInMotionSec,
+        0
+      );
       realSpeed = Math.round(baseSpeed * speedMod);
     }
     // Path-following
     let bearing: number | undefined = undefined;
+    let nextDueMs: number | undefined = undefined;
     const railPath = (railPolylineByLine as any)[t.line] as [number, number][] | undefined;
     if (railPath && railPath.length >= 2) {
       // snap-progress along rail polyline based on metersPerTick
-      let segIdx = trainSegIdxById.get(t.runId) ?? 0;
+      const segIdx = trainSegIdxById.get(t.runId) ?? 0;
       const target = railPath[Math.min(segIdx + 1, railPath.length - 1)];
       distToStation = haversineMeters([lon, lat], target);
       if ((trainDwellMsById.get(t.runId) ?? 0) === 0) {
@@ -228,16 +254,21 @@ function getNonDeterministicSnapshot() {
           lat = target[1];
           trainPosById.set(t.runId, [lon, lat]);
           trainSegIdxById.set(t.runId, Math.min(segIdx + 1, railPath.length - 2));
+          nextDueMs = now + 5000;
         } else if (metersPerTick > 0) {
           bearing = bearingDegrees([lon, lat], target);
           const nextPos = destinationPoint([lon, lat], bearing, metersPerTick);
           lon = nextPos[0];
           lat = nextPos[1];
           trainPosById.set(t.runId, [lon, lat]);
+          if (realSpeed > 0)
+            nextDueMs =
+              now +
+              Math.max(1000, Math.round((distToStation / ((realSpeed * 1000) / 3600)) * 1000));
         }
       }
     } else if (lineStops && lineStops.length >= 2) {
-      let segIdx = trainSegIdxById.get(t.runId) ?? 0;
+      const segIdx = trainSegIdxById.get(t.runId) ?? 0;
       const nextIdx = (segIdx + 1) % lineStops.length;
       const target: [number, number] = [lineStops[nextIdx].lon, lineStops[nextIdx].lat];
       distToStation = haversineMeters([lon, lat], target);
@@ -253,12 +284,17 @@ function getNonDeterministicSnapshot() {
           timeInMotionSec = 0;
           trainStartMs.set(t.runId, now);
           bearing = undefined;
+          nextDueMs = now + 15000;
         } else if (metersPerTick > 0) {
           bearing = bearingDegrees([lon, lat], target);
           const nextPos = destinationPoint([lon, lat], bearing, metersPerTick);
           lon = nextPos[0];
           lat = nextPos[1];
           trainPosById.set(t.runId, [lon, lat]);
+          if (realSpeed > 0)
+            nextDueMs =
+              now +
+              Math.max(1000, Math.round((distToStation / ((realSpeed * 1000) / 3600)) * 1000));
         }
       }
     } else {
@@ -269,13 +305,19 @@ function getNonDeterministicSnapshot() {
         lon = Math.max(minLon, Math.min(maxLon, nextPos[0]));
         lat = Math.max(minLat, Math.min(maxLat, nextPos[1]));
         trainPosById.set(t.runId, [lon, lat]);
+        if (realSpeed > 0)
+          nextDueMs =
+            now + Math.max(1000, Math.round((distToStation / ((realSpeed * 1000) / 3600)) * 1000));
       }
     }
     lastSpeedKmh.set(t.runId, realSpeed);
     // Energy + passengers
     const energyWhTick = energyMonitor.calculateConsumption(realSpeed);
     let pax = paxSimByTrain.get(t.runId);
-    if (!pax) { pax = new PassengerSimulator(); paxSimByTrain.set(t.runId, pax); }
+    if (!pax) {
+      pax = new PassengerSimulator();
+      paxSimByTrain.set(t.runId, pax);
+    }
     const atStation = distToStation < 80 || (trainDwellMsById.get(t.runId) ?? 0) > 0;
     const paxSnapshot = pax.tick(atStation);
     return {
@@ -288,9 +330,12 @@ function getNonDeterministicSnapshot() {
         energyWhTick,
         loadFactor: paxSnapshot.loadFactor,
         bearing,
-        ts: now
+        sched: true,
+        estimated: true,
+        nextDue: nextDueMs ? new Date(nextDueMs).toISOString() : undefined,
+        ts: now,
       },
-      geometry: { type: 'Point', coordinates: [lon, lat] }
+      geometry: { type: 'Point', coordinates: [lon, lat] },
     } as const;
   });
   return { type: 'FeatureCollection', features } as const;
@@ -319,7 +364,9 @@ export default fp(async (app: FastifyInstance) => {
     reply.sse({ id: lastId, event: 'ping', data: 'ready' });
 
     const updateTimer = setInterval(() => {
-      const payload = TEST_MODE ? getDeterministicSnapshot(currentSeed) : getNonDeterministicSnapshot();
+      const payload = TEST_MODE
+        ? getDeterministicSnapshot(currentSeed)
+        : getNonDeterministicSnapshot();
       reply.sse({ event: 'train:update', data: JSON.stringify(payload) });
     }, TICK_MS);
 
@@ -335,5 +382,3 @@ export default fp(async (app: FastifyInstance) => {
 });
 
 let currentSeed = DEFAULT_SEED;
-
-

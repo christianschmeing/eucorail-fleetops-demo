@@ -6,5 +6,3 @@ test.skip('Open first train details via sidebar item', async ({ page }) => {
   await page.evaluate(() => (window as any).setSelectedTrain('RE9-78002'));
   await expect(page.getByTestId('train-drawer')).toBeVisible();
 });
-
-

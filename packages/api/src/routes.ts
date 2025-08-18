@@ -2,102 +2,60 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { FastifyInstance } from 'fastify';
 import { MaintenanceSystem } from './maintenance/index.js';
+import {
+  loadPolicies,
+  savePolicies,
+  loadMeasures,
+  loadWOs,
+  saveWOs,
+  appendSignoff,
+  computeDepotSlotWarnings,
+} from './lib/ecm.js';
+import { getDataSource } from './lib/data.js';
 
 export async function registerRoutes(app: FastifyInstance) {
+  const data = getDataSource();
+  app.get('/api/health', async () => {
+    return data.getHealth();
+  });
+  app.get('/api/meta/version', async () => ({ version: '0.1.0' }));
   app.get('/api/lines', async () => {
-    const p = path.join(process.cwd(), 'seeds', 'averio', 'lines.json');
-    return JSON.parse(readFileSync(p, 'utf-8'));
+    return data.getLines();
   });
   app.get('/api/depots', async () => {
-    const p = path.join(process.cwd(), 'seeds', 'core', 'depots.json');
-    return JSON.parse(readFileSync(p, 'utf-8'));
+    return data.getDepots();
   });
 
   // Trains list and by id (seed-backed, optional demo augmentation)
   app.get('/api/trains', async (req: any) => {
-    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains.json');
-    const trains = JSON.parse(readFileSync(p, 'utf-8')) as Array<any>;
-
-    const isTest = process.env.TEST_MODE === '1' || process.env.NEXT_PUBLIC_TEST_MODE === '1';
-    const DEMO_SYNTH = process.env.DEMO_SYNTHETIC_COUNTS === '1' || isTest;
-
-    // Ensure we always return a rich dataset for demos/tests
-    // Target distribution (authoritative demo baseline)
-    // Demo-only targets (disabled unless DEMO_SYNTHETIC_COUNTS=1)
-    const TARGETS: Record<string, { count: number; prefix: string; base: number }> = {
-      MEX16: { count: 66, prefix: 'MEX16-66', base: 1 },
-      RE8: { count: 39, prefix: 'RE8-79', base: 1 },
-      RE9: { count: 39, prefix: 'RE9-78', base: 1 }
-    };
-
-    const byLine: Record<string, any[]> = {};
-    for (const t of trains) {
-      const key = String(t.lineId || t.line || 'UNKNOWN').toUpperCase();
-      (byLine[key] ||= []).push(t);
-    }
-
-    function pad3(n: number): string { return String(n).padStart(3, '0'); }
-
-    function synthesizeTrain(lineId: string, index: number): any {
-      const target = TARGETS[lineId];
-      const id = `${target.prefix}${pad3(target.base + index)}`;
-      const isBy = ['MEX14', 'MEX15', 'RE10'].includes(lineId) ? 'München' : 'Stuttgart';
-      const statusList = ['active', 'standby', 'maintenance'] as const;
-      const status = statusList[(target.base + index) % statusList.length];
-      return {
-        id,
-        name: id,
-        line: lineId,
-        lineId,
-        fleetId: ['MEX16','MEX13','MEX14','MEX15','RE8','RE1','RE90','RE7','RE10','RE9'].includes(lineId) ? 'flirt3-3' : 'mireo-3',
-        depot: isBy,
-        status,
-        position: {
-          lat: 48.3 + Math.sin((target.base + index) / 10) * 1.2,
-          lng: 11.0 + Math.cos((target.base + index) / 10) * 1.2
-        },
-        speed: ((target.base + index) * 7) % 140,
-        healthScore: 85 + (((target.base + index) * 11) % 15)
-      };
-    }
-
-    let augmented = Object.values(byLine).flat();
-    if (DEMO_SYNTH) {
-      for (const [lineId, target] of Object.entries(TARGETS)) {
-        const current = byLine[lineId]?.length ?? 0;
-        if (current < target.count) {
-          const missing = target.count - current;
-          byLine[lineId] ||= [];
-          for (let i = 0; i < missing; i++) {
-            byLine[lineId].push(synthesizeTrain(lineId, current + i));
-          }
-        }
-      }
-      augmented = Object.values(byLine).flat();
-    }
-
     const { fleetId, lineId, status } = (req.query ?? {}) as Record<string, string | undefined>;
-    let list = DEMO_SYNTH ? augmented : trains;
-    if (fleetId) list = list.filter(t => String(t.fleetId).toLowerCase() === fleetId.toLowerCase());
-    if (lineId) list = list.filter(t => String(t.lineId).toLowerCase() === lineId.toLowerCase());
-    if (status) list = list.filter(t => String(t.status ?? '').toLowerCase() === status.toLowerCase());
-    return list;
+    const limitParam = Number((req.query?.limit ?? '').toString());
+    return data.getTrains({
+      fleetId,
+      lineId,
+      status,
+      limit: Number.isFinite(limitParam) && limitParam > 0 ? limitParam : undefined,
+    });
   });
   app.get('/api/trains/:id', async (req: any, reply) => {
-    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains.json');
-    const trains = JSON.parse(readFileSync(p, 'utf-8')) as Array<any>;
     const id = String(req.params?.id ?? '');
-    const t = trains.find(x => String(x.id) === id);
+    const t = await data.getTrainById(id);
     if (!t) return reply.code(404).send({ error: 'not_found' });
     return t;
   });
   // naive in-memory cache for static JSON files
   let unitsCache: any = null;
-  let energyBudget = { dailyKwh: 125000, usedKwh: 0 };
+  const energyBudget = { dailyKwh: 125000, usedKwh: 0 };
   const maint = new MaintenanceSystem();
   app.get('/api/fleet/health', async () => ({
-    alerts24h: [{ code: 'DOOR_23', count: 5 }, { code: 'HVAC_12', count: 3 }],
-    dueSoon: [{ runId: 'RE9-78001', kmRemaining: 1800 }, { runId: 'MEX16-66012', daysRemaining: 25 }]
+    alerts24h: [
+      { code: 'DOOR_23', count: 5 },
+      { code: 'HVAC_12', count: 3 },
+    ],
+    dueSoon: [
+      { runId: 'RE9-78001', kmRemaining: 1800 },
+      { runId: 'MEX16-66012', daysRemaining: 25 },
+    ],
   }));
   app.get('/api/units', async () => {
     if (!unitsCache) unitsCache = JSON.parse(readFileSync('data/units.json', 'utf-8'));
@@ -106,7 +64,10 @@ export async function registerRoutes(app: FastifyInstance) {
   app.get('/api/energy/budget', async () => energyBudget);
   app.get('/api/maintenance/:trainId', async (req: any) => {
     const trainId = req.params.trainId as string;
-    const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{ runId: string; unitType: string }>;
+    const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{
+      runId: string;
+      unitType: string;
+    }>;
     const unitType = fleet.find((x) => x.runId === trainId)?.unitType ?? 'MIREO';
     const currentKm = (maint as any).hash ? (maint as any).hash(trainId) % 200000 : 50000;
     return {
@@ -115,8 +76,113 @@ export async function registerRoutes(app: FastifyInstance) {
       schedule: maint.generateMaintenanceSchedule(trainId, unitType, currentKm),
       next: maint.predictNextMaintenance(currentKm, unitType),
       wearPct: maint.calculateWearAndTear(5000 + (currentKm % 15000)),
-      faults: maint.listCurrentFaults(trainId)
+      faults: maint.listCurrentFaults(trainId),
     };
   });
-}
 
+  // KPIs (lightweight demo numbers)
+  app.get('/api/metrics/kpi', async () => data.getKPI());
+
+  // CSV/XLSX export endpoints (simple demo content)
+  app.get('/api/export/lines', async (req: any, reply) => {
+    const lines = await data.getLines();
+    const rows = [
+      ['Line', 'Region', 'Operator'],
+      ...lines.map((l) => [l.id ?? '', l.region ?? '', l.operator ?? '']),
+    ];
+    const csv = rows.map((r) => r.map((x) => String(x).replace(/,/g, ';')).join(',')).join('\n');
+    reply.header('content-type', 'text/csv; charset=utf-8');
+    return reply.send(csv);
+  });
+  app.get('/api/export/trains', async (req: any, reply) => {
+    const trains = await data.getTrains();
+    const header = [
+      'FZ',
+      'Slot',
+      'UIC',
+      'Linie',
+      'Region',
+      'Serie',
+      'Hersteller',
+      'Status',
+      'Depot',
+      'DepotName',
+      'SCHED',
+    ];
+    const rows = [
+      header,
+      ...trains
+        .slice(0, 2000)
+        .map((t: any) => [
+          t.id ?? '',
+          t.slot ?? '',
+          t.uic ?? '',
+          t.lineId ?? t.line ?? '',
+          t.region ?? '',
+          t.series ?? '',
+          t.maker ?? '',
+          t.status ?? '',
+          t.depot ?? '',
+          t.depotName ?? '',
+          String(Boolean(t.sched)),
+        ]),
+    ];
+    const fmt = (req.query?.format || '').toString().toLowerCase();
+    if (fmt === 'xlsx') {
+      // Minimal XLSX via CSV for demo; still set content-type to xlsx
+      const csv = rows.map((r) => r.map((x) => String(x).replace(/,/g, ';')).join(',')).join('\n');
+      reply.header(
+        'content-type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+      return reply.send(csv);
+    }
+    const csv = rows.map((r) => r.map((x) => String(x).replace(/,/g, ';')).join(',')).join('\n');
+    reply.header('content-type', 'text/csv; charset=utf-8');
+    return reply.send(csv);
+  });
+
+  // ECM minimal endpoints
+  app.get('/api/ecm/policies', async () => data.listPolicies());
+  app.get('/api/ecm/signoffs', async () => {
+    return data.listSignoffs();
+  });
+  app.post('/api/ecm/policies', async (req: any) => {
+    const body = req.body as any;
+    const all = await data.listPolicies();
+    const idx = all.findIndex((p) => p.id === body.id);
+    const next = [...all];
+    if (idx >= 0) next[idx] = { ...all[idx], ...body };
+    else next.push(body);
+    return data.savePolicies(next);
+  });
+  app.get('/api/ecm/measures', async () => data.listMeasures());
+  app.get('/api/ecm/wos', async () => data.listWOs());
+  app.post('/api/ecm/wos', async (req: any) => data.createWO(req.body as any));
+  app.patch('/api/ecm/wos/:id', async (req: any, reply) => {
+    const id = String(req.params.id);
+    const res = await data.updateWO(id, req.body as any);
+    if ('error' in res) return reply.code(404).send(res);
+    return res;
+  });
+  app.post('/api/ecm/signoff', async (req: any) =>
+    data.appendSignoff({ ...(req.body as any), ts: new Date().toISOString() })
+  );
+
+  // Toggle checklist item
+  app.patch('/api/ecm/wos/:id/checklist', async (req: any, reply) => {
+    const id = String(req.params.id);
+    const { itemId, done } = (req.body as any) || {};
+    const res = await data.toggleChecklist(id, String(itemId), Boolean(done));
+    if ('error' in res) return reply.code(404).send(res);
+    return res;
+  });
+
+  // Complete + QA endpoint: sets DONE and appends audit entry
+  app.post('/api/ecm/wos/:id/complete', async (req: any, reply) => {
+    const id = String(req.params.id);
+    const res = await data.completeWO(id);
+    if ('error' in res) return reply.code(404).send(res);
+    return res;
+  });
+}

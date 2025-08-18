@@ -8,16 +8,16 @@ const badgeVariants = cva('inline-flex items-center rounded-xl px-2 py-0.5 text-
       ok: 'bg-euco-accent text-black',
       warn: 'bg-euco-warn text-black',
       danger: 'bg-euco-danger text-white',
-      muted: 'bg-white/10 text-euco-muted'
-    }
+      muted: 'bg-white/10 text-euco-muted',
+    },
   },
-  defaultVariants: { variant: 'muted' }
+  defaultVariants: { variant: 'muted' },
 });
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
+export interface BadgeProps
+  extends HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof badgeVariants> {}
 
 export function Badge({ className, variant, ...props }: BadgeProps) {
   return <span className={clsx(badgeVariants({ variant }), className)} {...props} />;
 }
-
-

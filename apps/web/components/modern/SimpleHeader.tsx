@@ -14,7 +14,7 @@ export function SimpleHeader({ faults = 0 }: SimpleHeaderProps) {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, []);
 
@@ -43,7 +43,7 @@ export function SimpleHeader({ faults = 0 }: SimpleHeaderProps) {
               <p className="text-sm font-medium text-green-400">Online</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-blue-400" />
             <div>
@@ -51,7 +51,7 @@ export function SimpleHeader({ faults = 0 }: SimpleHeaderProps) {
               <p className="text-sm font-medium text-blue-400">30 Aktiv</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <AlertTriangle className={`w-4 h-4 ${faults > 0 ? 'text-red-400' : 'text-gray-400'}`} />
             <div>
@@ -69,14 +69,14 @@ export function SimpleHeader({ faults = 0 }: SimpleHeaderProps) {
             {currentTime.toLocaleTimeString('de-DE', {
               hour: '2-digit',
               minute: '2-digit',
-              second: '2-digit'
+              second: '2-digit',
             })}
           </time>
           <time className="text-xs text-gray-400" suppressHydrationWarning>
             {currentTime.toLocaleDateString('de-DE', {
               day: '2-digit',
               month: 'short',
-              year: 'numeric'
+              year: 'numeric',
             })}
           </time>
         </div>

@@ -1,0 +1,20 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run vercel-build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "outputDirectory": "apps/web/.next",
+  "functions": {
+    "packages/api/src/index.ts": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [{ "source": "/api/:path*", "destination": "/api/:path*" }],
+  "env": {
+    "NEXT_PUBLIC_API_BASE": "/api",
+    "NODE_ENV": "production",
+    "DEMO_MODE": "true"
+  },
+  "builds": [{ "src": "apps/web/package.json", "use": "@vercel/next" }]
+}

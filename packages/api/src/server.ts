@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import { registerRoutes } from './routes.js';
 import core from './plugins/core.js';
+import basicAuth from './plugins/basicAuth.js';
 import events from './routes/events.js';
 import { readFileSync } from 'node:fs';
 import { WebSocketServer } from 'ws';
@@ -9,15 +10,19 @@ const app = Fastify({ logger: true });
 
 // Core plugins: CORS, rate limit, under-pressure, swagger, health
 await app.register(core);
+await app.register(basicAuth);
 
 app.get('/api/meta', async () => ({
   name: 'Eucorail FleetOps Demo',
   version: '0.1.0',
-  disclaimer: 'Simulierte Positions- und Zustandsdaten – keine operativen Informationen'
+  disclaimer: 'Simulierte Positions- und Zustandsdaten – keine operativen Informationen',
 }));
 
 // Simple SSE emitting 1 Hz random-but-bounded locations per train
-const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{ runId: string; line: string }>;
+const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{
+  runId: string;
+  line: string;
+}>;
 
 // legacy /events route removed; handled by routes/events plugin
 
@@ -52,14 +57,22 @@ wss.on('connection', (ws) => {
     const now = Date.now();
     for (const t of fleet) {
       const bboxByLine: Record<string, [number, number, number, number]> = {
-        RE9: [10.05, 48.30, 10.97, 48.60],
-        MEX16: [9.10, 48.65, 10.05, 48.75],
-        RE8: [9.05, 48.70, 10.00, 49.90]
+        RE9: [10.05, 48.3, 10.97, 48.6],
+        MEX16: [9.1, 48.65, 10.05, 48.75],
+        RE8: [9.05, 48.7, 10.0, 49.9],
       };
       const [minLon, minLat, maxLon, maxLat] = bboxByLine[t.line] || [9.0, 48.5, 11.0, 49.9];
       const lon = minLon + Math.random() * (maxLon - minLon);
       const lat = minLat + Math.random() * (maxLat - minLat);
-      const payload = { type: 'location', runId: t.runId, line: t.line, ts: now, lon, lat, speed: 80 + Math.random() * 40 };
+      const payload = {
+        type: 'location',
+        runId: t.runId,
+        line: t.line,
+        ts: now,
+        lon,
+        lat,
+        speed: 80 + Math.random() * 40,
+      };
       ws.send(JSON.stringify(payload));
     }
   };
@@ -68,4 +81,3 @@ wss.on('connection', (ws) => {
   const interval = setInterval(sendTick, 1000);
   ws.on('close', () => clearInterval(interval));
 });
-

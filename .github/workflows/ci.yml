@@ -1,3 +1,53 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:setup
+      - run: npm run build
+      
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-files
+          path: |
+            apps/web/.next
+            packages/api/dist
 name: ci
 
 on:
@@ -21,6 +71,9 @@ jobs:
         run: npm run -s lint || true
       - name: Build
         run: npm run -s build || true
+      - name: Log Next build folder
+        run: |
+          ls -lah apps/web/.next || true
       - name: Test (internal only)
         run: npm run -s test:int || true
       - name: Upload logs (optional)

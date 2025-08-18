@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useMemo } from 'react';
 
 type Counts = { info: number; warning: number; error: number; critical: number };
@@ -10,7 +10,7 @@ export default function AlertsSummary() {
       info: 12,
       warning: 5,
       error: 2,
-      critical: 0
+      critical: 0,
     };
   }, []);
 
@@ -35,5 +35,3 @@ function AlertTile({ label, value, color }: { label: string; value: number; colo
     </div>
   );
 }
-
-

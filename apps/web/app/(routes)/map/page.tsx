@@ -1,7 +1,7 @@
-"use client";
+'use client';
 import dynamic from 'next/dynamic';
 
-const MapShell = dynamic(() => import("@/components/MapShell"), { ssr: false });
+const MapShell = dynamic(() => import('@/components/MapShell'), { ssr: false });
 
 export default function MapPage() {
   return (
@@ -11,5 +11,3 @@ export default function MapPage() {
     </div>
   );
 }
-
-
