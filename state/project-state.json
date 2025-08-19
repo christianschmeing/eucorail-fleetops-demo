@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "b026405fcc630733ee88329af7cb96762d78d0b3",
-    "message": "trigger: Force new Vercel deployment for depot/map feature",
+    "sha": "5c613ef96d2b371aff86dcc787ce7eb77d5aa143",
+    "message": "fix: Add missing dependencies for deployment",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T19:21:49Z"
+    "timestamp": "2025-08-19T19:38:12Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17079635211"
+    "run_id": "17079979227"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T19:22:49.137Z",
+  "generated_at": "2025-08-19T19:39:01.763Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
