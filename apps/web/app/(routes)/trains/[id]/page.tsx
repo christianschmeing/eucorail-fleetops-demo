@@ -1,13 +1,11 @@
 import TrainDetailClient from './TrainDetailClient';
 import { notFound } from 'next/navigation';
+import { generateTrains } from '@/lib/generateTrains';
 
 async function getTrain(id: string) {
   try {
-    // Import the API route handler and call it directly
-    const apiModule = await import('@/app/api/trains/route');
-    const response = await apiModule.GET(new Request('http://localhost/api/trains'));
-    const trains = await response.json();
-    
+    // Generate trains data directly
+    const trains = generateTrains();
     const train = trains.find((t: any) => t.id === id || t.trainId === id);
     
     if (!train) {
