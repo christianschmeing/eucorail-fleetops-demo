@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "f5aaf53e59e9956330fca77c37d447fa358755d9",
-    "message": "feat: Extend depot view to 14 days with 80% utilization (~115 trains), add all 28 tracks from depot_tracks.yaml",
+    "sha": "6ee51b1a400b83f6a7e87f848f16323b31f751d6",
+    "message": "fix: Revert to correct smaller track counts - Essingen 4 tracks, Langweid 11 tracks (14 with planned)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T12:44:54Z"
+    "timestamp": "2025-08-19T12:53:57Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17069981538"
+    "run_id": "17070212919"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T12:46:14.148Z",
+  "generated_at": "2025-08-19T12:55:05.642Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
