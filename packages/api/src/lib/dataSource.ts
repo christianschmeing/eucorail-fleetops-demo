@@ -300,14 +300,24 @@ export class SeedDataSource implements DataSource {
   }
 }
 
+// Import SSOV2 DataSource for 144 trains
+import { SSOV2DataSource } from './dataSourceSSOV2.js';
+
 let singleton: DataSource | null = null;
 export function getDataSource(): DataSource {
   if (singleton) return singleton;
   const mode = (process.env.DATA_MODE || 'seed').toLowerCase();
+  
+  // Use SSOV2 by default for 144 trains
+  if (process.env.USE_SSOV2 === '1' || true) {
+    singleton = new SSOV2DataSource();
+    return singleton;
+  }
+  
   switch (mode) {
     case 'seed':
     default:
       singleton = new SeedDataSource();
-      return singleton;
+      return singleton!;
   }
 }
