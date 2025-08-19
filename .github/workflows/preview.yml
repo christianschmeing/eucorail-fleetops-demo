@@ -1,53 +1,128 @@
-name: Preview Deploy
+name: Preview + Test
 
 on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
-  web:
+  deploy:
     runs-on: ubuntu-latest
-    if: ${{ secrets.VERCEL_TOKEN && secrets.VERCEL_ORG_ID && secrets.VERCEL_PROJECT_ID }}
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.preview_url }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - name: Build web
-        run: npm --workspace apps/web run build
-      - name: Deploy to Vercel
+          cache: 'npm'
+
+      - name: Install deps (root)
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Pull Vercel env (preview)
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
+
+      - name: Build (Vercel prebuilt)
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token "$VERCEL_TOKEN"
+
+      - name: Deploy (Preview)
+        id: deploy
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        shell: bash
         run: |
-          npx vercel --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --prod=false --cwd apps/web --env NEXT_PUBLIC_API_BASE=${{ steps.api.outputs.url || '' }} --yes > vercel.out
-          URL=$(tail -n 1 vercel.out | sed -n 's/.*\(https:\/\/.*\.vercel\.app\).*/\1/p')
-          echo "url=$URL" >> $GITHUB_OUTPUT
-        id: web
-  api:
-    runs-on: ubuntu-latest
-    if: ${{ secrets.RENDER_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy API (placeholder)
+          set -euo pipefail
+          url=$(vercel deploy --prebuilt --token "$VERCEL_TOKEN" | grep -Eo 'https?://[^ ]+\.vercel\.app' | tail -n1)
+          echo "preview_url=$url" >> "$GITHUB_OUTPUT"
+          echo "$url" > ../preview-url.txt
+
+      - name: Validate Preview
+        if: ${{ steps.deploy.outputs.preview_url != '' }}
+        env:
+          URL: ${{ steps.deploy.outputs.preview_url }}
         run: |
-          echo "Skipping real deploy – configure Render API here" 
-          echo "url=https://api-preview.example.com" >> $GITHUB_OUTPUT
-        id: api
-  annotate:
-    runs-on: ubuntu-latest
-    needs: [web, api]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Comment PR
-        uses: marocchino/sticky-pull-request-comment@v2
+          set -euo pipefail
+          code_root=$(curl -s -o /dev/null -w '%{http_code}' "$URL/") || true
+          code_health=$(curl -s -o /dev/null -w '%{http_code}' "$URL/api/health") || true
+          echo "Preview Web: $URL (status=$code_root, api/health=$code_health)" | tee -a CHANGESUMMARY.md
+
+      - name: Upload Preview URL artifact
+        uses: actions/upload-artifact@v4
         with:
-          message: |
-            Web Preview: ${{ needs.web.outputs.url || 'n/a' }}
-            API Preview: ${{ needs.api.outputs.url || 'n/a' }}
-            (Basic-Auth aktiv, falls konfiguriert)
-      - name: Update state preview fields (skip if gh-pages locked)
+          name: preview-url
+          path: preview-url.txt
+
+      - name: Comment PR with Preview URL
+        if: ${{ steps.deploy.outputs.preview_url != '' }}
+        uses: actions/github-script@v7
+        env:
+          URL: ${{ steps.deploy.outputs.preview_url }}
+        with:
+          script: |
+            const { URL } = process.env;
+            const body = `✅ Preview: ${URL}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps (root)
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Assert Preview URL present
+        env:
+          URL: ${{ needs.deploy.outputs.preview_url }}
         run: |
-          echo "[SKIPPED:preview-no-secrets] or state update deferred"  
+          if [ -z "$URL" ]; then echo "No preview URL available"; exit 1; fi
+
+      - name: Run E2E against Preview
+        env:
+          PLAYWRIGHT_SKIP_WEBSERVER: '1'
+        run: npx playwright test --base-url="${{ needs.deploy.outputs.preview_url }}" --reporter=html,line
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report 
 
 
 

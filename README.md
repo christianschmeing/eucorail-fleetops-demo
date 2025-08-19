@@ -85,16 +85,11 @@ Hinweis: Lokale Scripts setzen sinnvolle Defaults. In Docker/CI sollten obige Va
 Geolocation-Mockup/
 ├── apps/
 │   └── web/                 # Next.js Frontend
-│       ├── app/            # App Router
-│       ├── components/     # React Komponenten
-│       └── styles/         # CSS/Tailwind
 ├── packages/
-│   └── api/                # Fastify Backend
-│       ├── src/           # API Code
-│       ├── seeds/         # Daten-Generierung
-│       └── data/          # JSON Daten
-├── scripts/                # Utility Scripts
-└── package.json           # Root Configuration
+│   └── api/                 # Fastify Backend
+│   └── ui/                  # UI Komponenten
+├── scripts/                 # Utility Scripts
+└── package.json            # Root Configuration
 ```
 
 ## 🛠️ Tech Stack
@@ -200,13 +195,9 @@ Interne Checks (typecheck/lint/build/test:int) – keine E2E/Playwright im CI.
 
 ## ✅ CI Preview & Verify
 
-- Starte in GitHub Actions den Workflow „Verify + Perf + Preview“. Der Lauf führt interne Checks (typecheck/lint/build/test:int sofern vorhanden), misst Performance (p50/p95), veröffentlicht optional eine Preview‑URL (Quick‑Tunnel) und aktualisiert `state/project-state.json`.
-- Ergebnisse: `CHANGESUMMARY.md` (Verify‑Status, initialJS.gz je Route, p50/p95‑Tabelle, Preview‑URL/Status, Skips), `state/project-state.json`, optional `docs/VC_READINESS.md`.
-- Der Workflow läuft zusätzlich bei Push auf `main`/`feat/train-tracker-p0` sowie alle 10 Minuten via Cron; die Preview‑URL steht in `gh-pages/state/project-state.json` unter `preview.web`.
-- Stabiler Link: https://christianschmeing.github.io/eucorail-fleetops-demo/state/ (führt auf die aktuelle Preview; zeigt Fallback, falls noch keine Preview).
-- Pages Root: https://christianschmeing.github.io/eucorail-fleetops-demo/
-- Hinweis: Die konkrete Pages URL wird nach Deploy automatisch in `CHANGESUMMARY.md` geloggt ("Pages URL: …").
-- One‑Shot Workflow „Preview + Pages“ erzeugt Preview und veröffentlicht die Pages‑Site in einem Zug.
+- Starte in GitHub Actions den Workflow „Preview + Test“. Bei jeder PR wird eine Vercel‑Preview gebaut, die URL im PR kommentiert und Playwright gegen diese URL ausgeführt.
+- Erwartung: Jede PR liefert eine getestete Vercel‑URL als Ergebnis.
+- Secrets nötig: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (siehe `docs/DEPLOYMENT_VERCEL.md`).
 
 ## 🌍 Public Preview (Stream & PR Preview)
 

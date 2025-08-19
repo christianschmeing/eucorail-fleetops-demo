@@ -35,3 +35,15 @@ Hinterlege Variablen für Production, Preview und Development in Vercel (Project
 
 - Vercel UI erlaubt Rollbacks auf vorherige Deployments.
 - Aktiviere Analytics/Logs, optional Speed Insights.
+
+## 7) CI: Preview + Test (PR)
+
+- Workflow: `.github/workflows/preview.yml`
+- Ablauf:
+  - Baut und deployt eine Vercel Preview für die PR (apps/web).
+  - Kommentiert die Preview‑URL in die PR und lädt sie als Artifact hoch.
+  - Führt Playwright E2E gegen die Preview‑URL aus (ohne lokalen Webserver).
+- Erforderliche GitHub Secrets:
+  - `VERCEL_TOKEN`
+  - `VERCEL_ORG_ID`
+  - `VERCEL_PROJECT_ID`
