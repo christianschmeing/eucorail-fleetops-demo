@@ -1,0 +1,220 @@
+openapi: 3.0.3
+info:
+  title: Eucorail FleetOps Demo API
+  version: 1.0.0
+  description: |
+    OpenAPI-Spezifikation, abgeleitet aus dem aktuellen Fastify-Code (Setup-only Snapshot).
+    Hinweis: Einige Schemas sind vereinfacht und dienen der Dokumentation.
+servers:
+  - url: http://localhost:4100
+    description: Lokale Entwicklung
+paths:
+  /health:
+    get:
+      summary: Healthcheck des Servers
+      responses:
+        '200':
+          description: OK
+  /api/health:
+    get:
+      summary: API Gesundheitszustand
+      responses:
+        '200':
+          description: OK
+  /api/meta:
+    get:
+      summary: Metadaten
+      responses:
+        '200':
+          description: Metadaten
+  /api/meta/version:
+    get:
+      summary: API Versionsinfo
+      responses:
+        '200': { description: Version }
+  /api/lines:
+    get:
+      summary: Linienliste
+      responses:
+        '200': { description: Linienliste }
+  /api/depots:
+    get:
+      summary: Depots
+      responses:
+        '200': { description: Depots }
+  /api/trains:
+    get:
+      summary: Züge abfragen
+      parameters:
+        - in: query
+          name: fleetId
+          schema: { type: string }
+        - in: query
+          name: lineId
+          schema: { type: string }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1 }
+      responses:
+        '200': { description: Liste von Zügen }
+  /api/trains/{id}:
+    get:
+      summary: Zugdetails
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Zugdetail }
+        '404': { description: Nicht gefunden }
+  /api/fleet/health:
+    get:
+      summary: Fleet Health Übersicht (Demo)
+      responses:
+        '200': { description: Health KPIs }
+  /api/units:
+    get:
+      summary: Einheiten (cached)
+      responses:
+        '200': { description: Units JSON }
+  /api/energy/budget:
+    get:
+      summary: Energie-Budget (Demo)
+      responses:
+        '200': { description: Budget }
+  /api/maintenance/{trainId}:
+    get:
+      summary: Wartungsinformationen pro Zug
+      parameters:
+        - in: path
+          name: trainId
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Wartungsinfo }
+  /api/metrics/kpi:
+    get:
+      summary: KPI Snapshot
+      responses:
+        '200': { description: KPIs }
+  /api/export/lines:
+    get:
+      summary: CSV Export Linien
+      responses:
+        '200': { description: CSV Inhalt }
+  /api/export/trains:
+    get:
+      summary: CSV/XLSX Export Züge
+      parameters:
+        - in: query
+          name: format
+          schema: { type: string, enum: [csv, xlsx] }
+      responses:
+        '200': { description: CSV/XLSX Inhalt }
+  /api/ecm/policies:
+    get:
+      summary: ECM Policies Liste
+      responses:
+        '200': { description: Policies }
+    post:
+      summary: ECM Policy erstellen/ändern
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: OK }
+  /api/ecm/signoffs:
+    get:
+      summary: ECM Signoffs Liste
+      responses:
+        '200': { description: Signoffs }
+  /api/ecm/signoff:
+    post:
+      summary: Signoff hinzufügen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: OK }
+  /api/ecm/measures:
+    get:
+      summary: ECM Measures Liste
+      responses:
+        '200': { description: Measures }
+  /api/ecm/wos:
+    get:
+      summary: Work Orders Liste
+      responses:
+        '200': { description: WOs }
+    post:
+      summary: Work Order erstellen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: OK }
+  /api/ecm/wos/{id}:
+    patch:
+      summary: Work Order ändern
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: OK }
+        '404': { description: Nicht gefunden }
+  /api/ecm/wos/{id}/checklist:
+    patch:
+      summary: Checklisteneintrag toggeln
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, properties: { itemId: { type: string }, done: { type: boolean } } }
+      responses:
+        '200': { description: OK }
+        '404': { description: Nicht gefunden }
+  /api/ecm/wos/{id}/complete:
+    post:
+      summary: Work Order abschließen
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+        '404': { description: Nicht gefunden }
+  /events:
+    get:
+      summary: SSE Stream mit Train-Updates
+      responses:
+        '200': { description: Event-Stream }
+  /ws:
+    get:
+      summary: WebSocket Upgrade (Fallback)
+      responses:
+        '101': { description: Switching Protocols }
+
+

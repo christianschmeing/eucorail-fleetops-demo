@@ -1,0 +1,37 @@
+# Vercel Deployment Leitfaden
+
+Dieser Leitfaden verbindet das GitHub-Repository mit Vercel für automatische Deployments beim Merge auf `main`.
+
+## 1) Projekt importieren
+
+- In Vercel: "New Project" → "Import Git Repository" → wähle dieses Repo aus.
+- Monorepo: Wähle als Root `apps/web` (Next.js App).
+
+## 2) Build- und Install‑Einstellungen
+
+- Framework Preset: Next.js
+- Install Command: `npm install`
+- Build Command: `npm --workspace apps/web run build` (oder Standard-Erkennung von Vercel verwenden)
+- Output: .next (automatisch)
+
+## 3) Environment Variablen
+
+- `NEXT_PUBLIC_API_BASE`: Basis-URL der API (z. B. `https://your-api.example.com`)
+- Optional für Preview/Tests: `NEXT_PUBLIC_TEST_MODE=1`
+
+Hinterlege Variablen für Production, Preview und Development in Vercel (Project Settings → Environment Variables). Nutze Secrets für sensible Werte.
+
+## 4) GitHub Integration
+
+- Aktiviere Auto-Deploys für PRs (Preview Deployments) und `main` (Production Deployment).
+- Schutz: Falls Preview absichern, verwende Basic‑Auth via Reverse-Proxy oder setze Feature Flags im Frontend.
+
+## 5) API-Bereitstellung
+
+- Die Fastify-API (`packages/api`) läuft separat (z. B. Render/Fly/VM). Hinterlege deren URL in `NEXT_PUBLIC_API_BASE`.
+- Alternativ kann eine Edge/Serverless-Variante aufgebaut werden; nicht Teil dieses Setup-Schritts.
+
+## 6) Rollbacks & Observability
+
+- Vercel UI erlaubt Rollbacks auf vorherige Deployments.
+- Aktiviere Analytics/Logs, optional Speed Insights.

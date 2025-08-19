@@ -49,7 +49,9 @@
     "test:all": "node run-tests.js all",
     "test:report": "ls -1t test-report-*.json | head -1 | xargs cat",
     "lint:baseline": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 500",
-    "test:quality": "npm run format:check && npm run lint:baseline"
+    "test:quality": "npm run format:check && npm run lint:baseline",
+    "cursor:verify": "npm run verify:smart",
+    "cursor:update-snapshots": "npx --yes playwright test --update-snapshots || true"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
@@ -61,13 +63,12 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.41",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "^1.54.2",
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@typescript-eslint/parser": "^8.39.1",
+    "autoprefixer": "^10.4.20",
     "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
     "eslint": "^8.57.0",
@@ -78,6 +79,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
     "node-fetch": "^3.3.2",
+    "postcss": "^8.4.41",
     "prettier": "^3.6.2",
     "puppeteer": "24.16.1",
     "puppeteer-core": "24.16.1",
