@@ -3,21 +3,11 @@ import { notFound } from 'next/navigation';
 
 async function getTrain(id: string) {
   try {
-    // Use absolute URL for server-side fetch
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000';
+    // Import the API route handler and call it directly
+    const apiModule = await import('@/app/api/trains/route');
+    const response = await apiModule.GET(new Request('http://localhost/api/trains'));
+    const trains = await response.json();
     
-    const res = await fetch(`${baseUrl}/api/trains`, {
-      cache: 'no-store'
-    });
-    
-    if (!res.ok) {
-      console.error('Failed to fetch trains:', res.status);
-      return null;
-    }
-    
-    const trains = await res.json();
     const train = trains.find((t: any) => t.id === id || t.trainId === id);
     
     if (!train) {
@@ -27,7 +17,7 @@ async function getTrain(id: string) {
     
     return train;
   } catch (error) {
-    console.error('Error fetching train:', error);
+    console.error('Error getting train:', error);
     return null;
   }
 }
