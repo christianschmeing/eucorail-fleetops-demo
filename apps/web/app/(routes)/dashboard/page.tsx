@@ -197,8 +197,6 @@ async function getRecentEvents() {
   return events;
 }
 
-import ConsistencyChecker from '@/components/ConsistencyChecker';
-
 export default async function DashboardPage() {
   // SSR: Lade alle Daten serverseitig
   const [kpis, trains, lines, recentEvents] = await Promise.all([
@@ -236,6 +234,7 @@ export default async function DashboardPage() {
 
   // Dynamischer Import
   const DashboardClient = (await import('./DashboardClient')).default;
+  const ConsistencyChecker = (await import('@/components/ConsistencyChecker')).default;
   
   return (
     <div>
