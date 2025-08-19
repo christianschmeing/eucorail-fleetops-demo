@@ -32,6 +32,11 @@ async function getTrain(id: string) {
   }
 }
 
+// Generate static params for known train IDs (optional for dynamic routes)
+export async function generateStaticParams() {
+  return [];  // Return empty array to allow all dynamic paths
+}
+
 export default async function TrainDetailPage({ params }: { params: { id: string } }) {
   const decodedId = decodeURIComponent(params.id);
   const train = await getTrain(decodedId);

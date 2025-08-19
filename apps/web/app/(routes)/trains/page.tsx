@@ -20,16 +20,8 @@ interface Train {
 async function getTrains(): Promise<Train[]> {
   try {
     const trains = await apiGet<Train[]>('/api/trains');
-    // Ensure we have exactly 144 trains
-    return trains.slice(0, 144).map(train => ({
-      ...train,
-      lineId: train.lineCode || train.lineId,
-      depot: train.region === 'BW' ? 'Stuttgart' : 'Augsburg',
-      series: ['FLIRT³', 'Mireo'][Math.floor(Math.random() * 2)],
-      healthScore: 85 + Math.floor(Math.random() * 15),
-      speedKmh: train.status === 'active' ? 80 + Math.floor(Math.random() * 40) : 0,
-      nextMaintenanceDate: new Date(Date.now() + Math.random() * 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    }));
+    // Ensure we have exactly 144 trains and preserve all data including maintenanceInfo
+    return trains.slice(0, 144);
   } catch {
     // Fallback: Generiere 144 Züge
     const fallbackTrains: Train[] = [];
