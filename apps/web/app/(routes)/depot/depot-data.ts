@@ -21,7 +21,7 @@ export interface MovePlan {
   id: string;
   type: 'ZUFUEHRUNG' | 'ABFUEHRUNG';
   train_id: string;
-  from: { depot?: string; geo?: [number, number] };
+  from: { depot?: string; trackId?: string; geo?: [number, number] };
   to: { trackId?: string; geo?: [number, number] };
   slot: { start: Date; end: Date };
   path?: [number, number][];
