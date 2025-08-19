@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "8aa57d4231ea8d545bf6cf57b177b701a6d8e2ba",
-    "message": "fix: Show all 17 lines on lines page instead of only 5",
+    "sha": "0ceb95fa7466e1ae87f92240d702838397b3d7ab",
+    "message": "fix: Add complete API endpoints for ECM, KPIs and Depots with 144 trains data",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T11:10:44Z"
+    "timestamp": "2025-08-19T11:16:13Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17067784947"
+    "run_id": "17067905739"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T11:11:51.652Z",
+  "generated_at": "2025-08-19T11:17:21.064Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
