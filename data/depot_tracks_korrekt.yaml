@@ -1,0 +1,168 @@
+# Korrekte Depot-Gleiskonfiguration (kleinere, realistische Anzahl)
+
+depots:
+  essingen:
+    id: depot-essingen
+    name: "Betriebshof Essingen"
+    location:
+      lat: 48.6295
+      lng: 9.9574
+      address: "Bahnhofstraße 1, 73457 Essingen"
+    capacity:
+      total_tracks: 4
+      maintenance_bays: 2
+      service_tracks: 1
+      storage_tracks: 1
+    tracks:
+      - id: E-H1
+        name: "Halle 1"
+        type: maintenance
+        length_m: 240
+        features: [halle, grube, ol]
+        max_trains: 1
+        ecm_level: 4
+      - id: E-H2
+        name: "Halle 2"
+        type: maintenance
+        length_m: 240
+        features: [halle, grube, ol]
+        max_trains: 1
+        ecm_level: 3
+      - id: E-ARA1
+        name: "Außenreinigung"
+        type: service
+        length_m: 120
+        features: [waschhalle]
+        max_trains: 1
+      - id: E-ST1
+        name: "Abstellung 1"
+        type: storage
+        length_m: 200
+        features: [ol]
+        max_trains: 2
+    equipment:
+      lathe: false  # Zugang zu externer Drehmaschine
+      paint_shop: false
+      heavy_lift: true
+      test_track: false
+
+  langweid:
+    id: depot-langweid
+    name: "Betriebshof Langweid"
+    location:
+      lat: 48.4894
+      lng: 10.8539
+      address: "Industriestraße 5, 86462 Langweid am Lech"
+    capacity:
+      total_tracks: 11  # + 3 in Planung = 14
+      maintenance_bays: 5
+      service_tracks: 6
+      storage_tracks: 0  # Yard-Gleise dienen als Abstellung
+    tracks:
+      # Wartungshallen
+      - id: L-H1
+        name: "Halle 1"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol]
+        max_trains: 1
+        ecm_level: 4
+      - id: L-H2
+        name: "Halle 2"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol]
+        max_trains: 1
+        ecm_level: 4
+      - id: L-H3
+        name: "Halle 3"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol, radsatzdrehmaschine]
+        max_trains: 1
+        ecm_level: 2  # Schwere Instandhaltung
+      - id: L-H4
+        name: "Halle 4"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol]
+        max_trains: 1
+        ecm_level: 3
+      - id: L-H5
+        name: "Halle 5"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol]
+        max_trains: 1
+        ecm_level: 3
+      
+      # Yard/Service-Gleise
+      - id: L-ST1
+        name: "Yard 1"
+        type: service
+        length_m: 180
+        features: [ol]
+        max_trains: 2
+      - id: L-ST2
+        name: "Yard 2"
+        type: service
+        length_m: 180
+        features: [ol]
+        max_trains: 2
+      - id: L-ST3
+        name: "Yard 3"
+        type: service
+        length_m: 180
+        features: [ol]
+        max_trains: 2
+      - id: L-ST4
+        name: "Yard 4"
+        type: service
+        length_m: 180
+        features: [ol]
+        max_trains: 2
+      - id: L-ST5
+        name: "Yard 5"
+        type: service
+        length_m: 180
+        features: [shore_power]
+        max_trains: 2
+      - id: L-ST6
+        name: "Yard 6"
+        type: service
+        length_m: 180
+        features: [shore_power]
+        max_trains: 2
+      
+      # Geplante Erweiterung (Phase 2)
+      - id: L-H6
+        name: "Halle 6 (Planung)"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol]
+        max_trains: 1
+        status: planned
+      - id: L-H7
+        name: "Halle 7 (Planung)"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol]
+        max_trains: 1
+        status: planned
+      - id: L-H8
+        name: "Halle 8 (Planung)"
+        type: maintenance
+        length_m: 220
+        features: [halle, ol]
+        max_trains: 1
+        status: planned
+    equipment:
+      lathe: true  # Eigene Radsatzdrehmaschine in Halle 3
+      paint_shop: false
+      heavy_lift: true
+      test_track: false
+      h2_station: false  # Noch nicht vorhanden
+
+# Zusammenfassung:
+# Essingen: 4 Gleise (2 Wartung, 1 Service, 1 Abstellung)
+# Langweid: 11 Gleise (5 Wartung, 6 Yard) + 3 in Planung = 14 total

@@ -175,7 +175,7 @@ export default function DepotClient({
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
-                Essingen (12 Gleise)
+                Essingen (4 Gleise)
               </button>
               <button
                 onClick={() => setSelectedDepot('Langweid')}
@@ -185,7 +185,7 @@ export default function DepotClient({
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
-                Langweid (16 Gleise)
+                Langweid ({showPlannedTracks ? '14' : '11'} Gleise)
               </button>
             </div>
           </div>

@@ -38,39 +38,31 @@ export interface Conflict {
   time: string;
 }
 
-// Erweiterte Gleiskonfiguration aus depot_tracks.yaml für 80% Auslastung
+// Reale Gleiskonfiguration basierend auf tatsächlichen Depots
 const TRACKS: Track[] = [
-  // Essingen - 12 Gleise (4 Wartung, 6 Service, 2 Abstellung)
-  { id: 'E-G1', name: 'Wartungsgleis 1', depot: 'Essingen', length: 180, features: ['Grube', 'OL', 'Shore-Power'], status: 'Belegt' },
-  { id: 'E-G2', name: 'Wartungsgleis 2', depot: 'Essingen', length: 180, features: ['Grube', 'OL', 'Shore-Power', 'Radsatzdrehmaschine'], status: 'Belegt' },
-  { id: 'E-G3', name: 'Wartungsgleis 3', depot: 'Essingen', length: 120, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
-  { id: 'E-G4', name: 'Wartungsgleis 4', depot: 'Essingen', length: 120, features: ['Grube', 'Shore-Power', 'OL'], status: 'Belegt' },
-  { id: 'E-S1', name: 'Service 1', depot: 'Essingen', length: 240, features: ['Shore-Power', 'Waschhalle'], status: 'Belegt' },
-  { id: 'E-S2', name: 'Service 2', depot: 'Essingen', length: 240, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'E-S3', name: 'Service 3', depot: 'Essingen', length: 180, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'E-S4', name: 'Service 4', depot: 'Essingen', length: 180, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'E-S5', name: 'Service 5', depot: 'Essingen', length: 120, features: ['Shore-Power'], status: 'Frei' },
-  { id: 'E-S6', name: 'Service 6', depot: 'Essingen', length: 120, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'E-A1', name: 'Abstellung 1', depot: 'Essingen', length: 360, features: [], status: 'Belegt' },
-  { id: 'E-A2', name: 'Abstellung 2', depot: 'Essingen', length: 360, features: [], status: 'Belegt' },
+  // Essingen - 4 Gleise (korrekte Anzahl)
+  { id: 'E-H1', name: 'Halle 1', depot: 'Essingen', length: 240, features: ['Halle', 'Grube', 'OL'], status: 'Belegt' },
+  { id: 'E-H2', name: 'Halle 2', depot: 'Essingen', length: 240, features: ['Halle', 'Grube', 'OL'], status: 'Belegt' },
+  { id: 'E-ARA1', name: 'Außenreinigung', depot: 'Essingen', length: 120, features: ['Waschhalle'], status: 'Frei' },
+  { id: 'E-ST1', name: 'Abstellung 1', depot: 'Essingen', length: 200, features: ['OL'], status: 'Belegt' },
   
-  // Langweid - 16 Gleise (6 Wartung, 7 Service, 3 Abstellung)
-  { id: 'L-G1', name: 'Wartungsgleis 1', depot: 'Langweid', length: 200, features: ['Grube', 'OL', 'Shore-Power', 'Radsatzdrehmaschine'], status: 'Belegt' },
-  { id: 'L-G2', name: 'Wartungsgleis 2', depot: 'Langweid', length: 200, features: ['Grube', 'OL', 'Shore-Power'], status: 'Belegt' },
-  { id: 'L-G3', name: 'Wartungsgleis 3', depot: 'Langweid', length: 160, features: ['Grube', 'Shore-Power', 'OL'], status: 'Belegt' },
-  { id: 'L-G4', name: 'Wartungsgleis 4', depot: 'Langweid', length: 160, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
-  { id: 'L-G5', name: 'Wartungsgleis 5', depot: 'Langweid', length: 120, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
-  { id: 'L-G6', name: 'Wartungsgleis 6', depot: 'Langweid', length: 120, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
-  { id: 'L-S1', name: 'Service 1', depot: 'Langweid', length: 240, features: ['Shore-Power', 'Waschhalle'], status: 'Belegt' },
-  { id: 'L-S2', name: 'Service 2 (H2)', depot: 'Langweid', length: 240, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'L-S3', name: 'Service 3', depot: 'Langweid', length: 200, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'L-S4', name: 'Service 4', depot: 'Langweid', length: 180, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'L-S5', name: 'Service 5', depot: 'Langweid', length: 160, features: ['Shore-Power'], status: 'Frei' },
-  { id: 'L-S6', name: 'Service 6', depot: 'Langweid', length: 160, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'L-S7', name: 'Service 7', depot: 'Langweid', length: 120, features: ['Shore-Power'], status: 'Belegt' },
-  { id: 'L-A1', name: 'Abstellung 1', depot: 'Langweid', length: 400, features: [], status: 'Belegt' },
-  { id: 'L-A2', name: 'Abstellung 2', depot: 'Langweid', length: 400, features: [], status: 'Belegt' },
-  { id: 'L-A3', name: 'Abstellung 3', depot: 'Langweid', length: 300, features: [], status: 'Belegt' },
+  // Langweid - 11 Gleise (korrekte Anzahl)
+  { id: 'L-H1', name: 'Halle 1', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Belegt' },
+  { id: 'L-H2', name: 'Halle 2', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Belegt' },
+  { id: 'L-H3', name: 'Halle 3', depot: 'Langweid', length: 220, features: ['Halle', 'OL', 'Radsatzdrehmaschine'], status: 'Belegt' },
+  { id: 'L-H4', name: 'Halle 4', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Frei' },
+  { id: 'L-H5', name: 'Halle 5', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Belegt' },
+  { id: 'L-ST1', name: 'Yard 1', depot: 'Langweid', length: 180, features: ['OL'], status: 'Belegt' },
+  { id: 'L-ST2', name: 'Yard 2', depot: 'Langweid', length: 180, features: ['OL'], status: 'Frei' },
+  { id: 'L-ST3', name: 'Yard 3', depot: 'Langweid', length: 180, features: ['OL'], status: 'Belegt' },
+  { id: 'L-ST4', name: 'Yard 4', depot: 'Langweid', length: 180, features: ['OL'], status: 'Belegt' },
+  { id: 'L-ST5', name: 'Yard 5', depot: 'Langweid', length: 180, features: ['Shore-Power'], status: 'Frei' },
+  { id: 'L-ST6', name: 'Yard 6', depot: 'Langweid', length: 180, features: ['Shore-Power'], status: 'Belegt' },
+  
+  // Phase 2 - Im Bau (optional anzeigbar)
+  { id: 'L-H6', name: 'Halle 6 (Planung)', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Gesperrt' },
+  { id: 'L-H7', name: 'Halle 7 (Planung)', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Gesperrt' },
+  { id: 'L-H8', name: 'Halle 8 (Planung)', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Gesperrt' },
 ];
 
 // Lade Fleet-Daten aus CSV für realistische Belegungen
