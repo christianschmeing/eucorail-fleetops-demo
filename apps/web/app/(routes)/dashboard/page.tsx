@@ -238,11 +238,16 @@ export default async function DashboardPage() {
   const DashboardClient = (await import('./DashboardClient')).default;
   
   return (
-    <DashboardClient 
-      kpiData={enhancedKpis}
-      recentEvents={recentEvents}
-      trains={enhancedTrains}
-      lines={lines}
-    />
+    <div>
+      <DashboardClient 
+        kpiData={enhancedKpis}
+        recentEvents={recentEvents}
+        trains={enhancedTrains}
+        lines={lines}
+      />
+      <div className="p-6">
+        <ConsistencyChecker />
+      </div>
+    </div>
   );
 }
