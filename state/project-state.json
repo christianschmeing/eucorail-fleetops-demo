@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "b51b9dbccabea782e79261ae2b0685f289429ec5",
-    "message": "fix: Restore missing depot map components for stable build",
+    "sha": "def618e88e785a7948b6e4d01ba5576877d80b53",
+    "message": "ci: add preview+test workflow (Vercel + Playwright)\n\ndocs: document tested Vercel URL expectation in README and deployment guide",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T19:56:26Z"
+    "timestamp": "2025-08-19T21:25:08Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17080344844"
+    "run_id": "17082283902"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T19:57:41.473Z",
+  "generated_at": "2025-08-19T21:30:51.855Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
