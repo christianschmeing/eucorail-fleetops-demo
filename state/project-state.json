@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "571fd0b3e83e585570000e15d1026a66a7cc421d",
-    "message": "fix: Repair maintenance filter logic and train detail routing - Fix IS1 Red filter splitting issue, use Next.js Link component, fix server-side API URL resolution",
+    "sha": "4b47cb5896516155eec90dfcd13a3671313db131",
+    "message": "fix: Correct filter logic and dynamic routing - Preserve maintenanceInfo in trains data, add generateStaticParams for dynamic routes",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T13:57:19Z"
+    "timestamp": "2025-08-19T14:04:47Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17071881689"
+    "run_id": "17072082035"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T13:58:33.657Z",
+  "generated_at": "2025-08-19T14:06:01.256Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
