@@ -1,5 +1,5 @@
 import { apiGet } from '@/lib/api';
-import TrainsClient from './TrainsClient';
+import TrainsClientExtended from './TrainsClientExtended';
 
 interface Train {
   id: string;
@@ -57,5 +57,5 @@ export default async function TrainsPage() {
   // SSR: Lade Züge serverseitig
   const trains = await getTrains();
   
-  return <TrainsClient initialTrains={trains} />;
+  return <TrainsClientExtended initialTrains={trains} />;
 }

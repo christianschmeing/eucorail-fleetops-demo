@@ -1,5 +1,84 @@
 import { NextResponse } from 'next/server';
 
+// IHB Profile für Wartungsintervalle
+const IHB_PROFILES = {
+  flirt_3_160: {
+    preventiveIntervals: {
+      IS1: { intervalKm: 2000, intervalDays: 2, durationHours: 4, teamSize: 2 },
+      IS2: { intervalKm: 10000, intervalDays: 30, durationHours: 8, teamSize: 4 },
+      IS3: { intervalKm: 60000, intervalDays: 180, durationHours: 24, teamSize: 6 },
+      IS4: { intervalKm: 240000, intervalDays: 720, durationHours: 72, teamSize: 8 },
+      Lathe: { intervalKm: 120000, intervalDays: 365, durationHours: 48, teamSize: 4 }
+    }
+  },
+  mireo_3_plus_h: {
+    preventiveIntervals: {
+      IS1: { intervalKm: 2500, intervalDays: 3, durationHours: 3, teamSize: 2 },
+      IS2: { intervalKm: 12000, intervalDays: 35, durationHours: 6, teamSize: 3 },
+      IS3: { intervalKm: 72000, intervalDays: 210, durationHours: 18, teamSize: 5 },
+      IS4: { intervalKm: 288000, intervalDays: 840, durationHours: 60, teamSize: 8 },
+      Lathe: { intervalKm: 150000, intervalDays: 450, durationHours: 36, teamSize: 3 }
+    }
+  },
+  desiro_hc: {
+    preventiveIntervals: {
+      IS1: { intervalKm: 1500, intervalDays: 1, durationHours: 5, teamSize: 3 },
+      IS2: { intervalKm: 8000, intervalDays: 25, durationHours: 10, teamSize: 4 },
+      IS3: { intervalKm: 48000, intervalDays: 150, durationHours: 30, teamSize: 6 },
+      IS4: { intervalKm: 192000, intervalDays: 600, durationHours: 96, teamSize: 10 },
+      Lathe: { intervalKm: 100000, intervalDays: 300, durationHours: 60, teamSize: 5 }
+    }
+  }
+};
+
+// Berechne Wartungsinformationen für einen Zug
+function calculateMaintenanceInfo(vehicleType: string, mileageKm: number, lastMaintenanceDates: any) {
+  const profile = IHB_PROFILES[vehicleType as keyof typeof IHB_PROFILES];
+  if (!profile) return null;
+
+  const now = new Date();
+  const maintenanceInfo: any = {};
+
+  ['IS1', 'IS2', 'IS3', 'IS4', 'Lathe'].forEach(type => {
+    const interval = profile.preventiveIntervals[type as keyof typeof profile.preventiveIntervals];
+    if (!interval) return;
+
+    // Simuliere letzte Wartung basierend auf Laufleistung
+    const cyclesSinceLast = Math.floor(mileageKm / interval.intervalKm);
+    const kmSinceLast = mileageKm % interval.intervalKm;
+    const restKm = interval.intervalKm - kmSinceLast;
+    
+    // Berechne Tage seit letzter Wartung (simuliert)
+    const daysSinceLast = Math.floor(kmSinceLast / 500); // Annahme: 500km/Tag im Schnitt
+    const restDays = Math.max(0, interval.intervalDays - daysSinceLast);
+
+    // Ampelstatus berechnen
+    let status = 'green';
+    const kmPercent = (kmSinceLast / interval.intervalKm) * 100;
+    const daysPercent = (daysSinceLast / interval.intervalDays) * 100;
+    
+    if (kmPercent > 90 || daysPercent > 90) {
+      status = 'red';
+    } else if (kmPercent > 75 || daysPercent > 75) {
+      status = 'yellow';
+    }
+
+    maintenanceInfo[type] = {
+      kmSinceLast,
+      daysSinceLast,
+      restKm,
+      restDays,
+      status,
+      intervalKm: interval.intervalKm,
+      intervalDays: interval.intervalDays,
+      lastDate: new Date(now.getTime() - daysSinceLast * 24 * 60 * 60 * 1000).toISOString(),
+      nextDate: new Date(now.getTime() + restDays * 24 * 60 * 60 * 1000).toISOString()
+    };
+  });
+
+  return maintenanceInfo;
+}
+
 // Import the SSOV2 data directly for 144 trains
 const FLEET_DATA = {
   trains: Array.from({ length: 144 }, (_, i) => {
@@ -90,7 +169,8 @@ const FLEET_DATA = {
         lng: 9 + Math.random() * 3
       } : null,
       lastSeenAt: new Date().toISOString(),
-      notes: []
+      notes: [],
+      maintenanceInfo: calculateMaintenanceInfo(vehicleType, 50000 + (trainNum * 1000), {})
     };
   })
 };
