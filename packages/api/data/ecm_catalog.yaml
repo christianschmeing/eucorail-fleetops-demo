@@ -1,0 +1,242 @@
+# ECM Aufgabenkatalog mit deutschen Bezeichnungen
+# ECM-2: Wartungsentwicklung, ECM-3: Wartungsmanagement, ECM-4: Durchführung
+
+preventive_tasks:
+  IS1_daily:
+    ecm_level: 4
+    name: "Tägliche Sichtprüfung"
+    description: "Sicht- und Funktionsprüfung, Füllstände"
+    category: "Präventiv"
+    priority: "Normal"
+    default_duration_h: 0.5
+    team_size: 2
+    skills_required: ["Mechanik"]
+    features_required: []
+    consumables:
+      - "Reinigungsmittel"
+      - "Schmierstoffe"
+    
+  IS2_monthly:
+    ecm_level: 4
+    name: "Monatswartung"
+    description: "Öle, Filter, Bremse LPA, Türenprüfung"
+    category: "Präventiv"
+    priority: "Normal"
+    default_duration_h: 4
+    team_size: 3
+    skills_required: ["Mechanik", "Elektrik"]
+    features_required: ["Grube"]
+    consumables:
+      - "Motoröl"
+      - "Luftfilter"
+      - "Bremsflüssigkeit"
+    parts_replaced:
+      - "Filter diverse"
+      
+  IS3_quarterly:
+    ecm_level: 4
+    name: "Quartalswartung"
+    description: "Erweiterte Systemprüfung, Drehgestell visuell"
+    category: "Präventiv"
+    priority: "Hoch"
+    default_duration_h: 12
+    team_size: 4
+    skills_required: ["Mechanik", "Elektrik", "HVAC"]
+    features_required: ["Grube", "OL"]
+    consumables:
+      - "Getriebeöl"
+      - "Kühlmittel"
+    parts_replaced:
+      - "Verschleißteile"
+      
+  IS4_yearly:
+    ecm_level: 3
+    name: "Hauptuntersuchung"
+    description: "Vollständige Überprüfung aller Systeme"
+    category: "Präventiv"
+    priority: "Kritisch"
+    default_duration_h: 48
+    team_size: 6
+    skills_required: ["Mechanik", "Elektrik", "HVAC", "Bremse"]
+    features_required: ["Grube", "OL", "Halle"]
+    parts_replaced:
+      - "Bremsbeläge"
+      - "Radsätze (bei Bedarf)"
+      - "Stromabnehmer-Schleifleisten"
+      
+  lathe_reprofiling:
+    ecm_level: 4
+    name: "Radreprofilierung"
+    description: "Radsätze auf Sollprofil drehen"
+    category: "Präventiv"
+    priority: "Hoch"
+    default_duration_h: 8
+    team_size: 2
+    skills_required: ["Radsatz"]
+    features_required: ["Radsatzdrehmaschine"]
+    consumables:
+      - "Kühlschmierstoff"
+      
+  cleaning_exterior:
+    ecm_level: 4
+    name: "Außenreinigung"
+    description: "Fahrzeugwäsche außen"
+    category: "Reinigung"
+    priority: "Niedrig"
+    default_duration_h: 2
+    team_size: 2
+    skills_required: ["Reinigung"]
+    features_required: ["Waschhalle"]
+    consumables:
+      - "Reinigungsmittel"
+      - "Wasser"
+
+corrective_tasks:
+  door_malfunction:
+    ecm_level: 4
+    name: "Türstörung beheben"
+    description: "Türmechanik reparieren/justieren"
+    category: "Korrektiv"
+    priority: "Hoch"
+    default_duration_h: 2
+    team_size: 2
+    skills_required: ["Türen"]
+    features_required: []
+    parts_replaced:
+      - "Türmechanik (ggf.)"
+      
+  hvac_failure:
+    ecm_level: 4
+    name: "Klimaanlage reparieren"
+    description: "HVAC-System Fehlersuche und Reparatur"
+    category: "Korrektiv"
+    priority: "Mittel"
+    default_duration_h: 3
+    team_size: 2
+    skills_required: ["HVAC"]
+    features_required: ["OL"]
+    parts_replaced:
+      - "Kompressor (ggf.)"
+      - "Kältemittel"
+      
+  brake_issue:
+    ecm_level: 4
+    name: "Bremsenproblem"
+    description: "Bremssystem prüfen und instandsetzen"
+    category: "Korrektiv"
+    priority: "Kritisch"
+    default_duration_h: 4
+    team_size: 3
+    skills_required: ["Bremse"]
+    features_required: ["Grube"]
+    parts_replaced:
+      - "Bremsbeläge"
+      - "Bremszylinder (ggf.)"
+      
+  pantograph_damage:
+    ecm_level: 4
+    name: "Stromabnehmer-Schaden"
+    description: "Pantograph reparieren/ersetzen"
+    category: "Korrektiv"
+    priority: "Kritisch"
+    default_duration_h: 5
+    team_size: 3
+    skills_required: ["Elektrik"]
+    features_required: ["OL", "Grube"]
+    parts_replaced:
+      - "Schleifleisten"
+      - "Pantograph-Feder"
+      
+  traction_failure:
+    ecm_level: 3
+    name: "Traktionsausfall"
+    description: "Antriebssystem diagnostizieren und reparieren"
+    category: "Korrektiv"
+    priority: "Kritisch"
+    default_duration_h: 8
+    team_size: 4
+    skills_required: ["Elektrik", "Mechanik"]
+    features_required: ["Grube", "Halle"]
+    parts_replaced:
+      - "Inverter-Module"
+      - "Motorlager"
+      
+  wheelset_flat:
+    ecm_level: 4
+    name: "Flachstelle Radsatz"
+    description: "Radsatz mit Flachstelle bearbeiten"
+    category: "Korrektiv"
+    priority: "Hoch"
+    default_duration_h: 12
+    team_size: 3
+    skills_required: ["Radsatz"]
+    features_required: ["Radsatzdrehmaschine"]
+    
+  h2_system_alarm:
+    ecm_level: 3
+    name: "H2-System Alarm"
+    description: "Wasserstoffsystem prüfen und sichern"
+    category: "Korrektiv"
+    priority: "Kritisch"
+    default_duration_h: 6
+    team_size: 3
+    skills_required: ["H2-System"]
+    features_required: ["H2-Sicherheit", "Halle"]
+    parts_replaced:
+      - "H2-Ventile"
+      - "Sensoren"
+      
+  tcms_software_error:
+    ecm_level: 3
+    name: "TCMS Software-Fehler"
+    description: "Zugsteuerungssystem neu laden/konfigurieren"
+    category: "Korrektiv"
+    priority: "Hoch"
+    default_duration_h: 3
+    team_size: 2
+    skills_required: ["Elektrik", "Software"]
+    features_required: []
+
+accident_tasks:
+  collision_repair:
+    ecm_level: 2
+    name: "Unfallschaden-Reparatur"
+    description: "Strukturschäden nach Kollision beheben"
+    category: "Unfall"
+    priority: "Kritisch"
+    default_duration_h: 336  # 14 Tage
+    team_size: 8
+    skills_required: ["Mechanik", "Karosserie", "Elektrik"]
+    features_required: ["Halle", "Schwerlast"]
+    parts_replaced:
+      - "Frontschürze"
+      - "Kupplung"
+      - "Scheinwerfer"
+      
+  vandalism_repair:
+    ecm_level: 4
+    name: "Vandalismus-Beseitigung"
+    description: "Graffiti entfernen, Scheiben ersetzen"
+    category: "Unfall"
+    priority: "Niedrig"
+    default_duration_h: 72  # 3 Tage
+    team_size: 3
+    skills_required: ["Reinigung", "Mechanik"]
+    features_required: ["Halle"]
+    parts_replaced:
+      - "Fensterscheiben"
+      - "Sitzbezüge"
+      
+  weather_damage:
+    ecm_level: 3
+    name: "Wetterschaden"
+    description: "Sturmschäden, Hagelschäden beheben"
+    category: "Unfall"
+    priority: "Mittel"
+    default_duration_h: 168  # 7 Tage
+    team_size: 5
+    skills_required: ["Mechanik", "Elektrik", "HVAC"]
+    features_required: ["Halle", "OL"]
+    parts_replaced:
+      - "Dachausrüstung"
+      - "Außenspiegel"

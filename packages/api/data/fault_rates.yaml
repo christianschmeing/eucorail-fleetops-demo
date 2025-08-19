@@ -1,0 +1,172 @@
+# Fehlerraten pro 10.000 km und Subsystem
+# Realistische Werte basierend auf Industrieerfahrung
+
+flirt_3_160:
+  doors:
+    rate_per_10k_km: 0.8
+    mttr_hours: 2
+    severity: "low"
+    skills_required: ["Türen"]
+    features_required: []
+    
+  hvac:
+    rate_per_10k_km: 0.5
+    mttr_hours: 3
+    severity: "medium"
+    skills_required: ["HVAC"]
+    features_required: ["OL"]
+    
+  brakes:
+    rate_per_10k_km: 0.3
+    mttr_hours: 4
+    severity: "high"
+    skills_required: ["Bremse"]
+    features_required: ["Grube"]
+    
+  tcms_etcs:
+    rate_per_10k_km: 0.2
+    mttr_hours: 3
+    severity: "medium"
+    skills_required: ["Elektrik", "Software"]
+    features_required: []
+    
+  pantograph:
+    rate_per_10k_km: 0.15
+    mttr_hours: 5
+    severity: "high"
+    skills_required: ["Elektrik"]
+    features_required: ["OL", "Grube"]
+    
+  traction:
+    rate_per_10k_km: 0.1
+    mttr_hours: 8
+    severity: "critical"
+    skills_required: ["Elektrik", "Mechanik"]
+    features_required: ["Grube", "Halle"]
+    
+  wheelsets:
+    rate_per_10k_km: 0.05
+    mttr_hours: 12
+    severity: "critical"
+    skills_required: ["Radsatz"]
+    features_required: ["Radsatzdrehmaschine"]
+
+mireo_3_plus_h:
+  doors:
+    rate_per_10k_km: 0.7
+    mttr_hours: 2
+    severity: "low"
+    skills_required: ["Türen"]
+    features_required: []
+    
+  hvac:
+    rate_per_10k_km: 0.4
+    mttr_hours: 3
+    severity: "medium"
+    skills_required: ["HVAC"]
+    features_required: ["OL"]
+    
+  brakes:
+    rate_per_10k_km: 0.25
+    mttr_hours: 4
+    severity: "high"
+    skills_required: ["Bremse"]
+    features_required: ["Grube"]
+    
+  h2_system:
+    rate_per_10k_km: 0.3
+    mttr_hours: 6
+    severity: "critical"
+    skills_required: ["H2-System"]
+    features_required: ["H2-Sicherheit", "Halle"]
+    
+  tcms_etcs:
+    rate_per_10k_km: 0.15
+    mttr_hours: 3
+    severity: "medium"
+    skills_required: ["Elektrik", "Software"]
+    features_required: []
+    
+  traction:
+    rate_per_10k_km: 0.08
+    mttr_hours: 10
+    severity: "critical"
+    skills_required: ["Elektrik", "Mechanik"]
+    features_required: ["Grube", "Halle"]
+    
+  wheelsets:
+    rate_per_10k_km: 0.04
+    mttr_hours: 12
+    severity: "critical"
+    skills_required: ["Radsatz"]
+    features_required: ["Radsatzdrehmaschine"]
+
+desiro_hc:
+  doors:
+    rate_per_10k_km: 1.2  # Mehr Türen = höhere Rate
+    mttr_hours: 3
+    severity: "low"
+    skills_required: ["Türen"]
+    features_required: []
+    
+  hvac:
+    rate_per_10k_km: 0.6
+    mttr_hours: 4
+    severity: "medium"
+    skills_required: ["HVAC"]
+    features_required: ["OL", "Halle"]
+    
+  brakes:
+    rate_per_10k_km: 0.35
+    mttr_hours: 5
+    severity: "high"
+    skills_required: ["Bremse"]
+    features_required: ["Grube", "Schwerlast"]
+    
+  tcms_etcs:
+    rate_per_10k_km: 0.18
+    mttr_hours: 4
+    severity: "medium"
+    skills_required: ["Elektrik", "Software"]
+    features_required: []
+    
+  pantograph:
+    rate_per_10k_km: 0.12
+    mttr_hours: 6
+    severity: "high"
+    skills_required: ["Elektrik"]
+    features_required: ["OL", "Grube"]
+    
+  traction:
+    rate_per_10k_km: 0.09
+    mttr_hours: 12
+    severity: "critical"
+    skills_required: ["Elektrik", "Mechanik"]
+    features_required: ["Grube", "Halle", "Schwerlast"]
+    
+  wheelsets:
+    rate_per_10k_km: 0.06
+    mttr_hours: 16
+    severity: "critical"
+    skills_required: ["Radsatz"]
+    features_required: ["Radsatzdrehmaschine", "Schwerlast"]
+
+# Unfallraten (sehr selten, aber hoher Impact)
+accident_rates:
+  collision_minor:
+    rate_per_million_km: 0.5
+    mttr_days: 14
+    skills_required: ["Mechanik", "Karosserie", "Elektrik"]
+    features_required: ["Halle", "Schwerlast"]
+    
+  vandalism:
+    rate_per_million_km: 2
+    mttr_days: 3
+    skills_required: ["Reinigung", "Mechanik"]
+    features_required: ["Halle"]
+    
+  weather_damage:
+    rate_per_million_km: 0.3
+    mttr_days: 7
+    skills_required: ["Mechanik", "Elektrik", "HVAC"]
+    features_required: ["Halle", "OL"]

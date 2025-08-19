@@ -1,0 +1,231 @@
+# IHB/LCC-Profile für Fahrzeugfamilien
+# Basierend auf Herstellerangaben und Industriestandards
+
+flirt_3_160:
+  family: "Stadler FLIRT"
+  configuration: "3-teilig, 160 km/h"
+  manufacturer: "Stadler Rail"
+  capacity: 180
+  length_m: 58.7
+  
+  usage_profile:
+    km_per_day_mean: 450
+    duty_cycle: "Werktag intensiv"
+    environment: "Gemäßigt, gelegentlich Salz"
+    station_frequency: 12  # Halte pro 100km
+    
+  preventive_intervals:
+    IS1:
+      interval_days: 1
+      interval_km: 2000
+      duration_hours: 0.5
+      team_size: 2
+      skills: ["Mechanik"]
+      features_required: []
+      description: "Tägliche Sicht- und Funktionsprüfung"
+      
+    IS2:
+      interval_days: 45
+      interval_km: 30000
+      duration_hours: 4
+      team_size: 3
+      skills: ["Mechanik", "Elektrik"]
+      features_required: ["Grube"]
+      description: "Öle, Filter, Bremse LPA, Türen"
+      
+    IS3:
+      interval_days: 180
+      interval_km: 100000
+      duration_hours: 12
+      team_size: 4
+      skills: ["Mechanik", "Elektrik", "HVAC"]
+      features_required: ["Grube", "OL"]
+      description: "Subsystem-Checks, Drehgestell visuell"
+      
+    IS4:
+      interval_days: 730
+      interval_km: 400000
+      duration_hours: 48
+      team_size: 6
+      skills: ["Mechanik", "Elektrik", "HVAC", "Bremse"]
+      features_required: ["Grube", "OL", "Halle"]
+      description: "Hauptuntersuchung, größere Baugruppen"
+      
+    lathe:
+      interval_km: 150000
+      duration_hours: 8
+      team_size: 2
+      skills: ["Radsatz"]
+      features_required: ["Radsatzdrehmaschine"]
+      description: "Radreprofilierung"
+      
+    cleaning:
+      interval_days: 10
+      duration_hours: 2
+      team_size: 2
+      skills: ["Reinigung"]
+      features_required: ["Waschhalle"]
+      description: "Außenreinigung"
+      
+  lcc_parameters:
+    labor_cost_eur_h: 85
+    material_cost_eur_km: 0.45
+    energy_cost_eur_km: 0.18
+    parts_lifetime_km:
+      brake_pads: 80000
+      filters: 30000
+      wheels: 600000
+      pantograph: 400000
+
+mireo_3_plus_h:
+  family: "Siemens Mireo"
+  configuration: "3-teilig, Plus H (Wasserstoff)"
+  manufacturer: "Siemens Mobility"
+  capacity: 200
+  length_m: 69.7
+  
+  usage_profile:
+    km_per_day_mean: 420
+    duty_cycle: "Werktag intensiv"
+    environment: "Gemäßigt"
+    station_frequency: 10
+    
+  preventive_intervals:
+    IS1:
+      interval_days: 1
+      interval_km: 2500
+      duration_hours: 0.75
+      team_size: 2
+      skills: ["Mechanik", "H2-System"]
+      features_required: []
+      description: "Tägliche Prüfung inkl. H2-System"
+      
+    IS2:
+      interval_days: 40
+      interval_km: 35000
+      duration_hours: 5
+      team_size: 3
+      skills: ["Mechanik", "Elektrik", "H2-System"]
+      features_required: ["Grube"]
+      description: "Wartung inkl. H2-Komponenten"
+      
+    IS3:
+      interval_days: 150
+      interval_km: 120000
+      duration_hours: 16
+      team_size: 5
+      skills: ["Mechanik", "Elektrik", "HVAC", "H2-System"]
+      features_required: ["Grube", "OL", "H2-Sicherheit"]
+      description: "Erweiterte Systemprüfung"
+      
+    IS4:
+      interval_days: 730
+      interval_km: 500000
+      duration_hours: 60
+      team_size: 8
+      skills: ["Mechanik", "Elektrik", "HVAC", "Bremse", "H2-System"]
+      features_required: ["Grube", "OL", "Halle", "H2-Sicherheit"]
+      description: "Hauptuntersuchung H2-Variante"
+      
+    lathe:
+      interval_km: 180000
+      duration_hours: 10
+      team_size: 2
+      skills: ["Radsatz"]
+      features_required: ["Radsatzdrehmaschine"]
+      description: "Radreprofilierung"
+      
+    cleaning:
+      interval_days: 7
+      duration_hours: 2.5
+      team_size: 2
+      skills: ["Reinigung"]
+      features_required: ["Waschhalle"]
+      description: "Außenreinigung spezial"
+      
+  lcc_parameters:
+    labor_cost_eur_h: 95
+    material_cost_eur_km: 0.52
+    energy_cost_eur_km: 0.35  # H2 teurer
+    parts_lifetime_km:
+      brake_pads: 90000
+      filters: 25000
+      wheels: 650000
+      pantograph: 0  # H2 hat keinen
+      h2_tanks: 1000000
+
+desiro_hc:
+  family: "Siemens Desiro HC"
+  configuration: "4-teilig, High Capacity"
+  manufacturer: "Siemens Mobility"
+  capacity: 400
+  length_m: 105.5
+  
+  usage_profile:
+    km_per_day_mean: 380
+    duty_cycle: "Werktag intensiv"
+    environment: "Gemäßigt"
+    station_frequency: 8
+    
+  preventive_intervals:
+    IS1:
+      interval_days: 1
+      interval_km: 2200
+      duration_hours: 0.6
+      team_size: 2
+      skills: ["Mechanik"]
+      features_required: []
+      description: "Tägliche Sichtprüfung"
+      
+    IS2:
+      interval_days: 50
+      interval_km: 40000
+      duration_hours: 6
+      team_size: 4
+      skills: ["Mechanik", "Elektrik"]
+      features_required: ["Grube", "OL"]
+      description: "Planmäßige Wartung"
+      
+    IS3:
+      interval_days: 200
+      interval_km: 140000
+      duration_hours: 20
+      team_size: 6
+      skills: ["Mechanik", "Elektrik", "HVAC", "Türen"]
+      features_required: ["Grube", "OL", "Halle"]
+      description: "Systemprüfung HC"
+      
+    IS4:
+      interval_days: 1095
+      interval_km: 600000
+      duration_hours: 72
+      team_size: 10
+      skills: ["Mechanik", "Elektrik", "HVAC", "Bremse", "Türen"]
+      features_required: ["Grube", "OL", "Halle", "Schwerlast"]
+      description: "Hauptuntersuchung HC"
+      
+    lathe:
+      interval_km: 200000
+      duration_hours: 12
+      team_size: 3
+      skills: ["Radsatz"]
+      features_required: ["Radsatzdrehmaschine", "Schwerlast"]
+      description: "Radreprofilierung HC"
+      
+    cleaning:
+      interval_days: 14
+      duration_hours: 3
+      team_size: 3
+      skills: ["Reinigung"]
+      features_required: ["Waschhalle"]
+      description: "Außenreinigung groß"
+      
+  lcc_parameters:
+    labor_cost_eur_h: 85
+    material_cost_eur_km: 0.58
+    energy_cost_eur_km: 0.22
+    parts_lifetime_km:
+      brake_pads: 100000
+      filters: 35000
+      wheels: 700000
+      pantograph: 450000

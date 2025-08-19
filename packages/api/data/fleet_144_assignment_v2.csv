@@ -1,0 +1,145 @@
+train_id;vehicle_type;line_code;region;home_depot;is_reserve;status;notes
+FLIRT-001;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-002;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-003;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-004;flirt_3_160;RE8;BW;Essingen;false;maintenance;Stadler FLIRT 3-tlg - IS2
+FLIRT-005;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-006;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-007;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-008;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-009;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-010;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-011;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-012;flirt_3_160;RE1;BW;Essingen;false;maintenance;Stadler FLIRT 3-tlg - IS3
+FLIRT-013;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-014;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-015;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-016;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-017;flirt_3_160;RE2;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-018;flirt_3_160;RE2;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-019;flirt_3_160;RE2;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-020;flirt_3_160;RE2;BW;Essingen;false;abstellung;Stadler FLIRT 3-tlg
+FLIRT-021;flirt_3_160;RE2;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-022;flirt_3_160;RE2;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-023;flirt_3_160;RB22;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-024;flirt_3_160;RB22;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-025;flirt_3_160;RB22;BW;Essingen;false;maintenance;Stadler FLIRT 3-tlg - Lathe
+FLIRT-026;flirt_3_160;RB22;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-027;flirt_3_160;RB27;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-028;flirt_3_160;RB27;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-029;flirt_3_160;RB27;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-030;flirt_3_160;RB27;BW;Essingen;false;alarm;Stadler FLIRT 3-tlg - Tür defekt
+FLIRT-031;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-032;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-033;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-034;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-035;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+MIREO-036;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-037;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-038;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-039;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-040;mireo_3_plus_h;RE9;BY;Langweid;false;maintenance;Siemens Mireo Plus H - H2 Check
+MIREO-041;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-042;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-043;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-044;mireo_3_plus_h;RE12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-045;mireo_3_plus_h;RE12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-046;mireo_3_plus_h;RE12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-047;mireo_3_plus_h;RE12;BY;Langweid;false;maintenance;Siemens Mireo Plus H - IS2
+MIREO-048;mireo_3_plus_h;RE12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-049;mireo_3_plus_h;RE12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-050;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-051;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-052;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-053;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-054;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-055;mireo_3_plus_h;MEX16;BY;Langweid;false;alarm;Siemens Mireo Plus H - H2 Alarm
+MIREO-056;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-057;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-058;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-059;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-060;mireo_3_plus_h;MEX18;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-061;mireo_3_plus_h;MEX18;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-062;mireo_3_plus_h;MEX18;BY;Langweid;false;maintenance;Siemens Mireo Plus H - IS3
+MIREO-063;mireo_3_plus_h;MEX18;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-064;mireo_3_plus_h;MEX18;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-065;mireo_3_plus_h;MEX18;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-066;mireo_3_plus_h;MEX12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-067;mireo_3_plus_h;MEX12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-068;mireo_3_plus_h;MEX12;BY;Langweid;false;abstellung;Siemens Mireo Plus H
+MIREO-069;mireo_3_plus_h;MEX12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-070;mireo_3_plus_h;MEX12;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-071;mireo_3_plus_h;RB32;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-072;mireo_3_plus_h;RB32;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-073;mireo_3_plus_h;RB32;BY;Langweid;false;maintenance;Siemens Mireo Plus H - Lathe
+MIREO-074;mireo_3_plus_h;RB32;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-075;mireo_3_plus_h;RB54;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-076;mireo_3_plus_h;RB54;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-077;mireo_3_plus_h;RB54;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-078;mireo_3_plus_h;RB54;BY;Langweid;false;offline;Siemens Mireo Plus H
+MIREO-079;mireo_3_plus_h;RESERVE;BY;Langweid;true;reserve;Siemens Mireo Reserve
+MIREO-080;mireo_3_plus_h;RESERVE;BY;Langweid;true;reserve;Siemens Mireo Reserve
+MIREO-081;mireo_3_plus_h;RESERVE;BY;Langweid;true;reserve;Siemens Mireo Reserve
+MIREO-082;mireo_3_plus_h;RESERVE;BY;Langweid;true;reserve;Siemens Mireo Reserve
+MIREO-083;mireo_3_plus_h;RESERVE;BY;Langweid;true;reserve;Siemens Mireo Reserve
+MIREO-084;mireo_3_plus_h;RESERVE;BY;Langweid;true;reserve;Siemens Mireo Reserve
+DESIRO-085;desiro_hc;S2;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-086;desiro_hc;S2;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-087;desiro_hc;S2;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-088;desiro_hc;S2;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-089;desiro_hc;S2;BY;Langweid;false;maintenance;Siemens Desiro HC - IS2
+DESIRO-090;desiro_hc;S2;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-091;desiro_hc;S2;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-092;desiro_hc;S2;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-093;desiro_hc;S3;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-094;desiro_hc;S3;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-095;desiro_hc;S3;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-096;desiro_hc;S3;BY;Langweid;false;abstellung;Siemens Desiro HC
+DESIRO-097;desiro_hc;S3;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-098;desiro_hc;S3;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-099;desiro_hc;S3;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-100;desiro_hc;S3;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-101;desiro_hc;S4;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-102;desiro_hc;S4;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-103;desiro_hc;S4;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-104;desiro_hc;S4;BY;Langweid;false;maintenance;Siemens Desiro HC - IS3
+DESIRO-105;desiro_hc;S4;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-106;desiro_hc;S4;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-107;desiro_hc;S4;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-108;desiro_hc;S4;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-109;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-110;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-111;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-112;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-113;desiro_hc;S6;BY;Langweid;false;alarm;Siemens Desiro HC - Bremse
+DESIRO-114;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-115;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-116;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-117;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-118;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
+DESIRO-119;desiro_hc;RESERVE;BY;Langweid;true;reserve;Siemens Desiro Reserve
+DESIRO-120;desiro_hc;RESERVE;BY;Langweid;true;reserve;Siemens Desiro Reserve
+DESIRO-121;desiro_hc;RESERVE;BY;Langweid;true;reserve;Siemens Desiro Reserve
+DESIRO-122;desiro_hc;RESERVE;BY;Langweid;true;reserve;Siemens Desiro Reserve
+DESIRO-123;desiro_hc;RESERVE;BY;Langweid;true;reserve;Siemens Desiro Reserve
+DESIRO-124;desiro_hc;RESERVE;BY;Langweid;true;reserve;Siemens Desiro Reserve
+FLIRT-125;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-126;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-127;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-128;flirt_3_160;RESERVE;BW;Essingen;true;reserve;Stadler FLIRT Reserve
+FLIRT-129;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-130;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-131;flirt_3_160;RE8;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-132;flirt_3_160;RE8;BW;Essingen;false;offline;Stadler FLIRT 3-tlg
+FLIRT-133;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-134;flirt_3_160;RE1;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-135;flirt_3_160;RE2;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-136;flirt_3_160;RE2;BW;Essingen;false;abstellung;Stadler FLIRT 3-tlg
+FLIRT-137;flirt_3_160;RE2;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-138;flirt_3_160;RB22;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-139;flirt_3_160;RB27;BW;Essingen;false;active;Stadler FLIRT 3-tlg
+FLIRT-140;flirt_3_160;RB27;BW;Essingen;false;maintenance;Stadler FLIRT 3-tlg - IS4
+MIREO-141;mireo_3_plus_h;RE9;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-142;mireo_3_plus_h;MEX16;BY;Langweid;false;active;Siemens Mireo Plus H
+MIREO-143;mireo_3_plus_h;MEX18;BY;Langweid;false;offline;Siemens Mireo Plus H
+DESIRO-144;desiro_hc;S6;BY;Langweid;false;active;Siemens Desiro HC
