@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "3cd7626fc9c3dbebc072abfa5a49a45dcce27eb6",
-    "message": "feat(depot): ssr-first depot-mikrosicht (svg map, filters, queue, inspector)\n\nchore: ensure >=12 ssr allocations for acceptance",
+    "sha": "4d6fdb96a35cb6621284de4b3e48d77599a5ea1c",
+    "message": "ci: add release-verify (wait for production URL, test with Playwright, publish tested-url)\n\ndocs: update handover and deployment docs with tested URL process",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T21:39:59Z"
+    "timestamp": "2025-08-19T21:45:22Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17082481654"
+    "run_id": "17082575435"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T21:41:14.795Z",
+  "generated_at": "2025-08-19T21:46:35.556Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
