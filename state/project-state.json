@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "a7514bbc91f40b70314a3f166a7700e332542281",
-    "message": "feat: Complete depot map implementation with all components",
+    "sha": "0844e371a157cb84e77ddde6cd3d733cdc771db6",
+    "message": "feat: Add track-geometries for depot map",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T15:55:54Z"
+    "timestamp": "2025-08-19T15:57:28Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17075011792"
+    "run_id": "17075048734"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T15:56:41.841Z",
+  "generated_at": "2025-08-19T15:58:14.885Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
