@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "cca2748549c77d616b931c5bc266bcad28699d6c",
-    "message": "fix: Fix null check in calculateNextMaintenance for 144 trains",
+    "sha": "5c27a9c50d75d62cfb25981ce8073cb6324314df",
+    "message": "FINAL FIX: Hardcode 144 trains and 17 lines directly in Next.js API routes",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T10:55:49Z"
+    "timestamp": "2025-08-19T10:59:51Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17067452849"
+    "run_id": "17067532675"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T10:57:01.189Z",
+  "generated_at": "2025-08-19T11:00:58.501Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
