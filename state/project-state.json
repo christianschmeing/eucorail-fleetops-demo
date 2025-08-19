@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "0844e371a157cb84e77ddde6cd3d733cdc771db6",
-    "message": "feat: Add track-geometries for depot map",
+    "sha": "b026405fcc630733ee88329af7cb96762d78d0b3",
+    "message": "trigger: Force new Vercel deployment for depot/map feature",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T15:57:28Z"
+    "timestamp": "2025-08-19T19:21:49Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17079536203"
+    "run_id": "17079635211"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T19:18:14.453Z",
+  "generated_at": "2025-08-19T19:22:49.137Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
