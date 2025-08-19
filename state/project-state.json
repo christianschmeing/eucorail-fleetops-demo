@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "2c72ca1a66ff6559615ee213065f9a846f74ca2c",
-    "message": "feat(ui): virtualized tables for /trains and /lines with search, facets and CSV export; initial map flow flyTo; nav shell",
+    "sha": "6b69ac8581b11265684ee4ddf72733beb43feea6",
+    "message": "feat: Complete 144 trains fleet with real lines, ECM-3 and IHB profiles",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-17T12:23:26Z"
+    "timestamp": "2025-08-19T10:27:31Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17020966117"
+    "run_id": "17066843045"
   },
   "changes": {
     "apps_web": false,
@@ -30,6 +30,8 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-17T12:24:17.215Z",
-  "default_branch_hint": "main"
+  "generated_at": "2025-08-19T10:28:54.837Z",
+  "default_branch_hint": "main",
+  "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
+  "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
 }
