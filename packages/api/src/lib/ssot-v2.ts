@@ -330,10 +330,10 @@ class FleetSSOV2 {
   // Wartungsplanung
   calculateNextMaintenance(train: TrainSSO): MaintenanceTask | undefined {
     const profile = this.getIHBProfile(train.vehicleType);
-    if (!profile) return undefined;
+    if (!profile || !profile.preventiveIntervals) return undefined;
     
     const mileage = train.mileageKm || 0;
-    const intervals = profile.preventiveIntervals;
+    const intervals = profile.preventiveIntervals || {};
     
     // Prüfe welche Wartung fällig ist
     for (const [key, interval] of Object.entries(intervals)) {
