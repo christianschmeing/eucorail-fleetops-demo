@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "e1685d35f4f0bb78d8ba2cd130f3d19ce8011786",
-    "message": "fix: Use direct API import for train details to avoid fetch issues on Vercel",
+    "sha": "b4ae99819bff3153d142b9bae491cde663777a76",
+    "message": "fix: Final fix for train details and filters - Generate trains data directly to avoid Vercel fetch issues",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T14:08:22Z"
+    "timestamp": "2025-08-19T14:12:14Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17072181626"
+    "run_id": "17072291988"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T14:09:45.240Z",
+  "generated_at": "2025-08-19T14:13:22.068Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
