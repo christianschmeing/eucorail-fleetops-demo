@@ -1,0 +1,210 @@
+# Depot-Gleiskonfiguration nach realen Gegebenheiten
+
+depots:
+  essingen:
+    id: depot-essingen
+    name: "Betriebshof Essingen"
+    location:
+      lat: 48.6295
+      lng: 9.9574
+      address: "Bahnhofstraße 1, 73457 Essingen"
+    capacity:
+      total_tracks: 12
+      maintenance_bays: 4
+      service_tracks: 6
+      storage_tracks: 2
+    tracks:
+      - id: E-G1
+        type: maintenance
+        length_m: 180
+        features: [grube, ol, shore, druckluft]
+        max_trains: 1
+        ecm_level: 4
+      - id: E-G2
+        type: maintenance
+        length_m: 180
+        features: [grube, ol, shore, druckluft, lathe_access]
+        max_trains: 1
+        ecm_level: 3
+      - id: E-G3
+        type: maintenance
+        length_m: 120
+        features: [grube, shore]
+        max_trains: 1
+        ecm_level: 4
+      - id: E-G4
+        type: maintenance
+        length_m: 120
+        features: [grube, shore, ol]
+        max_trains: 1
+        ecm_level: 4
+      - id: E-S1
+        type: service
+        length_m: 240
+        features: [shore, waschhalle]
+        max_trains: 2
+      - id: E-S2
+        type: service
+        length_m: 240
+        features: [shore, tankstelle]
+        max_trains: 2
+      - id: E-S3
+        type: service
+        length_m: 180
+        features: [shore]
+        max_trains: 1
+      - id: E-S4
+        type: service
+        length_m: 180
+        features: [shore, ara_gleis]
+        max_trains: 1
+      - id: E-S5
+        type: service
+        length_m: 120
+        features: [shore]
+        max_trains: 1
+      - id: E-S6
+        type: service
+        length_m: 120
+        features: [shore]
+        max_trains: 1
+      - id: E-A1
+        type: storage
+        length_m: 360
+        features: []
+        max_trains: 3
+      - id: E-A2
+        type: storage
+        length_m: 360
+        features: []
+        max_trains: 3
+    equipment:
+      lathe: false  # Zugang zu externer Drehmaschine
+      paint_shop: false
+      heavy_lift: true
+      test_track: false
+
+  langweid:
+    id: depot-langweid
+    name: "Betriebshof Langweid"
+    location:
+      lat: 48.4894
+      lng: 10.8539
+      address: "Industriestraße 5, 86462 Langweid am Lech"
+    capacity:
+      total_tracks: 16
+      maintenance_bays: 6
+      service_tracks: 7
+      storage_tracks: 3
+    tracks:
+      - id: L-G1
+        type: maintenance
+        length_m: 200
+        features: [grube, ol, shore, druckluft, lathe]
+        max_trains: 1
+        ecm_level: 2  # Schwere Instandhaltung
+      - id: L-G2
+        type: maintenance
+        length_m: 200
+        features: [grube, ol, shore, druckluft]
+        max_trains: 1
+        ecm_level: 3
+      - id: L-G3
+        type: maintenance
+        length_m: 160
+        features: [grube, shore, ol]
+        max_trains: 1
+        ecm_level: 3
+      - id: L-G4
+        type: maintenance
+        length_m: 160
+        features: [grube, shore]
+        max_trains: 1
+        ecm_level: 4
+      - id: L-G5
+        type: maintenance
+        length_m: 120
+        features: [grube, shore]
+        max_trains: 1
+        ecm_level: 4
+      - id: L-G6
+        type: maintenance
+        length_m: 120
+        features: [grube, shore, lackierkabine]
+        max_trains: 1
+        ecm_level: 3
+      - id: L-S1
+        type: service
+        length_m: 240
+        features: [shore, waschhalle, h2_tankstelle]
+        max_trains: 2
+      - id: L-S2
+        type: service
+        length_m: 240
+        features: [shore, h2_tankstelle]
+        max_trains: 2
+      - id: L-S3
+        type: service
+        length_m: 200
+        features: [shore, tankstelle]
+        max_trains: 2
+      - id: L-S4
+        type: service
+        length_m: 180
+        features: [shore, ara_gleis]
+        max_trains: 1
+      - id: L-S5
+        type: service
+        length_m: 160
+        features: [shore]
+        max_trains: 1
+      - id: L-S6
+        type: service
+        length_m: 160
+        features: [shore, reinigung_innen]
+        max_trains: 1
+      - id: L-S7
+        type: service
+        length_m: 120
+        features: [shore]
+        max_trains: 1
+      - id: L-A1
+        type: storage
+        length_m: 400
+        features: []
+        max_trains: 3
+      - id: L-A2
+        type: storage
+        length_m: 400
+        features: []
+        max_trains: 3
+      - id: L-A3
+        type: storage
+        length_m: 300
+        features: []
+        max_trains: 2
+    equipment:
+      lathe: true  # Eigene Radsatzdrehmaschine
+      paint_shop: true
+      heavy_lift: true
+      test_track: true
+      h2_station: true  # Wasserstoff-Tankstelle für Mireo Plus H
+
+# Gleisfeatures-Legende:
+# - grube: Unterflurarbeitsstand
+# - ol: Oberleitung (für Arbeiten am Dach)
+# - shore: Landstromversorgung
+# - druckluft: Druckluftanschluss
+# - lathe: Radsatzdrehmaschine (direkt)
+# - lathe_access: Zufahrt zur externen Drehmaschine
+# - waschhalle: Außenwaschhalle
+# - ara_gleis: Abwasser-/Reinigungs-/Absauggleis
+# - tankstelle: Diesel/AdBlue
+# - h2_tankstelle: Wasserstoff-Tankstelle
+# - lackierkabine: Spot-Lackierung
+# - reinigung_innen: Innenreinigung-Station
+
+# ECM-Level:
+# 2: Schwere Instandhaltung (Hauptuntersuchung, große Komponenten)
+# 3: Mittlere Instandhaltung (IS3, Quartalswartung)
+# 4: Leichte Instandhaltung (IS1, IS2, kleine Reparaturen)
