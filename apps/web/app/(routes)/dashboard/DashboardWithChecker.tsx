@@ -1,6 +1,6 @@
 'use client';
 
-import ConsistencyChecker from '@/components/ConsistencyChecker';
+import ConsistencyChecker, { type ConsistencyCheck } from '@/components/ConsistencyChecker';
 import { useState } from 'react';
 
 interface DashboardWithCheckerProps {

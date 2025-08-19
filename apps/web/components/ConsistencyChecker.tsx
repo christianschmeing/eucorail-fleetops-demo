@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Card } from './ui/Card';
 
-interface ConsistencyCheck {
+export interface ConsistencyCheck {
   name: string;
   expected: number;
   actual: number;
