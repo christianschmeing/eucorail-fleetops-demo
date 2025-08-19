@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "fccf85dabb2b00b71e6293e8882d3d3b099d4d26",
-    "message": "fix: CRITICAL FIX - Lines now sum to exactly 144 vehicles (45+42+35+22)",
+    "sha": "f5aaf53e59e9956330fca77c37d447fa358755d9",
+    "message": "feat: Extend depot view to 14 days with 80% utilization (~115 trains), add all 28 tracks from depot_tracks.yaml",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T12:29:54Z"
+    "timestamp": "2025-08-19T12:44:54Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17069601566"
+    "run_id": "17069981538"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T12:31:05.726Z",
+  "generated_at": "2025-08-19T12:46:14.148Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
