@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "801031fd07cc3f48d8f0b6aaeab196e30a2dd9b7",
-    "message": "fix: Correct ConsistencyChecker import statement",
+    "sha": "33c37a9319191de32dfa45b5a29826ce1ccdba25",
+    "message": "fix: Export ConsistencyCheck interface for TypeScript",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T11:56:38Z"
+    "timestamp": "2025-08-19T11:58:24Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17068796537"
+    "run_id": "17068833073"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T11:57:35.304Z",
+  "generated_at": "2025-08-19T11:59:20.967Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
