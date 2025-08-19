@@ -16,7 +16,12 @@
     "types": ["node", "react"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/components/*": ["components/*"],
+      "@/features/*": ["features/*"],
+      "@/lib/*": ["lib/*"],
+      "@/app/*": ["app/*"],
+      "@/styles/*": ["styles/*"]
     },
     "plugins": [{ "name": "next" }]
   },

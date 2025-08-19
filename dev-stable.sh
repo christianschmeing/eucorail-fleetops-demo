@@ -204,3 +204,5 @@ echo "Server läuft... (Stoppen mit Ctrl+C)"
 wait $SERVER_PID
 
 
+
+

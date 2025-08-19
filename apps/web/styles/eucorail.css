@@ -13,3 +13,24 @@
   background: linear-gradient(135deg, var(--euco-bg) 0%, #0e2a3a 100%);
   box-shadow: 0 2px 8px rgba(10, 20, 30, 0.35);
 }
+
+/* Premium Animations */
+@keyframes pulse-operational {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.85; }
+}
+
+@keyframes slide-in-premium {
+  from { transform: translateX(100%) scale(0.98); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+/* Glassmorphism Panel */
+.panel-premium {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+}

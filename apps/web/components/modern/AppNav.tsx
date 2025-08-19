@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   ScrollText,
   Search,
+  Warehouse,
 } from 'lucide-react';
 
 type NavItem = { href: string; label: string; icon: any; hotkey?: string };
@@ -22,6 +23,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/lines', label: 'Linien', icon: Route, hotkey: 'g l' },
   { href: '/trains', label: 'Züge', icon: Train, hotkey: 'g t' },
   { href: '/maintenance', label: 'Wartung', icon: Wrench, hotkey: 'g w' },
+  { href: '/depot', label: 'Depot', icon: Warehouse, hotkey: 'g o' },
   { href: '/ecm', label: 'ECM', icon: ShieldCheck, hotkey: 'g e' },
   { href: '/log', label: 'Protokoll', icon: ScrollText, hotkey: 'g p' },
 ];

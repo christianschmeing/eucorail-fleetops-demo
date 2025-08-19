@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky",
+    "prepare": "command -v husky >/dev/null 2>&1 && husky || echo 'husky skipped'",
     "dev": "node scripts/dev/start-stack.mjs",
     "dev:alt": "concurrently -k -n WEB,API -c blue,green \"cross-env NEXT_PUBLIC_API_BASE=http://localhost:4100 npm --workspace apps/web run dev:3002\" \"npm --workspace packages/api run dev:4100\"",
     "build": "npm --workspace apps/web run build && npm --workspace packages/api run build",
@@ -61,6 +61,8 @@
     ]
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "^1.54.2",
@@ -77,8 +79,8 @@
     "lint-staged": "^15.5.2",
     "node-fetch": "^3.3.2",
     "prettier": "^3.6.2",
-    "puppeteer": "^24.16.1",
-    "puppeteer-core": "^24.16.1",
+    "puppeteer": "24.16.1",
+    "puppeteer-core": "24.16.1",
     "start-server-and-test": "^2.0.13"
   }
 }

@@ -2,30 +2,21 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    './app/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './styles/**/*.css',
-    '../../packages/ui/src/**/*.{ts,tsx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './features/**/*.{js,ts,jsx,tsx,mdx}',
+    '../../packages/ui/src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
       colors: {
-        euco: {
-          bg: '#0B1F2A',
-          accent: '#0AA8E6',
-          accent2: '#27D3A2',
-          warn: '#F59E0B',
-          danger: '#EF4444',
-          muted: '#9FB3C8',
+        eucorail: {
+          primary: '#0066CC',
+          secondary: '#00A859',
+          danger: '#DC2626',
+          warning: '#F59E0B',
+          success: '#10B981',
         },
-        navy: '#0B1F2A',
-        accent: '#1E90FF',
-        re9: '#2563EB',
-        mex16: '#059669',
-        re8: '#EAB308',
-        ok: '#16A34A',
-        warn: '#F59E0B',
-        crit: '#DC2626',
       },
     },
   },

@@ -1,0 +1,66 @@
+{
+  "baden_wuerttemberg": [
+    {
+      "id": "RE1",
+      "name": "Frankenbahn",
+      "color": "#FF6B00",
+      "stations": [
+        { "name": "Karlsruhe Hbf", "lat": 49.0093, "lon": 8.4044 },
+        { "name": "Bruchsal", "lat": 49.1247, "lon": 8.5981 },
+        { "name": "Vaihingen (Enz)", "lat": 48.9333, "lon": 8.9608 },
+        { "name": "Stuttgart Hbf", "lat": 48.7847, "lon": 9.1829 },
+        { "name": "Schorndorf", "lat": 48.8056, "lon": 9.5297 },
+        { "name": "Schwäbisch Gmünd", "lat": 48.7994, "lon": 9.7978 },
+        { "name": "Aalen Hbf", "lat": 48.8378, "lon": 10.0933 }
+      ]
+    },
+    {
+      "id": "RE8",
+      "name": "Stuttgart – Würzburg",
+      "color": "#27d3a2",
+      "stations": [
+        { "name": "Stuttgart Hbf", "lat": 48.7834, "lon": 9.1829 },
+        { "name": "Backnang", "lat": 48.9475, "lon": 9.4272 },
+        { "name": "Heilbronn Hbf", "lat": 49.1439, "lon": 9.2109 },
+        { "name": "Würzburg Hbf", "lat": 49.794, "lon": 9.9534 }
+      ]
+    },
+    {
+      "id": "MEX16",
+      "name": "Metropolexpress Stuttgart – Ulm",
+      "color": "#003d7a",
+      "stations": [
+        { "name": "Stuttgart Hbf", "lat": 48.7834, "lon": 9.1829 },
+        { "name": "Göppingen", "lat": 48.7055, "lon": 9.652 },
+        { "name": "Ulm Hbf", "lat": 48.3984, "lon": 10.0006 }
+      ]
+    }
+  ],
+  "bayern": [
+    {
+      "id": "RE9",
+      "name": "Fugger-Express",
+      "color": "#0066CC",
+      "stations": [
+        { "name": "München Hbf", "lat": 48.1403, "lon": 11.5583 },
+        { "name": "München-Pasing", "lat": 48.1497, "lon": 11.4619 },
+        { "name": "Augsburg Hbf", "lat": 48.3653, "lon": 10.8856 },
+        { "name": "Günzburg", "lat": 48.4556, "lon": 10.2772 },
+        { "name": "Ulm Hbf", "lat": 48.3994, "lon": 9.9828 }
+      ],
+      "frequency": 30,
+      "trainAllocation": ["Desiro HC", "Mireo"]
+    },
+    {
+      "id": "RE80",
+      "name": "Augsburg – München",
+      "color": "#4CAF50",
+      "stations": [
+        { "name": "Augsburg Hbf", "lat": 48.3653, "lon": 10.8856 },
+        { "name": "Friedberg", "lat": 48.3575, "lon": 10.9886 },
+        { "name": "München-Pasing", "lat": 48.1497, "lon": 11.4619 },
+        { "name": "München Hbf", "lat": 48.1403, "lon": 11.5583 }
+      ]
+    }
+  ]
+}

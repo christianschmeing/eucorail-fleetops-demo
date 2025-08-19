@@ -1,0 +1,62 @@
+[
+  {
+    "id": "RE9",
+    "name": "Linie RE9",
+    "region": "BY",
+    "operator": "Eucorail",
+    "depot": "Augsburg",
+    "vehicles": 40,
+    "activeVehicles": 29,
+    "avgDelayMin": 2,
+    "punctualityPct": 92,
+    "utilizationPct": 73
+  },
+  {
+    "id": "MEX16",
+    "name": "Linie MEX16",
+    "region": "BW",
+    "operator": "Eucorail",
+    "depot": "Stuttgart",
+    "vehicles": 35,
+    "activeVehicles": 25,
+    "avgDelayMin": 0,
+    "punctualityPct": 93,
+    "utilizationPct": 71
+  },
+  {
+    "id": "RE8",
+    "name": "Linie RE8",
+    "region": "BW",
+    "operator": "Eucorail",
+    "depot": "Stuttgart",
+    "vehicles": 35,
+    "activeVehicles": 25,
+    "avgDelayMin": -2,
+    "punctualityPct": 94,
+    "utilizationPct": 71
+  },
+  {
+    "id": "RE1",
+    "name": "Linie RE1",
+    "region": "BW",
+    "operator": "Eucorail",
+    "depot": "Stuttgart",
+    "vehicles": 17,
+    "activeVehicles": 13,
+    "avgDelayMin": -2,
+    "punctualityPct": 89,
+    "utilizationPct": 76
+  },
+  {
+    "id": "RE89",
+    "name": "Linie RE89",
+    "region": "BY",
+    "operator": "Eucorail",
+    "depot": "Augsburg",
+    "vehicles": 17,
+    "activeVehicles": 16,
+    "avgDelayMin": 1,
+    "punctualityPct": 86,
+    "utilizationPct": 94
+  }
+]

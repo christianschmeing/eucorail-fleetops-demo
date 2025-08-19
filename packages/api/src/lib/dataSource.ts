@@ -68,7 +68,8 @@ export class SeedDataSource implements DataSource {
     };
   }
   async getLines() {
-    const p = path.join(process.cwd(), 'seeds', 'averio', 'lines.json');
+    // Verwende die 144-Züge-Linien-Daten
+    const p = path.join(process.cwd(), 'seeds', 'averio', 'lines-144.json');
     return JSON.parse(readFileSync(p, 'utf-8'));
   }
   async getDepots() {
@@ -81,7 +82,8 @@ export class SeedDataSource implements DataSource {
     status?: string;
     limit?: number;
   }) {
-    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains.json');
+    // Verwende die 144-Züge-Datenquelle
+    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains-144.json');
     const trains = JSON.parse(readFileSync(p, 'utf-8')) as Array<any>;
 
     const isTest = process.env.TEST_MODE === '1' || process.env.NEXT_PUBLIC_TEST_MODE === '1';
@@ -201,24 +203,26 @@ export class SeedDataSource implements DataSource {
     return list;
   }
   async getTrainById(id: string) {
-    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains.json');
+    // Verwende die 144-Züge-Datenquelle
+    const p = path.join(process.cwd(), 'seeds', 'averio', 'trains-144.json');
     const trains = JSON.parse(readFileSync(p, 'utf-8')) as Array<any>;
     return trains.find((x) => String(x.id) === id);
   }
   async getKPI() {
-    const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{
+    // Verwende die 144-Züge-Fleet-Daten
+    const fleet = JSON.parse(readFileSync('data/fleet-144.json', 'utf-8')) as Array<{
       runId: string;
       unitType: string;
     }>;
     const overdue = 7;
     const woAgingMedian = 3;
-    const depotUtilToday = { essingen: 0.6, langweid: 0.7 } as Record<string, number>;
+    const depotUtilToday = { Stuttgart: 0.65, Augsburg: 0.72 } as Record<string, number>;
     return {
-      availabilityPct: 97.2,
+      availabilityPct: 75.0, // 108 von 144 aktiv = 75%
       overdueCount: overdue,
       woAgingMedianDays: woAgingMedian,
       depotUtilToday,
-      fleetSize: fleet.length,
+      fleetSize: 144, // Hardcoded für Konsistenz
     };
   }
   async listWOs() {

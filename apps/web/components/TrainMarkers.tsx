@@ -297,7 +297,7 @@ const computeSchedulePosition = (
       return {
         lon,
         lat,
-        speed: Math.round(speedKmH),
+        speed: Math.round(speedKmH > 0 ? clamp(speedKmH, 80, 160) : 0),
         atStop: false,
         description: `${train.stops[0].name} → ${train.stops[train.stops.length - 1].name}`,
       };
@@ -503,8 +503,8 @@ export default function TrainMarkers({
         const from = entry.lastLonLat ?? [lon, lat];
         const to: [number, number] = [lon, lat];
         const distanceMeters = haversine([from[0], from[1]], [to[0], to[1]]);
-        // Duration scales with distance (min 1000ms, max 5000ms)
-        const duration = Math.max(1000, Math.min(5000, Math.round(distanceMeters * 15))); // ~15 ms per meter
+        // Duration tuned for 2s cadence (min 800ms, max 2000ms)
+        const duration = Math.max(800, Math.min(2000, Math.round(distanceMeters * 12))); // ~12 ms/m
         entry.animFrom = from;
         entry.animTo = to;
         entry.animStartMs = now;
@@ -796,7 +796,7 @@ export default function TrainMarkers({
     };
   }, [map, isTestMode]);
 
-  // Periodic fallback recompute every 45s when no live data yet
+  // Periodic fallback recompute when no live data yet (2s cadence for smooth demo)
   useEffect(() => {
     if (isTestMode) return;
     const setup = () => {
@@ -827,7 +827,7 @@ export default function TrainMarkers({
         } catch {}
       };
       tick();
-      fallbackTimerRef.current = window.setInterval(tick, 45000);
+      fallbackTimerRef.current = window.setInterval(tick, 2000);
     };
     setup();
     return () => {
@@ -902,10 +902,10 @@ export default function TrainMarkers({
         ) {
           continue;
         }
-        // Throttle per-train updates: at most once every 5 seconds
+        // Throttle per-train updates: at most once every 2 seconds
         const nowMs = Date.now();
         const last = lastUpdateByTrainRef.current.get(id) ?? 0;
-        if (nowMs - last < 5000 && lastFeatureByIdRef.current.has(id)) {
+        if (nowMs - last < 2000 && lastFeatureByIdRef.current.has(id)) {
           // Use previous feature to avoid rapid jitter
           const prev = lastFeatureByIdRef.current.get(id)!;
           const keep = {

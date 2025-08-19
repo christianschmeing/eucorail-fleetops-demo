@@ -6,6 +6,11 @@ import events from './routes/events.js';
 import { readFileSync } from 'node:fs';
 import { WebSocketServer } from 'ws';
 
+// Aktiviere SSOT V2 wenn USE_SSOV2=1
+if (process.env.USE_SSOV2 === '1') {
+  console.log('🚀 SSOT V2 mit realen Linien und IHB-Profilen aktiviert');
+}
+
 const app = Fastify({ logger: true });
 
 // Core plugins: CORS, rate limit, under-pressure, swagger, health
@@ -19,7 +24,8 @@ app.get('/api/meta', async () => ({
 }));
 
 // Simple SSE emitting 1 Hz random-but-bounded locations per train
-const fleet = JSON.parse(readFileSync('data/fleet.json', 'utf-8')) as Array<{
+// Verwende die 144-Züge-Fleet-Daten
+const fleet = JSON.parse(readFileSync('data/fleet-144.json', 'utf-8')) as Array<{
   runId: string;
   line: string;
 }>;

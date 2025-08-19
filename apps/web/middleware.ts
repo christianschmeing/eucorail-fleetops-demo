@@ -3,13 +3,17 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(req: NextRequest) {
   const user = process.env.PREVIEW_BASIC_USER;
   const pass = process.env.PREVIEW_BASIC_PASS;
-  const enable = process.env.PREVIEW_ENABLE_AUTH === '1' && user && pass;
+  const vercelEnv = process.env.VERCEL_ENV; // 'production' | 'preview' | 'development'
+  const isPreview = vercelEnv !== 'production';
+  const enable = isPreview && process.env.PREVIEW_ENABLE_AUTH === '1' && user && pass;
   if (!enable) return NextResponse.next();
   const { pathname } = req.nextUrl;
   // Exempt static assets and health
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon') ||
+    pathname.startsWith('/api/') ||
+    pathname === '/api' ||
     pathname === '/api/health'
   ) {
     return NextResponse.next();
@@ -33,5 +37,6 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api/static|api/events).*)'],
+  // Exclude all API routes from middleware; protect only pages/assets when enabled
+  matcher: ['/((?!api/).*)'],
 };

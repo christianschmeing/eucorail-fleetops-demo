@@ -1,0 +1,128 @@
+{
+  "maintenanceProvider": {
+    "name": "Eucorail Maintenance Services",
+    "logo": "/logos/eucorail.svg",
+    "contracts": [
+      {
+        "operator": "Arverio Baden-Württemberg",
+        "vehicles": 66,
+        "depot": "Essingen",
+        "slaTargets": {
+          "availability": 95.5,
+          "mtbf": 15000,
+          "mttr": 4.5,
+          "firstTimeFixRate": 92
+        }
+      },
+      {
+        "operator": "Arverio Bayern",
+        "vehicles": 78,
+        "depot": "Langweid",
+        "slaTargets": {
+          "availability": 96.0,
+          "mtbf": 18000,
+          "mttr": 4.0,
+          "firstTimeFixRate": 94
+        }
+      }
+    ]
+  },
+  "maintenanceLevels": {
+    "IS1": {
+      "name": "Sichtprüfung",
+      "interval": 2000,
+      "duration": 0.5,
+      "tasks": ["Bremsenprüfung", "Ölstand", "Pantograph-Check"]
+    },
+    "IS2": {
+      "name": "Kleine Inspektion",
+      "interval": 10000,
+      "duration": 4,
+      "tasks": ["Radprofilvermessung", "Bremsbeläge", "Filter wechseln", "Software-Update"]
+    },
+    "IS3": {
+      "name": "Große Inspektion",
+      "interval": 50000,
+      "duration": 24,
+      "tasks": ["Drehgestell-Service", "Kompressor-Überholung", "Elektrische Prüfung"]
+    },
+    "IS4": {
+      "name": "Hauptuntersuchung",
+      "interval": 200000,
+      "duration": 120,
+      "tasks": ["Komplettüberholung", "Lackierung", "Innenraum-Erneuerung"]
+    }
+  },
+  "vehicles": [
+    {
+      "id": "66001",
+      "type": "FLIRT3",
+      "technicalStatus": {
+        "healthScore": 87,
+        "mileage": 287453,
+        "operatingHours": 4821,
+        "lastDepotExit": "2025-01-15T06:30:00Z",
+        "lastMaintenanceLevel": "IS2",
+        "nextMaintenanceDue": {
+          "IS1": { "dueIn": 1247, "dueDate": "2025-01-22", "critical": false },
+          "IS2": { "dueIn": 7453, "dueDate": "2025-02-15", "critical": false },
+          "IS3": { "dueIn": 12547, "dueDate": "2025-04-10", "critical": false }
+        },
+        "activeAlerts": [
+          {
+            "id": "ALT-2451",
+            "severity": "warning",
+            "system": "HVAC",
+            "code": "E4521",
+            "description": "Klimaanlage Wagen 2 - Reduzierte Leistung",
+            "firstOccurrence": "2025-01-18T14:23:00Z",
+            "occurrenceCount": 3
+          },
+          {
+            "id": "ALT-2452",
+            "severity": "info",
+            "system": "DOOR",
+            "code": "W1102",
+            "description": "Tür 3L - Erhöhte Schließzeit",
+            "firstOccurrence": "2025-01-19T08:15:00Z",
+            "occurrenceCount": 1
+          }
+        ],
+        "components": {
+          "wheelsets": [
+            { "position": "1A", "diameter": 847, "limit": 840, "wearRate": 0.012 },
+            { "position": "1B", "diameter": 849, "limit": 840, "wearRate": 0.011 },
+            { "position": "2A", "diameter": 846, "limit": 840, "wearRate": 0.013 },
+            { "position": "2B", "diameter": 848, "limit": 840, "wearRate": 0.011 }
+          ],
+          "brakes": {
+            "frontBogie": { "padThickness": 28, "limit": 10, "estimatedLife": 45000 },
+            "rearBogie": { "padThickness": 26, "limit": 10, "estimatedLife": 38000 }
+          },
+          "pantograph": {
+            "carbonStrip": { "thickness": 18, "limit": 10, "wearRate": 0.008 },
+            "contactForce": { "value": 75, "nominal": 70, "tolerance": 10 }
+          },
+          "battery": {
+            "voltage": 108.2,
+            "capacity": 92,
+            "cycles": 1247,
+            "temperature": 23,
+            "health": 88
+          },
+          "compressor": {
+            "operatingHours": 3421,
+            "pressure": 8.9,
+            "oilLevel": 82,
+            "nextService": 1579
+          }
+        },
+        "materialRequirements": [
+          { "partNumber": "BR-4521-PAD", "description": "Bremsbeläge Set", "quantity": 8, "urgency": "scheduled" },
+          { "partNumber": "FI-8974-AIR", "description": "Luftfilter HVAC", "quantity": 2, "urgency": "scheduled" },
+          { "partNumber": "LU-1247-OIL", "description": "Getriebeöl 75W-90", "quantity": 12, "urgency": "routine" }
+        ]
+      }
+    }
+  ]
+}

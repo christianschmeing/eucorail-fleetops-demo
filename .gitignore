@@ -104,3 +104,4 @@ data/*.json
 
 # CI State artifacts should be committed and published via gh-pages
 !state/
+.vercel

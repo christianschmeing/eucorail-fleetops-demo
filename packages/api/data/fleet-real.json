@@ -1,0 +1,2170 @@
+{
+  "baden_wuerttemberg": {
+    "depot": {
+      "name": "Wartungsstützpunkt Essingen",
+      "coordinates": [
+        10.0155,
+        48.7114
+      ],
+      "capacity": 70
+    },
+    "vehicles": [
+      {
+        "id": "train_66001",
+        "runNumber": "66001",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 449556,
+        "status": "depot_maintenance",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66002",
+        "runNumber": "66002",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 306557,
+        "status": "depot_maintenance",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66003",
+        "runNumber": "66003",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 207728,
+        "status": "depot_maintenance",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66004",
+        "runNumber": "66004",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 113766,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66005",
+        "runNumber": "66005",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 577195,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66006",
+        "runNumber": "66006",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 180959,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66007",
+        "runNumber": "66007",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 499500,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66008",
+        "runNumber": "66008",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 256009,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66009",
+        "runNumber": "66009",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 335420,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66010",
+        "runNumber": "66010",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 328782,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66011",
+        "runNumber": "66011",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 509777,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66012",
+        "runNumber": "66012",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 312269,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66013",
+        "runNumber": "66013",
+        "type": "FLIRT³ 3-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 24,
+          "second": 156
+        },
+        "maxSpeed": 160,
+        "length": 58,
+        "manufacturingYear": 2019,
+        "lastMaintenance": "2024-11-15",
+        "nextMaintenance": "2025-02-15",
+        "mileage": 458004,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "MEX16"
+      },
+      {
+        "id": "train_66014",
+        "runNumber": "66014",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 268190,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66015",
+        "runNumber": "66015",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 648665,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66016",
+        "runNumber": "66016",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 576875,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66017",
+        "runNumber": "66017",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 220431,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66018",
+        "runNumber": "66018",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 324676,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66019",
+        "runNumber": "66019",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 185001,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66020",
+        "runNumber": "66020",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 437263,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66021",
+        "runNumber": "66021",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 467201,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66022",
+        "runNumber": "66022",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 399398,
+        "status": "depot_maintenance",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66023",
+        "runNumber": "66023",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 502306,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66024",
+        "runNumber": "66024",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 619712,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66025",
+        "runNumber": "66025",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 385614,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66026",
+        "runNumber": "66026",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 622206,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66027",
+        "runNumber": "66027",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 169737,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66028",
+        "runNumber": "66028",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 222139,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66029",
+        "runNumber": "66029",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 581994,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66030",
+        "runNumber": "66030",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 635601,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      },
+      {
+        "id": "train_66031",
+        "runNumber": "66031",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 534254,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE8"
+      },
+      {
+        "id": "train_66032",
+        "runNumber": "66032",
+        "type": "FLIRT³ 5-teilig",
+        "operator": "Arverio BW",
+        "capacity": {
+          "first": 40,
+          "second": 260
+        },
+        "maxSpeed": 160,
+        "length": 97,
+        "manufacturingYear": 2020,
+        "lastMaintenance": "2024-12-10",
+        "nextMaintenance": "2025-03-10",
+        "mileage": 488859,
+        "status": "operational",
+        "features": [
+          "wifi",
+          "ac",
+          "wheelchair",
+          "bike"
+        ],
+        "livery": "bw_black_yellow",
+        "primaryLine": "RE1"
+      }
+    ]
+  },
+  "bayern": {
+    "depot": {
+      "name": "Betriebswerk Langweid",
+      "coordinates": [
+        10.8569,
+        48.4869
+      ],
+      "capacity": 85
+    },
+    "vehicles": [
+      {
+        "id": "train_78001",
+        "runNumber": "78001",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 387273,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78002",
+        "runNumber": "78002",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 672831,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78003",
+        "runNumber": "78003",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 480521,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78004",
+        "runNumber": "78004",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 686506,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78005",
+        "runNumber": "78005",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 230041,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78006",
+        "runNumber": "78006",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 549888,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78007",
+        "runNumber": "78007",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 527220,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78008",
+        "runNumber": "78008",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 527318,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78009",
+        "runNumber": "78009",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 471158,
+        "status": "depot_maintenance",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78010",
+        "runNumber": "78010",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 392831,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78011",
+        "runNumber": "78011",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 494113,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78012",
+        "runNumber": "78012",
+        "type": "Desiro HC",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 38,
+          "second": 500
+        },
+        "maxSpeed": 160,
+        "length": 105,
+        "manufacturingYear": 2021,
+        "lastMaintenance": "2024-12-05",
+        "nextMaintenance": "2025-03-05",
+        "mileage": 626485,
+        "status": "operational",
+        "features": [
+          "double_deck",
+          "high_capacity",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78013",
+        "runNumber": "78013",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 485636,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78014",
+        "runNumber": "78014",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 499973,
+        "status": "standby",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78015",
+        "runNumber": "78015",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 165350,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78016",
+        "runNumber": "78016",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 447382,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78017",
+        "runNumber": "78017",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 486276,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78018",
+        "runNumber": "78018",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 365562,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78019",
+        "runNumber": "78019",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 345226,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78020",
+        "runNumber": "78020",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 446129,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78021",
+        "runNumber": "78021",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 468514,
+        "status": "standby",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78022",
+        "runNumber": "78022",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 424959,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78023",
+        "runNumber": "78023",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 382592,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78024",
+        "runNumber": "78024",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 455471,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78025",
+        "runNumber": "78025",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 363849,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78026",
+        "runNumber": "78026",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 242869,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78027",
+        "runNumber": "78027",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 317465,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78028",
+        "runNumber": "78028",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 316300,
+        "status": "standby",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78029",
+        "runNumber": "78029",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 368375,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78030",
+        "runNumber": "78030",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 383909,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78031",
+        "runNumber": "78031",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 126794,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78032",
+        "runNumber": "78032",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 198956,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78033",
+        "runNumber": "78033",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 273721,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78034",
+        "runNumber": "78034",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 243675,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78035",
+        "runNumber": "78035",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 301601,
+        "status": "standby",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78036",
+        "runNumber": "78036",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 416241,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78037",
+        "runNumber": "78037",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 231304,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78038",
+        "runNumber": "78038",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 240717,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78039",
+        "runNumber": "78039",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 465071,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78040",
+        "runNumber": "78040",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 469517,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78041",
+        "runNumber": "78041",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 185204,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78042",
+        "runNumber": "78042",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 436036,
+        "status": "standby",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78043",
+        "runNumber": "78043",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 183978,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78044",
+        "runNumber": "78044",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 432167,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78045",
+        "runNumber": "78045",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 215072,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78046",
+        "runNumber": "78046",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 342205,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78047",
+        "runNumber": "78047",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 265115,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78048",
+        "runNumber": "78048",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 122450,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78049",
+        "runNumber": "78049",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 114045,
+        "status": "standby",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78050",
+        "runNumber": "78050",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 467084,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78051",
+        "runNumber": "78051",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 404014,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78052",
+        "runNumber": "78052",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 111449,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78053",
+        "runNumber": "78053",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 229530,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78054",
+        "runNumber": "78054",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 399149,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      },
+      {
+        "id": "train_78055",
+        "runNumber": "78055",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 370591,
+        "status": "operational",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE89"
+      },
+      {
+        "id": "train_78056",
+        "runNumber": "78056",
+        "type": "Mireo",
+        "operator": "Arverio BY",
+        "capacity": {
+          "first": 16,
+          "second": 200
+        },
+        "maxSpeed": 160,
+        "length": 69,
+        "manufacturingYear": 2022,
+        "lastMaintenance": "2024-10-22",
+        "nextMaintenance": "2025-01-22",
+        "mileage": 371869,
+        "status": "standby",
+        "features": [
+          "lightweight",
+          "energy_efficient",
+          "coupling_compatible"
+        ],
+        "livery": "by_white_blue",
+        "primaryLine": "RE9"
+      }
+    ]
+  }
+}

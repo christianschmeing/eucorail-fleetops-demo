@@ -215,3 +215,45 @@ Planned Budgets
 [DONE: Roster merged BW/BY; depot placement ok]
 
 - BW≈66 and BY≈78 seeds added and merged; standby/maintenance placed at depots Essingen/Langweid.
+
+
+---
+Start Summary
+API: port=4100 pid=22085 ready=true probe=/api/health log=/tmp/api.log
+WEB: port=3002 pid=22693 ready=false log=/tmp/web.log
+Open: http://localhost:3002
+
+
+---
+Start Summary
+API: port=4100 pid=25920 ready=true probe=/api/health log=/tmp/api.log
+WEB: port=3002 pid=31253 ready=false log=/tmp/web.log
+Open: http://localhost:3002
+
+
+---
+Start Summary
+API: port=4100 pid=27617 ready=true probe=/api/health log=/tmp/api.log
+WEB: port=3001 pid=31536 ready=false log=/tmp/web.log
+Open: http://localhost:3001
+
+
+---
+Start Summary
+API: port=4100 pid=29450 ready=true probe=/api/health log=/tmp/api.log
+WEB: port=3002 pid=33053 ready=false log=/tmp/web.log
+Open: http://localhost:3002
+
+
+---
+Start Summary
+API: port=4100 pid=91317 ready=true probe=/api/health log=/tmp/api.log
+WEB: port=3002 pid=91972 ready=false log=/tmp/web.log
+Open: http://localhost:3002
+
+
+---
+Start Summary
+API: port=4100 pid=12114 ready=true probe=/api/health log=/tmp/api.log
+WEB: port=3002 pid=12215 ready=false log=/tmp/web.log
+Open: http://localhost:3002

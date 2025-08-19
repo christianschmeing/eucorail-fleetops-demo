@@ -1,0 +1,18 @@
+route_id;line_code;line_name;operator;region;km_per_day_mean;run_window_start;run_window_end
+RE1;RE1;RE1 Stuttgart - Mannheim;Eucorail;BW;420;05:00;23:30
+RE2;RE2;RE2 Karlsruhe - Konstanz;Eucorail;BW;380;05:30;23:00
+RE8;RE8;RE8 Stuttgart - Würzburg;Eucorail;BW;450;04:30;00:30
+RE9;RE9;RE9 München - Ulm;Eucorail;BY;410;05:00;23:45
+RE12;RE12;RE12 Lindau - München;Eucorail;BY;390;05:15;23:15
+MEX12;MEX12;MEX12 München - Memmingen;Eucorail;BY;340;05:45;22:30
+MEX16;MEX16;MEX16 Augsburg - Nürnberg;Eucorail;BY;360;05:30;23:00
+MEX18;MEX18;MEX18 München - Regensburg;Eucorail;BY;330;06:00;22:00
+RB22;RB22;RB22 Ulm - Friedrichshafen;Eucorail;BW;280;05:30;22:30
+RB27;RB27;RB27 Stuttgart - Tübingen;Eucorail;BW;260;05:00;00:00
+RB32;RB32;RB32 Augsburg - Donauwörth;Eucorail;BY;240;05:45;22:15
+RB54;RB54;RB54 München - Buchloe;Eucorail;BY;220;06:00;22:30
+S2;S2;S2 München - Erding;Eucorail;BY;180;04:30;01:30
+S3;S3;S3 München - Holzkirchen;Eucorail;BY;190;04:30;01:30
+S4;S4;S4 München - Ebersberg;Eucorail;BY;170;04:45;01:15
+S6;S6;S6 München - Tutzing;Eucorail;BY;200;04:30;01:30
+RESERVE;RESERVE;Reserve-Pool;Eucorail;BW;0;00:00;23:59

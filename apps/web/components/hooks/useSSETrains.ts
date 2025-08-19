@@ -66,3 +66,36 @@ export function useSSETrains() {
 
   return { trains, status };
 }
+
+export function useLivePositions(onData: (payload: any) => void) {
+	const esRef = useRef<EventSource | null>(null);
+	useEffect(() => {
+		let retryTimer: any = null;
+		const connect = () => {
+			try {
+				const es = new EventSource('/api/positions/stream');
+				esRef.current = es;
+				es.onmessage = (e) => {
+					try {
+						const data = JSON.parse(e.data);
+						onData?.(data);
+					} catch {}
+				};
+				es.onerror = () => {
+					es.close();
+					esRef.current = null;
+					// fallback snapshot immediately
+					fetch('/api/positions/snapshot').then((r) => r.json()).then(onData).catch(() => {});
+					retryTimer = setTimeout(connect, 1500);
+				};
+			} catch {
+				retryTimer = setTimeout(connect, 1500);
+			}
+		};
+		connect();
+		return () => {
+			if (retryTimer) clearTimeout(retryTimer);
+			if (esRef.current) esRef.current.close();
+		};
+	}, [onData]);
+}

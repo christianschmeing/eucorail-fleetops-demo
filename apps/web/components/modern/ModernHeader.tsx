@@ -95,8 +95,8 @@ export function ModernHeader({ faults = 0 }: ModernHeaderProps) {
               </div>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">EucoRail FleetOps</h1>
-              <p className="text-xs text-white/50">Live Fleet Management</p>
+              <h1 className="text-xl font-bold text-white">Eucorail FleetOps</h1>
+              <p className="text-xs text-white/50">Live Flottenmanagement</p>
             </div>
           </div>
 

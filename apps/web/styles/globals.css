@@ -3,6 +3,14 @@
 @tailwind utilities;
 @import './theme.css';
 @import './modern.css';
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+/* Pulse animation used by operational train markers */
+@keyframes pulse-operational {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+  70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
 
 html,
 body,
@@ -43,10 +51,12 @@ body {
 .train-marker {
   cursor: pointer;
   transition: transform 0.2s;
+  animation: pulse 2s infinite;
 }
 
 .train-marker:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
+  animation: none;
 }
 
 /* Scrollbar styling */
@@ -110,4 +120,16 @@ body {
   to {
     stroke-dashoffset: -10;
   }
+}
+
+/* Popup styling */
+.maplibregl-popup-content {
+  padding: 0 !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.maplibregl-popup-close-button {
+  font-size: 16px;
+  padding: 4px 8px;
 }

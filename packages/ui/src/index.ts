@@ -1,6 +1,13 @@
-export { LoadingSpinner } from './loading/LoadingSpinner';
-export { ErrorBoundary } from './overlays/ErrorBoundary';
-export { EmptyState } from './overlays/EmptyState';
-export { Toast, ToastProvider, useToast } from './toast/Toast';
+export { LoadingSpinner } from './components/LoadingSpinner';
+export { ErrorBoundary } from './components/ErrorBoundary';
+export { EmptyState } from './components/EmptyState';
+export { Toast } from './components/Toast';
+export type { ToastType } from './components/Toast';
+export { ToastProvider, useToast } from './toast/Toast';
 export { Modal } from './overlays/Modal';
 export { Drawer } from './overlays/Drawer';
+export { SearchInput } from './components/SearchInput';
+export type { SearchResult } from './components/SearchInput';
+export { FilterPanel } from './components/FilterPanel';
+export type { FilterOption, FilterGroup } from './components/FilterPanel';
+export { cn } from './utils/cn';

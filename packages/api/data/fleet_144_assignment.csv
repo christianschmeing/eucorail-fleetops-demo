@@ -1,0 +1,167 @@
+train_id;line_code;region;home_depot;is_reserve;status;notes
+RE9-60001;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60002;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60003;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60004;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60005;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60006;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60007;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60008;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60009;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60010;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60011;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60012;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60013;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60014;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60015;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60016;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60017;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60018;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60019;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60020;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60021;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60022;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60023;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60024;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60025;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60026;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60027;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60028;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60029;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60030;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60031;RE9;BW;Essingen;false;active;Linieneinsatz
+RE9-60032;RE9;BW;Essingen;false;active;Linieneinsatz
+RE8-70001;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70002;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70003;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70004;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70005;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70006;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70007;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70008;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70009;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70010;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70011;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70012;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70013;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70014;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70015;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70016;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70017;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70018;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70019;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70020;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70021;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70022;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70023;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70024;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70025;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70026;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70027;RE8;BW;Essingen;false;active;Linieneinsatz
+RE8-70028;RE8;BW;Essingen;false;active;Linieneinsatz
+RES-90001;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90002;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90003;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90004;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90005;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90006;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90007;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90008;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+RES-90009;RESERVE;BW;Essingen;true;reserve;Reserve Essingen
+MEX16-80001;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80002;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80003;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80004;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80005;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80006;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80007;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80008;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80009;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80010;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80011;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80012;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80013;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80014;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80015;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80016;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80017;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80018;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80019;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80020;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80021;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80022;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80023;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80024;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80025;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80026;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80027;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80028;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80029;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX16-80030;MEX16;BY;Langweid;false;active;Linieneinsatz
+MEX12-81001;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81002;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81003;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81004;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81005;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81006;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81007;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81008;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81009;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81010;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81011;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81012;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81013;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81014;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81015;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81016;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81017;MEX12;BY;Langweid;false;active;Linieneinsatz
+MEX12-81018;MEX12;BY;Langweid;false;active;Linieneinsatz
+S6-82001;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82002;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82003;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82004;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82005;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82006;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82007;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82008;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82009;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82010;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82011;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82012;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82013;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82014;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82015;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82016;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82017;S6;BY;Langweid;false;active;Linieneinsatz
+S6-82018;S6;BY;Langweid;false;active;Linieneinsatz
+S2-83001;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83002;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83003;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83004;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83005;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83006;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83007;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83008;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83009;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83010;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83011;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83012;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83013;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83014;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83015;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83016;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83017;S2;BY;Langweid;false;active;Linieneinsatz
+S2-83018;S2;BY;Langweid;false;active;Linieneinsatz
+RES-91001;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91002;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91003;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91004;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91005;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91006;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91007;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91008;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91009;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91010;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91011;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
+RES-91012;RESERVE;BY;Langweid;true;maintenance;Reserve in Wartung
+RES-91013;RESERVE;BY;Langweid;true;reserve;Reserve Langweid
