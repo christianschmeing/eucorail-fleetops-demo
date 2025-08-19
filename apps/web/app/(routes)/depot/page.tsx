@@ -38,31 +38,39 @@ export interface Conflict {
   time: string;
 }
 
-// Reale Gleiskonfiguration basierend auf tatsächlichen Depots
+// Erweiterte Gleiskonfiguration aus depot_tracks.yaml für 80% Auslastung
 const TRACKS: Track[] = [
-  // Essingen - Reale Gleise
-  { id: 'E-H1', name: 'Halle 1', depot: 'Essingen', length: 240, features: ['Halle', 'Grube', 'OL'], status: 'Belegt' },
-  { id: 'E-H2', name: 'Halle 2', depot: 'Essingen', length: 240, features: ['Halle', 'Grube', 'OL'], status: 'Belegt' },
-  { id: 'E-ARA1', name: 'Außenreinigung', depot: 'Essingen', length: 120, features: ['Waschhalle'], status: 'Frei' },
-  { id: 'E-ST1', name: 'Abstellung 1', depot: 'Essingen', length: 200, features: ['OL'], status: 'Belegt' },
+  // Essingen - 12 Gleise (4 Wartung, 6 Service, 2 Abstellung)
+  { id: 'E-G1', name: 'Wartungsgleis 1', depot: 'Essingen', length: 180, features: ['Grube', 'OL', 'Shore-Power'], status: 'Belegt' },
+  { id: 'E-G2', name: 'Wartungsgleis 2', depot: 'Essingen', length: 180, features: ['Grube', 'OL', 'Shore-Power', 'Radsatzdrehmaschine'], status: 'Belegt' },
+  { id: 'E-G3', name: 'Wartungsgleis 3', depot: 'Essingen', length: 120, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
+  { id: 'E-G4', name: 'Wartungsgleis 4', depot: 'Essingen', length: 120, features: ['Grube', 'Shore-Power', 'OL'], status: 'Belegt' },
+  { id: 'E-S1', name: 'Service 1', depot: 'Essingen', length: 240, features: ['Shore-Power', 'Waschhalle'], status: 'Belegt' },
+  { id: 'E-S2', name: 'Service 2', depot: 'Essingen', length: 240, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'E-S3', name: 'Service 3', depot: 'Essingen', length: 180, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'E-S4', name: 'Service 4', depot: 'Essingen', length: 180, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'E-S5', name: 'Service 5', depot: 'Essingen', length: 120, features: ['Shore-Power'], status: 'Frei' },
+  { id: 'E-S6', name: 'Service 6', depot: 'Essingen', length: 120, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'E-A1', name: 'Abstellung 1', depot: 'Essingen', length: 360, features: [], status: 'Belegt' },
+  { id: 'E-A2', name: 'Abstellung 2', depot: 'Essingen', length: 360, features: [], status: 'Belegt' },
   
-  // Langweid - Reale Gleise
-  { id: 'L-H1', name: 'Halle 1', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Belegt' },
-  { id: 'L-H2', name: 'Halle 2', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Belegt' },
-  { id: 'L-H3', name: 'Halle 3', depot: 'Langweid', length: 220, features: ['Halle', 'OL', 'Radsatzdrehmaschine'], status: 'Belegt' },
-  { id: 'L-H4', name: 'Halle 4', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Frei' },
-  { id: 'L-H5', name: 'Halle 5', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Belegt' },
-  { id: 'L-ST1', name: 'Yard 1', depot: 'Langweid', length: 180, features: ['OL'], status: 'Belegt' },
-  { id: 'L-ST2', name: 'Yard 2', depot: 'Langweid', length: 180, features: ['OL'], status: 'Frei' },
-  { id: 'L-ST3', name: 'Yard 3', depot: 'Langweid', length: 180, features: ['OL'], status: 'Belegt' },
-  { id: 'L-ST4', name: 'Yard 4', depot: 'Langweid', length: 180, features: ['OL'], status: 'Belegt' },
-  { id: 'L-ST5', name: 'Yard 5', depot: 'Langweid', length: 180, features: ['Shore-Power'], status: 'Frei' },
-  { id: 'L-ST6', name: 'Yard 6', depot: 'Langweid', length: 180, features: ['Shore-Power'], status: 'Belegt' },
-  
-  // Phase 2 - Im Bau (optional anzeigbar)
-  { id: 'L-H6', name: 'Halle 6 (Planung)', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Gesperrt' },
-  { id: 'L-H7', name: 'Halle 7 (Planung)', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Gesperrt' },
-  { id: 'L-H8', name: 'Halle 8 (Planung)', depot: 'Langweid', length: 220, features: ['Halle', 'OL'], status: 'Gesperrt' },
+  // Langweid - 16 Gleise (6 Wartung, 7 Service, 3 Abstellung)
+  { id: 'L-G1', name: 'Wartungsgleis 1', depot: 'Langweid', length: 200, features: ['Grube', 'OL', 'Shore-Power', 'Radsatzdrehmaschine'], status: 'Belegt' },
+  { id: 'L-G2', name: 'Wartungsgleis 2', depot: 'Langweid', length: 200, features: ['Grube', 'OL', 'Shore-Power'], status: 'Belegt' },
+  { id: 'L-G3', name: 'Wartungsgleis 3', depot: 'Langweid', length: 160, features: ['Grube', 'Shore-Power', 'OL'], status: 'Belegt' },
+  { id: 'L-G4', name: 'Wartungsgleis 4', depot: 'Langweid', length: 160, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
+  { id: 'L-G5', name: 'Wartungsgleis 5', depot: 'Langweid', length: 120, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
+  { id: 'L-G6', name: 'Wartungsgleis 6', depot: 'Langweid', length: 120, features: ['Grube', 'Shore-Power'], status: 'Belegt' },
+  { id: 'L-S1', name: 'Service 1', depot: 'Langweid', length: 240, features: ['Shore-Power', 'Waschhalle'], status: 'Belegt' },
+  { id: 'L-S2', name: 'Service 2 (H2)', depot: 'Langweid', length: 240, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'L-S3', name: 'Service 3', depot: 'Langweid', length: 200, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'L-S4', name: 'Service 4', depot: 'Langweid', length: 180, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'L-S5', name: 'Service 5', depot: 'Langweid', length: 160, features: ['Shore-Power'], status: 'Frei' },
+  { id: 'L-S6', name: 'Service 6', depot: 'Langweid', length: 160, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'L-S7', name: 'Service 7', depot: 'Langweid', length: 120, features: ['Shore-Power'], status: 'Belegt' },
+  { id: 'L-A1', name: 'Abstellung 1', depot: 'Langweid', length: 400, features: [], status: 'Belegt' },
+  { id: 'L-A2', name: 'Abstellung 2', depot: 'Langweid', length: 400, features: [], status: 'Belegt' },
+  { id: 'L-A3', name: 'Abstellung 3', depot: 'Langweid', length: 300, features: [], status: 'Belegt' },
 ];
 
 // Lade Fleet-Daten aus CSV für realistische Belegungen
@@ -101,46 +109,83 @@ function loadFleetData(): Array<{trainId: string, lineCode: string, region: stri
   return fleetData;
 }
 
-// Generiere realistische Belegungen basierend auf Fleet-Daten
+// Generiere realistische Belegungen für 14 Tage mit 80% Auslastung
 function generateAllocations(): Allocation[] {
   const allocations: Allocation[] = [];
   const now = new Date();
   const fleetData = loadFleetData();
   const isLevels: Allocation['isLevel'][] = ['IS1', 'IS2', 'IS3', 'IS4'];
   const taskOptions = [
-    ['IS1: Sichtprüfung', 'Bremsentest'],
-    ['IS2: Türmechanik', 'Klimaanlage'],
-    ['IS3: Radsatzwechsel', 'Laufwerksrevision'],
-    ['IS4: Hauptuntersuchung', 'Komponentenaustausch'],
-    ['Reinigung innen', 'Reinigung außen'],
-    ['Softwareupdate', 'Diagnose']
+    ['IS1: Sichtprüfung', 'Bremsentest', 'Funktionscheck'],
+    ['IS2: Türmechanik', 'Klimaanlage', 'Beleuchtung'],
+    ['IS3: Radsatzwechsel', 'Laufwerksrevision', 'Bremsbeläge'],
+    ['IS4: Hauptuntersuchung', 'Komponentenaustausch', 'Modernisierung'],
+    ['Reinigung innen', 'Reinigung außen', 'Desinfektion'],
+    ['Softwareupdate', 'Diagnose', 'Kalibrierung']
   ];
-  const teams = ['Team Alpha', 'Team Bravo', 'Team Charlie', 'Team Delta'];
+  const teams = ['Team Alpha', 'Team Bravo', 'Team Charlie', 'Team Delta', 'Team Echo', 'Team Foxtrot'];
   const shifts = ['Frühschicht', 'Spätschicht', 'Nachtschicht'];
   
-  // Generiere realistische Depot-Belegungen aus tatsächlicher Flotte
+  // Generiere realistische Depot-Belegungen für 14 Tage
   let allocationId = 1;
+  const DAYS_TO_PLAN = 14;
+  const TARGET_TRAINS = 115; // 80% von 144 Zügen
   
-  // Filter Züge nach Depot für realistische Verteilung
-  const essingenTrains = fleetData.filter(t => t.homeDepot === 'Essingen');
-  const langweidTrains = fleetData.filter(t => t.homeDepot === 'Langweid');
+  // Alle 144 Züge generieren
+  const allTrains = [];
+  for (let i = 1; i <= 144; i++) {
+    const depot = i <= 59 ? 'Essingen' : 'Langweid';
+    const vehicleType = i <= 59 ? 'FLIRT' : i <= 108 ? 'MIREO' : 'DESIRO';
+    const lineCode = i <= 59 ? ['RE1', 'RE2', 'RE8', 'RB22', 'RB27'][i % 5] :
+                     i <= 108 ? ['RE9', 'RE12', 'MEX16', 'MEX18', 'MEX12', 'RB32', 'RB54'][i % 7] :
+                     i <= 122 ? ['S2', 'S3', 'S4', 'S6'][i % 4] : 'RESERVE';
+    const isReserve = i > 122;
+    allTrains.push({
+      trainId: `${vehicleType}-${60000 + i}`,
+      lineCode,
+      homeDepot: depot,
+      isReserve,
+      vehicleType
+    });
+  }
   
-  // Belege Gleise mit tatsächlichen Zügen
-  TRACKS.forEach((track, index) => {
-    if (track.status === 'Belegt' && allocationId <= 25) {
-      // Wähle Züge basierend auf Depot
-      const depotTrains = track.depot === 'Essingen' ? essingenTrains : langweidTrains;
-      const trainData = depotTrains[allocationId % depotTrains.length];
+  // Verteile TARGET_TRAINS Züge über 14 Tage und alle Gleise
+  const tracksEssingen = TRACKS.filter(t => t.depot === 'Essingen' && t.status !== 'Gesperrt');
+  const tracksLangweid = TRACKS.filter(t => t.depot === 'Langweid' && t.status !== 'Gesperrt');
+  
+  // Generiere Belegungen für jeden Tag
+  for (let day = 0; day < DAYS_TO_PLAN; day++) {
+    const trainsPerDay = Math.floor(TARGET_TRAINS / DAYS_TO_PLAN) + (day < TARGET_TRAINS % DAYS_TO_PLAN ? 1 : 0);
+    
+    // Wähle zufällige Züge für diesen Tag
+    const shuffledTrains = [...allTrains].sort(() => Math.random() - 0.5);
+    const todaysTrains = shuffledTrains.slice(0, trainsPerDay);
+    
+    todaysTrains.forEach((train, idx) => {
+      // Bestimme Gleis basierend auf Depot
+      const availableTracks = train.homeDepot === 'Essingen' ? tracksEssingen : tracksLangweid;
+      const track = availableTracks[idx % availableTracks.length];
       
-      if (trainData) {
-        const startOffset = Math.floor(Math.random() * 48); // Stunden ab jetzt
-        const duration = trainData.isReserve ? 24 : (2 + Math.floor(Math.random() * 10)); // Reserve länger
+      if (track && allocationId <= 250) { // Maximal 250 Allocations generieren
+        // Zeitplanung für diesen Zug
+        const baseOffset = day * 24; // Tag in Stunden
+        const hourInDay = Math.floor(Math.random() * 24); // Zufällige Stunde im Tag
+        const startOffset = baseOffset + hourInDay;
+        
+        // Wartungsdauer basierend auf Wartungstyp
+        const isLevel = train.isReserve ? 'IS4' : isLevels[Math.floor(Math.random() * 4)];
+        const duration = isLevel === 'IS1' ? 2 + Math.random() * 2 :
+                        isLevel === 'IS2' ? 4 + Math.random() * 4 :
+                        isLevel === 'IS3' ? 12 + Math.random() * 12 :
+                        isLevel === 'IS4' ? 24 + Math.random() * 48 :
+                        4 + Math.random() * 4;
+        
         const startTime = new Date(now.getTime() + startOffset * 60 * 60 * 1000);
         const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
         const etaRelease = new Date(endTime.getTime() + Math.random() * 2 * 60 * 60 * 1000);
         
-        const trainId = trainData.trainId;
-        const lineId = trainData.lineCode;
+        const trainId = train.trainId;
+        const lineId = train.lineCode;
         
         // Risiko wenn ETA zu knapp
         const etaDiff = etaRelease.getTime() - endTime.getTime();
@@ -152,34 +197,38 @@ function generateAllocations(): Allocation[] {
         // Konflikt bei jedem 5. Eintrag
         const hasConflict = allocationId % 5 === 0;
         
+        // Status basierend auf Zeitpunkt
+        const hoursFromNow = startTime.getTime() - now.getTime() / (1000 * 60 * 60);
+        const status = hoursFromNow < 0 ? 'Freigegeben' :
+                      hoursFromNow < 24 ? 'In Arbeit' :
+                      hoursFromNow < 72 ? 'Zugewiesen' :
+                      hoursFromNow < 168 ? 'Geplant' :
+                      'Geplant';
+        
         allocations.push({
           id: `ALLOC-${String(allocationId).padStart(4, '0')}`,
           trackId: track.id,
           trainId,
           lineId,
-          isLevel: trainData.isReserve ? 'IS4' : isLevels[allocationId % 4],
-          tasks: trainData.isReserve ? ['Reserve-Bereitstellung', 'Systemcheck'] : taskOptions[allocationId % taskOptions.length],
+          isLevel,
+          tasks: train.isReserve ? ['Reserve-Bereitstellung', 'Systemcheck', 'Verfügbarkeit'] : 
+                 taskOptions[Math.floor(Math.random() * taskOptions.length)],
           startTime: startTime.toISOString(),
           endTime: endTime.toISOString(),
           etaRelease: etaRelease.toISOString(),
-          status: trainData.status === 'maintenance' ? 'In Arbeit' :
-                  trainData.isReserve ? 'Geplant' :
-                  allocationId < 5 ? 'In Arbeit' : 
-                  allocationId < 10 ? 'Zugewiesen' : 
-                  allocationId < 15 ? 'Geplant' : 
-                  allocationId < 18 ? 'QA' : 'Freigegeben',
+          status,
           team: teams[allocationId % teams.length],
-          shift: shifts[Math.floor(startOffset / 8) % 3],
-          hasConflict,
+          shift: shifts[Math.floor(hourInDay / 8) % 3],
+          hasConflict: Math.random() < 0.1, // 10% Konfliktwahrscheinlichkeit
           riskLevel,
-          isReserve: trainData.isReserve,
-          homeDepot: trainData.homeDepot
+          isReserve: train.isReserve,
+          homeDepot: train.homeDepot
         });
         
         allocationId++;
       }
-    }
-  });
+    });
+  }
   
   return allocations;
 }

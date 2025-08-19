@@ -33,7 +33,7 @@ interface Allocation {
 interface GanttChartProps {
   tracks: Track[];
   allocations: Allocation[];
-  timeScale: 'today' | '3days' | '7days';
+  timeScale: 'today' | '3days' | '7days' | '14days';
   onAllocationClick: (allocation: Allocation) => void;
   selectedAllocation: Allocation | null;
 }
@@ -61,10 +61,14 @@ export default function GanttChart({
       end = new Date(now);
       end.setDate(end.getDate() + 3);
       hoursCount = 72;
-    } else {
+    } else if (timeScale === '7days') {
       end = new Date(now);
       end.setDate(end.getDate() + 7);
       hoursCount = 168;
+    } else {
+      end = new Date(now);
+      end.setDate(end.getDate() + 14);
+      hoursCount = 336;
     }
     
     return { startTime: now, endTime: end, hours: hoursCount };
