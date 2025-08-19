@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "b4ae99819bff3153d142b9bae491cde663777a76",
-    "message": "fix: Final fix for train details and filters - Generate trains data directly to avoid Vercel fetch issues",
+    "sha": "8d9ff0a30b7a886240d1bb0e9f20e450d9b26298",
+    "message": "feat: Depot-Mikrosicht mit Kartenansicht",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T14:12:14Z"
+    "timestamp": "2025-08-19T15:52:39Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17072291988"
+    "run_id": "17074936085"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T14:13:22.068Z",
+  "generated_at": "2025-08-19T15:53:30.526Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
