@@ -18,13 +18,32 @@ async function getLines(): Promise<Line[]> {
   try {
     return await apiGet<Line[]>('/api/lines');
   } catch {
-    // Fallback für SSR - 5 Linien mit insgesamt 144 Fahrzeugen
+    // Fallback für SSR - Alle 17 Linien mit korrekten Daten
     return [
-      { id: 'RE9', name: 'Linie RE9', region: 'BY', operator: 'Eucorail', depot: 'Augsburg', vehicles: 40, activeVehicles: 30, avgDelayMin: 2, punctualityPct: 88, utilizationPct: 75 },
-      { id: 'MEX16', name: 'Linie MEX16', region: 'BW', operator: 'Eucorail', depot: 'Stuttgart', vehicles: 35, activeVehicles: 26, avgDelayMin: -1, punctualityPct: 92, utilizationPct: 74 },
-      { id: 'RE8', name: 'Linie RE8', region: 'BW', operator: 'Eucorail', depot: 'Stuttgart', vehicles: 35, activeVehicles: 26, avgDelayMin: 3, punctualityPct: 85, utilizationPct: 74 },
-      { id: 'RE1', name: 'Linie RE1', region: 'BW', operator: 'Eucorail', depot: 'Stuttgart', vehicles: 17, activeVehicles: 13, avgDelayMin: 1, punctualityPct: 90, utilizationPct: 76 },
-      { id: 'RE89', name: 'Linie RE89', region: 'BY', operator: 'Eucorail', depot: 'Augsburg', vehicles: 17, activeVehicles: 13, avgDelayMin: 0, punctualityPct: 94, utilizationPct: 76 }
+      // Baden-Württemberg
+      { id: 'RE1', name: 'Stuttgart - Mannheim', region: 'BW', operator: 'SWEG', depot: 'Essingen', vehicles: 8, activeVehicles: 6, avgDelayMin: 1, punctualityPct: 90, utilizationPct: 75 },
+      { id: 'RE2', name: 'Stuttgart - Konstanz', region: 'BW', operator: 'SWEG', depot: 'Essingen', vehicles: 10, activeVehicles: 8, avgDelayMin: 0, punctualityPct: 92, utilizationPct: 80 },
+      { id: 'RE8', name: 'Stuttgart - Würzburg', region: 'BW', operator: 'Go-Ahead', depot: 'Essingen', vehicles: 28, activeVehicles: 21, avgDelayMin: 3, punctualityPct: 85, utilizationPct: 75 },
+      { id: 'RB22', name: 'Saulgrub - Murnau', region: 'BW', operator: 'BRB', depot: 'Essingen', vehicles: 6, activeVehicles: 5, avgDelayMin: 0, punctualityPct: 94, utilizationPct: 83 },
+      { id: 'RB27', name: 'Stuttgart - Tübingen', region: 'BW', operator: 'SWEG', depot: 'Essingen', vehicles: 7, activeVehicles: 5, avgDelayMin: 1, punctualityPct: 91, utilizationPct: 71 },
+      
+      // Bayern
+      { id: 'RE9', name: 'München - Lindau', region: 'BY', operator: 'Go-Ahead', depot: 'Langweid', vehicles: 32, activeVehicles: 24, avgDelayMin: 2, punctualityPct: 88, utilizationPct: 75 },
+      { id: 'RE12', name: 'München - Passau', region: 'BY', operator: 'BRB', depot: 'Langweid', vehicles: 8, activeVehicles: 6, avgDelayMin: 1, punctualityPct: 89, utilizationPct: 75 },
+      { id: 'MEX16', name: 'München - Buchloe', region: 'BY', operator: 'BRB', depot: 'Langweid', vehicles: 30, activeVehicles: 23, avgDelayMin: -1, punctualityPct: 92, utilizationPct: 77 },
+      { id: 'MEX18', name: 'München - Regensburg', region: 'BY', operator: 'BRB', depot: 'Langweid', vehicles: 5, activeVehicles: 4, avgDelayMin: 2, punctualityPct: 87, utilizationPct: 80 },
+      { id: 'MEX12', name: 'München - Lindau Express', region: 'BY', operator: 'BRB', depot: 'Langweid', vehicles: 18, activeVehicles: 14, avgDelayMin: 0, punctualityPct: 93, utilizationPct: 78 },
+      { id: 'RB32', name: 'Augsburg - Weilheim', region: 'BY', operator: 'BRB', depot: 'Langweid', vehicles: 4, activeVehicles: 3, avgDelayMin: 1, punctualityPct: 90, utilizationPct: 75 },
+      { id: 'RB54', name: 'Kempten - Oberstdorf', region: 'BY', operator: 'DB Regio', depot: 'Langweid', vehicles: 5, activeVehicles: 4, avgDelayMin: 0, punctualityPct: 95, utilizationPct: 80 },
+      
+      // S-Bahn München
+      { id: 'S2', name: 'Petershausen - Erding', region: 'BY', operator: 'S-Bahn München', depot: 'Langweid', vehicles: 18, activeVehicles: 14, avgDelayMin: 1, punctualityPct: 91, utilizationPct: 78 },
+      { id: 'S3', name: 'Mammendorf - Holzkirchen', region: 'BY', operator: 'S-Bahn München', depot: 'Langweid', vehicles: 8, activeVehicles: 6, avgDelayMin: 0, punctualityPct: 94, utilizationPct: 75 },
+      { id: 'S4', name: 'Geltendorf - Ebersberg', region: 'BY', operator: 'S-Bahn München', depot: 'Langweid', vehicles: 5, activeVehicles: 4, avgDelayMin: 0, punctualityPct: 96, utilizationPct: 80 },
+      { id: 'S6', name: 'Tutzing - Ebersberg', region: 'BY', operator: 'S-Bahn München', depot: 'Langweid', vehicles: 18, activeVehicles: 14, avgDelayMin: 1, punctualityPct: 90, utilizationPct: 78 },
+      
+      // Reserve
+      { id: 'RESERVE', name: 'Reserve-Pool', region: 'ALL', operator: 'EUCORAIL', depot: 'Beide', vehicles: 22, activeVehicles: 0, avgDelayMin: 0, punctualityPct: 100, utilizationPct: 0 }
     ];
   }
 }
