@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "66837c44a1a8e15a8b2b7ed39244608d24e81292",
-    "message": "fix: Final plausibility fixes - correct track counts in maintenance view, add positions for reserve trains on map, fix depot capacity display",
+    "sha": "e6a76d70f61ead30c187104af6ad5eb96b7733f6",
+    "message": "feat: Add comprehensive maintenance intervals tracking - IS1-IS4 + Lathe with rest km/days, traffic light status, sortable/filterable table columns",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T13:06:05Z"
+    "timestamp": "2025-08-19T13:46:10Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17070519463"
+    "run_id": "17071582864"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T13:07:13.811Z",
+  "generated_at": "2025-08-19T13:47:24.348Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
