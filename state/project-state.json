@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "0ceb95fa7466e1ae87f92240d702838397b3d7ab",
-    "message": "fix: Add complete API endpoints for ECM, KPIs and Depots with 144 trains data",
+    "sha": "64d315637198a210e8d3db7bf46d333586b28aef",
+    "message": "fix: Add all 17 lines to map filters with proper grouping (BW, BY, S-Bahn, Reserve)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T11:16:13Z"
+    "timestamp": "2025-08-19T11:32:40Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17067905739"
+    "run_id": "17068268812"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T11:17:21.064Z",
+  "generated_at": "2025-08-19T11:33:52.274Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
