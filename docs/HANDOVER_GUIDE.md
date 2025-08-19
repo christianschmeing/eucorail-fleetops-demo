@@ -20,7 +20,8 @@ Zweck: Schnelle Übergabe an neue Teammitglieder – ohne Änderung des Produktv
 ## CI/CD (Kurz)
 
 - CI: `.github/workflows/ci.yml` prüft Format, Lint und Build auf PRs & main
-- Deployment: Siehe `docs/DEPLOYMENT_VERCEL.md` für GitHub↔Vercel Setup und ENV-Handling
+- Preview: `.github/workflows/preview.yml` liefert bei PRs eine kommentierte, getestete Preview‑URL.
+- Release: `.github/workflows/release-verify.yml` wartet nach Push auf `main` auf die Production‑URL, testet sie (Playwright) und publiziert die getestete URL als Artifact.
 
 ## Troubleshooting
 

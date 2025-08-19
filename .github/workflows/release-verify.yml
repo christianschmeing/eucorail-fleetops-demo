@@ -1,0 +1,78 @@
+name: Release Verify (Vercel + E2E)
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    outputs:
+      tested_url: ${{ steps.detect.outputs.url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Detect Production URL (wait until live)
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidates=(
+            "https://geolocation-mockup.vercel.app"
+            "https://geolocation-mockup-christian-schmeings-projects.vercel.app"
+            "https://eucorail-fleetops-demo.vercel.app"
+            "https://eucorail-fleetops-demo-christian-schmeings-projects.vercel.app"
+            "https://eucorail-fleetops-demo-git-main-christian-schmeings-projects.vercel.app"
+          )
+          deadline=$(( $(date +%s) + 900 )) # 15 min timeout
+          url=""
+          while [ $(date +%s) -lt "$deadline" ]; do
+            for u in "${candidates[@]}"; do
+              root=$(curl -s -o /dev/null -w "%{http_code}" "$u/") || root=0
+              health=$(curl -s -o /dev/null -w "%{http_code}" "$u/api/health") || health=0
+              echo "probe $u -> root=$root health=$health"
+              if [ "$root" = "200" ] && [ "$health" = "200" ]; then
+                url="$u"; break
+              fi
+            done
+            if [ -n "$url" ]; then break; fi
+            sleep 10
+          done
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "$url" > tested-url.txt
+          if [ -z "$url" ]; then echo "No production URL reached 200/200 within timeout" >&2; exit 1; fi
+          echo "Production URL: $url" | tee -a CHANGESUMMARY.md
+
+      - name: Run E2E against Production URL
+        env:
+          PLAYWRIGHT_SKIP_WEBSERVER: '1'
+        run: npx playwright test --base-url="${{ steps.detect.outputs.url }}" --reporter=html,line
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Upload Tested URL
+        uses: actions/upload-artifact@v4
+        with:
+          name: tested-url
+          path: tested-url.txt

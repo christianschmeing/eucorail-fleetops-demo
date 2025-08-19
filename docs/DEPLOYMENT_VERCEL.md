@@ -47,3 +47,12 @@ Hinterlege Variablen für Production, Preview und Development in Vercel (Project
   - `VERCEL_TOKEN`
   - `VERCEL_ORG_ID`
   - `VERCEL_PROJECT_ID`
+
+## 8) CI: Release Verify (main)
+
+- Workflow: `.github/workflows/release-verify.yml`
+- Ablauf:
+  - Wartet nach Push auf `main` auf eine erreichbare Production‑URL (200/200 auf `/` und `/api/health`).
+  - Führt Playwright gegen diese URL aus und lädt den Report hoch.
+  - Speichert die getestete URL als Artifact `tested-url` und schreibt sie in `CHANGESUMMARY.md`.
+- Erwartung: Jede Änderung auf `main` liefert eine getestete Vercel‑URL.
