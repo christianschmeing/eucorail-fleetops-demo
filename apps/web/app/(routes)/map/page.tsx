@@ -14,21 +14,42 @@ async function getTrains(): Promise<Train[]> {
   try {
     return await apiGet<Train[]>('/api/trains');
   } catch {
-    // Fallback für SSR - generiere 144 Beispiel-Züge
+    // Fallback für SSR - generiere 144 Beispiel-Züge mit allen 17 Linien
     const trains: Train[] = [];
-    const lines = ['RE9', 'MEX16', 'RE8', 'RE1', 'RE89'];
-    const regions = ['BW', 'BY'];
-    const statuses = ['active', 'maintenance', 'standby', 'inspection'];
+    const linesBW = ['RE1', 'RE2', 'RE8', 'RB22', 'RB27'];
+    const linesBY = ['RE9', 'RE12', 'MEX16', 'MEX18', 'MEX12', 'RB32', 'RB54'];
+    const linesSBahn = ['S2', 'S3', 'S4', 'S6'];
+    const allLines = [...linesBW, ...linesBY, ...linesSBahn, 'RESERVE'];
+    const statuses = ['active', 'maintenance', 'standby', 'inspection', 'reserve'];
     
     for (let i = 0; i < 144; i++) {
+      let line, region;
+      if (i < 59) {
+        // FLIRT in BW
+        line = linesBW[i % linesBW.length];
+        region = 'BW';
+      } else if (i < 108) {
+        // Mireo in BY
+        line = linesBY[i % linesBY.length];
+        region = 'BY';
+      } else if (i < 122) {
+        // Desiro S-Bahn
+        line = linesSBahn[i % linesSBahn.length];
+        region = 'BY';
+      } else {
+        // Reserve
+        line = 'RESERVE';
+        region = i % 2 === 0 ? 'BW' : 'BY';
+      }
+      
       trains.push({
         id: `TRAIN-${String(i + 1).padStart(3, '0')}`,
-        lineId: lines[i % lines.length],
-        region: regions[i % 2],
-        status: i < 108 ? 'active' : statuses[1 + (i % 3)],
+        lineId: line,
+        region: region,
+        status: i < 108 ? 'active' : i < 120 ? 'maintenance' : i < 132 ? 'inspection' : 'reserve',
         position: i < 108 ? {
-          lat: 48.0 + Math.random() * 2,
-          lng: 9.0 + Math.random() * 3
+          lat: region === 'BW' ? 48.6 + Math.random() * 0.8 : 48.1 + Math.random() * 0.8,
+          lng: region === 'BW' ? 9.5 + Math.random() * 1.5 : 11.0 + Math.random() * 1.5
         } : undefined,
         delayMin: Math.floor(Math.random() * 10) - 5
       });

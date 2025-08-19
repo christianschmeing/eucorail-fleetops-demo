@@ -275,25 +275,89 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
               </label>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 items-start">
               <span className="text-sm text-gray-400">Linie:</span>
-              {['RE9', 'MEX16', 'RE8', 'RE1', 'RE89'].map(line => (
-                <label key={line} className="flex items-center gap-1">
+              <div className="flex flex-wrap gap-2">
+                {/* Baden-Württemberg Linien */}
+                <div className="flex gap-1 px-2 py-1 bg-blue-900/20 rounded">
+                  {['RE1', 'RE2', 'RE8', 'RB22', 'RB27'].map(line => (
+                    <label key={line} className="flex items-center gap-1">
+                      <input 
+                        type="checkbox"
+                        checked={selectedLines.includes(line)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedLines([...selectedLines, line]);
+                          } else {
+                            setSelectedLines(selectedLines.filter(l => l !== line));
+                          }
+                        }}
+                        className="rounded"
+                      />
+                      <span className="text-sm text-blue-300">{line}</span>
+                    </label>
+                  ))}
+                </div>
+                
+                {/* Bayern Linien */}
+                <div className="flex gap-1 px-2 py-1 bg-green-900/20 rounded">
+                  {['RE9', 'RE12', 'MEX16', 'MEX18', 'MEX12', 'RB32', 'RB54'].map(line => (
+                    <label key={line} className="flex items-center gap-1">
+                      <input 
+                        type="checkbox"
+                        checked={selectedLines.includes(line)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedLines([...selectedLines, line]);
+                          } else {
+                            setSelectedLines(selectedLines.filter(l => l !== line));
+                          }
+                        }}
+                        className="rounded"
+                      />
+                      <span className="text-sm text-green-300">{line}</span>
+                    </label>
+                  ))}
+                </div>
+                
+                {/* S-Bahn Linien */}
+                <div className="flex gap-1 px-2 py-1 bg-yellow-900/20 rounded">
+                  {['S2', 'S3', 'S4', 'S6'].map(line => (
+                    <label key={line} className="flex items-center gap-1">
+                      <input 
+                        type="checkbox"
+                        checked={selectedLines.includes(line)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedLines([...selectedLines, line]);
+                          } else {
+                            setSelectedLines(selectedLines.filter(l => l !== line));
+                          }
+                        }}
+                        className="rounded"
+                      />
+                      <span className="text-sm text-yellow-300">{line}</span>
+                    </label>
+                  ))}
+                </div>
+                
+                {/* Reserve */}
+                <label className="flex items-center gap-1 px-2 py-1 bg-gray-600/20 rounded">
                   <input 
                     type="checkbox"
-                    checked={selectedLines.includes(line)}
+                    checked={selectedLines.includes('RESERVE')}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedLines([...selectedLines, line]);
+                        setSelectedLines([...selectedLines, 'RESERVE']);
                       } else {
-                        setSelectedLines(selectedLines.filter(l => l !== line));
+                        setSelectedLines(selectedLines.filter(l => l !== 'RESERVE'));
                       }
                     }}
                     className="rounded"
                   />
-                  <span className="text-sm text-white">{line}</span>
+                  <span className="text-sm text-gray-300">RESERVE</span>
                 </label>
-              ))}
+              </div>
             </div>
 
             <div className="flex gap-2">
