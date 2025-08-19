@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "21c7905c6e7c35aa89e5d99ff4c1da818af5c031",
-    "message": "fix: Remove conflicting vercel.json configuration",
+    "sha": "8d934196df07d8d0a8485e45a6e049daa19a8621",
+    "message": "feat: Restore complete 144 trains implementation with real lines, ECM-3 and IHB profiles",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T10:30:27Z"
+    "timestamp": "2025-08-19T10:40:35Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17066904114"
+    "run_id": "17067125508"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T10:31:27.856Z",
+  "generated_at": "2025-08-19T10:41:51.706Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
