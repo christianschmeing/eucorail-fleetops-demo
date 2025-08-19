@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "64d315637198a210e8d3db7bf46d333586b28aef",
-    "message": "fix: Add all 17 lines to map filters with proper grouping (BW, BY, S-Bahn, Reserve)",
+    "sha": "ee61e2f5d642699410c0c069c0f6981515fa8bca",
+    "message": "feat: Add quick action buttons and filter reset to map view",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T11:32:40Z"
+    "timestamp": "2025-08-19T11:36:45Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17068268812"
+    "run_id": "17068359166"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T11:33:52.274Z",
+  "generated_at": "2025-08-19T11:38:00.771Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
