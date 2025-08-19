@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { MaintenanceInfo, MaintenanceInterval } from '@/types/train';
 
 interface Train {
@@ -120,10 +121,11 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
     
     // Wartungsfilter
     if (maintenanceFilter) {
-      const interval = train.maintenanceInfo?.[maintenanceFilter as keyof MaintenanceInfo];
+      const [type, statusFilter] = maintenanceFilter.split('_');
+      const interval = train.maintenanceInfo?.[type as keyof MaintenanceInfo];
       if (!interval) return false;
-      if (interval.status !== 'red' && maintenanceFilter.includes('_red')) return false;
-      if (interval.status !== 'yellow' && maintenanceFilter.includes('_yellow')) return false;
+      if (statusFilter === 'red' && interval.status !== 'red') return false;
+      if (statusFilter === 'yellow' && interval.status !== 'yellow') return false;
     }
     
     // Rest-km Filter
@@ -411,9 +413,9 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                 {currentTrains.map((train) => (
                   <tr key={train.id} className="hover:bg-gray-700/30 transition-colors">
                     <td className="px-4 py-3">
-                      <a href={`/trains/${train.id}`} className="font-medium text-blue-400 hover:text-blue-300">
+                      <Link href={`/trains/${encodeURIComponent(train.id)}`} className="font-medium text-blue-400 hover:text-blue-300">
                         {train.id}
-                      </a>
+                      </Link>
                     </td>
                     <td className="px-4 py-3 text-gray-300">{train.lineId}</td>
                     <td className="px-4 py-3">
