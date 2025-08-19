@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "8d934196df07d8d0a8485e45a6e049daa19a8621",
-    "message": "feat: Restore complete 144 trains implementation with real lines, ECM-3 and IHB profiles",
+    "sha": "0e4f5b523cf0c68dcc556c4ab19da92544fb6212",
+    "message": "fix: Enable SSOV2 DataSource with 144 trains by default",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T10:40:35Z"
+    "timestamp": "2025-08-19T10:48:10Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17067125508"
+    "run_id": "17067288631"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T10:41:51.706Z",
+  "generated_at": "2025-08-19T10:49:26.734Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
