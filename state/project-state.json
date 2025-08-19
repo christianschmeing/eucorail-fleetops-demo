@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "feat/train-tracker-p0",
   "commit": {
-    "sha": "e3bf479c29108d5e7929378244e1f610221c4c98",
-    "message": "fix: Add missing data files for 144 trains SSOV2",
+    "sha": "cca2748549c77d616b931c5bc266bcad28699d6c",
+    "message": "fix: Fix null check in calculateNextMaintenance for 144 trains",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T10:50:22Z"
+    "timestamp": "2025-08-19T10:55:49Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17067336512"
+    "run_id": "17067452849"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T10:51:38.547Z",
+  "generated_at": "2025-08-19T10:57:01.189Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
