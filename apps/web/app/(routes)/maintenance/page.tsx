@@ -64,18 +64,21 @@ function generateMaintenanceData() {
     });
   }
   
-  // Generate depot capacity for next 14 days - Verwende reale Depots
-  const depots = ['Essingen', 'Langweid'];
+  // Generate depot capacity for next 14 days - Verwende reale Depots mit korrekten Gleiszahlen
+  const depots = [
+    { name: 'Essingen', totalSlots: 4 },
+    { name: 'Langweid', totalSlots: 11 }
+  ];
   for (let depot of depots) {
     for (let day = 0; day < 14; day++) {
       const date = new Date(Date.now() + day * 24 * 60 * 60 * 1000);
       const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-      const totalSlots = isWeekend ? 10 : 20;
-      const usedSlots = Math.floor(totalSlots * (0.5 + Math.random() * 0.4));
-      const plannedTrains = Math.floor(usedSlots * 1.2);
+      const totalSlots = depot.totalSlots;
+      const usedSlots = Math.floor(totalSlots * (isWeekend ? 0.5 : 0.8)); // 80% Auslastung an Werktagen
+      const plannedTrains = Math.floor(usedSlots * 1.1); // Leicht überplant
       
       depotCapacity.push({
-        depot,
+        depot: depot.name,
         date: date.toISOString().split('T')[0],
         totalSlots,
         usedSlots,

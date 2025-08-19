@@ -42,15 +42,35 @@ async function getTrains(): Promise<Train[]> {
         region = i % 2 === 0 ? 'BW' : 'BY';
       }
       
+      // Bestimme Status
+      const status = i < 108 ? 'active' : i < 120 ? 'maintenance' : i < 122 ? 'inspection' : 'reserve';
+      
+      // Bestimme Position - auch Reserve-Züge haben Positionen (in Depots)
+      let position;
+      if (i >= 122) {
+        // Reserve-Züge sind in Depots
+        position = region === 'BW' ? 
+          { lat: 48.6295, lng: 9.9574 } :  // Essingen
+          { lat: 48.4894, lng: 10.8539 };  // Langweid
+      } else if (status === 'maintenance') {
+        // Wartungszüge auch in Depots
+        position = region === 'BW' ? 
+          { lat: 48.6295 + Math.random() * 0.01, lng: 9.9574 + Math.random() * 0.01 } :
+          { lat: 48.4894 + Math.random() * 0.01, lng: 10.8539 + Math.random() * 0.01 };
+      } else {
+        // Aktive Züge auf der Strecke
+        position = {
+          lat: region === 'BW' ? 48.6 + Math.random() * 0.8 : 48.1 + Math.random() * 0.8,
+          lng: region === 'BW' ? 9.5 + Math.random() * 1.5 : 11.0 + Math.random() * 1.5
+        };
+      }
+      
       trains.push({
         id: `TRAIN-${String(i + 1).padStart(3, '0')}`,
         lineId: line,
         region: region,
-        status: i < 108 ? 'active' : i < 120 ? 'maintenance' : i < 132 ? 'inspection' : 'reserve',
-        position: i < 108 ? {
-          lat: region === 'BW' ? 48.6 + Math.random() * 0.8 : 48.1 + Math.random() * 0.8,
-          lng: region === 'BW' ? 9.5 + Math.random() * 1.5 : 11.0 + Math.random() * 1.5
-        } : undefined,
+        status: status,
+        position: position,
         delayMin: Math.floor(Math.random() * 10) - 5
       });
     }
