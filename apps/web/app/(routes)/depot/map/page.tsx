@@ -114,7 +114,11 @@ export default async function DepotMapPage({
 
       {/* Map - Server rendered */}
       <div className="flex-1 relative">
-        <DepotMapGL depot={selectedDepot} />
+        <DepotMapGL
+          depot={selectedDepot}
+          tracks={tracksForDepot as any}
+          allocations={allocationsForDepot as any}
+        />
       </div>
     </div>
   );
