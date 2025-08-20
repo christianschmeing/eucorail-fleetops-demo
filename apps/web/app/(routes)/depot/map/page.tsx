@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import DepotMapClient from './DepotMapClient';
+import ServerDepotMap from './ServerDepotMap';
 import { generateAllocations, generateMovePlans, getKPIs } from '../depot-data';
 import { trackGeometries } from '../track-geometries';
 
@@ -25,5 +25,38 @@ async function getDepotMapData() {
 export default async function DepotMapPage() {
   const data = await getDepotMapData();
   
-  return <DepotMapClient {...data} />;
+  // Render server-side map directly
+  return (
+    <div className="h-screen flex flex-col bg-gray-900">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-orange-900 to-gray-800 p-4 border-b border-gray-700">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-white">Depot-Karte</h1>
+          <div className="flex gap-4">
+            <div className="text-right">
+              <div className="text-xs text-gray-400">Züge im Depot</div>
+              <div className="text-xl font-bold text-white">
+                {data.allocations.length}/{data.kpis.fleetSize}
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs text-gray-400">Gleis-Auslastung</div>
+              <div className="text-xl font-bold text-yellow-400">
+                {data.kpis.utilizationPct}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Map - Server rendered */}
+      <div className="flex-1 relative">
+        <ServerDepotMap
+          depot="Essingen"
+          tracks={data.tracks.filter(t => t.depot === 'Essingen')}
+          allocations={data.allocations}
+        />
+      </div>
+    </div>
+  );
 }
