@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "025055a05306b5cfe23223f55ec1719a0a4791cf",
-    "message": "feat(arverio): add real fleet data, ECM profiles, store and live map",
+    "sha": "a102915c133999c1f4270fe66361591470e240f6",
+    "message": "feat(map): add /map/arverio route for ArverioLiveMap",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T11:39:43Z"
+    "timestamp": "2025-08-20T11:43:28Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17097287225"
+    "run_id": "17097369792"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T11:41:04.239Z",
+  "generated_at": "2025-08-20T11:44:46.120Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
