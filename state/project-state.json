@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "5e9112ac393c80bb03b37eb361ab730c36ee5b44",
-    "message": "fix(map): position SSR trains along real lines; remove non-Arverio lines from filters",
+    "sha": "4c7a06ed91665e2770b047044ea0b3c80d446892",
+    "message": "feat(lines): add RE90 MEX13 RE89 RB86 RB87 RB89 RE72 RE96 RB92 to lines dataset for Arverio",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T13:13:05Z"
+    "timestamp": "2025-08-20T13:17:42Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17099453612"
+    "run_id": "17099572531"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T13:14:24.962Z",
+  "generated_at": "2025-08-20T13:19:13.370Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
