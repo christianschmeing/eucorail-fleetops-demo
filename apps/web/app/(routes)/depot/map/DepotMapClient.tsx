@@ -6,7 +6,17 @@ import { TrackGeometry } from '../track-geometries';
 import DepotMapInspector from './DepotMapInspector';
 import DepotMapFilters from './DepotMapFilters';
 import DepotMapQueue from './DepotMapQueue';
-import SimpleDepotMap from './SimpleDepotMap';
+import dynamic from 'next/dynamic';
+
+// Dynamically import Leaflet map to avoid SSR issues
+const LeafletDepotMap = dynamic(() => import('./LeafletDepotMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+      <div className="text-white">Lade Karte...</div>
+    </div>
+  ),
+});
 
 interface DepotMapClientProps {
   tracks: TrackGeometry[];
@@ -330,7 +340,7 @@ export default function DepotMapClient({
 
         {/* Map */}
         <div className="flex-1 relative">
-          <SimpleDepotMap
+          <LeafletDepotMap
             depot={selectedDepot}
             tracks={filteredTracks}
             allocations={filteredAllocations}
