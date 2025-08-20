@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import ServerDepotMap from './ServerDepotMap';
+import dynamic from 'next/dynamic';
 import { generateAllocations, generateMovePlans, getKPIs } from '../depot-data';
 import { trackGeometries } from '../track-geometries';
 
@@ -70,7 +71,9 @@ export default async function DepotMapPage({
     }
   } catch {}
 
-  // Render server-side map directly; ensure default depot shows tracks
+  const DepotMapGL = dynamic(() => import('./DepotMapGL'), { ssr: false });
+
+  // Render server-side summary header + client MapLibre for tracks
   return (
     <div className="h-screen flex flex-col bg-gray-900">
       {/* Header */}
@@ -111,11 +114,7 @@ export default async function DepotMapPage({
 
       {/* Map - Server rendered */}
       <div className="flex-1 relative">
-        <ServerDepotMap
-          depot={selectedDepot}
-          tracks={tracksForDepot}
-          allocations={allocationsForDepot}
-        />
+        <DepotMapGL depot={selectedDepot} />
       </div>
     </div>
   );
