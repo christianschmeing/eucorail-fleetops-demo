@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "4d6fdb96a35cb6621284de4b3e48d77599a5ea1c",
-    "message": "ci: add release-verify (wait for production URL, test with Playwright, publish tested-url)\n\ndocs: update handover and deployment docs with tested URL process",
+    "sha": "714bf437c4533a4d91aadcf6d61c7c6479ed5a75",
+    "message": "fix(depot-map): Add working MapLibre GL implementation\n\n- Replace SVG-based map with proper MapLibre GL map\n- Use OpenStreetMap tiles for base layer\n- Fix TypeScript errors with allocation properties\n- Add proper track rendering with polylines\n- Add train markers with popups\n- Add debug logging for troubleshooting\n- Fix coordinate system for Essingen and Langweid depots\n- Add error handling and loading states",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-19T21:45:22Z"
+    "timestamp": "2025-08-20T06:14:47Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17082575435"
+    "run_id": "17090188162"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-19T21:46:35.556Z",
+  "generated_at": "2025-08-20T06:16:02.496Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
