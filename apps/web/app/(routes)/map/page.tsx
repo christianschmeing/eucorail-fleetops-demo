@@ -22,7 +22,7 @@ async function getTrains(): Promise<Train[]> {
       status:
         v.status === 'MAINTENANCE' ? 'maintenance' : v.status === 'DEPOT' ? 'standby' : 'active',
       position: v.position
-        ? { lat: v.position.lat, lng: v.position.lon }
+        ? { lat: v.position.lat ?? v.position.latitude, lng: v.position.lng ?? v.position.lon }
         : v.depot === 'ESS'
           ? { lat: 48.6295, lng: 9.9574 }
           : { lat: 48.4894, lng: 10.8539 },

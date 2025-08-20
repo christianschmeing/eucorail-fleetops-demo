@@ -35,7 +35,12 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
   const [kpis, setKpis] = useState<KPIs>(initialKpis);
   const [selectedLines, setSelectedLines] = useState<string[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([
+    'active',
+    'maintenance',
+    'alarm',
+    'offline',
+  ]);
   const [sseConnected, setSseConnected] = useState(false);
 
   // Filtere Züge basierend auf Auswahl
