@@ -298,9 +298,9 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
             <div className="flex flex-wrap gap-2 items-start">
               <span className="text-sm text-gray-400">Linie:</span>
               <div className="flex flex-wrap gap-2">
-                {/* Baden-Württemberg Linien */}
+                {/* Baden-Württemberg Linien (nur genutzte Linien) */}
                 <div className="flex gap-1 px-2 py-1 bg-blue-900/20 rounded">
-                  {['RE1', 'RE2', 'RE8', 'RB22', 'RB27'].map((line) => (
+                  {['RE1', 'RE8', 'MEX16'].map((line) => (
                     <label key={line} className="flex items-center gap-1">
                       <input
                         type="checkbox"
@@ -319,9 +319,9 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                   ))}
                 </div>
 
-                {/* Bayern Linien */}
+                {/* Bayern Linien (nur genutzte Linien) */}
                 <div className="flex gap-1 px-2 py-1 bg-green-900/20 rounded">
-                  {['RE9', 'RE12', 'MEX16', 'MEX18', 'MEX12', 'RB32', 'RB54'].map((line) => (
+                  {['RE9', 'RE80'].map((line) => (
                     <label key={line} className="flex items-center gap-1">
                       <input
                         type="checkbox"
@@ -340,26 +340,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                   ))}
                 </div>
 
-                {/* S-Bahn Linien */}
-                <div className="flex gap-1 px-2 py-1 bg-yellow-900/20 rounded">
-                  {['S2', 'S3', 'S4', 'S6'].map((line) => (
-                    <label key={line} className="flex items-center gap-1">
-                      <input
-                        type="checkbox"
-                        checked={selectedLines.includes(line)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedLines([...selectedLines, line]);
-                          } else {
-                            setSelectedLines(selectedLines.filter((l) => l !== line));
-                          }
-                        }}
-                        className="rounded"
-                      />
-                      <span className="text-sm text-yellow-300">{line}</span>
-                    </label>
-                  ))}
-                </div>
+                {/* S-Bahn Linien entfernt (nicht Teil des Datensets) */}
 
                 {/* Reserve */}
                 <label className="flex items-center gap-1 px-2 py-1 bg-gray-600/20 rounded">
