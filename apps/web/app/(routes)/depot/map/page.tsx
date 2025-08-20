@@ -12,6 +12,36 @@ export const metadata: Metadata = {
 async function getDepotMapData() {
   // Generate initial allocations and move plans
   const allocations = generateAllocations();
+  // Merge planned allocations from API
+  try {
+    const r = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/depot/allocations`, {
+      next: { revalidate: 30 },
+    });
+    if (r.ok) {
+      const json = await r.json();
+      if (Array.isArray(json?.planned)) {
+        allocations.push(
+          ...json.planned.map((p: any) => ({
+            id: p.id,
+            train_id: p.train_id,
+            line_code: p.line_code || 'DEPOT',
+            trackId: p.trackId,
+            startPlanned: new Date(p.startPlanned),
+            endPlanned: new Date(p.endPlanned),
+            etaRelease: new Date(p.etaRelease || p.endPlanned),
+            purpose: p.purpose,
+            risk: p.risk || 'low',
+            status: p.status || 'active',
+            is_reserve: !!p.is_reserve,
+            lengthM: p.lengthM || 180,
+            offsetM: p.offsetM || 10,
+            home_depot: p.home_depot,
+          }))
+        );
+      }
+    }
+  } catch {}
+
   const movePlans = generateMovePlans();
   const kpis = getKPIs(allocations);
 
