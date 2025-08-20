@@ -10,7 +10,7 @@ import { SLADashboard } from '@/components/sla/SLADashboard';
 import { useFleetStore } from '@/lib/state/fleet-store';
 import { ECM_PROFILES, INTERVENTION_MAPPING } from '@/lib/maintenance/ecm-profiles';
 
-export function MaintenanceDashboard() {
+export default function MaintenanceDashboard() {
   const { vehicles, calculateKPIs } = useFleetStore();
   const [data, setData] = useState<any>(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);

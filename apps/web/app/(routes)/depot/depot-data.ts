@@ -10,7 +10,7 @@ export interface Allocation {
   etaRelease: Date;
   purpose: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'ARA' | 'Korr' | 'Unfall';
   risk: 'low' | 'med' | 'high';
-  status: 'active' | 'maintenance' | 'reserve' | 'abstellung' | 'alarm' | 'offline';
+  status: 'planned' | 'active' | 'maintenance' | 'reserve' | 'abstellung' | 'alarm' | 'offline';
   is_reserve: boolean;
   lengthM: number;
   offsetM?: number; // Position along track
@@ -104,7 +104,7 @@ export function generateAllocations(): Allocation[] {
       etaRelease: new Date(endTime.getTime() + 60 * 60 * 1000),
       purpose,
       risk: 'low',
-      status: 'active',
+      status: 'planned',
       is_reserve: false,
       lengthM: 190 + Math.random() * 30,
       offsetM: 10,

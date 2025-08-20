@@ -120,13 +120,17 @@ export default function DepotMapGL({ depot, tracks, allocations = [] }: Props) {
       el.style.height = '14px';
       el.style.borderRadius = '50%';
       el.style.border = '2px solid #fff';
-      el.style.background = a.purpose.startsWith('IS')
-        ? '#3b82f6'
-        : a.purpose === 'ARA'
-          ? '#eab308'
-          : a.purpose === 'Korr'
-            ? '#f97316'
-            : '#ef4444';
+      // Status-gesteuerte Farbe: geplant (hellblau), aktiv/maintenance (gelb), alarm (rot)
+      el.style.background =
+        a.status === 'planned'
+          ? '#60a5fa'
+          : a.purpose === 'ARA'
+            ? '#eab308'
+            : a.purpose === 'Korr'
+              ? '#f97316'
+              : a.purpose.startsWith('IS')
+                ? '#eab308'
+                : '#ef4444';
       el.title = `${a.train_id} – ${a.purpose}`;
       const marker = new maplibregl.Marker({ element: el }).setLngLat(pos as any).addTo(map);
       markersRef.current.push(marker);

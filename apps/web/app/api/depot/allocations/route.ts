@@ -10,7 +10,7 @@ type Allocation = {
   etaRelease?: string;
   purpose: string;
   risk?: 'low' | 'med' | 'high';
-  status: 'active' | 'maintenance' | 'reserve' | 'abstellung' | 'alarm' | 'offline';
+  status: 'planned' | 'active' | 'maintenance' | 'reserve' | 'abstellung' | 'alarm' | 'offline';
   is_reserve?: boolean;
   lengthM?: number;
   offsetM?: number;
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       etaRelease: end.toISOString(),
       purpose: body.purpose || 'IS2',
       risk: 'low',
-      status: 'active',
+      status: 'planned',
       is_reserve: false,
       lengthM,
       offsetM: Math.min(lengthM - 20, Math.max(10, Math.floor(Math.random() * (lengthM - 40)))),

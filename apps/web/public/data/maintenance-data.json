@@ -1,0 +1,56 @@
+{
+  "workOrders": [
+    {
+      "id": "WO-1001",
+      "trainId": "RE9-60001",
+      "title": "IS2‑Wartung",
+      "priority": "MEDIUM",
+      "status": "OPEN",
+      "dueDate": "2025-09-01",
+      "assignedTo": "Schmidt, M."
+    },
+    {
+      "id": "WO-1002",
+      "trainId": "MEX16-60055",
+      "title": "IS3‑Wartung",
+      "priority": "HIGH",
+      "status": "IN_PROGRESS",
+      "dueDate": "2025-08-28",
+      "assignedTo": "Müller, K."
+    },
+    {
+      "id": "WO-1003",
+      "trainId": "RE8-60077",
+      "title": "IS1‑Prüfung",
+      "priority": "LOW",
+      "status": "OPEN",
+      "dueDate": "2025-09-03",
+      "assignedTo": "Weber, T."
+    }
+  ],
+  "depotCapacity": [
+    {
+      "depot": "Essingen",
+      "date": "2025-08-21",
+      "totalSlots": 4,
+      "usedSlots": 3,
+      "plannedTrains": 3
+    },
+    {
+      "depot": "Langweid",
+      "date": "2025-08-21",
+      "totalSlots": 11,
+      "usedSlots": 8,
+      "plannedTrains": 9
+    }
+  ],
+  "riskParts": [
+    {
+      "partId": "BRK-001",
+      "partName": "Bremsbeläge Typ A",
+      "riskLevel": "HIGH",
+      "affectedTrains": ["RE9-60001", "RE8-60077"],
+      "lastIncident": "2025-07-01"
+    }
+  ]
+}
