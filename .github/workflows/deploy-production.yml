@@ -1,0 +1,132 @@
+name: Deploy Production (Vercel)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: deploy-production-main
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      prod_url: ${{ steps.deploy.outputs.prod_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps (root)
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Pull Vercel env (production)
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
+
+      - name: Build (prebuilt)
+        id: build
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          vercel build --token "$VERCEL_TOKEN" 2>&1 | tee ../vercel-build.log
+          # upload key Next.js manifests for debug
+          mkdir -p ../build-artifacts
+          cp -f .next/routes-manifest.json ../build-artifacts/routes-manifest.json || true
+          cp -f .next/server/app-paths-manifest.json ../build-artifacts/app-paths-manifest.json || true
+
+      - name: Deploy (Production)
+        id: deploy
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          url=$(vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN" | grep -Eo 'https?://[^ ]+\.vercel\.app' | tail -n1)
+          echo "prod_url=$url" >> "$GITHUB_OUTPUT"
+          echo "$url" > ../production-url.txt
+
+      - name: Upload Vercel build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-build-log
+          path: apps/web/../vercel-build.log
+
+      - name: Upload build manifests
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build-manifests
+          path: apps/web/../build-artifacts
+
+  verify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps (root)
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Health and route checks
+        env:
+          URL: ${{ needs.deploy.outputs.prod_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$URL" ]; then echo "No production URL from deploy" >&2; exit 1; fi
+          echo "Checking $URL ..."
+          for path in "/" "/api/health" "/map" "/trains" "/depot/planning"; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL$path") || code=0
+            echo "  $path -> $code"
+            if [ "$path" != "/api/health" ] && [ "$code" != "200" ]; then
+              echo "Route $path not 200 (got $code)" >&2; exit 1; fi
+            if [ "$path" = "/api/health" ] && [ "$code" != "200" ]; then
+              echo "Health endpoint not 200 (got $code)" >&2; exit 1; fi
+          done
+
+      - name: Run smoke E2E against Production (chromium)
+        env:
+          PLAYWRIGHT_SKIP_WEBSERVER: '1'
+          ENABLE_VISUAL_TESTS: '0'
+        run: ENABLE_VISUAL_TESTS=0 npx playwright test tests/e2e/ci-smoke.spec.ts --project=chromium --base-url="${{ needs.deploy.outputs.prod_url }}" --reporter=html,line
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+

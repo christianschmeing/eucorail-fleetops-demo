@@ -199,6 +199,13 @@ Interne Checks (typecheck/lint/build/test:int) – keine E2E/Playwright im CI.
 - Erwartung: Jede PR liefert eine getestete Vercel‑URL als Ergebnis.
 - Secrets nötig: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (siehe `docs/DEPLOYMENT_VERCEL.md`).
 
+### Produktions-Deployment (überwacht)
+
+- Workflow: `.github/workflows/deploy-production.yml`
+- Schritte: `vercel pull --prod` → `vercel build` (Logs/Manifests als Artifact) → `vercel deploy --prod` → Health-Checks (`/`, `/api/health`) und Route-Checks (`/map`, `/trains`, `/depot/planning`) → Smoke E2E (chromium)
+- Concurrency: verhindert parallele Deploys und Race Conditions
+- Artifacts: `vercel-build-log`, `next-build-manifests`, Playwright Report
+
 ## 🌍 Public Preview (Stream & PR Preview)
 
 - Stream‑Mode (lokal):

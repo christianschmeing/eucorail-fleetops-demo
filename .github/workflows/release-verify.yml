@@ -10,6 +10,9 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    concurrency:
+      group: verify-main
+      cancel-in-progress: true
     outputs:
       tested_url: ${{ steps.detect.outputs.url }}
     steps:

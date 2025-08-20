@@ -11,6 +11,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: preview-${{ github.ref }}
+      cancel-in-progress: true
     outputs:
       preview_url: ${{ steps.deploy.outputs.preview_url }}
     steps:
@@ -41,7 +44,13 @@ jobs:
         working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel build --token "$VERCEL_TOKEN"
+        shell: bash
+        run: |
+          set -euo pipefail
+          vercel build --token "$VERCEL_TOKEN" 2>&1 | tee ../vercel-build-preview.log
+          mkdir -p ../build-artifacts
+          cp -f .next/routes-manifest.json ../build-artifacts/routes-manifest.json || true
+          cp -f .next/server/app-paths-manifest.json ../build-artifacts/app-paths-manifest.json || true
 
       - name: Deploy (Preview)
         id: deploy
@@ -70,6 +79,18 @@ jobs:
         with:
           name: preview-url
           path: preview-url.txt
+
+      - name: Upload Vercel preview build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-build-preview-log
+          path: apps/web/../vercel-build-preview.log
+
+      - name: Upload preview build manifests
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-preview-build-manifests
+          path: apps/web/../build-artifacts
 
       - name: Comment PR with Preview URL
         if: ${{ steps.deploy.outputs.preview_url != '' }}
