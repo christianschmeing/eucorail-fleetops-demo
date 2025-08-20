@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { LiveSimLayer } from '@/features/map/LiveSimLayer';
 
 interface Train {
   id: string;
@@ -411,6 +412,8 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
       {/* Karte */}
       <div className="flex-1 relative">
         <div ref={mapContainer} className="absolute inset-0" />
+        {/* Simulierte Linien/Layer (Timetable/OSM Placeholder) */}
+        <LiveSimLayer map={map.current} />
 
         {/* Legende */}
         <div className="absolute bottom-4 left-4 bg-gray-800/90 backdrop-blur border border-gray-700 rounded-lg p-3">
