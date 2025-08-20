@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "685dea892c54ef182c9142556397ce118ab336c6",
-    "message": "fix(maintenance): import ECM_PROFILES and show dynamic IS intervals",
+    "sha": "de819325476b77531d76b4dd005ccd420f9bb94e",
+    "message": "fix(depot): merge planned allocations from API into SSR data; audit ECM UI mappings",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T17:32:47Z"
+    "timestamp": "2025-08-20T17:38:27Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17105841226"
+    "run_id": "17105967790"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T17:34:11.591Z",
+  "generated_at": "2025-08-20T17:39:50.998Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
