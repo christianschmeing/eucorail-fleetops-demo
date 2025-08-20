@@ -54,7 +54,10 @@
     "cursor:verify": "npm run verify:smart",
     "cursor:update-snapshots": "npx --yes playwright test --project=visual-chromium --update-snapshots || true",
     "test:visual": "playwright test --project=visual-chromium",
-    "test:visual:update": "playwright test --project=visual-chromium --update-snapshots"
+    "test:visual:update": "playwright test --project=visual-chromium --update-snapshots",
+    "build:timetables": "ts-node apps/web/scripts/parse-timetables.ts",
+    "build:railmaps": "ts-node apps/web/scripts/build-railmaps.ts",
+    "build:data": "npm run build:timetables && npm run build:railmaps"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
