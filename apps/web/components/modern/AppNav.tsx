@@ -24,6 +24,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/trains', label: 'Züge', icon: Train, hotkey: 'g t' },
   { href: '/maintenance', label: 'Wartung', icon: Wrench, hotkey: 'g w' },
   { href: '/depot', label: 'Depot', icon: Warehouse, hotkey: 'g o' },
+  { href: '/depot/planning', label: 'Depot-Planung', icon: Warehouse },
   { href: '/ecm', label: 'ECM', icon: ShieldCheck, hotkey: 'g e' },
   { href: '/log', label: 'Protokoll', icon: ScrollText, hotkey: 'g p' },
 ];
