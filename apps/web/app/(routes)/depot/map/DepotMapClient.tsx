@@ -175,7 +175,13 @@ export default function DepotMapClient({
     URL.revokeObjectURL(url);
 
     // Log export
-    fetch('/api/events', {
+    const API_URL =
+      process.env.NEXT_PUBLIC_API_URL ||
+      (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:4100'
+        : 'https://geolocation-mockup.vercel.app/api');
+
+    fetch(`${API_URL}/events`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
