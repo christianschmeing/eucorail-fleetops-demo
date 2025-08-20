@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "de819325476b77531d76b4dd005ccd420f9bb94e",
-    "message": "fix(depot): merge planned allocations from API into SSR data; audit ECM UI mappings",
+    "sha": "4fe2cc076ec542b7b63519386c03a75b549273d1",
+    "message": "fix(api): trains API now uses ECM_PROFILES and no S-Bahn lines; IS labels applied consistently",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T17:38:27Z"
+    "timestamp": "2025-08-20T17:46:15Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17105967790"
+    "run_id": "17106137941"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T17:39:50.998Z",
+  "generated_at": "2025-08-20T17:47:32.917Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
