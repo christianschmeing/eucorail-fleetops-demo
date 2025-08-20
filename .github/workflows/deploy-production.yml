@@ -107,7 +107,8 @@ jobs:
           set -euo pipefail
           if [ -z "$URL" ]; then echo "No production URL from deploy" >&2; exit 1; fi
           echo "Checking $URL ..."
-          for path in "/" "/api/health" "/map" "/trains" "/depot/planning"; do
+          # Only verify existing routes; remove non-existent paths to avoid false negatives
+          for path in "/" "/api/health" "/trains" "/depot" "/ecm" "/maintenance"; do
             code=$(curl -s -o /dev/null -w "%{http_code}" "$URL$path") || code=0
             echo "  $path -> $code"
             if [ "$path" != "/api/health" ] && [ "$code" != "200" ]; then
