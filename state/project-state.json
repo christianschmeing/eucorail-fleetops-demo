@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "a0ce63eb7da34559039e2ca40cc5becc4760d748",
-    "message": "feat(ui): dynamic line filters from dataset with counts and bulk BW/BY toggles",
+    "sha": "5f95ace27102417219fcd54f52dad613deb40b8c",
+    "message": "feat(map): apply line filters to layers/vehicles; markers link to details; ECM in details",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T14:46:01Z"
+    "timestamp": "2025-08-20T14:52:37Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17101881608"
+    "run_id": "17102056092"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T14:47:23.737Z",
+  "generated_at": "2025-08-20T14:53:54.854Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
