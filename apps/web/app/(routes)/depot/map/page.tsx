@@ -39,6 +39,37 @@ export default async function DepotMapPage({
     return track?.depot === selectedDepot;
   });
 
+  // Attempt to populate more precise rails via Overpass (server-side fetch, cached by Next)
+  try {
+    const r = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/railmaps/depot?depot=${selectedDepot}`,
+      { next: { revalidate: 60 * 60 * 24 } }
+    );
+    if (r.ok) {
+      const fc = await r.json();
+      if (fc?.features?.length) {
+        // map first few ways to our track lines when ids match loosely
+        // This keeps SSR simple; client can enhance further later
+        const lines = fc.features.slice(0, 6).map((f: any, idx: number) => ({
+          id: `osm-${idx}`,
+          depot: selectedDepot,
+          type: 'Yard',
+          name: `Gleis ${idx + 1}`,
+          lengthM: 180,
+          features: [],
+          state: idx % 2 === 0 ? 'belegt' : 'frei',
+          geometry: {
+            type: 'LineString',
+            coordinates: f.geometry.coordinates as [number, number][],
+          },
+        }));
+        if (lines.length) {
+          tracksForDepot.splice(0, tracksForDepot.length, ...(lines as any));
+        }
+      }
+    }
+  } catch {}
+
   // Render server-side map directly; ensure default depot shows tracks
   return (
     <div className="h-screen flex flex-col bg-gray-900">

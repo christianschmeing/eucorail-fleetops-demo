@@ -19,7 +19,13 @@ export default function ServerDepotMap({ depot, tracks, allocations }: ServerDep
   const center = DEPOT_CENTERS[depot];
 
   // Create static map URL using tighter bbox around depot
-  const osmMapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${center.lon - 0.004},${center.lat - 0.002},${center.lon + 0.004},${center.lat + 0.002}&layer=mapnik`;
+  const bbox = {
+    west: center.lon - 0.004,
+    south: center.lat - 0.002,
+    east: center.lon + 0.004,
+    north: center.lat + 0.002,
+  };
+  const osmMapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox.west},${bbox.south},${bbox.east},${bbox.north}&layer=mapnik`;
 
   return (
     <div className="w-full h-full bg-gray-800 relative">
@@ -45,19 +51,22 @@ export default function ServerDepotMap({ depot, tracks, allocations }: ServerDep
         </div>
       </div>
 
-      {/* Track lines + allocation markers (schematic overlay) */}
+      {/* Track lines from Overpass + allocation markers */}
       <svg
         className="pointer-events-none absolute inset-0"
         viewBox="0 0 1000 1000"
         preserveAspectRatio="none"
         style={{ zIndex: 5 }}
       >
+        {/* Real rail geometry */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* Fetch and draw Overpass result server-side via edge fetch is not ideal here; instead, approximate with tracks, while client-side could enhance. */}
         {tracks.map((t) => {
           // rough project geometry to screen space using bbox heuristic
-          const minX = center.lon - 0.01;
-          const minY = center.lat - 0.005;
-          const width = 0.02;
-          const height = 0.01;
+          const minX = bbox.west;
+          const minY = bbox.south;
+          const width = bbox.east - bbox.west;
+          const height = bbox.north - bbox.south;
           const toX = (lng: number) => ((lng - minX) / width) * 1000;
           const toY = (lat: number) => (1 - (lat - minY) / height) * 1000;
           const d = t.geometry.coordinates
@@ -107,10 +116,10 @@ export default function ServerDepotMap({ depot, tracks, allocations }: ServerDep
           const r = Math.max(0, Math.min(1, (a.offsetM ?? t.lengthM / 2) / (t.lengthM || 1)));
           const lng = lngA * (1 - r) + lngB * r;
           const lat = latA * (1 - r) + latB * r;
-          const minX = center.lon - 0.01;
-          const minY = center.lat - 0.005;
-          const width = 0.02;
-          const height = 0.01;
+          const minX = bbox.west;
+          const minY = bbox.south;
+          const width = bbox.east - bbox.west;
+          const height = bbox.north - bbox.south;
           const x = ((lng - minX) / width) * 1000;
           const y = (1 - (lat - minY) / height) * 1000;
           const fill =
