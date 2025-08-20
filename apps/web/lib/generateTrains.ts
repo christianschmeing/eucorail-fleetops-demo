@@ -116,13 +116,13 @@ function sampleOnLine(lineId: string): { lat: number; lng: number } {
 }
 
 export function generateTrains() {
-  // Zielverteilung gemäß Arverio-Spezifikation
-  const targetBW = 66; // FLIRT³
-  const targetBY = 78; // 12 Desiro HC, 44 Mireo, 22 FLIRT³
+  // Verteilung laut bereitgestellter Allokation (as_of 2025‑08‑20)
+  const targetBW = 45; // FLIRT3 in BW (Stuttgarter Netze)
+  const targetBY = 78; // BY Summe aktiv
 
-  // Reserve-Ziele
-  const reserveBW = 7; // 5–8
-  const reserveBY = 8; // 6–10
+  // Reserve total 21 → BY 13, BW 8
+  const reserveBW = 8;
+  const reserveBY = 13;
 
   const trains: any[] = [];
 
@@ -165,7 +165,7 @@ export function generateTrains() {
     });
   }
 
-  // BY – Mischung: 12 Desiro HC (RE9 bevorzugt), 44 Mireo (RE9/RE80), 22 FLIRT
+  // BY – Mischung gemäß Spezifikation (Los 1 + Allgäu)
   const byDesiro = 12;
   const byMireo = 44;
   const byFlirt = 22;

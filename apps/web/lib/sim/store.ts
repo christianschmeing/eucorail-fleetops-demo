@@ -35,6 +35,26 @@ export type SimState = {
 const BW_LINES = ['MEX13', 'RE1', 'MEX16', 'RE8', 'RE90'];
 const BY_LINES = ['RE9', 'RE80', 'RE89', 'RB86', 'RB87', 'RB89', 'RE72', 'RE96', 'RB92'];
 
+// Hard allocation derived from fleet-allocation.json
+const ALLOCATION_COUNTS: Record<string, number> = {
+  // BW total 45
+  MEX13: 10, // 4+3+3
+  MEX16: 13, // 10+3
+  RE1: 8, // 3+2+3
+  RE8: 9, // 3+3+3
+  RE90: 5, // 2+1+2
+  // BY
+  RE72: 7,
+  RE96: 9,
+  RB92: 6,
+  RE9: 10, // 4 Desiro + 6 Mireo (count vehicles, not consists)
+  RE80: 10,
+  RE89: 10,
+  RB86: 10,
+  RB87: 10,
+  RB89: 6,
+};
+
 let timer: any = null;
 
 function stationToLngLat(s: LatLng): [number, number] {
@@ -75,12 +95,12 @@ export const useSimStore = create<SimState>((set, get) => ({
     const allLineIds = [...BW_LINES, ...BY_LINES].filter((id) => !!lines[id]);
     if (allLineIds.length === 0) return;
 
-    // status mix (~75% active, 8% maintenance, 12% reserve, 5% offline)
+    // exact totals from provided spec
     const TOTAL = 144;
-    const active = Math.round(TOTAL * 0.75);
-    const maint = Math.round(TOTAL * 0.08);
-    const reserve = Math.round(TOTAL * 0.12);
-    const offline = TOTAL - active - maint - reserve;
+    const active = 123; // in_service_total
+    const reserve = 21; // maintenance_reserve_total (model as reserve/maintenance)
+    const maint = Math.floor(reserve * 0.6);
+    const offline = TOTAL - active - reserve; // any slack
 
     const bucket: VehicleStatus[] = [];
     bucket.push(...Array(active).fill('active'));
@@ -88,10 +108,21 @@ export const useSimStore = create<SimState>((set, get) => ({
     bucket.push(...Array(reserve).fill('reserve'));
     bucket.push(...Array(offline).fill('offline'));
 
-    // equal distribution across available lines
+    // fixed line distribution by ALLOCATION_COUNTS
     const vehicles: Vehicle[] = [];
+    const linesExpanded: string[] = [];
+    for (const lineId of allLineIds) {
+      const c = ALLOCATION_COUNTS[lineId] ?? 0;
+      for (let i = 0; i < c; i++) linesExpanded.push(lineId);
+    }
+    while (linesExpanded.length < TOTAL) {
+      for (const l of allLineIds) {
+        if (linesExpanded.length >= TOTAL) break;
+        linesExpanded.push(l);
+      }
+    }
     for (let i = 0; i < TOTAL; i++) {
-      const lineId = allLineIds[i % allLineIds.length];
+      const lineId = linesExpanded[i % linesExpanded.length];
       const region: 'BW' | 'BY' = BW_LINES.includes(lineId) ? 'BW' : 'BY';
       const status = bucket[i];
       vehicles.push({

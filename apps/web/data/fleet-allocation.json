@@ -1,0 +1,60 @@
+{
+  "as_of": "2025-08-20",
+  "totals": {
+    "fleet_total": 144,
+    "in_service_total": 123,
+    "maintenance_reserve_total": 21
+  },
+  "regions": {
+    "BY": {
+      "depot": "Langweid",
+      "in_service_total": 78,
+      "reserve": 13,
+      "lines": {
+        "RE72": { "FLIRT3_4": 7 },
+        "RE96": { "FLIRT3_4": 9 },
+        "RB92": { "FLIRT3_4": 6 },
+        "RE9": { "DESIRO_HC_5": 4, "MIREO_3": 6 },
+        "RE80": { "DESIRO_HC_5": 4, "MIREO_3": 6 },
+        "RE89": { "DESIRO_HC_5": 4, "MIREO_3": 6 },
+        "RB86": { "MIREO_3": 10 },
+        "RB87": { "MIREO_3": 10 },
+        "RB89": { "MIREO_3": 6 }
+      }
+    },
+    "BW": {
+      "depot": "Essingen",
+      "in_service_total": 45,
+      "reserve": 8,
+      "lines": {
+        "MEX13": { "FLIRT3_5": 4, "FLIRT3_4": 3, "FLIRT3_3": 3 },
+        "MEX16": { "FLIRT3_6": 10, "FLIRT3_5": 3 },
+        "RE1": { "FLIRT3_5": 3, "FLIRT3_4": 2, "FLIRT3_3": 3 },
+        "RE8": { "FLIRT3_5": 3, "FLIRT3_4": 3, "FLIRT3_3": 3 },
+        "RE90": { "FLIRT3_5": 2, "FLIRT3_4": 1, "FLIRT3_3": 2 }
+      }
+    }
+  },
+  "fleet_by_type": [
+    {
+      "type": "Stadler FLIRT3",
+      "variants": ["3-car", "4-car", "5-car", "6-car"],
+      "max_speed_kmh": 160,
+      "deployed": { "Bayern_Allgaeu": 22, "Baden_Wuerttemberg_Stuttgart": 45 }
+    },
+    {
+      "type": "Siemens Mireo",
+      "variant": "3-car",
+      "seats": 216,
+      "max_speed_kmh": 160,
+      "deployed": 44
+    },
+    {
+      "type": "Siemens Desiro HC",
+      "variant": "5-car_double_deck",
+      "seats": 538,
+      "max_speed_kmh": 160,
+      "deployed": 12
+    }
+  ]
+}
