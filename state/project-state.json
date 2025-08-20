@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "97f8d1e7f10ddf72e751af53f13a673a4a7513a8",
-    "message": "feat(maintenance): add IS1–IS6↔F1–F6 mapping and unify ECM profiles across views",
+    "sha": "1e1fd9ce4b897e00cfdf3329d530e36eebc122bc",
+    "message": "feat(depot): render allocation markers on MapLibre and color tracks by occupancy",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T17:10:48Z"
+    "timestamp": "2025-08-20T17:15:54Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17105359079"
+    "run_id": "17105471985"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T17:12:07.927Z",
+  "generated_at": "2025-08-20T17:19:20.271Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
