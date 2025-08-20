@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "d6bbe45bc9419a27321ac003d7e2253014865f4a",
-    "message": "fix(depot-tracks): type-safe normalization of GeoJSON coordinates and center tuple",
+    "sha": "7cdd621d4fa6320cc5f5189582b431d9e4bf45b6",
+    "message": "feat(fleet-allocation): add canonical allocation JSON and wire into sim/generation counts",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T15:51:00Z"
+    "timestamp": "2025-08-20T15:56:21Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17103548404"
+    "run_id": "17103668324"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T15:52:26.986Z",
+  "generated_at": "2025-08-20T15:57:41.161Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
