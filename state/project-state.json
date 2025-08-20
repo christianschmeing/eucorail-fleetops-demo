@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "c278a5983f2df845a30b4f4e84f69440dbf9a169",
-    "message": "fix(depot/map): deep-link support, MapLibre init timing, API_URL for events, OSM tiles fallback",
+    "sha": "025055a05306b5cfe23223f55ec1719a0a4791cf",
+    "message": "feat(arverio): add real fleet data, ECM profiles, store and live map",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T11:23:23Z"
+    "timestamp": "2025-08-20T11:39:43Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17096932142"
+    "run_id": "17097287225"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T11:24:42.425Z",
+  "generated_at": "2025-08-20T11:41:04.239Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
