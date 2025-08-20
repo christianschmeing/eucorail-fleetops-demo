@@ -12,11 +12,9 @@ interface Train {
 }
 
 async function getTrains(): Promise<Train[]> {
-  try {
-    return await apiGet<Train[]>('/api/trains');
-  } catch {
-    // Fallback: Arverio Real‑Daten intelligent einbetten
-    const real = (arverioFleet as any).vehicles as Array<any>;
+  // PRIMARY: Arverio Real‑Daten
+  const real = (arverioFleet as any).vehicles as Array<any>;
+  if (real && real.length) {
     const mapTrain = (v: any): Train => ({
       id: v.id,
       lineId: v.line || (v.depot === 'ESS' ? 'RE1' : 'RE9'),
@@ -31,7 +29,6 @@ async function getTrains(): Promise<Train[]> {
       delayMin: 0,
     });
     const trains = real.map(mapTrain);
-    // Falls weniger als 144 Einträge im JSON sind, ergänzen wir auf 144 mit neutralen Reserve‑Zügen
     while (trains.length < 144) {
       const isBW = trains.length % 2 === 0;
       trains.push({
@@ -45,6 +42,8 @@ async function getTrains(): Promise<Train[]> {
     }
     return trains.slice(0, 144);
   }
+  // SECONDARY: API
+  return await apiGet<Train[]>('/api/trains');
 }
 
 export default async function MapPage() {
