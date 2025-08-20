@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "7cdd621d4fa6320cc5f5189582b431d9e4bf45b6",
-    "message": "feat(fleet-allocation): add canonical allocation JSON and wire into sim/generation counts",
+    "sha": "43b4f40e97bdfc3690ca861dcf87f37ed9f91700",
+    "message": "feat(allocation-api): expose /api/fleet/allocation and enforce per-line counts in SSR loaders",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T15:56:21Z"
+    "timestamp": "2025-08-20T16:09:38Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17103668324"
+    "run_id": "17103986945"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T15:57:41.161Z",
+  "generated_at": "2025-08-20T16:11:06.731Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
