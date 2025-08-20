@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "ab86bf0ea283077b4c91c2beb62b2b9cb8e33dea",
-    "message": "feat(depot): add Gantt-based depot planning view with constraints and auto-resolve (/depot/planning)",
+    "sha": "696bc7e9c03c67c3d4d88d96a3d55a07ce6289f1",
+    "message": "feat(nav): add link to /depot/planning in AppNav",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T12:05:57Z"
+    "timestamp": "2025-08-20T12:07:37Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17097843790"
+    "run_id": "17097881906"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T12:07:15.514Z",
+  "generated_at": "2025-08-20T12:08:55.524Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
