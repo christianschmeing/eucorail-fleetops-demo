@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "7fef98a87b17bbf8adc0ec00950a749c19cf7ab6",
-    "message": "feat(sim): render 144 sim vehicles on map layer along lines; stable markers",
+    "sha": "69c0f795af975aa758834cf368cd8cc626d7579e",
+    "message": "fix(map): mount LiveSimLayer after map 'load' to ensure markers render; stateful map ref",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T14:23:59Z"
+    "timestamp": "2025-08-20T14:28:30Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17101300159"
+    "run_id": "17101420996"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T14:25:20.247Z",
+  "generated_at": "2025-08-20T14:29:55.189Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
