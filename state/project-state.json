@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "5f95ace27102417219fcd54f52dad613deb40b8c",
-    "message": "feat(map): apply line filters to layers/vehicles; markers link to details; ECM in details",
+    "sha": "e85488055d0bfbc572287aa1dbbea47caf02e2b8",
+    "message": "fix(map): remove legacy big markers; make small sim markers clickable to /trains/:id",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T14:52:37Z"
+    "timestamp": "2025-08-20T14:58:24Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17102056092"
+    "run_id": "17102202073"
   },
   "changes": {
     "apps_web": false,
@@ -24,13 +24,13 @@
     "all_open": 0
   },
   "prs": {
-    "open": 1
+    "open": 0
   },
   "data_version": null,
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T14:53:54.854Z",
+  "generated_at": "2025-08-20T14:59:48.416Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
