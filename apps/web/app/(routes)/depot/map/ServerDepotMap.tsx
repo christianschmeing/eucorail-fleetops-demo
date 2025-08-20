@@ -18,8 +18,8 @@ const DEPOT_CENTERS = {
 export default function ServerDepotMap({ depot, tracks, allocations }: ServerDepotMapProps) {
   const center = DEPOT_CENTERS[depot];
 
-  // Create static map URL
-  const osmMapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${center.lon - 0.01},${center.lat - 0.005},${center.lon + 0.01},${center.lat + 0.005}&layer=mapnik`;
+  // Create static map URL using tighter bbox around depot
+  const osmMapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${center.lon - 0.004},${center.lat - 0.002},${center.lon + 0.004},${center.lat + 0.002}&layer=mapnik`;
 
   return (
     <div className="w-full h-full bg-gray-800 relative">

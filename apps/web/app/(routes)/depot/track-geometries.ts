@@ -15,10 +15,12 @@ export interface TrackGeometry {
 }
 
 // Essingen depot tracks - centered at [10.015, 48.823]
-const essingenBase = { lat: 48.823, lng: 10.015 };
+// align with depot_tracks_korrekt.yaml Essingen location
+const essingenBase = { lat: 48.6295, lng: 9.9574 };
 
-// Langweid depot tracks - centered at [10.846, 48.449]  
-const langweidBase = { lat: 48.449, lng: 10.846 };
+// Langweid depot tracks - centered at [10.846, 48.449]
+// align with depot_tracks_korrekt.yaml Langweid location
+const langweidBase = { lat: 48.4894, lng: 10.8539 };
 
 export const trackGeometries: TrackGeometry[] = [
   // === ESSINGEN TRACKS ===
@@ -33,10 +35,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.0140, 48.8235],
-        [10.0160, 48.8235]
-      ]
-    }
+        [9.9564, 48.6298],
+        [9.9584, 48.6298],
+      ],
+    },
   },
   {
     id: 'E-H2',
@@ -49,10 +51,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.0140, 48.8232],
-        [10.0160, 48.8232]
-      ]
-    }
+        [9.9564, 48.6295],
+        [9.9584, 48.6295],
+      ],
+    },
   },
   {
     id: 'E-ARA1',
@@ -65,10 +67,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.0140, 48.8229],
-        [10.0158, 48.8229]
-      ]
-    }
+        [9.9564, 48.6292],
+        [9.9582, 48.6292],
+      ],
+    },
   },
   {
     id: 'E-ST1',
@@ -81,10 +83,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.0135, 48.8226],
-        [10.0165, 48.8226]
-      ]
-    }
+        [9.956, 48.6289],
+        [9.959, 48.6289],
+      ],
+    },
   },
 
   // === LANGWEID TRACKS ===
@@ -100,10 +102,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8450, 48.4495],
-        [10.8475, 48.4495]
-      ]
-    }
+        [10.8525, 48.4896],
+        [10.855, 48.4896],
+      ],
+    },
   },
   {
     id: 'L-H2',
@@ -116,10 +118,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8450, 48.4492],
-        [10.8475, 48.4492]
-      ]
-    }
+        [10.8525, 48.4893],
+        [10.855, 48.4893],
+      ],
+    },
   },
   {
     id: 'L-H3',
@@ -132,10 +134,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8450, 48.4489],
-        [10.8472, 48.4489]
-      ]
-    }
+        [10.8525, 48.489],
+        [10.8547, 48.489],
+      ],
+    },
   },
   {
     id: 'L-H4',
@@ -148,10 +150,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8450, 48.4486],
-        [10.8472, 48.4486]
-      ]
-    }
+        [10.8525, 48.4887],
+        [10.8547, 48.4887],
+      ],
+    },
   },
   {
     id: 'L-H5',
@@ -164,10 +166,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8450, 48.4483],
-        [10.8468, 48.4483]
-      ]
-    }
+        [10.8525, 48.4884],
+        [10.8543, 48.4884],
+      ],
+    },
   },
   // Phase 2 Hallen (optional)
   {
@@ -181,10 +183,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8478, 48.4495],
-        [10.8503, 48.4495]
-      ]
-    }
+        [10.8553, 48.4896],
+        [10.8578, 48.4896],
+      ],
+    },
   },
   {
     id: 'L-H7',
@@ -197,10 +199,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8478, 48.4492],
-        [10.8503, 48.4492]
-      ]
-    }
+        [10.8553, 48.4893],
+        [10.8578, 48.4893],
+      ],
+    },
   },
   {
     id: 'L-H8',
@@ -213,10 +215,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8478, 48.4489],
-        [10.8500, 48.4489]
-      ]
-    }
+        [10.8553, 48.489],
+        [10.8575, 48.489],
+      ],
+    },
   },
   // Stellgleise
   {
@@ -230,10 +232,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8445, 48.4478],
-        [10.8485, 48.4478]
-      ]
-    }
+        [10.852, 48.4879],
+        [10.856, 48.4879],
+      ],
+    },
   },
   {
     id: 'L-ST2',
@@ -246,10 +248,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8445, 48.4475],
-        [10.8485, 48.4475]
-      ]
-    }
+        [10.852, 48.4876],
+        [10.856, 48.4876],
+      ],
+    },
   },
   {
     id: 'L-ST3',
@@ -262,10 +264,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8445, 48.4472],
-        [10.8480, 48.4472]
-      ]
-    }
+        [10.852, 48.4873],
+        [10.8555, 48.4873],
+      ],
+    },
   },
   {
     id: 'L-ST4',
@@ -278,10 +280,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8445, 48.4469],
-        [10.8480, 48.4469]
-      ]
-    }
+        [10.852, 48.487],
+        [10.8555, 48.487],
+      ],
+    },
   },
   {
     id: 'L-ST5',
@@ -294,10 +296,10 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8445, 48.4466],
-        [10.8475, 48.4466]
-      ]
-    }
+        [10.852, 48.4867],
+        [10.855, 48.4867],
+      ],
+    },
   },
   {
     id: 'L-ST6',
@@ -310,16 +312,16 @@ export const trackGeometries: TrackGeometry[] = [
     geometry: {
       type: 'LineString',
       coordinates: [
-        [10.8445, 48.4463],
-        [10.8475, 48.4463]
-      ]
-    }
-  }
+        [10.852, 48.4864],
+        [10.855, 48.4864],
+      ],
+    },
+  },
 ];
 
 // Helper function to get depot center
 export function getDepotCenter(depot: 'Essingen' | 'Langweid'): [number, number] {
-  return depot === 'Essingen' 
+  return depot === 'Essingen'
     ? [essingenBase.lat, essingenBase.lng]
     : [langweidBase.lat, langweidBase.lng];
 }
@@ -327,10 +329,15 @@ export function getDepotCenter(depot: 'Essingen' | 'Langweid'): [number, number]
 // Helper function to get track color based on state
 export function getTrackColor(state: TrackGeometry['state']): string {
   switch (state) {
-    case 'frei': return '#10b981'; // green
-    case 'belegt': return '#eab308'; // yellow
-    case 'gesperrt': return '#ef4444'; // red
-    case 'defekt': return '#6b7280'; // gray
-    default: return '#9ca3af';
+    case 'frei':
+      return '#10b981'; // green
+    case 'belegt':
+      return '#eab308'; // yellow
+    case 'gesperrt':
+      return '#ef4444'; // red
+    case 'defekt':
+      return '#6b7280'; // gray
+    default:
+      return '#9ca3af';
   }
 }
