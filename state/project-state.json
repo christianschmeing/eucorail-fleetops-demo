@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "1fa2ddfeec2c4684248a6e9e86b67ca2da1ea9bb",
-    "message": "fix(depot-map): Implement working Leaflet-based map solution\n\n- Replace non-working SimpleDepotMap with Leaflet\n- Use OpenStreetMap tiles for base layer\n- Dynamic import to avoid SSR issues\n- Proper track polylines with colors\n- Train markers with custom icons\n- Popups with train/track information\n- Legend and info panels\n- Fixed all TypeScript errors\n- Tested build successfully\n\nBREAKING: Removed SimpleDepotMap and MapLibre implementations",
+    "sha": "53fa99881ec5d8afbc7cc4a2e2bab9720f445d8d",
+    "message": "fix(depot-map): Replace Leaflet with static OpenStreetMap iframe solution\n\n- Removed non-loading Leaflet dynamic import\n- Implemented StaticDepotMap with OSM iframe\n- Direct HTML/CSS overlays for tracks and trains\n- No JavaScript library dependencies\n- Works immediately without loading issues\n- Tracks and trains rendered as HTML elements\n- Full interactivity with click handlers\n\nThis solution uses an embedded OpenStreetMap iframe with HTML overlays,\neliminating all complex JavaScript map library issues.",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T07:29:52Z"
+    "timestamp": "2025-08-20T07:36:12Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17091668031"
+    "run_id": "17091800689"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T07:31:14.006Z",
+  "generated_at": "2025-08-20T07:37:31.076Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
