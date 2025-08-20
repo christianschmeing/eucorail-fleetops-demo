@@ -1,5 +1,6 @@
 import { apiGet } from '@/lib/api';
 import arverioFleet from '@/data/arverio-fleet-real.json';
+import allocation from '@/data/fleet-allocation.json';
 import TrainsClientExtended from './TrainsClientExtended';
 
 interface Train {
@@ -36,17 +37,61 @@ async function getTrains(): Promise<Train[]> {
       nextMaintenanceDate: v.lastMaintenance || undefined,
     });
     const trains = real.map(toTrain);
-    while (trains.length < 144) {
-      const isBW = trains.length % 2 === 0;
-      trains.push({
-        id: `RES-${String(90000 + trains.length).padStart(5, '0')}`,
-        lineId: 'RESERVE',
-        region: isBW ? 'BW' : 'BY',
-        status: 'standby',
-        depot: isBW ? 'Essingen' : 'Langweid',
+    // enforce counts per line for 123 active + fill 21 reserves proportionally
+    const wanted: Record<string, number> = {};
+    for (const [l, specs] of Object.entries((allocation as any).regions.BY.lines)) {
+      wanted[l] = Object.values(specs as any).reduce((a: number, b: any) => a + (b as number), 0);
+    }
+    for (const [l, specs] of Object.entries((allocation as any).regions.BW.lines)) {
+      wanted[l] =
+        (wanted[l] || 0) +
+        Object.values(specs as any).reduce((a: number, b: any) => a + (b as number), 0);
+    }
+    const byLines = Object.keys((allocation as any).regions.BY.lines);
+    const bwLines = Object.keys((allocation as any).regions.BW.lines);
+    const out: Train[] = [];
+    const pull = (region: 'BY' | 'BW', line: string, n: number) => {
+      for (let i = 0; i < n; i++) {
+        const idx = trains.findIndex((t) => t.region === region);
+        const t = idx >= 0 ? trains.splice(idx, 1)[0] : undefined;
+        out.push(
+          t ||
+            ({
+              id: `FILL-${out.length}`,
+              lineId: line,
+              region: region,
+              status: 'active',
+              depot: region === 'BW' ? 'Essingen' : 'Langweid',
+            } as any)
+        );
+        out[out.length - 1].lineId = line;
+      }
+    };
+    for (const l of byLines) pull('BY', l, wanted[l] || 0);
+    for (const l of bwLines) pull('BW', l, wanted[l] || 0);
+    while (out.length < 123) {
+      const all = [...byLines, ...bwLines];
+      const l = all[out.length % all.length];
+      out.push({
+        id: `FILL-${out.length}`,
+        lineId: l,
+        region: bwLines.includes(l) ? 'BW' : 'BY',
+        status: 'active',
+        depot: bwLines.includes(l) ? 'Essingen' : 'Langweid',
       } as any);
     }
-    return trains.slice(0, 144);
+    while (out.length < 144) {
+      const pools = [...byLines, ...bwLines];
+      const l = pools[out.length % pools.length];
+      out.push({
+        id: `RES-${out.length}`,
+        lineId: l,
+        region: bwLines.includes(l) ? 'BW' : 'BY',
+        status: 'standby',
+        depot: bwLines.includes(l) ? 'Essingen' : 'Langweid',
+      } as any);
+    }
+    return out.slice(0, 144);
   }
   // SECONDARY: API
   const trains = await apiGet<Train[]>('/api/trains');

@@ -1,5 +1,6 @@
 import { apiGet } from '@/lib/api';
 import arverioFleet from '@/data/arverio-fleet-real.json';
+import allocation from '@/data/fleet-allocation.json';
 import linesData from '@/data/lines-complete.json';
 import MapClient from './MapClient';
 
@@ -45,6 +46,55 @@ function sampleOnLine(lineId: string): { lat: number; lng: number } {
   return { lat, lng };
 }
 
+function distributeToAllocation(seed: Train[]): Train[] {
+  const byLines = Object.keys((allocation as any).regions.BY.lines);
+  const bwLines = Object.keys((allocation as any).regions.BW.lines);
+  const wanted: Record<string, number> = {};
+  for (const [line, specs] of Object.entries((allocation as any).regions.BY.lines)) {
+    wanted[line] = Object.values(specs as any).reduce((a: number, b: any) => a + (b as number), 0);
+  }
+  for (const [line, specs] of Object.entries((allocation as any).regions.BW.lines)) {
+    wanted[line] =
+      (wanted[line] || 0) +
+      Object.values(specs as any).reduce((a: number, b: any) => a + (b as number), 0);
+  }
+  const out: Train[] = [];
+  const byPool = seed.filter((t) => t.region === 'BY');
+  const bwPool = seed.filter((t) => t.region === 'BW');
+  const take = (pool: Train[], line: string, n: number) => {
+    for (let i = 0; i < n; i++) {
+      const t = pool.pop() || seed.pop();
+      if (!t) break;
+      out.push({ ...t, lineId: line, position: sampleOnLine(line), status: 'active' });
+    }
+  };
+  for (const l of byLines) take(byPool, l, wanted[l] || 0);
+  for (const l of bwLines) take(bwPool, l, wanted[l] || 0);
+  while (out.length < 123) {
+    const all = [...byLines, ...bwLines];
+    const l = all[out.length % all.length];
+    out.push({
+      id: `FILL-${out.length}`,
+      lineId: l,
+      region: bwLines.includes(l) ? 'BW' : 'BY',
+      status: 'active',
+      position: sampleOnLine(l),
+    });
+  }
+  while (out.length < 144) {
+    const pools = [...byLines, ...bwLines];
+    const l = pools[out.length % pools.length];
+    out.push({
+      id: `RES-${out.length}`,
+      lineId: l,
+      region: bwLines.includes(l) ? 'BW' : 'BY',
+      status: 'standby',
+      position: sampleOnLine(l),
+    });
+  }
+  return out.slice(0, 144);
+}
+
 async function getTrains(): Promise<Train[]> {
   // PRIMARY: Arverio Real‑Daten
   const real = (arverioFleet as any).vehicles as Array<any>;
@@ -73,34 +123,7 @@ async function getTrains(): Promise<Train[]> {
       };
     };
     const trains = real.map(mapTrain);
-    // Fülle auf 144 auf – streue Positionen entlang realer Linien statt identischer Depot‑Koordinaten
-    const BW_FALLBACK_LINES = ['MEX13', 'RE1', 'MEX16', 'RE8', 'RE90'];
-    const BY_FALLBACK_LINES = [
-      'RE9',
-      'RE80',
-      'RE89',
-      'RB86',
-      'RB87',
-      'RB89',
-      'RE72',
-      'RE96',
-      'RB92',
-    ];
-    while (trains.length < 144) {
-      const isBW = trains.length % 2 === 0;
-      const lineId = (isBW ? BW_FALLBACK_LINES : BY_FALLBACK_LINES)[
-        Math.floor(Math.random() * (isBW ? BW_FALLBACK_LINES.length : BY_FALLBACK_LINES.length))
-      ];
-      trains.push({
-        id: `RES-${String(90000 + trains.length).padStart(5, '0')}`,
-        lineId,
-        region: isBW ? 'BW' : 'BY',
-        status: 'standby',
-        position: sampleOnLine(lineId),
-        delayMin: 0,
-      });
-    }
-    return trains.slice(0, 144);
+    return distributeToAllocation(trains);
   }
   // SECONDARY: API
   return await apiGet<Train[]>('/api/trains');
