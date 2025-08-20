@@ -14,6 +14,9 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
 
   // bootstrap demo data (until real timetable caches are present)
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).__liveSimLayer = 'mounted';
+    }
     buildLinesFromDataset();
     allocateFleet();
     start();

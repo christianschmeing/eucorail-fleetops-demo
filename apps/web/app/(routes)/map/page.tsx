@@ -71,14 +71,20 @@ async function getTrains(): Promise<Train[]> {
       };
     };
     const trains = real.map(mapTrain);
+    // Fülle auf 144 auf – streue Positionen entlang realer Linien statt identischer Depot‑Koordinaten
+    const BW_FALLBACK_LINES = ['RE1', 'RE8', 'MEX16'];
+    const BY_FALLBACK_LINES = ['RE9', 'RE80'];
     while (trains.length < 144) {
       const isBW = trains.length % 2 === 0;
+      const lineId = (isBW ? BW_FALLBACK_LINES : BY_FALLBACK_LINES)[
+        Math.floor(Math.random() * (isBW ? BW_FALLBACK_LINES.length : BY_FALLBACK_LINES.length))
+      ];
       trains.push({
         id: `RES-${String(90000 + trains.length).padStart(5, '0')}`,
-        lineId: 'RESERVE',
+        lineId,
         region: isBW ? 'BW' : 'BY',
         status: 'standby',
-        position: isBW ? { lat: 48.6295, lng: 9.9574 } : { lat: 48.4894, lng: 10.8539 },
+        position: sampleOnLine(lineId),
         delayMin: 0,
       });
     }
