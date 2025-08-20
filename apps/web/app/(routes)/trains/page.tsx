@@ -1,4 +1,5 @@
 import { apiGet } from '@/lib/api';
+import arverioFleet from '@/data/arverio-fleet-real.json';
 import TrainsClientExtended from './TrainsClientExtended';
 
 interface Train {
@@ -23,31 +24,39 @@ async function getTrains(): Promise<Train[]> {
     // Ensure we have exactly 144 trains and preserve all data including maintenanceInfo
     return trains.slice(0, 144);
   } catch {
-    // Fallback: Generiere 144 Züge
-    const fallbackTrains: Train[] = [];
-    for (let i = 0; i < 144; i++) {
-      const lineId = ['RE9', 'MEX16', 'RE8', 'RE1', 'RE89'][Math.floor(i / 29) % 5];
-      const region = i < 87 ? 'BW' : 'BY';
-      fallbackTrains.push({
-        id: `${lineId}-${String(60000 + i).padStart(5, '0')}`,
-        lineId,
-        region,
-        status: i < 108 ? 'active' : ['maintenance', 'standby', 'inspection'][i % 3],
-        depot: region === 'BW' ? 'Stuttgart' : 'Augsburg',
-        series: ['FLIRT³', 'Mireo'][i % 2],
-        delayMin: Math.floor(Math.random() * 10) - 5,
-        speedKmh: i < 108 ? 80 + Math.floor(Math.random() * 40) : 0,
-        healthScore: 85 + Math.floor(Math.random() * 15),
-        nextMaintenanceDate: new Date(Date.now() + (30 + i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-      });
+    // Fallback: Nutze reale Arverio‑Daten
+    const real = (arverioFleet as any).vehicles as Array<any>;
+    const toTrain = (v: any): Train => ({
+      id: v.id,
+      lineId: v.line || (v.depot === 'ESS' ? 'RE1' : 'RE9'),
+      region: v.depot === 'ESS' ? 'BW' : 'BY',
+      status:
+        v.status === 'MAINTENANCE' ? 'maintenance' : v.status === 'DEPOT' ? 'standby' : 'active',
+      depot: v.depot === 'ESS' ? 'Essingen' : 'Langweid',
+      series: v.type,
+      delayMin: 0,
+      speedKmh: 0,
+      healthScore: 90,
+      nextMaintenanceDate: v.lastMaintenance || undefined,
+    });
+    const trains = real.map(toTrain);
+    while (trains.length < 144) {
+      const isBW = trains.length % 2 === 0;
+      trains.push({
+        id: `RES-${String(90000 + trains.length).padStart(5, '0')}`,
+        lineId: 'RESERVE',
+        region: isBW ? 'BW' : 'BY',
+        status: 'standby',
+        depot: isBW ? 'Essingen' : 'Langweid',
+      } as any);
     }
-    return fallbackTrains;
+    return trains.slice(0, 144);
   }
 }
 
 export default async function TrainsPage() {
   // SSR: Lade Züge serverseitig
   const trains = await getTrains();
-  
+
   return <TrainsClientExtended initialTrains={trains} />;
 }
