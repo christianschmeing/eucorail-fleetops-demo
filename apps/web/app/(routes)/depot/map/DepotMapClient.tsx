@@ -6,7 +6,7 @@ import { TrackGeometry } from '../track-geometries';
 import DepotMapInspector from './DepotMapInspector';
 import DepotMapFilters from './DepotMapFilters';
 import DepotMapQueue from './DepotMapQueue';
-import DepotMapGL from './DepotMapGL';
+import SimpleDepotMap from './SimpleDepotMap';
 
 interface DepotMapClientProps {
   tracks: TrackGeometry[];
@@ -330,16 +330,12 @@ export default function DepotMapClient({
 
         {/* Map */}
         <div className="flex-1 relative">
-          <DepotMapGL
+          <SimpleDepotMap
             depot={selectedDepot}
             tracks={filteredTracks}
             allocations={filteredAllocations}
-            movePlans={filteredMovePlans}
-            conflicts={conflicts}
-            mapView={mapView}
             onTrackClick={setSelectedTrack}
             onAllocationClick={setSelectedAllocation}
-            onDrop={handleDrop}
           />
         </div>
 
