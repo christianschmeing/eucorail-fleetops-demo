@@ -30,6 +30,7 @@ interface MapClientProps {
 export default function MapClient({ initialTrains, initialKpis }: MapClientProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
+  const [mapObj, setMapObj] = useState<maplibregl.Map | null>(null);
   const markers = useRef<Map<string, maplibregl.Marker>>(new Map());
 
   const [trains, setTrains] = useState<Train[]>(initialTrains);
@@ -95,9 +96,15 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
     });
 
     map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
+    if (map.current.isStyleLoaded()) {
+      setMapObj(map.current);
+    } else {
+      map.current.once('load', () => setMapObj(map.current));
+    }
 
     return () => {
       map.current?.remove();
+      setMapObj(null);
     };
   }, []);
 
@@ -413,7 +420,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
       <div className="flex-1 relative">
         <div ref={mapContainer} className="absolute inset-0" />
         {/* Simulierte Linien/Layer (Timetable/OSM Placeholder) */}
-        <LiveSimLayer map={map.current} />
+        <LiveSimLayer map={mapObj} />
 
         {/* Legende */}
         <div className="absolute bottom-4 left-4 bg-gray-800/90 backdrop-blur border border-gray-700 rounded-lg p-3">
