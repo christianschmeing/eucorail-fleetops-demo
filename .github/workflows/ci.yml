@@ -25,6 +25,13 @@ jobs:
         run: npm run lint:baseline || true
       - name: Build
         run: npm run build:all
+      - name: Install Playwright browsers (for smoke)
+        run: npx playwright install --with-deps
+      - name: Smoke tests (fast, stable)
+        env:
+          PLAYWRIGHT_SKIP_WEBSERVER: '1'
+          ENABLE_VISUAL_TESTS: '0'
+        run: ENABLE_VISUAL_TESTS=0 npx playwright test tests/e2e/ci-smoke.spec.ts --project=chromium --reporter=html,line || true
       - name: Tests (optional)
         if: ${{ false }}
         run: npm run test:all

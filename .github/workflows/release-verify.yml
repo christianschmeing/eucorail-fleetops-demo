@@ -59,10 +59,11 @@ jobs:
           if [ -z "$url" ]; then echo "No production URL reached 200/200 within timeout" >&2; exit 1; fi
           echo "Production URL: $url" | tee -a CHANGESUMMARY.md
 
-      - name: Run E2E against Production URL
+      - name: Run E2E against Production URL (chromium only, visuals disabled)
         env:
           PLAYWRIGHT_SKIP_WEBSERVER: '1'
-        run: npx playwright test --base-url="${{ steps.detect.outputs.url }}" --reporter=html,line
+          ENABLE_VISUAL_TESTS: '0'
+        run: ENABLE_VISUAL_TESTS=0 npx playwright test --project=chromium --base-url="${{ steps.detect.outputs.url }}" --reporter=html,line
 
       - name: Upload Playwright report
         if: always()

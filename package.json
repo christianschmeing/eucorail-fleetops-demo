@@ -27,6 +27,7 @@
     "start:web:test": "npm -w apps/web run start:test",
     "dev:e2e": "concurrently -k -n api,web \"npm run start:api:test\" \"npm run start:web:test\"",
     "test:e2e": "playwright test",
+    "test:e2e:smoke": "playwright test tests/e2e/ci-smoke.spec.ts --project=chromium",
     "test:e2e:ui": "playwright test --ui",
     "typecheck": "npm --workspace apps/web run -s typecheck || true",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
@@ -51,7 +52,9 @@
     "lint:baseline": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 500",
     "test:quality": "npm run format:check && npm run lint:baseline",
     "cursor:verify": "npm run verify:smart",
-    "cursor:update-snapshots": "npx --yes playwright test --update-snapshots || true"
+    "cursor:update-snapshots": "npx --yes playwright test --project=visual-chromium --update-snapshots || true",
+    "test:visual": "playwright test --project=visual-chromium",
+    "test:visual:update": "playwright test --project=visual-chromium --update-snapshots"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
@@ -71,7 +74,7 @@
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-next": "^15.4.6",
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-react": "^7.34.3",

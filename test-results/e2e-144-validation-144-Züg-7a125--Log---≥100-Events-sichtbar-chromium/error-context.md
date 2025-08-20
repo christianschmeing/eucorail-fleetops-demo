@@ -1,0 +1,526 @@
+# Page snapshot
+
+```yaml
+- complementary:
+    - text: E Eucorail FleetOps
+    - navigation:
+        - link "Dashboard g d":
+            - /url: /dashboard
+            - img
+            - text: Dashboard g d
+        - link "Map g m":
+            - /url: /map
+            - img
+            - text: Map g m
+        - link "Linien g l":
+            - /url: /lines
+            - img
+            - text: Linien g l
+        - link "Züge g t":
+            - /url: /trains
+            - img
+            - text: Züge g t
+        - link "Wartung g w":
+            - /url: /maintenance
+            - img
+            - text: Wartung g w
+        - link "Depot g o":
+            - /url: /depot
+            - img
+            - text: Depot g o
+        - link "ECM g e":
+            - /url: /ecm
+            - img
+            - text: ECM g e
+        - link "Protokoll g p":
+            - /url: /log
+            - img
+            - text: Protokoll g p
+        - button "Suchen (⌘K, /)":
+            - img
+            - text: Suchen (⌘K, /)
+- heading "Ereignisprotokoll" [level=1]
+- paragraph: Systemereignisse und Aktivitäten • Eucorail FleetOps
+- button "CSV exportieren":
+    - img
+    - text: CSV exportieren
+- heading "Flottenabdeckung" [level=2]
+- text: 166/144 Züge im 48-h-Fenster ⚠ Es fehlen Ereignisse für -22 Züge 541 Gesamtereignisse ≥144 ✓ Ereignistyp (Mehrfachauswahl)
+- button "Richtlinie genehmigt"
+- button "Arbeitsauftrag geschlossen"
+- button "Arbeitsauftrag zugewiesen"
+- button "Wartungsplan aktualisiert"
+- button "Positionsstream verbunden"
+- button "Alarm ausgelöst"
+- button "Alarm behoben"
+- button "Benutzer angemeldet"
+- button "Abnahme abgeschlossen"
+- button "Datenversion markiert"
+- button "Depot-Plan geändert"
+- button "Depot-Freigabe"
+- button "Depot-Export"
+- button "Depot-Zuweisung"
+- button "Depot-Konflikt"
+- text: Zeitraum
+- combobox:
+    - option "24 Stunden"
+    - option "48 Stunden (Standard)" [selected]
+    - option "7 Tage"
+- text: Zug-ID
+- textbox "z.B. RE9-60001"
+- button "Filter zurücksetzen"
+- table:
+    - rowgroup:
+        - row "Zeit Typ Objekt Zug-ID Benutzer Details":
+            - cell "Zeit"
+            - cell "Typ"
+            - cell "Objekt"
+            - cell "Zug-ID"
+            - cell "Benutzer"
+            - cell "Details"
+    - rowgroup:
+        - row "20.08.2025, 12:22 Datenversion markiert System SYS-CORE – system@eucorail.com Metriken aggregiert":
+            - cell "20.08.2025, 12:22"
+            - cell "Datenversion markiert"
+            - cell "System SYS-CORE"
+            - cell "–"
+            - cell "system@eucorail.com"
+            - cell "Metriken aggregiert"
+        - row "20.08.2025, 12:15 Abnahme abgeschlossen Signoff SIG-05145 S2-83011 maint.mueller@eucorail.com Inspektion abgezeichnet":
+            - cell "20.08.2025, 12:15"
+            - cell "Abnahme abgeschlossen"
+            - cell "Signoff SIG-05145"
+            - cell "S2-83011":
+                - link "S2-83011":
+                    - /url: /trains/S2-83011
+            - cell "maint.mueller@eucorail.com"
+            - cell "Inspektion abgezeichnet"
+        - row "20.08.2025, 12:13 Arbeitsauftrag geschlossen WorkOrder WO-10472 RE8-70016 admin.wagner@eucorail.com Türmechanik geprüft":
+            - cell "20.08.2025, 12:13"
+            - cell "Arbeitsauftrag geschlossen"
+            - cell "WorkOrder WO-10472"
+            - cell "RE8-70016":
+                - link "RE8-70016":
+                    - /url: /trains/RE8-70016
+            - cell "admin.wagner@eucorail.com"
+            - cell "Türmechanik geprüft"
+        - row "20.08.2025, 11:58 Wartungsplan aktualisiert Train S6-82003 S6-82003 admin.wagner@eucorail.com Winterwartung aktiviert":
+            - cell "20.08.2025, 11:58"
+            - cell "Wartungsplan aktualisiert"
+            - cell "Train S6-82003"
+            - cell "S6-82003":
+                - link "S6-82003":
+                    - /url: /trains/S6-82003
+            - cell "admin.wagner@eucorail.com"
+            - cell "Winterwartung aktiviert"
+        - row "20.08.2025, 11:55 Datenversion markiert System SYS-CORE – system@eucorail.com Metriken aggregiert":
+            - cell "20.08.2025, 11:55"
+            - cell "Datenversion markiert"
+            - cell "System SYS-CORE"
+            - cell "–"
+            - cell "system@eucorail.com"
+            - cell "Metriken aggregiert"
+        - row "20.08.2025, 11:54 Abnahme abgeschlossen Signoff SIG-05132 S6-82016 admin.wagner@eucorail.com Qualitätskontrolle bestanden":
+            - cell "20.08.2025, 11:54"
+            - cell "Abnahme abgeschlossen"
+            - cell "Signoff SIG-05132"
+            - cell "S6-82016":
+                - link "S6-82016":
+                    - /url: /trains/S6-82016
+            - cell "admin.wagner@eucorail.com"
+            - cell "Qualitätskontrolle bestanden"
+        - row "20.08.2025, 11:39 Depot-Plan geändert Train RE8-70004 RE8-70004 supervisor.weber@eucorail.com Zeitfenster verschoben":
+            - cell "20.08.2025, 11:39"
+            - cell "Depot-Plan geändert"
+            - cell "Train RE8-70004"
+            - cell "RE8-70004":
+                - link "RE8-70004":
+                    - /url: /trains/RE8-70004
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Zeitfenster verschoben"
+        - row "20.08.2025, 11:32 Abnahme abgeschlossen Signoff SIG-05081 MEX16-80013 maint.mueller@eucorail.com Inspektion abgezeichnet":
+            - cell "20.08.2025, 11:32"
+            - cell "Abnahme abgeschlossen"
+            - cell "Signoff SIG-05081"
+            - cell "MEX16-80013":
+                - link "MEX16-80013":
+                    - /url: /trains/MEX16-80013
+            - cell "maint.mueller@eucorail.com"
+            - cell "Inspektion abgezeichnet"
+        - row "20.08.2025, 11:27 Richtlinie genehmigt Policy POL-1020 RES-91009 maint.mueller@eucorail.com Sicherheitsprotokoll aktualisiert":
+            - cell "20.08.2025, 11:27"
+            - cell "Richtlinie genehmigt"
+            - cell "Policy POL-1020"
+            - cell "RES-91009":
+                - link "RES-91009":
+                    - /url: /trains/RES-91009
+            - cell "maint.mueller@eucorail.com"
+            - cell "Sicherheitsprotokoll aktualisiert"
+        - row "20.08.2025, 11:23 Arbeitsauftrag geschlossen WorkOrder WO-10040 RE9-60005 tech.schmidt@eucorail.com Softwareupdate installiert":
+            - cell "20.08.2025, 11:23"
+            - cell "Arbeitsauftrag geschlossen"
+            - cell "WorkOrder WO-10040"
+            - cell "RE9-60005":
+                - link "RE9-60005":
+                    - /url: /trains/RE9-60005
+            - cell "tech.schmidt@eucorail.com"
+            - cell "Softwareupdate installiert"
+        - row "20.08.2025, 11:21 Abnahme abgeschlossen Signoff SIG-05154 RES-91002 admin.wagner@eucorail.com Inspektion abgezeichnet":
+            - cell "20.08.2025, 11:21"
+            - cell "Abnahme abgeschlossen"
+            - cell "Signoff SIG-05154"
+            - cell "RES-91002":
+                - link "RES-91002":
+                    - /url: /trains/RES-91002
+            - cell "admin.wagner@eucorail.com"
+            - cell "Inspektion abgezeichnet"
+        - row "20.08.2025, 11:15 Depot-Plan geändert Train RE9-60021 RE9-60021 tech.schmidt@eucorail.com Zeitfenster verschoben":
+            - cell "20.08.2025, 11:15"
+            - cell "Depot-Plan geändert"
+            - cell "Train RE9-60021"
+            - cell "RE9-60021":
+                - link "RE9-60021":
+                    - /url: /trains/RE9-60021
+            - cell "tech.schmidt@eucorail.com"
+            - cell "Zeitfenster verschoben"
+        - row "20.08.2025, 11:14 Alarm ausgelöst Train MEX16-80022 MEX16-80022 ops.meyer@eucorail.com Temperaturwarnung Motor":
+            - cell "20.08.2025, 11:14"
+            - cell "Alarm ausgelöst"
+            - cell "Train MEX16-80022"
+            - cell "MEX16-80022":
+                - link "MEX16-80022":
+                    - /url: /trains/MEX16-80022
+            - cell "ops.meyer@eucorail.com"
+            - cell "Temperaturwarnung Motor"
+        - row "20.08.2025, 11:13 Benutzer angemeldet Train RES-90008 RES-90008 supervisor.weber@eucorail.com Web-Portal Zugriff":
+            - cell "20.08.2025, 11:13"
+            - cell "Benutzer angemeldet"
+            - cell "Train RES-90008"
+            - cell "RES-90008":
+                - link "RES-90008":
+                    - /url: /trains/RES-90008
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Web-Portal Zugriff"
+        - row "20.08.2025, 11:05 Depot-Plan geändert Train RE8-70024 RE8-70024 admin.wagner@eucorail.com Gleis E-H1 neu zugewiesen":
+            - cell "20.08.2025, 11:05"
+            - cell "Depot-Plan geändert"
+            - cell "Train RE8-70024"
+            - cell "RE8-70024":
+                - link "RE8-70024":
+                    - /url: /trains/RE8-70024
+            - cell "admin.wagner@eucorail.com"
+            - cell "Gleis E-H1 neu zugewiesen"
+        - row "20.08.2025, 11:03 Depot-Plan geändert Train MEX16-80021 MEX16-80021 ops.meyer@eucorail.com Zeitfenster verschoben":
+            - cell "20.08.2025, 11:03"
+            - cell "Depot-Plan geändert"
+            - cell "Train MEX16-80021"
+            - cell "MEX16-80021":
+                - link "MEX16-80021":
+                    - /url: /trains/MEX16-80021
+            - cell "ops.meyer@eucorail.com"
+            - cell "Zeitfenster verschoben"
+        - row "20.08.2025, 10:57 Datenversion markiert System SYS-CORE – system@eucorail.com Cache geleert":
+            - cell "20.08.2025, 10:57"
+            - cell "Datenversion markiert"
+            - cell "System SYS-CORE"
+            - cell "–"
+            - cell "system@eucorail.com"
+            - cell "Cache geleert"
+        - row "20.08.2025, 10:56 Depot-Freigabe Train RES-91012 RES-91012 supervisor.weber@eucorail.com Betrieb freigegeben":
+            - cell "20.08.2025, 10:56"
+            - cell "Depot-Freigabe"
+            - cell "Train RES-91012"
+            - cell "RES-91012":
+                - link "RES-91012":
+                    - /url: /trains/RES-91012
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Betrieb freigegeben"
+        - row "20.08.2025, 10:46 Depot-Plan geändert Train MEX12-81013 MEX12-81013 maint.mueller@eucorail.com Gleis E-H1 neu zugewiesen":
+            - cell "20.08.2025, 10:46"
+            - cell "Depot-Plan geändert"
+            - cell "Train MEX12-81013"
+            - cell "MEX12-81013":
+                - link "MEX12-81013":
+                    - /url: /trains/MEX12-81013
+            - cell "maint.mueller@eucorail.com"
+            - cell "Gleis E-H1 neu zugewiesen"
+        - row "20.08.2025, 10:42 Wartungsplan aktualisiert Train MEX16-80021 MEX16-80021 ops.meyer@eucorail.com Intervall auf 30 Tage gesetzt":
+            - cell "20.08.2025, 10:42"
+            - cell "Wartungsplan aktualisiert"
+            - cell "Train MEX16-80021"
+            - cell "MEX16-80021":
+                - link "MEX16-80021":
+                    - /url: /trains/MEX16-80021
+            - cell "ops.meyer@eucorail.com"
+            - cell "Intervall auf 30 Tage gesetzt"
+        - row "20.08.2025, 10:38 Depot-Freigabe Train MEX12-81004 MEX12-81004 tech.schmidt@eucorail.com QA abgeschlossen":
+            - cell "20.08.2025, 10:38"
+            - cell "Depot-Freigabe"
+            - cell "Train MEX12-81004"
+            - cell "MEX12-81004":
+                - link "MEX12-81004":
+                    - /url: /trains/MEX12-81004
+            - cell "tech.schmidt@eucorail.com"
+            - cell "QA abgeschlossen"
+        - row "20.08.2025, 10:34 Depot-Freigabe Train MEX16-80005 MEX16-80005 supervisor.weber@eucorail.com Freigabe nach IS2 erteilt":
+            - cell "20.08.2025, 10:34"
+            - cell "Depot-Freigabe"
+            - cell "Train MEX16-80005"
+            - cell "MEX16-80005":
+                - link "MEX16-80005":
+                    - /url: /trains/MEX16-80005
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Freigabe nach IS2 erteilt"
+        - row "20.08.2025, 10:34 Alarm ausgelöst Train S6-82005 S6-82005 ops.meyer@eucorail.com Temperaturwarnung Motor":
+            - cell "20.08.2025, 10:34"
+            - cell "Alarm ausgelöst"
+            - cell "Train S6-82005"
+            - cell "S6-82005":
+                - link "S6-82005":
+                    - /url: /trains/S6-82005
+            - cell "ops.meyer@eucorail.com"
+            - cell "Temperaturwarnung Motor"
+        - row "20.08.2025, 10:33 Wartungsplan aktualisiert Train RE8-70028 RE8-70028 admin.wagner@eucorail.com Intervall auf 30 Tage gesetzt":
+            - cell "20.08.2025, 10:33"
+            - cell "Wartungsplan aktualisiert"
+            - cell "Train RE8-70028"
+            - cell "RE8-70028":
+                - link "RE8-70028":
+                    - /url: /trains/RE8-70028
+            - cell "admin.wagner@eucorail.com"
+            - cell "Intervall auf 30 Tage gesetzt"
+        - row "20.08.2025, 10:30 Arbeitsauftrag geschlossen WorkOrder WO-10820 MEX16-80014 ops.meyer@eucorail.com Klimaanlage gewartet":
+            - cell "20.08.2025, 10:30"
+            - cell "Arbeitsauftrag geschlossen"
+            - cell "WorkOrder WO-10820"
+            - cell "MEX16-80014":
+                - link "MEX16-80014":
+                    - /url: /trains/MEX16-80014
+            - cell "ops.meyer@eucorail.com"
+            - cell "Klimaanlage gewartet"
+        - row "20.08.2025, 10:15 Datenversion markiert System SYS-CORE – system@eucorail.com Datenbank optimiert":
+            - cell "20.08.2025, 10:15"
+            - cell "Datenversion markiert"
+            - cell "System SYS-CORE"
+            - cell "–"
+            - cell "system@eucorail.com"
+            - cell "Datenbank optimiert"
+        - row "20.08.2025, 10:06 Richtlinie genehmigt Policy POL-1077 RE9-60015 ops.meyer@eucorail.com Wartungsintervall angepasst":
+            - cell "20.08.2025, 10:06"
+            - cell "Richtlinie genehmigt"
+            - cell "Policy POL-1077"
+            - cell "RE9-60015":
+                - link "RE9-60015":
+                    - /url: /trains/RE9-60015
+            - cell "ops.meyer@eucorail.com"
+            - cell "Wartungsintervall angepasst"
+        - row "20.08.2025, 10:02 Arbeitsauftrag zugewiesen WorkOrder WO-11411 S2-83007 tech.schmidt@eucorail.com Priorität erhöht":
+            - cell "20.08.2025, 10:02"
+            - cell "Arbeitsauftrag zugewiesen"
+            - cell "WorkOrder WO-11411"
+            - cell "S2-83007":
+                - link "S2-83007":
+                    - /url: /trains/S2-83007
+            - cell "tech.schmidt@eucorail.com"
+            - cell "Priorität erhöht"
+        - row "20.08.2025, 09:50 Datenversion markiert Train S2-83012 S2-83012 dispatcher.becker@eucorail.com Konfiguration gesichert":
+            - cell "20.08.2025, 09:50"
+            - cell "Datenversion markiert"
+            - cell "Train S2-83012"
+            - cell "S2-83012":
+                - link "S2-83012":
+                    - /url: /trains/S2-83012
+            - cell "dispatcher.becker@eucorail.com"
+            - cell "Konfiguration gesichert"
+        - row "20.08.2025, 09:48 Wartungsplan aktualisiert Train S2-83016 S2-83016 supervisor.weber@eucorail.com Winterwartung aktiviert":
+            - cell "20.08.2025, 09:48"
+            - cell "Wartungsplan aktualisiert"
+            - cell "Train S2-83016"
+            - cell "S2-83016":
+                - link "S2-83016":
+                    - /url: /trains/S2-83016
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Winterwartung aktiviert"
+        - row "20.08.2025, 09:47 Depot-Freigabe Train S6-82014 S6-82014 admin.wagner@eucorail.com QA abgeschlossen":
+            - cell "20.08.2025, 09:47"
+            - cell "Depot-Freigabe"
+            - cell "Train S6-82014"
+            - cell "S6-82014":
+                - link "S6-82014":
+                    - /url: /trains/S6-82014
+            - cell "admin.wagner@eucorail.com"
+            - cell "QA abgeschlossen"
+        - row "20.08.2025, 09:46 Alarm ausgelöst Train RES-91013 RES-91013 maint.mueller@eucorail.com Verzögerung >10min":
+            - cell "20.08.2025, 09:46"
+            - cell "Alarm ausgelöst"
+            - cell "Train RES-91013"
+            - cell "RES-91013":
+                - link "RES-91013":
+                    - /url: /trains/RES-91013
+            - cell "maint.mueller@eucorail.com"
+            - cell "Verzögerung >10min"
+        - row "20.08.2025, 09:45 Benutzer angemeldet Train RE9-60018 RE9-60018 ops.meyer@eucorail.com Web-Portal Zugriff":
+            - cell "20.08.2025, 09:45"
+            - cell "Benutzer angemeldet"
+            - cell "Train RE9-60018"
+            - cell "RE9-60018":
+                - link "RE9-60018":
+                    - /url: /trains/RE9-60018
+            - cell "ops.meyer@eucorail.com"
+            - cell "Web-Portal Zugriff"
+        - row "20.08.2025, 09:43 Depot-Zuweisung Train MEX16-80019 MEX16-80019 dispatcher.becker@eucorail.com Reserve aktiviert":
+            - cell "20.08.2025, 09:43"
+            - cell "Depot-Zuweisung"
+            - cell "Train MEX16-80019"
+            - cell "MEX16-80019":
+                - link "MEX16-80019":
+                    - /url: /trains/MEX16-80019
+            - cell "dispatcher.becker@eucorail.com"
+            - cell "Reserve aktiviert"
+        - row "20.08.2025, 09:42 Positionsstream verbunden Train RE9-60021 RE9-60021 admin.wagner@eucorail.com Live-Tracking gestartet":
+            - cell "20.08.2025, 09:42"
+            - cell "Positionsstream verbunden"
+            - cell "Train RE9-60021"
+            - cell "RE9-60021":
+                - link "RE9-60021":
+                    - /url: /trains/RE9-60021
+            - cell "admin.wagner@eucorail.com"
+            - cell "Live-Tracking gestartet"
+        - row "20.08.2025, 09:35 Richtlinie genehmigt Policy POL-1072 RE9-60021 maint.mueller@eucorail.com Wartungsintervall angepasst":
+            - cell "20.08.2025, 09:35"
+            - cell "Richtlinie genehmigt"
+            - cell "Policy POL-1072"
+            - cell "RE9-60021":
+                - link "RE9-60021":
+                    - /url: /trains/RE9-60021
+            - cell "maint.mueller@eucorail.com"
+            - cell "Wartungsintervall angepasst"
+        - row "20.08.2025, 09:05 Abnahme abgeschlossen Signoff SIG-05088 MEX16-80020 dispatcher.becker@eucorail.com Qualitätskontrolle bestanden":
+            - cell "20.08.2025, 09:05"
+            - cell "Abnahme abgeschlossen"
+            - cell "Signoff SIG-05088"
+            - cell "MEX16-80020":
+                - link "MEX16-80020":
+                    - /url: /trains/MEX16-80020
+            - cell "dispatcher.becker@eucorail.com"
+            - cell "Qualitätskontrolle bestanden"
+        - row "20.08.2025, 09:02 Datenversion markiert System SYS-CORE – system@eucorail.com Datenbank optimiert":
+            - cell "20.08.2025, 09:02"
+            - cell "Datenversion markiert"
+            - cell "System SYS-CORE"
+            - cell "–"
+            - cell "system@eucorail.com"
+            - cell "Datenbank optimiert"
+        - row "20.08.2025, 09:01 Alarm ausgelöst Train RE9-60022 RE9-60022 supervisor.weber@eucorail.com Temperaturwarnung Motor":
+            - cell "20.08.2025, 09:01"
+            - cell "Alarm ausgelöst"
+            - cell "Train RE9-60022"
+            - cell "RE9-60022":
+                - link "RE9-60022":
+                    - /url: /trains/RE9-60022
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Temperaturwarnung Motor"
+        - row "20.08.2025, 08:56 Depot-Freigabe Train RE8-70010 RE8-70010 supervisor.weber@eucorail.com Freigabe nach IS2 erteilt":
+            - cell "20.08.2025, 08:56"
+            - cell "Depot-Freigabe"
+            - cell "Train RE8-70010"
+            - cell "RE8-70010":
+                - link "RE8-70010":
+                    - /url: /trains/RE8-70010
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Freigabe nach IS2 erteilt"
+        - row "20.08.2025, 08:47 Arbeitsauftrag geschlossen WorkOrder WO-10690 MEX16-80001 admin.wagner@eucorail.com Klimaanlage gewartet":
+            - cell "20.08.2025, 08:47"
+            - cell "Arbeitsauftrag geschlossen"
+            - cell "WorkOrder WO-10690"
+            - cell "MEX16-80001":
+                - link "MEX16-80001":
+                    - /url: /trains/MEX16-80001
+            - cell "admin.wagner@eucorail.com"
+            - cell "Klimaanlage gewartet"
+        - row "20.08.2025, 08:44 Depot-Freigabe Train RE9-60030 RE9-60030 tech.schmidt@eucorail.com QA abgeschlossen":
+            - cell "20.08.2025, 08:44"
+            - cell "Depot-Freigabe"
+            - cell "Train RE9-60030"
+            - cell "RE9-60030":
+                - link "RE9-60030":
+                    - /url: /trains/RE9-60030
+            - cell "tech.schmidt@eucorail.com"
+            - cell "QA abgeschlossen"
+        - row "20.08.2025, 08:41 Positionsstream verbunden Train RES-90002 RES-90002 admin.wagner@eucorail.com GPS-Signal stabil":
+            - cell "20.08.2025, 08:41"
+            - cell "Positionsstream verbunden"
+            - cell "Train RES-90002"
+            - cell "RES-90002":
+                - link "RES-90002":
+                    - /url: /trains/RES-90002
+            - cell "admin.wagner@eucorail.com"
+            - cell "GPS-Signal stabil"
+        - row "20.08.2025, 08:37 Alarm ausgelöst Train MEX16-80002 MEX16-80002 ops.meyer@eucorail.com Verzögerung >10min":
+            - cell "20.08.2025, 08:37"
+            - cell "Alarm ausgelöst"
+            - cell "Train MEX16-80002"
+            - cell "MEX16-80002":
+                - link "MEX16-80002":
+                    - /url: /trains/MEX16-80002
+            - cell "ops.meyer@eucorail.com"
+            - cell "Verzögerung >10min"
+        - row "20.08.2025, 08:36 Depot-Freigabe Train MEX16-80019 MEX16-80019 ops.meyer@eucorail.com Betrieb freigegeben":
+            - cell "20.08.2025, 08:36"
+            - cell "Depot-Freigabe"
+            - cell "Train MEX16-80019"
+            - cell "MEX16-80019":
+                - link "MEX16-80019":
+                    - /url: /trains/MEX16-80019
+            - cell "ops.meyer@eucorail.com"
+            - cell "Betrieb freigegeben"
+        - row "20.08.2025, 08:32 Arbeitsauftrag geschlossen WorkOrder WO-10642 RES-90005 supervisor.weber@eucorail.com Softwareupdate installiert":
+            - cell "20.08.2025, 08:32"
+            - cell "Arbeitsauftrag geschlossen"
+            - cell "WorkOrder WO-10642"
+            - cell "RES-90005":
+                - link "RES-90005":
+                    - /url: /trains/RES-90005
+            - cell "supervisor.weber@eucorail.com"
+            - cell "Softwareupdate installiert"
+        - row "20.08.2025, 08:29 Abnahme abgeschlossen Signoff SIG-05104 MEX12-81006 supervisor.weber@eucorail.com ECM-4 Freigabe erteilt":
+            - cell "20.08.2025, 08:29"
+            - cell "Abnahme abgeschlossen"
+            - cell "Signoff SIG-05104"
+            - cell "MEX12-81006":
+                - link "MEX12-81006":
+                    - /url: /trains/MEX12-81006
+            - cell "supervisor.weber@eucorail.com"
+            - cell "ECM-4 Freigabe erteilt"
+        - row "20.08.2025, 08:27 Alarm behoben Train S2-83009 S2-83009 maint.mueller@eucorail.com Störung behoben":
+            - cell "20.08.2025, 08:27"
+            - cell "Alarm behoben"
+            - cell "Train S2-83009"
+            - cell "S2-83009":
+                - link "S2-83009":
+                    - /url: /trains/S2-83009
+            - cell "maint.mueller@eucorail.com"
+            - cell "Störung behoben"
+        - row "20.08.2025, 08:27 Datenversion markiert System SYS-CORE – system@eucorail.com Cache geleert":
+            - cell "20.08.2025, 08:27"
+            - cell "Datenversion markiert"
+            - cell "System SYS-CORE"
+            - cell "–"
+            - cell "system@eucorail.com"
+            - cell "Cache geleert"
+        - row "20.08.2025, 08:24 Alarm ausgelöst Train RE9-60009 RE9-60009 tech.schmidt@eucorail.com Verzögerung >10min":
+            - cell "20.08.2025, 08:24"
+            - cell "Alarm ausgelöst"
+            - cell "Train RE9-60009"
+            - cell "RE9-60009":
+                - link "RE9-60009":
+                    - /url: /trains/RE9-60009
+            - cell "tech.schmidt@eucorail.com"
+            - cell "Verzögerung >10min"
+- text: 1–50 von 535 Ereignissen
+- button "Zurück" [disabled]
+- text: Seite 1 von 11
+- button "Weiter"
+- button "Dark Mode Toggle": 🌓 Theme
+- alert
+```

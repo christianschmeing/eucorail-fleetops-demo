@@ -1,0 +1,243 @@
+# Page snapshot
+
+```yaml
+- complementary:
+    - text: E Eucorail FleetOps
+    - navigation:
+        - link "Dashboard g d":
+            - /url: /dashboard
+            - img
+            - text: Dashboard g d
+        - link "Map g m":
+            - /url: /map
+            - img
+            - text: Map g m
+        - link "Linien g l":
+            - /url: /lines
+            - img
+            - text: Linien g l
+        - link "Züge g t":
+            - /url: /trains
+            - img
+            - text: Züge g t
+        - link "Wartung g w":
+            - /url: /maintenance
+            - img
+            - text: Wartung g w
+        - link "Depot g o":
+            - /url: /depot
+            - img
+            - text: Depot g o
+        - link "ECM g e":
+            - /url: /ecm
+            - img
+            - text: ECM g e
+        - link "Protokoll g p":
+            - /url: /log
+            - img
+            - text: Protokoll g p
+        - button "Suchen (⌘K, /)":
+            - img
+            - text: Suchen (⌘K, /)
+- heading "Linienübersicht" [level=1]
+- paragraph: Aggregierte Fahrzeugdaten nach Linie
+- button "CSV-Export":
+    - img
+    - text: CSV-Export
+- text: 'Gesamt Fahrzeuge NaN ⚠ Inkonsistent (Soll: 144) Aktive Fahrzeuge 102 NaN% der Flotte Ø Pünktlichkeit NaN% Über alle Linien Ø Auslastung NaN% Kapazitätsnutzung'
+- table:
+    - rowgroup:
+        - row "Linie Region Betreiber Depot Fahrzeuge Aktiv Ø Verspätung Pünktlichkeit Auslastung":
+            - cell "Linie"
+            - cell "Region"
+            - cell "Betreiber"
+            - cell "Depot"
+            - cell "Fahrzeuge"
+            - cell "Aktiv"
+            - cell "Ø Verspätung"
+            - cell "Pünktlichkeit"
+            - cell "Auslastung"
+    - rowgroup:
+        - row "RE1 BW Eucorail 7(NaN%) min % %":
+            - cell "RE1"
+            - cell "BW"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "7(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RE2 BW Eucorail 6(NaN%) min % %":
+            - cell "RE2"
+            - cell "BW"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "6(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RE8 BW Eucorail 9(NaN%) min % %":
+            - cell "RE8"
+            - cell "BW"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "9(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RE9 BY Eucorail 6(NaN%) min % %":
+            - cell "RE9"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "6(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RE12 BY Eucorail 4(NaN%) min % %":
+            - cell "RE12"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "4(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "MEX12 BY Eucorail 3(NaN%) min % %":
+            - cell "MEX12"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "3(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "MEX16 BY Eucorail 8(NaN%) min % %":
+            - cell "MEX16"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "8(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "MEX18 BY Eucorail 5(NaN%) min % %":
+            - cell "MEX18"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "5(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RB22 BW Eucorail 3(NaN%) min % %":
+            - cell "RB22"
+            - cell "BW"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "3(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RB27 BW Eucorail 4(NaN%) min % %":
+            - cell "RB27"
+            - cell "BW"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "4(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RB32 BY Eucorail 3(NaN%) min % %":
+            - cell "RB32"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "3(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RB54 BY Eucorail 3(NaN%) min % %":
+            - cell "RB54"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "3(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "S2 BY Eucorail 6(NaN%) min % %":
+            - cell "S2"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "6(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "S3 BY Eucorail 6(NaN%) min % %":
+            - cell "S3"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "6(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "S4 BY Eucorail 6(NaN%) min % %":
+            - cell "S4"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "6(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "S6 BY Eucorail 8(NaN%) min % %":
+            - cell "S6"
+            - cell "BY"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "8(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "RESERVE BW Eucorail 15(NaN%) min % %":
+            - cell "RESERVE"
+            - cell "BW"
+            - cell "Eucorail"
+            - cell
+            - cell
+            - cell "15(NaN%)"
+            - cell "min"
+            - cell "%"
+            - cell "%"
+        - row "Gesamt NaN 102":
+            - cell "Gesamt"
+            - cell
+            - cell "NaN"
+            - cell "102"
+            - cell
+- text: 'Zeige 17 von 17 Linien • Summe Fahrzeuge: NaN'
+- button "Zurück" [disabled]
+- text: Seite 1 von 1
+- button "Weiter" [disabled]
+- button "Dark Mode Toggle": 🌓 Theme
+- alert
+```

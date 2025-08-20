@@ -65,13 +65,14 @@ export default function DepotClient({
   initialTracks,
   initialAllocations,
   initialConflicts,
-  initialKpis
+  initialKpis,
 }: DepotClientProps) {
   const [selectedDepot, setSelectedDepot] = useState<'Essingen' | 'Langweid'>('Essingen');
   const [showPlannedTracks, setShowPlannedTracks] = useState(false);
   const [timeScale, setTimeScale] = useState<'today' | '3days' | '7days' | '14days'>('14days');
   const [selectedAllocation, setSelectedAllocation] = useState<Allocation | null>(null);
   const [showConflicts, setShowConflicts] = useState(false);
+  const [showMap, setShowMap] = useState(false);
   const [tracks] = useState(initialTracks);
   const [allocations] = useState(initialAllocations);
   const [conflicts] = useState(initialConflicts);
@@ -79,63 +80,75 @@ export default function DepotClient({
 
   // Filtere Daten nach Depot
   const filteredTracks = useMemo(() => {
-    let filtered = tracks.filter(t => t.depot === selectedDepot);
+    let filtered = tracks.filter((t) => t.depot === selectedDepot);
     if (!showPlannedTracks) {
-      filtered = filtered.filter(t => !t.name.includes('Planung'));
+      filtered = filtered.filter((t) => !t.name.includes('Planung'));
     }
     return filtered;
   }, [tracks, selectedDepot, showPlannedTracks]);
 
-  const filteredAllocations = useMemo(() => 
-    allocations.filter(a => filteredTracks.some(t => t.id === a.trackId)),
+  const filteredAllocations = useMemo(
+    () => allocations.filter((a) => filteredTracks.some((t) => t.id === a.trackId)),
     [allocations, filteredTracks]
   );
 
-  const filteredConflicts = useMemo(() =>
-    conflicts.filter(c => filteredTracks.some(t => t.id === c.trackId)),
+  const filteredConflicts = useMemo(
+    () => conflicts.filter((c) => filteredTracks.some((t) => t.id === c.trackId)),
     [conflicts, filteredTracks]
   );
 
   // CSV Export mit Audit-Logging
   const handleExportCSV = () => {
     const BOM = '\uFEFF';
-    const headers = ['Depot', 'Gleis', 'Zug-ID', 'IS-Stufe', 'Aufgaben', 'Start', 'Ende', 'ETA-Freigabe', 'Status', 'Reserve', 'Team'];
-    
-    const rows = filteredAllocations.map(a => {
-      const track = tracks.find(t => t.id === a.trackId);
+    const headers = [
+      'Depot',
+      'Gleis',
+      'Zug-ID',
+      'IS-Stufe',
+      'Aufgaben',
+      'Start',
+      'Ende',
+      'ETA-Freigabe',
+      'Status',
+      'Reserve',
+      'Team',
+    ];
+
+    const rows = filteredAllocations.map((a) => {
+      const track = tracks.find((t) => t.id === a.trackId);
       return [
         selectedDepot,
         track?.name || a.trackId,
         a.trainId,
         a.isLevel,
         a.tasks.join(', '),
-        new Date(a.startTime).toLocaleString('de-DE', { 
-          day: '2-digit', 
-          month: '2-digit', 
-          year: 'numeric', 
-          hour: '2-digit', 
-          minute: '2-digit' 
+        new Date(a.startTime).toLocaleString('de-DE', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
         }),
-        new Date(a.endTime).toLocaleString('de-DE', { 
-          day: '2-digit', 
-          month: '2-digit', 
-          year: 'numeric', 
-          hour: '2-digit', 
-          minute: '2-digit' 
+        new Date(a.endTime).toLocaleString('de-DE', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
         }),
-        new Date(a.etaRelease).toLocaleString('de-DE', { 
-          day: '2-digit', 
-          month: '2-digit', 
-          year: 'numeric', 
-          hour: '2-digit', 
-          minute: '2-digit' 
+        new Date(a.etaRelease).toLocaleString('de-DE', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
         }),
         a.status,
         a.isReserve ? 'Ja' : 'Nein',
-        a.team || '-'
+        a.team || '-',
       ];
     });
-    
+
     // Log Export-Event
     fetch('/api/events', {
       method: 'POST',
@@ -145,11 +158,11 @@ export default function DepotClient({
         timestamp: new Date().toISOString(),
         user: 'System',
         trainId: null,
-        details: `CSV-Export Depot ${selectedDepot}: ${filteredAllocations.length} Belegungen`
-      })
+        details: `CSV-Export Depot ${selectedDepot}: ${filteredAllocations.length} Belegungen`,
+      }),
     }).catch(console.error);
-    
-    const csv = BOM + [headers, ...rows].map(row => row.join(';')).join('\n');
+
+    const csv = BOM + [headers, ...rows].map((row) => row.join(';')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -170,8 +183,8 @@ export default function DepotClient({
               <button
                 onClick={() => setSelectedDepot('Essingen')}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  selectedDepot === 'Essingen' 
-                    ? 'bg-orange-600 text-white' 
+                  selectedDepot === 'Essingen'
+                    ? 'bg-orange-600 text-white'
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
@@ -180,8 +193,8 @@ export default function DepotClient({
               <button
                 onClick={() => setSelectedDepot('Langweid')}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  selectedDepot === 'Langweid' 
-                    ? 'bg-orange-600 text-white' 
+                  selectedDepot === 'Langweid'
+                    ? 'bg-orange-600 text-white'
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
@@ -189,12 +202,14 @@ export default function DepotClient({
               </button>
             </div>
           </div>
-          
+
           {/* KPI-Leiste */}
           <div className="flex gap-4">
             <div className="text-right">
               <div className="text-xs text-gray-400">Züge im Depot</div>
-              <div className="text-xl font-bold text-white">{kpis.trainsInDepot}/{kpis.fleetSize}</div>
+              <div className="text-xl font-bold text-white">
+                {kpis.trainsInDepot}/{kpis.fleetSize}
+              </div>
             </div>
             <div className="text-right">
               <div className="text-xs text-gray-400">Gleis-Auslastung</div>
@@ -206,7 +221,9 @@ export default function DepotClient({
             </div>
             <div className="text-right">
               <div className="text-xs text-gray-400">Konflikte</div>
-              <div className={`text-xl font-bold ${kpis.conflictCount > 0 ? 'text-red-400' : 'text-green-400'}`}>
+              <div
+                className={`text-xl font-bold ${kpis.conflictCount > 0 ? 'text-red-400' : 'text-green-400'}`}
+              >
                 {kpis.conflictCount}
               </div>
             </div>
@@ -222,7 +239,7 @@ export default function DepotClient({
             </div>
           </div>
         </div>
-        
+
         {/* Toolbar */}
         <div className="flex justify-between items-center mt-3">
           <div className="flex gap-2">
@@ -259,7 +276,7 @@ export default function DepotClient({
               14 Tage
             </button>
           </div>
-          
+
           <div className="flex gap-2">
             <button
               onClick={() => setShowConflicts(!showConflicts)}
@@ -268,7 +285,12 @@ export default function DepotClient({
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
               </svg>
               Konflikte ({filteredConflicts.length})
             </button>
@@ -277,9 +299,30 @@ export default function DepotClient({
               className="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
               </svg>
               CSV Export
+            </button>
+            <button
+              onClick={() => setShowMap(!showMap)}
+              className={`px-4 py-1 rounded flex items-center gap-2 ${
+                showMap ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                />
+              </svg>
+              Karte
             </button>
             {selectedDepot === 'Langweid' && (
               <button
@@ -289,7 +332,12 @@ export default function DepotClient({
                 }`}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
                 </svg>
                 Phase 2 Hallen
               </button>
@@ -298,15 +346,34 @@ export default function DepotClient({
         </div>
       </div>
 
+      {/* Map View */}
+      {showMap && (
+        <div className="h-96 bg-gray-800 border-b border-gray-700 p-4">
+          <div className="h-full rounded overflow-hidden">
+            <iframe
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              src={
+                selectedDepot === 'Essingen'
+                  ? 'https://www.openstreetmap.org/export/embed.html?bbox=9.99,48.795,10.01,48.805&layer=mapnik'
+                  : 'https://www.openstreetmap.org/export/embed.html?bbox=10.84,48.484,10.86,48.494&layer=mapnik'
+              }
+              title={`Depot ${selectedDepot} Map`}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Gleisliste Links */}
         <div className="w-80 bg-gray-800 border-r border-gray-700 overflow-y-auto">
-          <TrackList 
-            tracks={filteredTracks} 
+          <TrackList
+            tracks={filteredTracks}
             allocations={filteredAllocations}
             onTrackSelect={(trackId) => {
-              const allocation = filteredAllocations.find(a => a.trackId === trackId);
+              const allocation = filteredAllocations.find((a) => a.trackId === trackId);
               setSelectedAllocation(allocation || null);
             }}
           />
@@ -327,13 +394,13 @@ export default function DepotClient({
         {(selectedAllocation || showConflicts) && (
           <div className="w-96 bg-gray-800 border-l border-gray-700 overflow-y-auto">
             {showConflicts ? (
-              <ConflictPanel 
+              <ConflictPanel
                 conflicts={filteredConflicts}
                 allocations={filteredAllocations}
                 tracks={filteredTracks}
                 onConflictClick={(conflict) => {
                   // Find related allocation
-                  const allocation = filteredAllocations.find(a => 
+                  const allocation = filteredAllocations.find((a) =>
                     conflict.trainIds.includes(a.trainId)
                   );
                   if (allocation) {
@@ -345,7 +412,7 @@ export default function DepotClient({
             ) : selectedAllocation ? (
               <DepotInspector
                 allocation={selectedAllocation}
-                track={tracks.find(t => t.id === selectedAllocation.trackId)}
+                track={tracks.find((t) => t.id === selectedAllocation.trackId)}
                 onClose={() => setSelectedAllocation(null)}
                 onUpdate={(updated) => {
                   // In real app, this would update the allocation

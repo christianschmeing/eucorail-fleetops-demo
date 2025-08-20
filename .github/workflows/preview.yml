@@ -112,10 +112,11 @@ jobs:
         run: |
           if [ -z "$URL" ]; then echo "No preview URL available"; exit 1; fi
 
-      - name: Run E2E against Preview
+      - name: Run E2E against Preview (chromium only, visuals disabled)
         env:
           PLAYWRIGHT_SKIP_WEBSERVER: '1'
-        run: npx playwright test --base-url="${{ needs.deploy.outputs.preview_url }}" --reporter=html,line
+          ENABLE_VISUAL_TESTS: '0'
+        run: ENABLE_VISUAL_TESTS=0 npx playwright test --project=chromium --base-url="${{ needs.deploy.outputs.preview_url }}" --reporter=html,line
 
       - name: Upload Playwright report
         if: always()

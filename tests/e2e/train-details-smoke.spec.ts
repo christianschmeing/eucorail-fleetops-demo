@@ -2,11 +2,18 @@ import { test, expect } from '@playwright/test';
 
 test.describe.configure({ mode: 'serial' });
 
-test('@smoke train details page shows timeline and wartung tab', async ({ page }) => {
-  await page.goto('/trains/780', { waitUntil: 'networkidle', timeout: 30000 });
-  await page.waitForSelector('text=/Wartungs-Timeline/i', { timeout: 30000 });
-  await expect(page.getByText(/Wartungs-Timeline/i)).toBeVisible({ timeout: 30000 });
-  await page.getByRole('tab', { name: /WARTUNG/ }).click();
-  const panel = page.getByTestId('train-details-panel');
-  await expect(panel.getByText(/Bremsen-Check/i)).toBeVisible();
+test('@smoke train details page shows maintenance tab content', async ({ page }) => {
+  // Navigate via trains list to a valid ID
+  await page.goto('/trains', { waitUntil: 'domcontentloaded' });
+  const firstLink = page.locator('table tbody tr a[href^="/trains/"]').first();
+  await firstLink.click();
+  await page.waitForLoadState('domcontentloaded');
+
+  // Header basics
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
+  // Switch to Wartungsintervalle tab and expect cards
+  const tabBar = page.locator('div').filter({ hasText: 'Wartungsintervalle' }).first();
+  await tabBar.getByText('Wartungsintervalle').click();
+  await expect(page.locator('text=/IS1|IS2|IS3|IS4|Lathe/')).toBeVisible();
 });

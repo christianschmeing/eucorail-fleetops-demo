@@ -1,0 +1,46 @@
+# Page snapshot
+
+```yaml
+- complementary:
+    - text: E Eucorail FleetOps
+    - navigation:
+        - link "Dashboard g d":
+            - /url: /dashboard
+            - img
+            - text: Dashboard g d
+        - link "Map g m":
+            - /url: /map
+            - img
+            - text: Map g m
+        - link "Linien g l":
+            - /url: /lines
+            - img
+            - text: Linien g l
+        - link "Züge g t":
+            - /url: /trains
+            - img
+            - text: Züge g t
+        - link "Wartung g w":
+            - /url: /maintenance
+            - img
+            - text: Wartung g w
+        - link "Depot g o":
+            - /url: /depot
+            - img
+            - text: Depot g o
+        - link "ECM g e":
+            - /url: /ecm
+            - img
+            - text: ECM g e
+        - link "Protokoll g p":
+            - /url: /log
+            - img
+            - text: Protokoll g p
+        - button "Suchen (⌘K, /)":
+            - img
+            - text: Suchen (⌘K, /)
+- heading "404" [level=1]
+- heading "This page could not be found." [level=2]
+- button "Dark Mode Toggle": 🌓 Theme
+- alert: '404: This page could not be found.'
+```
