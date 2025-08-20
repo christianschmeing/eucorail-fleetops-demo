@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "3b25dd3e2be3f67d5d9d496db656a526ed6fce93",
-    "message": "feat(data): make Arverio the primary data source for /map and /trains (SSR)",
+    "sha": "00260a95328b580d324a969ac24e15274e034e78",
+    "message": "feat(map): /map SSR uses Arverio as primary; API as secondary",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T11:56:48Z"
+    "timestamp": "2025-08-20T12:02:42Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17097642913"
+    "run_id": "17097768524"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T11:58:01.111Z",
+  "generated_at": "2025-08-20T12:03:55.196Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
