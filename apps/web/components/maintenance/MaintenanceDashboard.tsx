@@ -14,6 +14,8 @@ export function MaintenanceDashboard() {
   const { vehicles, calculateKPIs } = useFleetStore();
   const [data, setData] = useState<any>(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
+  const [filterDueIS2, setFilterDueIS2] = useState(true);
+  const [filterDueIS3, setFilterDueIS3] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -28,6 +30,53 @@ export function MaintenanceDashboard() {
     () => vehicles.find((v: any) => v.id === selectedVehicleId) ?? null,
     [vehicles, selectedVehicleId]
   );
+
+  // helper to determine nearing flags
+  function nearing(v: any): { is2: boolean; is3: boolean } {
+    const key = String(v.type || '').toUpperCase();
+    const p: any = (ECM_PROFILES as any)[key];
+    if (!p) return { is2: false, is3: false };
+    const mileage = v.mileageKm ?? 0;
+    const calc = (stage: 'IS2' | 'IS3') => {
+      const cfg = p[stage];
+      if (!cfg) return false;
+      const usage = ((mileage % cfg.periodKm) / cfg.periodKm) * 100;
+      return usage >= 75;
+    };
+    return { is2: calc('IS2'), is3: calc('IS3') };
+  }
+
+  // filter vehicles based on toggles
+  const filteredVehicles = vehicles.filter((v: any) => {
+    const flags = nearing(v);
+    const wantsIS2 = filterDueIS2 ? flags.is2 : true;
+    const wantsIS3 = filterDueIS3 ? flags.is3 : true;
+    // When at least one filter is enabled, require OR; if none enabled show all
+    const anyFilter = filterDueIS2 || filterDueIS3;
+    return anyFilter ? wantsIS2 || wantsIS3 : true;
+  });
+
+  async function sendToDepot(v: any) {
+    try {
+      const depot = v.depot === 'ESS' ? 'Essingen' : 'Langweid';
+      // simple heuristic: choose first hall track for depot
+      const trackId = depot === 'Essingen' ? 'E-H1' : 'L-H1';
+      const res = await fetch('/api/depot/allocations', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ train_id: v.id, depot, trackId, purpose: 'IS2' }),
+      });
+      if (res.ok) {
+        alert('Zuordnung geplant. Öffne Depot-Karte zur Ansicht.');
+        location.href = `/depot/map?depot=${depot}`;
+      } else {
+        console.error(await res.text());
+        alert('Planung fehlgeschlagen');
+      }
+    } catch (e) {
+      alert('Netzwerkfehler bei Planung');
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -57,33 +106,61 @@ export function MaintenanceDashboard() {
               </summary>
               <div className="mt-2 space-y-2 text-sm">
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" defaultChecked />
+                  <input
+                    type="checkbox"
+                    checked={filterDueIS2}
+                    onChange={(e) => setFilterDueIS2(e.target.checked)}
+                  />
                   IS2 in ≤ 25% Rest (km)
                 </label>
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" defaultChecked />
+                  <input
+                    type="checkbox"
+                    checked={filterDueIS3}
+                    onChange={(e) => setFilterDueIS3(e.target.checked)}
+                  />
                   IS3 in ≤ 25% Rest (km)
                 </label>
               </div>
             </details>
           </div>
           <div className="p-2 space-y-1">
-            {vehicles.map((v: any) => (
-              <button
-                key={v.id}
-                onClick={() => setSelectedVehicleId(v.id)}
-                className={clsx(
-                  'w-full text-left px-3 py-2 rounded-lg',
-                  selectedVehicleId === v.id ? 'bg-blue-50' : 'hover:bg-gray-50'
-                )}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="font-semibold">{v.id}</div>
-                  <Badge>{v.type}</Badge>
+            {filteredVehicles.map((v: any) => {
+              const flags = nearing(v);
+              const warn = flags.is2 || flags.is3;
+              return (
+                <div
+                  key={v.id}
+                  className={clsx('rounded-lg', warn ? 'ring-1 ring-yellow-400' : '')}
+                >
+                  <button
+                    onClick={() => setSelectedVehicleId(v.id)}
+                    className={clsx(
+                      'w-full text-left px-3 py-2 rounded-lg',
+                      selectedVehicleId === v.id
+                        ? 'bg-blue-50'
+                        : warn
+                          ? 'bg-yellow-50'
+                          : 'hover:bg-gray-50'
+                    )}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="font-semibold">{v.id}</div>
+                      <Badge>{v.type}</Badge>
+                    </div>
+                    <div className="text-xs text-gray-600">Health 100%</div>
+                  </button>
+                  <div className="px-3 pb-2">
+                    <button
+                      className="text-xs text-blue-600 hover:text-blue-700"
+                      onClick={() => sendToDepot(v)}
+                    >
+                      → in Depot einplanen (IS2)
+                    </button>
+                  </div>
                 </div>
-                <div className="text-xs text-gray-600">Health 100%</div>
-              </button>
-            ))}
+              );
+            })}
           </div>
         </aside>
         <main className="flex-1 overflow-y-auto">
