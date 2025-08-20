@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "87455245e625a6d1207d6e7a8024fda9c8d8014d",
-    "message": "feat(lines): include full Arverio BW/BY lines in filters, SSR mapping and generators",
+    "sha": "a0ce63eb7da34559039e2ca40cc5becc4760d748",
+    "message": "feat(ui): dynamic line filters from dataset with counts and bulk BW/BY toggles",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T14:42:46Z"
+    "timestamp": "2025-08-20T14:46:01Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17101798841"
+    "run_id": "17101881608"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T14:44:06.648Z",
+  "generated_at": "2025-08-20T14:47:23.737Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
