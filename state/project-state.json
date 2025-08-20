@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "4001a3c4a5456bee807daa90fa28b116df18c67f",
-    "message": "feat(maintenance): wire MaintenanceDashboard at /maintenance and add maintenance-data.json",
+    "sha": "e154ace5b04d12d655ff288e59af0a25ac630e70",
+    "message": "feat(maintenance): plan dialog + SSR-safe planned allocations + visible IS filters",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T17:57:15Z"
+    "timestamp": "2025-08-20T18:06:13Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17106359795"
+    "run_id": "17106554998"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T17:58:50.918Z",
+  "generated_at": "2025-08-20T18:07:29.169Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
