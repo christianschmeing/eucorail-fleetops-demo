@@ -206,6 +206,39 @@ Interne Checks (typecheck/lint/build/test:int) – keine E2E/Playwright im CI.
 - Concurrency: verhindert parallele Deploys und Race Conditions
 - Artifacts: `vercel-build-log`, `next-build-manifests`, Playwright Report
 
+## 🤖 Agent Workflow (Build/Check/Deploy)
+
+Diese Schritte haben sich im Projekt bewährt und sollen von Agenten konsistent angewendet werden:
+
+1. Lokale Verifikation vor Push
+
+- `npm run verify` (führt Build beider Workspaces aus, startet Test‑Server und Playwright‑E2E)
+- Falls visuelle Snapshots fehlen/abweichen: erst Code prüfen, dann optional `npm run cursor:update-snapshots` mit begründeter Commit‑Message (Konvention)
+
+2. Kurze Commits (Conventional Commits)
+
+- Commit‑Header ≤ 100 Zeichen, Präfixe wie `feat:`, `fix:`, `chore:`, `test:` verwenden
+
+3. Schneller Build‑Smoke lokal
+
+- `npm run build -w @eucorail/web` für reinen Web‑Build, optional `npm run build:all` für Monorepo
+
+4. CI/Preview
+
+- PR öffnet automatisch Vercel‑Preview; E2E gegen Preview‑URL laufen
+- In CI sind visuelle Tests standardmäßig deaktiviert (`ENABLE_VISUAL_TESTS=0`)
+
+5. Production Deploy (überwacht)
+
+- GitHub Action „deploy‑production“ triggert Vercel‑Deploy und führt Health‑/Smoke‑Checks aus
+
+6. Depot/Maintenance Spezifika (manuelle Checks)
+
+- `/maintenance` lädt `MaintenanceDashboard` (Client) + `/data/maintenance-data.json`
+- `/api/depot/allocations` akzeptiert geplante Slots (`status: 'planned'`); Depot‑Karte markiert geplant hellblau
+
+Hinweis: Für wiederholte Agent‑Runs kann alternativ `npm run cursor:verify` genutzt werden (smarter Verify‑Pfad mit Report).
+
 ## 🌍 Public Preview (Stream & PR Preview)
 
 - Stream‑Mode (lokal):

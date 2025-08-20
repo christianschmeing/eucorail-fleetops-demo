@@ -12,11 +12,13 @@ export const metadata: Metadata = {
 async function getDepotMapData() {
   // Generate initial allocations and move plans
   const allocations = generateAllocations();
-  // Merge planned allocations from API
+  // Merge planned allocations from API with robust SSR-safe fetch
   try {
-    const r = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/depot/allocations`, {
-      next: { revalidate: 30 },
-    });
+    const baseEnv = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL || '';
+    const fullUrl = baseEnv
+      ? `${baseEnv.startsWith('http') ? '' : 'https://'}${baseEnv}/api/depot/allocations`
+      : `${process.env.NODE_ENV === 'production' ? 'https://geolocation-mockup.vercel.app' : ''}/api/depot/allocations`;
+    const r = await fetch(fullUrl, { cache: 'no-store' });
     if (r.ok) {
       const json = await r.json();
       if (Array.isArray(json?.planned)) {
@@ -31,7 +33,7 @@ async function getDepotMapData() {
             etaRelease: new Date(p.etaRelease || p.endPlanned),
             purpose: p.purpose,
             risk: p.risk || 'low',
-            status: p.status || 'active',
+            status: (p.status as any) || 'planned',
             is_reserve: !!p.is_reserve,
             lengthM: p.lengthM || 180,
             offsetM: p.offsetM || 10,
@@ -40,7 +42,9 @@ async function getDepotMapData() {
         );
       }
     }
-  } catch {}
+  } catch (err) {
+    console.error('Failed to load planned allocations', err);
+  }
 
   const movePlans = generateMovePlans();
   const kpis = getKPIs(allocations);

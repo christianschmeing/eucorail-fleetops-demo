@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Card, CardBody, CardTitle } from '@/components/ui/Card';
 import { Tabs } from '@/components/ui/Tabs';
 import { Badge } from '@/components/ui/Badge';
+import { Drawer } from '@eucorail/ui';
+import { trackGeometries } from '@/app/(routes)/depot/track-geometries';
 import { clsx } from 'clsx';
 import { ComplianceTracker } from '@/components/compliance/ComplianceTracker';
 import { SLADashboard } from '@/components/sla/SLADashboard';
@@ -16,6 +18,11 @@ export default function MaintenanceDashboard() {
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
   const [filterDueIS2, setFilterDueIS2] = useState(true);
   const [filterDueIS3, setFilterDueIS3] = useState(true);
+  const [planOpen, setPlanOpen] = useState(false);
+  const [planDepot, setPlanDepot] = useState<'Essingen' | 'Langweid'>('Essingen');
+  const [planTrack, setPlanTrack] = useState<string>('');
+  const [planStart, setPlanStart] = useState<string>('');
+  const [planDurationH, setPlanDurationH] = useState<number>(1);
 
   useEffect(() => {
     (async () => {
@@ -56,18 +63,41 @@ export default function MaintenanceDashboard() {
     return anyFilter ? wantsIS2 || wantsIS3 : true;
   });
 
-  async function sendToDepot(v: any) {
+  function openPlanDialog(v: any) {
+    const depot = v.depot === 'ESS' ? 'Essingen' : 'Langweid';
+    setPlanDepot(depot);
+    const tracks = trackGeometries.filter((t) => t.depot === depot && t.state !== 'gesperrt');
+    setPlanTrack(tracks[0]?.id || (depot === 'Essingen' ? 'E-H1' : 'L-H1'));
+    const start = new Date(Date.now() + 10 * 60 * 1000).toISOString().slice(0, 16);
+    setPlanStart(start);
+    setPlanDurationH(1);
+    setSelectedVehicleId(v.id);
+    setPlanOpen(true);
+  }
+
+  async function submitPlan() {
+    const v = vehicles.find((x: any) => x.id === selectedVehicleId);
+    if (!v) return;
     try {
-      const depot = v.depot === 'ESS' ? 'Essingen' : 'Langweid';
-      // simple heuristic: choose first hall track for depot
-      const trackId = depot === 'Essingen' ? 'E-H1' : 'L-H1';
+      const depot = planDepot;
+      const startISO = new Date(planStart).toISOString();
+      const endISO = new Date(
+        new Date(planStart).getTime() + planDurationH * 60 * 60 * 1000
+      ).toISOString();
       const res = await fetch('/api/depot/allocations', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ train_id: v.id, depot, trackId, purpose: 'IS2' }),
+        body: JSON.stringify({
+          train_id: v.id,
+          depot,
+          trackId: planTrack,
+          startPlanned: startISO,
+          endPlanned: endISO,
+          purpose: 'IS2',
+        }),
       });
       if (res.ok) {
-        alert('Zuordnung geplant. Öffne Depot-Karte zur Ansicht.');
+        setPlanOpen(false);
         location.href = `/depot/map?depot=${depot}`;
       } else {
         console.error(await res.text());
@@ -100,6 +130,24 @@ export default function MaintenanceDashboard() {
               placeholder="Search vehicle ID or type..."
               className="w-full px-3 py-2 border rounded-lg"
             />
+            <div className="flex items-center gap-4 text-sm">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={filterDueIS2}
+                  onChange={(e) => setFilterDueIS2(e.target.checked)}
+                />
+                IS2 fällig (≤ 25% Rest km)
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={filterDueIS3}
+                  onChange={(e) => setFilterDueIS3(e.target.checked)}
+                />
+                IS3 fällig (≤ 25% Rest km)
+              </label>
+            </div>
             <details>
               <summary className="text-sm cursor-pointer select-none">
                 Filter: Fällige IS2/IS3
@@ -153,7 +201,7 @@ export default function MaintenanceDashboard() {
                   <div className="px-3 pb-2">
                     <button
                       className="text-xs text-blue-600 hover:text-blue-700"
-                      onClick={() => sendToDepot(v)}
+                      onClick={() => openPlanDialog(v)}
                     >
                       → in Depot einplanen (IS2)
                     </button>
@@ -234,6 +282,100 @@ export default function MaintenanceDashboard() {
           </div>
         </main>
       </div>
+      <PlanDrawer
+        open={planOpen}
+        onClose={() => setPlanOpen(false)}
+        depot={planDepot}
+        track={planTrack}
+        onDepot={setPlanDepot}
+        onTrack={setPlanTrack}
+        start={planStart}
+        onStart={setPlanStart}
+        durationH={planDurationH}
+        onDuration={setPlanDurationH}
+        onSubmit={submitPlan}
+      />
     </div>
+  );
+}
+
+// Planungs-Drawer
+function PlanDrawer({
+  open,
+  onClose,
+  depot,
+  track,
+  onDepot,
+  onTrack,
+  start,
+  onStart,
+  durationH,
+  onDuration,
+  onSubmit,
+}: any) {
+  const ess = trackGeometries.filter((t) => t.depot === 'Essingen' && t.state !== 'gesperrt');
+  const lgw = trackGeometries.filter((t) => t.depot === 'Langweid' && t.state !== 'gesperrt');
+  const tracks = depot === 'Essingen' ? ess : lgw;
+  return (
+    <Drawer open={open} onClose={onClose} side="right" title="In Depot einplanen">
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">Depot</label>
+          <select
+            value={depot}
+            onChange={(e) => onDepot(e.target.value)}
+            className="w-full border rounded px-2 py-1"
+          >
+            <option>Essingen</option>
+            <option>Langweid</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Gleis</label>
+          <select
+            value={track}
+            onChange={(e) => onTrack(e.target.value)}
+            className="w-full border rounded px-2 py-1"
+          >
+            {tracks.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.id} – {t.name} ({t.type})
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Start</label>
+          <input
+            type="datetime-local"
+            value={start}
+            onChange={(e) => onStart(e.target.value)}
+            className="w-full border rounded px-2 py-1"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Dauer</label>
+          <select
+            value={durationH}
+            onChange={(e) => onDuration(Number(e.target.value))}
+            className="w-full border rounded px-2 py-1"
+          >
+            {[1, 2, 3, 4, 6, 8].map((h) => (
+              <option key={h} value={h}>
+                {h} h
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex justify-end gap-2">
+          <button onClick={onClose} className="px-3 py-1 border rounded">
+            Abbrechen
+          </button>
+          <button onClick={onSubmit} className="px-3 py-1 bg-blue-600 text-white rounded">
+            Einplanen
+          </button>
+        </div>
+      </div>
+    </Drawer>
   );
 }
