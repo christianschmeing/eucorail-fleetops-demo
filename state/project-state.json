@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "696bc7e9c03c67c3d4d88d96a3d55a07ce6289f1",
-    "message": "feat(nav): add link to /depot/planning in AppNav",
+    "sha": "02f92db039ceb5cc58fbc62256b37e86ebf963e8",
+    "message": "ci(vercel): add monitored prod deploy workflow; add logs/manifests; add concurrency guards",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T12:07:37Z"
+    "timestamp": "2025-08-20T12:11:26Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17097881906"
+    "run_id": "17097971229"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T12:08:55.524Z",
+  "generated_at": "2025-08-20T12:12:37.709Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
