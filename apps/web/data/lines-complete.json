@@ -34,6 +34,30 @@
         { "name": "Göppingen", "lat": 48.7055, "lon": 9.652 },
         { "name": "Ulm Hbf", "lat": 48.3984, "lon": 10.0006 }
       ]
+    },
+    {
+      "id": "RE90",
+      "name": "Stuttgart – Schwäbisch Hall – Crailsheim – Nürnberg",
+      "color": "#8E44AD",
+      "stations": [
+        { "name": "Stuttgart Hbf", "lat": 48.7834, "lon": 9.1829 },
+        { "name": "Schorndorf", "lat": 48.8056, "lon": 9.5297 },
+        { "name": "Schwäbisch Hall-Hessental", "lat": 49.099, "lon": 9.744 },
+        { "name": "Crailsheim", "lat": 49.134, "lon": 10.073 },
+        { "name": "Ansbach", "lat": 49.304, "lon": 10.576 },
+        { "name": "Nürnberg Hbf", "lat": 49.445, "lon": 11.082 }
+      ]
+    },
+    {
+      "id": "MEX13",
+      "name": "Stuttgart – Aalen – Crailsheim",
+      "color": "#1ABC9C",
+      "stations": [
+        { "name": "Stuttgart Hbf", "lat": 48.7834, "lon": 9.1829 },
+        { "name": "Schorndorf", "lat": 48.8056, "lon": 9.5297 },
+        { "name": "Aalen Hbf", "lat": 48.8378, "lon": 10.0933 },
+        { "name": "Crailsheim", "lat": 49.134, "lon": 10.073 }
+      ]
     }
   ],
   "bayern": [
@@ -60,6 +84,74 @@
         { "name": "Friedberg", "lat": 48.3575, "lon": 10.9886 },
         { "name": "München-Pasing", "lat": 48.1497, "lon": 11.4619 },
         { "name": "München Hbf", "lat": 48.1403, "lon": 11.5583 }
+      ]
+    },
+    {
+      "id": "RE89",
+      "name": "Augsburg – Donauwörth – Nördlingen – Aalen",
+      "color": "#9C27B0",
+      "stations": [
+        { "name": "Augsburg Hbf", "lat": 48.3653, "lon": 10.8856 },
+        { "name": "Donauwörth", "lat": 48.715, "lon": 10.779 },
+        { "name": "Nördlingen", "lat": 48.85, "lon": 10.489 },
+        { "name": "Aalen Hbf", "lat": 48.8378, "lon": 10.0933 }
+      ]
+    },
+    {
+      "id": "RB86",
+      "name": "München – Augsburg",
+      "color": "#2E7D32",
+      "stations": [
+        { "name": "München Hbf", "lat": 48.1403, "lon": 11.5583 },
+        { "name": "Augsburg Hbf", "lat": 48.3653, "lon": 10.8856 }
+      ]
+    },
+    {
+      "id": "RB87",
+      "name": "München – Augsburg – Donauwörth",
+      "color": "#43A047",
+      "stations": [
+        { "name": "München Hbf", "lat": 48.1403, "lon": 11.5583 },
+        { "name": "Augsburg Hbf", "lat": 48.3653, "lon": 10.8856 },
+        { "name": "Donauwörth", "lat": 48.715, "lon": 10.779 }
+      ]
+    },
+    {
+      "id": "RB89",
+      "name": "Donauwörth – Nördlingen – Aalen",
+      "color": "#558B2F",
+      "stations": [
+        { "name": "Donauwörth", "lat": 48.715, "lon": 10.779 },
+        { "name": "Nördlingen", "lat": 48.85, "lon": 10.489 },
+        { "name": "Aalen Hbf", "lat": 48.8378, "lon": 10.0933 }
+      ]
+    },
+    {
+      "id": "RE72",
+      "name": "München – Memmingen",
+      "color": "#1565C0",
+      "stations": [
+        { "name": "München Hbf", "lat": 48.1403, "lon": 11.5583 },
+        { "name": "Memmingen", "lat": 47.983, "lon": 10.181 }
+      ]
+    },
+    {
+      "id": "RE96",
+      "name": "München – Memmingen – Lindau",
+      "color": "#0D47A1",
+      "stations": [
+        { "name": "München Hbf", "lat": 48.1403, "lon": 11.5583 },
+        { "name": "Memmingen", "lat": 47.983, "lon": 10.181 },
+        { "name": "Lindau-Reutin", "lat": 47.561, "lon": 9.706 }
+      ]
+    },
+    {
+      "id": "RB92",
+      "name": "Memmingen – Lindau",
+      "color": "#1976D2",
+      "stations": [
+        { "name": "Memmingen", "lat": 47.983, "lon": 10.181 },
+        { "name": "Lindau-Reutin", "lat": 47.561, "lon": 9.706 }
       ]
     }
   ]
