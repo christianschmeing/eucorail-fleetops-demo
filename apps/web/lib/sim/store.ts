@@ -45,7 +45,7 @@ function stationToLngLat(s: LatLng): [number, number] {
 export const useSimStore = create<SimState>((set, get) => ({
   lines: {},
   vehicles: [],
-  tickSeconds: 60, // real-time tick; we advance faster in progress calc via factor
+  tickSeconds: 15, // smoother animation steps
 
   buildLinesFromDataset: () => {
     const lines: Record<string, LinePoly> = {};
@@ -108,7 +108,7 @@ export const useSimStore = create<SimState>((set, get) => ({
 
   start: () => {
     if (timer) return;
-    const advanceFactor = 6; // 1 tick (60s) -> 6 minutes progress equivalent
+    const advanceFactor = 2; // smaller step per tick for smoother movement
     timer = setInterval(() => {
       set((state) => {
         const lines = state.lines;
@@ -117,8 +117,8 @@ export const useSimStore = create<SimState>((set, get) => ({
           const line = lines[v.lineId];
           if (!line || line.coords.length < 2) return v;
           const km = v.speedKmh * (state.tickSeconds / 3600) * advanceFactor; // km per tick
-          // rough polyline length as segments ~ sum haversine, but simplify to step by fraction
-          const frac = Math.min(1, km / 100); // assume ~100km typical route length
+          // assume ~120km typical route length; smaller frac for less jumping
+          const frac = Math.min(1, km / 120);
           let progress = v.progress + frac;
           if (progress > 1) progress -= 1; // loop back
           return { ...v, progress };

@@ -22,28 +22,43 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
     start();
   }, [buildLinesFromDataset, allocateFleet, start]);
 
-  // draw polylines for all known lines
+  // draw polylines for all known lines (prefer fetched railmaps)
   useEffect(() => {
     if (!map) return;
     const draw = () => {
       Object.values(lines).forEach((line) => {
         const id = `line-${line.id}`;
-        if (!map.getSource(id)) {
-          map.addSource(id, {
-            type: 'geojson',
-            data: {
+        const ensureLayer = (data: any) => {
+          if (!map.getSource(id)) {
+            map.addSource(id, { type: 'geojson', data });
+            map.addLayer({
+              id,
+              type: 'line',
+              source: id,
+              paint: { 'line-color': line.color, 'line-width': 2 },
+            });
+          } else {
+            (map.getSource(id) as any).setData(data);
+          }
+        };
+        fetch(`/api/railmaps/${encodeURIComponent(line.id)}`)
+          .then((r) => r.json())
+          .then((fc) => {
+            if (fc && fc.features && fc.features.length) ensureLayer(fc);
+            else
+              ensureLayer({
+                type: 'Feature',
+                geometry: { type: 'LineString', coordinates: line.coords },
+                properties: {},
+              });
+          })
+          .catch(() =>
+            ensureLayer({
               type: 'Feature',
               geometry: { type: 'LineString', coordinates: line.coords },
               properties: {},
-            } as any,
-          });
-          map.addLayer({
-            id,
-            type: 'line',
-            source: id,
-            paint: { 'line-color': line.color, 'line-width': 2 },
-          });
-        }
+            })
+          );
       });
     };
     if (map.isStyleLoaded()) draw();
@@ -54,13 +69,23 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
   useEffect(() => {
     if (!map) return;
     const getPointOnLine = (lineId: string, prog: number): [number, number] | null => {
-      const line = lines[lineId];
-      if (!line || line.coords.length < 2) return null;
-      const n = line.coords.length - 1;
+      const src = map.getSource(`line-${lineId}`) as any;
+      const data = src && (src.serialize?.().data || src._data);
+      let coords: [number, number][] = [];
+      if (data?.type === 'FeatureCollection') {
+        for (const f of data.features)
+          if (f.geometry?.type === 'LineString') coords.push(...f.geometry.coordinates);
+      } else if (data?.type === 'Feature' && data.geometry?.type === 'LineString') {
+        coords = data.geometry.coordinates;
+      } else {
+        coords = lines[lineId]?.coords ?? [];
+      }
+      if (coords.length < 2) return null;
+      const n = coords.length - 1;
       const f = Math.min(n - 1e-6, Math.max(0, prog)) * n;
       const i = Math.floor(f);
       const t = f - i;
-      return lerp(line.coords[i], line.coords[i + 1], t);
+      return lerp(coords[i], coords[i + 1], t);
     };
 
     // remove vanished markers
