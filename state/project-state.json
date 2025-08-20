@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "4b25425ebceceb1a711c6010f8c9421be9645be6",
-    "message": "fix(depot-map): Replace MapLibre GL with SVG-based SimpleDepotMap\n\n- Removed non-working MapLibre GL implementation\n- Created SimpleDepotMap component with SVG rendering\n- Fixed version conflicts with maplibre-gl package\n- Added visual regression tests for depot map\n- Tracks and trains now render correctly with SVG\n- Depot switching works properly\n- All 16 tracks with proper color coding\n- Train allocations visible as markers\n- Added info panel and legend\n- Mobile responsive design\n\nBREAKING: Removed MapLibre dependency for now, using pure SVG solution",
+    "sha": "1fa2ddfeec2c4684248a6e9e86b67ca2da1ea9bb",
+    "message": "fix(depot-map): Implement working Leaflet-based map solution\n\n- Replace non-working SimpleDepotMap with Leaflet\n- Use OpenStreetMap tiles for base layer\n- Dynamic import to avoid SSR issues\n- Proper track polylines with colors\n- Train markers with custom icons\n- Popups with train/track information\n- Legend and info panels\n- Fixed all TypeScript errors\n- Tested build successfully\n\nBREAKING: Removed SimpleDepotMap and MapLibre implementations",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T06:25:11Z"
+    "timestamp": "2025-08-20T07:29:52Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17090380044"
+    "run_id": "17091668031"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T06:26:27.981Z",
+  "generated_at": "2025-08-20T07:31:14.006Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
