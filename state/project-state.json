@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "1e1fd9ce4b897e00cfdf3329d530e36eebc122bc",
-    "message": "feat(depot): render allocation markers on MapLibre and color tracks by occupancy",
+    "sha": "595feddfe081354db841567dd659e8908fd88ac3",
+    "message": "feat(compliance): flag vehicles nearing IS2/IS3 and add maintenance filter UI",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T17:15:54Z"
+    "timestamp": "2025-08-20T17:19:40Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17105471985"
+    "run_id": "17105551890"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T17:19:20.271Z",
+  "generated_at": "2025-08-20T17:21:38.749Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
