@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "00260a95328b580d324a969ac24e15274e034e78",
-    "message": "feat(map): /map SSR uses Arverio as primary; API as secondary",
+    "sha": "ab86bf0ea283077b4c91c2beb62b2b9cb8e33dea",
+    "message": "feat(depot): add Gantt-based depot planning view with constraints and auto-resolve (/depot/planning)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T12:02:42Z"
+    "timestamp": "2025-08-20T12:05:57Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17097768524"
+    "run_id": "17097843790"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T12:03:55.196Z",
+  "generated_at": "2025-08-20T12:07:15.514Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
