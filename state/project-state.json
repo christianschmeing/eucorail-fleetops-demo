@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "53fa99881ec5d8afbc7cc4a2e2bab9720f445d8d",
-    "message": "fix(depot-map): Replace Leaflet with static OpenStreetMap iframe solution\n\n- Removed non-loading Leaflet dynamic import\n- Implemented StaticDepotMap with OSM iframe\n- Direct HTML/CSS overlays for tracks and trains\n- No JavaScript library dependencies\n- Works immediately without loading issues\n- Tracks and trains rendered as HTML elements\n- Full interactivity with click handlers\n\nThis solution uses an embedded OpenStreetMap iframe with HTML overlays,\neliminating all complex JavaScript map library issues.",
+    "sha": "057c1145968ee747402fb2c5d24c69b18fd41d86",
+    "message": "fix(depot-map): Complete server-side rendering solution\n\nCRITICAL FIX: Map finally works!\n- Removed ALL client-side map components\n- Pure server-side rendering with OpenStreetMap iframe\n- No JavaScript required for map display\n- Shows depot info and track list directly\n- Works immediately on page load\n- No hydration issues, no loading states\n\nThis is a simplified but WORKING solution that displays:\n- OpenStreetMap iframe (loads without JS)\n- Depot statistics\n- Track occupancy list\n- Train allocations\n\nThe map now renders 100% server-side and will definitely be visible.",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T07:36:12Z"
+    "timestamp": "2025-08-20T07:39:14Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17091800689"
+    "run_id": "17091862311"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T07:37:31.076Z",
+  "generated_at": "2025-08-20T07:40:38.454Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
