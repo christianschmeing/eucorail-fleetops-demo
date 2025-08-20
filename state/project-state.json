@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "2caf801e6915d5da163dfa5163b67b9091dd6a48",
-    "message": "feat(depot-map): overpass depot rails api + ssr integration",
+    "sha": "4e462a1fd139f7201c6937a20f1c4ac4dc4fa978",
+    "message": "fix(depot-map): correct depot centers and add header depot switcher (Essingen/Langweid)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T15:22:53Z"
+    "timestamp": "2025-08-20T15:25:27Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17102846474"
+    "run_id": "17102913962"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T15:24:09.549Z",
+  "generated_at": "2025-08-20T15:26:52.072Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
