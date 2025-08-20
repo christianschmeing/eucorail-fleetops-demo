@@ -19,13 +19,9 @@ interface Train {
 }
 
 async function getTrains(): Promise<Train[]> {
-  try {
-    const trains = await apiGet<Train[]>('/api/trains');
-    // Ensure we have exactly 144 trains and preserve all data including maintenanceInfo
-    return trains.slice(0, 144);
-  } catch {
-    // Fallback: Nutze reale Arverio‑Daten
-    const real = (arverioFleet as any).vehicles as Array<any>;
+  // PRIMARY: Nutze reale Arverio‑Daten
+  const real = (arverioFleet as any).vehicles as Array<any>;
+  if (real && real.length) {
     const toTrain = (v: any): Train => ({
       id: v.id,
       lineId: v.line || (v.depot === 'ESS' ? 'RE1' : 'RE9'),
@@ -52,6 +48,9 @@ async function getTrains(): Promise<Train[]> {
     }
     return trains.slice(0, 144);
   }
+  // SECONDARY: API
+  const trains = await apiGet<Train[]>('/api/trains');
+  return trains.slice(0, 144);
 }
 
 export default async function TrainsPage() {
