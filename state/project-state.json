@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "02f92db039ceb5cc58fbc62256b37e86ebf963e8",
-    "message": "ci(vercel): add monitored prod deploy workflow; add logs/manifests; add concurrency guards",
+    "sha": "b24eabb634afdd50b1a2453b94cd2e326f32e87b",
+    "message": "ci: activate auto-deploy",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T12:11:26Z"
+    "timestamp": "2025-08-20T12:45:58Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17097971229"
+    "run_id": "17098793029"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T12:12:37.709Z",
+  "generated_at": "2025-08-20T12:47:20.748Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
