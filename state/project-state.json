@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "13f16360435dfde25214d43329a133c203d1a770",
-    "message": "fix(trains): ensure synthesized train always has maintenanceInfo without TS errors",
+    "sha": "f549cb8fa17db4025b30e3482217dc96047a86ee",
+    "message": "feat(depot): add AppNav link to /depot/map; render track overlay and occupancy on server map",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T15:02:15Z"
+    "timestamp": "2025-08-20T15:07:23Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17102301294"
+    "run_id": "17102440939"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T15:03:43.946Z",
+  "generated_at": "2025-08-20T15:08:42.969Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
