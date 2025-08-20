@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "69c0f795af975aa758834cf368cd8cc626d7579e",
-    "message": "fix(map): mount LiveSimLayer after map 'load' to ensure markers render; stateful map ref",
+    "sha": "d946151f47cffbdef05f831b9e97b47cd33fb368",
+    "message": "fix(map): ensure 144 trains use line-based positions; mount LiveSimLayer after map load",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T14:28:30Z"
+    "timestamp": "2025-08-20T14:31:37Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17101420996"
+    "run_id": "17101506594"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T14:29:55.189Z",
+  "generated_at": "2025-08-20T14:33:13.030Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
