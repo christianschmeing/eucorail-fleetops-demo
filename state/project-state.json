@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "43b4f40e97bdfc3690ca861dcf87f37ed9f91700",
-    "message": "feat(allocation-api): expose /api/fleet/allocation and enforce per-line counts in SSR loaders",
+    "sha": "97f8d1e7f10ddf72e751af53f13a673a4a7513a8",
+    "message": "feat(maintenance): add IS1–IS6↔F1–F6 mapping and unify ECM profiles across views",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T16:09:38Z"
+    "timestamp": "2025-08-20T17:10:48Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17103986945"
+    "run_id": "17105359079"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T16:11:06.731Z",
+  "generated_at": "2025-08-20T17:12:07.927Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
