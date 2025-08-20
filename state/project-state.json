@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "a102915c133999c1f4270fe66361591470e240f6",
-    "message": "feat(map): add /map/arverio route for ArverioLiveMap",
+    "sha": "19b0c657ebe772d570806eacafd9ad6732aa6077",
+    "message": "feat(data): use real Arverio fallback for /map and /trains SSR",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T11:43:28Z"
+    "timestamp": "2025-08-20T11:46:55Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17097369792"
+    "run_id": "17097438252"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T11:44:46.120Z",
+  "generated_at": "2025-08-20T11:48:10.892Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
