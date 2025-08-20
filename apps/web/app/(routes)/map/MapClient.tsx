@@ -181,6 +181,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
               Region: ${train.region}<br/>
               ${train.delayMin ? `Verspätung: ${train.delayMin > 0 ? '+' : ''}${train.delayMin} min` : ''}
             </div>
+            <div style="margin-top:6px"><a href="/trains/${encodeURIComponent(train.id)}" style="color:#60a5fa">Details</a></div>
           </div>
         `)
         )
@@ -503,7 +504,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
       <div className="flex-1 relative">
         <div ref={mapContainer} className="absolute inset-0" />
         {/* Simulierte Linien/Layer (Timetable/OSM Placeholder) */}
-        <LiveSimLayer map={mapObj} />
+        <LiveSimLayer map={mapObj} visibleLines={selectedLines} />
 
         {/* Legende */}
         <div className="absolute bottom-4 left-4 bg-gray-800/90 backdrop-blur border border-gray-700 rounded-lg p-3">

@@ -8,7 +8,13 @@ function lerp(a: [number, number], b: [number, number], t: number): [number, num
   return [a[0] * (1 - t) + b[0] * t, a[1] * (1 - t) + b[1] * t];
 }
 
-export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
+export function LiveSimLayer({
+  map,
+  visibleLines,
+}: {
+  map: maplibregl.Map | null;
+  visibleLines?: string[];
+}) {
   const { lines, vehicles, buildLinesFromDataset, allocateFleet, start } = useSimStore();
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
 
@@ -22,11 +28,18 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
     start();
   }, [buildLinesFromDataset, allocateFleet, start]);
 
-  // draw polylines for all known lines (prefer fetched railmaps)
+  // draw polylines for all known lines (prefer fetched railmaps) and toggle visibility by filter
   useEffect(() => {
     if (!map) return;
+    const visible = visibleLines && visibleLines.length ? new Set(visibleLines) : null;
     const draw = () => {
       Object.values(lines).forEach((line) => {
+        if (visible && !visible.has(line.id)) {
+          // hide if exists
+          const id = `line-${line.id}`;
+          if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none');
+          return;
+        }
         const id = `line-${line.id}`;
         const ensureLayer = (data: any) => {
           if (!map.getSource(id)) {
@@ -37,6 +50,8 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
               source: id,
               paint: { 'line-color': line.color, 'line-width': 2 },
             });
+          } else if (map.getLayer(id)) {
+            map.setLayoutProperty(id, 'visibility', 'visible');
           } else {
             (map.getSource(id) as any).setData(data);
           }
@@ -63,7 +78,7 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
     };
     if (map.isStyleLoaded()) draw();
     else map.once('load', draw);
-  }, [map, lines]);
+  }, [map, lines, visibleLines]);
 
   // render vehicle markers from sim store
   useEffect(() => {
@@ -97,8 +112,12 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
       }
     });
 
-    // upsert markers
+    // upsert markers, filter by visible lines if provided
+    const include = (lineId: string) =>
+      !visibleLines || visibleLines.length === 0 || visibleLines.includes(lineId);
+
     for (const v of vehicles) {
+      if (!include(v.lineId)) continue;
       const pos = getPointOnLine(v.lineId, v.progress);
       if (!pos) continue;
       let marker = markersRef.current.get(v.id);
@@ -118,6 +137,8 @@ export function LiveSimLayer({ map }: { map: maplibregl.Map | null }) {
         el.style.background = color;
         el.style.border = '2px solid white';
         marker = new maplibregl.Marker({ element: el }).setLngLat(pos);
+        const popupHtml = `<div style="padding:6px"><div style="font-weight:600">${v.id}</div><div style="font-size:12px;color:#9ca3af">Linie ${v.lineId}</div><a href="/trains/${encodeURIComponent(v.id)}" style="color:#60a5fa;font-size:12px">Details</a></div>`;
+        marker.setPopup(new maplibregl.Popup({ offset: 12 }).setHTML(popupHtml));
         marker.addTo(map);
         markersRef.current.set(v.id, marker);
       } else {
