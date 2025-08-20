@@ -50,6 +50,7 @@ export default function ServerDepotMap({ depot, tracks, allocations }: ServerDep
         className="pointer-events-none absolute inset-0"
         viewBox="0 0 1000 1000"
         preserveAspectRatio="none"
+        style={{ zIndex: 5 }}
       >
         {tracks.map((t) => {
           // rough project geometry to screen space using bbox heuristic
@@ -74,6 +75,25 @@ export default function ServerDepotMap({ depot, tracks, allocations }: ServerDep
             <g key={t.id}>
               <path d={d} stroke="#000" strokeOpacity={0.25} strokeWidth={5} fill="none" />
               <path d={d} stroke={color} strokeWidth={4} fill="none" opacity={0.95} />
+              {/* endpoints for visibility */}
+              {t.geometry.coordinates.slice(0, 1).map(([lng, lat], idx) => (
+                <circle
+                  key={`s-${t.id}-${idx}`}
+                  cx={((lng - (center.lon - 0.01)) / 0.02) * 1000}
+                  cy={(1 - (lat - (center.lat - 0.005)) / 0.01) * 1000}
+                  r={4}
+                  fill="#60a5fa"
+                />
+              ))}
+              {t.geometry.coordinates.slice(-1).map(([lng, lat], idx) => (
+                <circle
+                  key={`e-${t.id}-${idx}`}
+                  cx={((lng - (center.lon - 0.01)) / 0.02) * 1000}
+                  cy={(1 - (lat - (center.lat - 0.005)) / 0.01) * 1000}
+                  r={4}
+                  fill="#f87171"
+                />
+              ))}
             </g>
           );
         })}
