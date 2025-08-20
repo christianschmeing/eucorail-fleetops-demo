@@ -4,6 +4,7 @@ export interface TrackGeometry {
   type: 'Halle' | 'ARA' | 'Yard';
   name: string;
   lengthM: number;
+  length?: number; // Alias for compatibility
   features: ('OL' | 'Grube' | 'Lathe' | 'Wash' | 'Shore')[];
   state: 'frei' | 'belegt' | 'gesperrt' | 'defekt';
   geometry: {
