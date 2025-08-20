@@ -127,7 +127,7 @@ export function generateTrains() {
   const trains: any[] = [];
 
   // BW – ausschließlich FLIRT auf RE1/RE8/MEX16
-  const bwLines = ['RE1', 'RE8', 'MEX16'];
+  const bwLines = ['MEX13', 'RE1', 'MEX16', 'RE8', 'RE90'];
   for (let i = 0; i < targetBW; i++) {
     const isReserve = i >= targetBW - reserveBW;
     const status = isReserve ? 'reserve' : i % 9 === 0 ? 'maintenance' : 'active';
@@ -169,7 +169,7 @@ export function generateTrains() {
   const byDesiro = 12;
   const byMireo = 44;
   const byFlirt = 22;
-  const byLinesPrimary = ['RE9', 'RE80'];
+  const byLinesPrimary = ['RE9', 'RE80', 'RE89', 'RB86', 'RB87', 'RB89', 'RE72', 'RE96', 'RB92'];
 
   let idxGlobal = 0;
   const pushBY = (

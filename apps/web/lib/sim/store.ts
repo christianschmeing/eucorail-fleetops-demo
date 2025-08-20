@@ -33,7 +33,7 @@ export type SimState = {
 };
 
 const BW_LINES = ['MEX13', 'RE1', 'MEX16', 'RE8', 'RE90'];
-const BY_LINES = ['RE72', 'RE96', 'RB92', 'RE9', 'RE80', 'RE89', 'RB86', 'RB87', 'RB89'];
+const BY_LINES = ['RE9', 'RE80', 'RE89', 'RB86', 'RB87', 'RB89', 'RE72', 'RE96', 'RB92'];
 
 let timer: any = null;
 

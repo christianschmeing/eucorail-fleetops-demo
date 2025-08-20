@@ -306,9 +306,9 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
             <div className="flex flex-wrap gap-2 items-start">
               <span className="text-sm text-gray-400">Linie:</span>
               <div className="flex flex-wrap gap-2">
-                {/* Baden-Württemberg Linien (nur genutzte Linien) */}
+                {/* Baden-Württemberg Linien (erweitert) */}
                 <div className="flex gap-1 px-2 py-1 bg-blue-900/20 rounded">
-                  {['RE1', 'RE8', 'MEX16'].map((line) => (
+                  {['MEX13', 'RE1', 'MEX16', 'RE8', 'RE90'].map((line) => (
                     <label key={line} className="flex items-center gap-1">
                       <input
                         type="checkbox"
@@ -327,25 +327,27 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                   ))}
                 </div>
 
-                {/* Bayern Linien (nur genutzte Linien) */}
+                {/* Bayern Linien (erweitert) */}
                 <div className="flex gap-1 px-2 py-1 bg-green-900/20 rounded">
-                  {['RE9', 'RE80'].map((line) => (
-                    <label key={line} className="flex items-center gap-1">
-                      <input
-                        type="checkbox"
-                        checked={selectedLines.includes(line)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedLines([...selectedLines, line]);
-                          } else {
-                            setSelectedLines(selectedLines.filter((l) => l !== line));
-                          }
-                        }}
-                        className="rounded"
-                      />
-                      <span className="text-sm text-green-300">{line}</span>
-                    </label>
-                  ))}
+                  {['RE9', 'RE80', 'RE89', 'RB86', 'RB87', 'RB89', 'RE72', 'RE96', 'RB92'].map(
+                    (line) => (
+                      <label key={line} className="flex items-center gap-1">
+                        <input
+                          type="checkbox"
+                          checked={selectedLines.includes(line)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedLines([...selectedLines, line]);
+                            } else {
+                              setSelectedLines(selectedLines.filter((l) => l !== line));
+                            }
+                          }}
+                          className="rounded"
+                        />
+                        <span className="text-sm text-green-300">{line}</span>
+                      </label>
+                    )
+                  )}
                 </div>
 
                 {/* S-Bahn Linien entfernt (nicht Teil des Datensets) */}

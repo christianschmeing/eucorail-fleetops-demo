@@ -29,7 +29,7 @@ function indexLinesById(): Record<string, LatLng[]> {
 const LINES_BY_ID = indexLinesById();
 
 function sampleOnLine(lineId: string): { lat: number; lng: number } {
-  const stations = LINES_BY_ID[lineId] || [];
+  const stations = LINES_BY_ID[lineId] || LINES_BY_ID['RE9'] || [];
   if (stations.length < 2) return { lat: 48.8, lng: 10.0 };
   const idx = Math.max(
     0,
@@ -53,8 +53,10 @@ async function getTrains(): Promise<Train[]> {
       const region = v.depot === 'ESS' ? 'BW' : 'BY';
       const fallbackLine =
         region === 'BW'
-          ? ['RE1', 'RE8', 'MEX16'][Math.floor(Math.random() * 3)]
-          : ['RE9', 'RE80'][Math.floor(Math.random() * 2)];
+          ? ['MEX13', 'RE1', 'MEX16', 'RE8', 'RE90'][Math.floor(Math.random() * 5)]
+          : ['RE9', 'RE80', 'RE89', 'RB86', 'RB87', 'RB89', 'RE72', 'RE96', 'RB92'][
+              Math.floor(Math.random() * 9)
+            ];
       const lineId = v.line || fallbackLine;
       const status =
         v.status === 'MAINTENANCE' ? 'maintenance' : v.status === 'DEPOT' ? 'offline' : 'active';
@@ -72,8 +74,18 @@ async function getTrains(): Promise<Train[]> {
     };
     const trains = real.map(mapTrain);
     // Fülle auf 144 auf – streue Positionen entlang realer Linien statt identischer Depot‑Koordinaten
-    const BW_FALLBACK_LINES = ['RE1', 'RE8', 'MEX16'];
-    const BY_FALLBACK_LINES = ['RE9', 'RE80'];
+    const BW_FALLBACK_LINES = ['MEX13', 'RE1', 'MEX16', 'RE8', 'RE90'];
+    const BY_FALLBACK_LINES = [
+      'RE9',
+      'RE80',
+      'RE89',
+      'RB86',
+      'RB87',
+      'RB89',
+      'RE72',
+      'RE96',
+      'RB92',
+    ];
     while (trains.length < 144) {
       const isBW = trains.length % 2 === 0;
       const lineId = (isBW ? BW_FALLBACK_LINES : BY_FALLBACK_LINES)[
