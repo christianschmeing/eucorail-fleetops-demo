@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "4e462a1fd139f7201c6937a20f1c4ac4dc4fa978",
-    "message": "fix(depot-map): correct depot centers and add header depot switcher (Essingen/Langweid)",
+    "sha": "9feab88a7782a98850135a816fd1ed3a440245d6",
+    "message": "fix(depot-map): add Allocation type import",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T15:25:27Z"
+    "timestamp": "2025-08-20T15:32:24Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17102913962"
+    "run_id": "17103086974"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T15:26:52.072Z",
+  "generated_at": "2025-08-20T15:33:57.136Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
