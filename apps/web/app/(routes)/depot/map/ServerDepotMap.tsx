@@ -9,8 +9,9 @@ interface ServerDepotMapProps {
 }
 
 const DEPOT_CENTERS = {
-  Essingen: { lat: 48.7995, lon: 10.0 },
-  Langweid: { lat: 48.489, lon: 10.849 },
+  // align center with track data bases from track-geometries.ts
+  Essingen: { lat: 48.823, lon: 10.015 },
+  Langweid: { lat: 48.449, lon: 10.846 },
 };
 
 // This component renders completely on the server
@@ -44,7 +45,7 @@ export default function ServerDepotMap({ depot, tracks, allocations }: ServerDep
         </div>
       </div>
 
-      {/* Track list + simple schematic overlay */}
+      {/* Track lines + allocation markers (schematic overlay) */}
       <svg
         className="pointer-events-none absolute inset-0"
         viewBox="0 0 1000 1000"
@@ -70,7 +71,35 @@ export default function ServerDepotMap({ depot, tracks, allocations }: ServerDep
                   ? '#ef4444'
                   : '#6b7280';
           return (
-            <path key={t.id} d={d} stroke={color} strokeWidth={3} fill="none" opacity={0.85} />
+            <g key={t.id}>
+              <path d={d} stroke="#000" strokeOpacity={0.25} strokeWidth={5} fill="none" />
+              <path d={d} stroke={color} strokeWidth={4} fill="none" opacity={0.95} />
+            </g>
+          );
+        })}
+
+        {/* allocation markers */}
+        {allocations.map((a) => {
+          const t = tracks.find((x) => x.id === a.trackId);
+          if (!t || t.geometry.coordinates.length < 2) return null;
+          const [lngA, latA] = t.geometry.coordinates[0];
+          const [lngB, latB] = t.geometry.coordinates[t.geometry.coordinates.length - 1];
+          const r = Math.max(0, Math.min(1, (a.offsetM ?? t.lengthM / 2) / (t.lengthM || 1)));
+          const lng = lngA * (1 - r) + lngB * r;
+          const lat = latA * (1 - r) + latB * r;
+          const minX = center.lon - 0.01;
+          const minY = center.lat - 0.005;
+          const width = 0.02;
+          const height = 0.01;
+          const x = ((lng - minX) / width) * 1000;
+          const y = (1 - (lat - minY) / height) * 1000;
+          const fill =
+            a.status === 'maintenance' ? '#f59e0b' : a.status === 'reserve' ? '#6b7280' : '#10b981';
+          return (
+            <g key={a.id}>
+              <circle cx={x} cy={y} r={6} fill="#000" opacity={0.3} />
+              <circle cx={x} cy={y} r={4} fill={fill} />
+            </g>
           );
         })}
       </svg>
