@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "66d0d264c3c25f8da6c830a5e56142ac39249838",
-    "message": "feat(sim): introduce timetable/railmap sim store and LiveSim layer scaffolding; add timetables.json",
+    "sha": "7fef98a87b17bbf8adc0ec00950a749c19cf7ab6",
+    "message": "feat(sim): render 144 sim vehicles on map layer along lines; stable markers",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T13:40:05Z"
+    "timestamp": "2025-08-20T14:23:59Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17100150586"
+    "run_id": "17101300159"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T13:41:30.886Z",
+  "generated_at": "2025-08-20T14:25:20.247Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
