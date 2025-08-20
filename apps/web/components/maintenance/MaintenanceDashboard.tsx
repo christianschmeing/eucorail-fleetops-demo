@@ -45,12 +45,27 @@ export function MaintenanceDashboard() {
 
       <div className="flex h-[calc(100vh-80px)]">
         <aside className="w-80 bg-white border-r overflow-y-auto">
-          <div className="p-4 border-b">
+          <div className="p-4 border-b space-y-2">
             <input
               type="search"
               placeholder="Search vehicle ID or type..."
               className="w-full px-3 py-2 border rounded-lg"
             />
+            <details>
+              <summary className="text-sm cursor-pointer select-none">
+                Filter: Fällige IS2/IS3
+              </summary>
+              <div className="mt-2 space-y-2 text-sm">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" defaultChecked />
+                  IS2 in ≤ 25% Rest (km)
+                </label>
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" defaultChecked />
+                  IS3 in ≤ 25% Rest (km)
+                </label>
+              </div>
+            </details>
           </div>
           <div className="p-2 space-y-1">
             {vehicles.map((v: any) => (

@@ -19,6 +19,7 @@ interface Vehicle {
   heading?: number;
   speed?: number;
   delay?: number;
+  mileageKm?: number;
 }
 
 interface WorkOrder {
@@ -65,6 +66,7 @@ function initializeFleet(): Vehicle[] {
     heading: Math.random() * 360,
     speed: 0,
     delay: 0,
+    mileageKm: 50000 + Math.floor(Math.random() * 200000),
   }));
 }
 
