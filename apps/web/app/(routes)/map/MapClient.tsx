@@ -137,58 +137,10 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
     };
   }, []);
 
-  // Update Markers wenn sich Züge oder Filter ändern
+  // Legacy Marker deaktiviert – Interaktion erfolgt über LiveSimLayer
   useEffect(() => {
-    if (!map.current) return;
-
-    // Entferne alte Marker
-    markers.current.forEach((marker) => marker.remove());
+    markers.current.forEach((m) => m.remove());
     markers.current.clear();
-
-    // Füge neue Marker für gefilterte Züge hinzu
-    filteredTrains.forEach((train) => {
-      if (!train.position) return;
-
-      const el = document.createElement('div');
-      el.className = 'train-marker';
-      el.style.width = '24px';
-      el.style.height = '24px';
-      el.style.borderRadius = '50%';
-      el.style.border = '2px solid white';
-      el.style.cursor = 'pointer';
-      el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
-
-      // Farbe basierend auf Status
-      if (train.status === 'active') {
-        el.style.backgroundColor = '#10b981'; // green
-      } else if (train.status === 'maintenance') {
-        el.style.backgroundColor = '#f59e0b'; // yellow
-      } else if (train.status === 'alarm' || train.status === 'inspection') {
-        el.style.backgroundColor = '#ef4444'; // red
-      } else {
-        el.style.backgroundColor = '#6b7280'; // gray
-      }
-
-      const marker = new maplibregl.Marker({ element: el })
-        .setLngLat([train.position.lng, train.position.lat])
-        .setPopup(
-          new maplibregl.Popup({ offset: 25 }).setHTML(`
-          <div style="padding: 8px;">
-            <div style="font-weight: bold; margin-bottom: 4px;">${train.id}</div>
-            <div style="font-size: 12px; color: #666;">
-              Linie: ${train.lineId}<br/>
-              Status: ${train.status}<br/>
-              Region: ${train.region}<br/>
-              ${train.delayMin ? `Verspätung: ${train.delayMin > 0 ? '+' : ''}${train.delayMin} min` : ''}
-            </div>
-            <div style="margin-top:6px"><a href="/trains/${encodeURIComponent(train.id)}" style="color:#60a5fa">Details</a></div>
-          </div>
-        `)
-        )
-        .addTo(map.current!);
-
-      markers.current.set(train.id, marker);
-    });
   }, [filteredTrains]);
 
   // SSE für Live-Updates (fallback auf absolute URL in Prod)

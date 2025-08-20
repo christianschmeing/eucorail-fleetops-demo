@@ -136,9 +136,13 @@ export function LiveSimLayer({
         el.style.borderRadius = '50%';
         el.style.background = color;
         el.style.border = '2px solid white';
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-label', `Zug ${v.id}`);
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          window.location.href = `/trains/${encodeURIComponent(v.id)}`;
+        });
         marker = new maplibregl.Marker({ element: el }).setLngLat(pos);
-        const popupHtml = `<div style="padding:6px"><div style="font-weight:600">${v.id}</div><div style="font-size:12px;color:#9ca3af">Linie ${v.lineId}</div><a href="/trains/${encodeURIComponent(v.id)}" style="color:#60a5fa;font-size:12px">Details</a></div>`;
-        marker.setPopup(new maplibregl.Popup({ offset: 12 }).setHTML(popupHtml));
         marker.addTo(map);
         markersRef.current.set(v.id, marker);
       } else {
