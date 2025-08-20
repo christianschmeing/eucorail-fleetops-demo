@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "9feab88a7782a98850135a816fd1ed3a440245d6",
-    "message": "fix(depot-map): add Allocation type import",
+    "sha": "d6bbe45bc9419a27321ac003d7e2253014865f4a",
+    "message": "fix(depot-tracks): type-safe normalization of GeoJSON coordinates and center tuple",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T15:32:24Z"
+    "timestamp": "2025-08-20T15:51:00Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17103086974"
+    "run_id": "17103548404"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T15:33:57.136Z",
+  "generated_at": "2025-08-20T15:52:26.986Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
