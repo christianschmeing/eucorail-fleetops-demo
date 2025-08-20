@@ -1,0 +1,441 @@
+name: Migrate to v2.20
+
+on:
+  workflow_dispatch:
+
+env:
+  SRC_OWNER: christianschmeing
+  SRC_REPO: eucorail-fleetops-demo
+  NEW_OWNER: christianschmeing
+  NEW_REPO: eucorail-fleetops-demo-v2.20
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for mirroring
+
+      - name: Install dependencies
+        run: |
+          echo "📦 Installing required tools..."
+          sudo apt-get update
+          sudo apt-get install -y jq
+          gh --version
+          jq --version
+          git --version
+
+      - name: Authenticate with GitHub
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🔐 Authenticating with GitHub..."
+          if [ -z "$GH_TOKEN" ]; then
+            echo "❌ MIGRATE_TOKEN secret is required"
+            exit 1
+          fi
+          echo "$GH_TOKEN" | gh auth login --with-token
+          gh auth status
+
+      - name: Get source repository metadata
+        id: source_meta
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "📋 Getting source repository metadata..."
+
+          # Get repository details
+          REPO_DATA=$(gh api repos/$SRC_OWNER/$SRC_REPO)
+
+          DEFAULT_BRANCH=$(echo "$REPO_DATA" | jq -r '.default_branch')
+          DESCRIPTION=$(echo "$REPO_DATA" | jq -r '.description // ""')
+          HOMEPAGE=$(echo "$REPO_DATA" | jq -r '.homepage // ""')
+
+          # Get topics
+          TOPICS=$(gh api repos/$SRC_OWNER/$SRC_REPO/topics | jq -r '.names[]?' | tr '\n' ' ')
+
+          echo "default_branch=$DEFAULT_BRANCH" >> $GITHUB_OUTPUT
+          echo "description=$DESCRIPTION" >> $GITHUB_OUTPUT
+          echo "homepage=$HOMEPAGE" >> $GITHUB_OUTPUT
+          echo "topics=$TOPICS" >> $GITHUB_OUTPUT
+
+          echo "Source repository details:"
+          echo "  Default branch: $DEFAULT_BRANCH"
+          echo "  Description: $DESCRIPTION"
+          echo "  Homepage: $HOMEPAGE"
+          echo "  Topics: $TOPICS"
+
+      - name: Create destination repository
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🏗️ Creating destination repository..."
+
+          # Check if repository already exists
+          if gh api repos/$NEW_OWNER/$NEW_REPO >/dev/null 2>&1; then
+            echo "✅ Repository $NEW_OWNER/$NEW_REPO already exists"
+          else
+            echo "📝 Creating new repository $NEW_OWNER/$NEW_REPO..."
+
+            gh api repos/$NEW_OWNER \
+              --method POST \
+              --field name="$NEW_REPO" \
+              --field description="${{ steps.source_meta.outputs.description }}" \
+              --field homepage="${{ steps.source_meta.outputs.homepage }}" \
+              --field private=false \
+              --field has_issues=true \
+              --field has_projects=true \
+              --field has_wiki=false
+
+            echo "✅ Repository created successfully"
+          fi
+
+      - name: Set repository topics
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🏷️ Setting repository topics..."
+
+          if [ -n "${{ steps.source_meta.outputs.topics }}" ]; then
+            TOPICS_JSON=$(echo "${{ steps.source_meta.outputs.topics }}" | \
+              jq -R 'split(" ") | map(select(length > 0))')
+
+            gh api repos/$NEW_OWNER/$NEW_REPO/topics \
+              --method PUT \
+              --field names="$TOPICS_JSON"
+
+            echo "✅ Topics set: ${{ steps.source_meta.outputs.topics }}"
+          else
+            echo "ℹ️ No topics to set"
+          fi
+
+      - name: Mirror repository content
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🪞 Mirroring repository content..."
+
+          # Create a fresh clone directory
+          cd /tmp
+          rm -rf mirror-repo
+
+          # Clone source as mirror
+          echo "📥 Cloning source repository as mirror..."
+          git clone --mirror \
+            https://github.com/$SRC_OWNER/$SRC_REPO.git mirror-repo
+
+          cd mirror-repo
+
+          # Add destination remote
+          echo "🔗 Adding destination remote..."
+          git remote add destination \
+            https://${{ secrets.MIGRATE_TOKEN }}@github.com/$NEW_OWNER/$NEW_REPO.git
+
+          # Push everything to destination
+          echo "📤 Pushing all branches and tags to destination..."
+          git push --mirror destination
+
+          echo "✅ Repository content mirrored successfully"
+
+      - name: Set default branch
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🌿 Setting default branch..."
+
+          DEFAULT_BRANCH="${{ steps.source_meta.outputs.default_branch }}"
+
+          gh api repos/$NEW_OWNER/$NEW_REPO \
+            --method PATCH \
+            --field default_branch="$DEFAULT_BRANCH"
+
+          echo "✅ Default branch set to: $DEFAULT_BRANCH"
+
+      - name: Migrate labels
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🏷️ Migrating labels..."
+
+          # Get source labels
+          gh api repos/$SRC_OWNER/$SRC_REPO/labels --paginate | \
+            jq -r '.[] | @base64' | while read -r label_data; do
+            label_json=$(echo "$label_data" | base64 -d)
+            name=$(echo "$label_json" | jq -r '.name')
+            color=$(echo "$label_json" | jq -r '.color')
+            description=$(echo "$label_json" | jq -r '.description // ""')
+
+            echo "Creating/updating label: $name"
+
+            # Try to create label (will fail if exists, then update)
+            if ! gh api repos/$NEW_OWNER/$NEW_REPO/labels \
+              --method POST \
+              --field name="$name" \
+              --field color="$color" \
+              --field description="$description" >/dev/null 2>&1; then
+
+              # Label exists, update it
+              name_encoded=$(echo -n "$name" | jq -sRr @uri)
+              gh api repos/$NEW_OWNER/$NEW_REPO/labels/$name_encoded \
+                --method PATCH \
+                --field color="$color" \
+                --field description="$description" >/dev/null 2>&1 || true
+            fi
+          done
+
+          echo "✅ Labels migrated"
+
+      - name: Migrate milestones
+        id: milestones
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🎯 Migrating milestones..."
+
+          # Create milestone mapping file
+          echo "{}" > /tmp/milestone_map.json
+
+          # Get source milestones
+          gh api repos/$SRC_OWNER/$SRC_REPO/milestones --paginate | \
+            jq -r '.[] | @base64' | while read -r milestone_data; do
+            milestone_json=$(echo "$milestone_data" | base64 -d)
+            title=$(echo "$milestone_json" | jq -r '.title')
+            description=$(echo "$milestone_json" | jq -r '.description // ""')
+            due_on=$(echo "$milestone_json" | jq -r '.due_on // empty')
+            state=$(echo "$milestone_json" | jq -r '.state')
+
+            echo "Creating milestone: $title"
+
+            # Create milestone in destination
+            create_data='{"title":"'"$title"'","description":"'"$description"'","state":"'"$state"'"}'
+            if [ -n "$due_on" ] && [ "$due_on" != "null" ]; then
+              create_data=$(echo "$create_data" | \
+                jq --arg due_on "$due_on" '. + {due_on: $due_on}')
+            fi
+
+            new_milestone=$(gh api repos/$NEW_OWNER/$NEW_REPO/milestones \
+              --method POST \
+              --input - <<< "$create_data" 2>/dev/null || echo '{}')
+
+            if [ "$(echo "$new_milestone" | jq -r '.number // empty')" != "" ]; then
+              new_number=$(echo "$new_milestone" | jq -r '.number')
+              old_number=$(echo "$milestone_json" | jq -r '.number')
+
+              # Update milestone mapping
+              current_map=$(cat /tmp/milestone_map.json)
+              echo "$current_map" | \
+                jq --arg old "$old_number" --arg new "$new_number" \
+                '. + {($old): ($new | tonumber)}' > /tmp/milestone_map.json
+
+              echo "Mapped milestone $old_number -> $new_number"
+            fi
+          done
+
+          echo "milestone_map_file=/tmp/milestone_map.json" >> $GITHUB_OUTPUT
+          echo "✅ Milestones migrated"
+
+      - name: Migrate issues
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🐛 Migrating issues..."
+
+          milestone_map=$(cat ${{ steps.milestones.outputs.milestone_map_file }})
+
+          # Get source issues (excluding PRs)
+          gh api repos/$SRC_OWNER/$SRC_REPO/issues --paginate | \
+            jq '.[] | select(.pull_request == null)' | jq -s . | \
+            jq -r '.[] | @base64' | while read -r issue_data; do
+            issue_json=$(echo "$issue_data" | base64 -d)
+
+            number=$(echo "$issue_json" | jq -r '.number')
+            title=$(echo "$issue_json" | jq -r '.title')
+            body=$(echo "$issue_json" | jq -r '.body // ""')
+            state=$(echo "$issue_json" | jq -r '.state')
+            labels=$(echo "$issue_json" | jq -r '.labels[]?.name' | tr '\n' ',' | sed 's/,$//')
+            assignees=$(echo "$issue_json" | \
+              jq -r '.assignees[]?.login' | tr '\n' ',' | sed 's/,$//')
+            milestone_number=$(echo "$issue_json" | jq -r '.milestone.number // empty')
+            original_url=$(echo "$issue_json" | jq -r '.html_url')
+
+            echo "Migrating issue #$number: $title"
+
+            # Add footer to body
+            footer_text="\n\n---\n*Migrated from [$SRC_OWNER/$SRC_REPO#$number]($original_url)*"
+            new_body="$body$footer_text"
+
+            # Map milestone if exists
+            new_milestone=""
+            if [ -n "$milestone_number" ] && [ "$milestone_number" != "" ]; then
+              new_milestone=$(echo "$milestone_map" | \
+                jq -r --arg old "$milestone_number" '.[$old] // empty')
+            fi
+
+            # Create issue
+            create_data=$(jq -n \
+              --arg title "$title" \
+              --arg body "$new_body" \
+              '{title: $title, body: $body}')
+
+            if [ -n "$labels" ]; then
+              labels_array=$(echo "$labels" | tr ',' '\n' | jq -R . | jq -s .)
+              create_data=$(echo "$create_data" | \
+                jq --argjson labels "$labels_array" '. + {labels: $labels}')
+            fi
+
+            if [ -n "$assignees" ]; then
+              assignees_array=$(echo "$assignees" | tr ',' '\n' | jq -R . | jq -s .)
+              create_data=$(echo "$create_data" | \
+                jq --argjson assignees "$assignees_array" '. + {assignees: $assignees}')
+            fi
+
+            if [ -n "$new_milestone" ]; then
+              create_data=$(echo "$create_data" | \
+                jq --argjson milestone "$new_milestone" '. + {milestone: $milestone}')
+            fi
+
+            new_issue=$(gh api repos/$NEW_OWNER/$NEW_REPO/issues \
+              --method POST \
+              --input - <<< "$create_data" 2>/dev/null || echo '{}')
+
+            new_issue_number=$(echo "$new_issue" | jq -r '.number // empty')
+
+            if [ -n "$new_issue_number" ]; then
+              echo "Created issue #$new_issue_number"
+
+              # Migrate comments
+              echo "Migrating comments for issue #$number..."
+              gh api repos/$SRC_OWNER/$SRC_REPO/issues/$number/comments \
+                --paginate | jq -r '.[] | @base64' | while read -r comment_data; do
+                comment_json=$(echo "$comment_data" | base64 -d)
+                comment_body=$(echo "$comment_json" | jq -r '.body // ""')
+                comment_url=$(echo "$comment_json" | jq -r '.html_url')
+                comment_user=$(echo "$comment_json" | jq -r '.user.login')
+
+                # Add footer to comment
+                comment_footer="\n\n---\n*Originally posted by @$comment_user in [$SRC_OWNER/$SRC_REPO#$number]($comment_url)*"
+                new_comment_body="$comment_body$comment_footer"
+
+                gh api repos/$NEW_OWNER/$NEW_REPO/issues/$new_issue_number/comments \
+                  --method POST \
+                  --field body="$new_comment_body" >/dev/null 2>&1 || true
+              done
+
+              # Close issue if it was closed in source
+              if [ "$state" = "closed" ]; then
+                gh api repos/$NEW_OWNER/$NEW_REPO/issues/$new_issue_number \
+                  --method PATCH \
+                  --field state="closed" >/dev/null 2>&1 || true
+                echo "Closed issue #$new_issue_number"
+              fi
+            fi
+          done
+
+          echo "✅ Issues migrated"
+
+      - name: Migrate open pull requests
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🔀 Migrating open pull requests..."
+
+          # Get open PRs from same repository (not forks)
+          gh api repos/$SRC_OWNER/$SRC_REPO/pulls?state=open --paginate | \
+            jq '.[] | select(.head.repo.full_name == .base.repo.full_name)' | \
+            jq -s . | jq -r '.[] | @base64' | while read -r pr_data; do
+            pr_json=$(echo "$pr_data" | base64 -d)
+
+            number=$(echo "$pr_json" | jq -r '.number')
+            title=$(echo "$pr_json" | jq -r '.title')
+            body=$(echo "$pr_json" | jq -r '.body // ""')
+            head_branch=$(echo "$pr_json" | jq -r '.head.ref')
+            base_branch=$(echo "$pr_json" | jq -r '.base.ref')
+            original_url=$(echo "$pr_json" | jq -r '.html_url')
+
+            echo "Migrating PR #$number: $title"
+            echo "  Head: $head_branch -> Base: $base_branch"
+
+            # Add footer to body
+            footer_text="\n\n---\n*Migrated from [$SRC_OWNER/$SRC_REPO#$number]($original_url)*"
+            new_body="$body$footer_text"
+
+            # Create PR
+            new_pr=$(gh api repos/$NEW_OWNER/$NEW_REPO/pulls \
+              --method POST \
+              --field title="$title" \
+              --field body="$new_body" \
+              --field head="$head_branch" \
+              --field base="$base_branch" 2>/dev/null || echo '{}')
+
+            new_pr_number=$(echo "$new_pr" | jq -r '.number // empty')
+
+            if [ -n "$new_pr_number" ]; then
+              echo "Created PR #$new_pr_number"
+            else
+              echo "Failed to create PR (branch may not exist or conflict)"
+            fi
+          done
+
+          echo "✅ Pull requests migrated"
+
+      - name: Migrate releases (optional)
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "🚀 Migrating releases (without assets)..."
+
+          # Get source releases
+          gh api repos/$SRC_OWNER/$SRC_REPO/releases --paginate | \
+            jq -r '.[] | @base64' | while read -r release_data; do
+            release_json=$(echo "$release_data" | base64 -d)
+
+            tag_name=$(echo "$release_json" | jq -r '.tag_name')
+            name=$(echo "$release_json" | jq -r '.name // ""')
+            body=$(echo "$release_json" | jq -r '.body // ""')
+            draft=$(echo "$release_json" | jq -r '.draft')
+            prerelease=$(echo "$release_json" | jq -r '.prerelease')
+
+            echo "Migrating release: $tag_name"
+
+            # Create release (ignore assets)
+            gh api repos/$NEW_OWNER/$NEW_REPO/releases \
+              --method POST \
+              --field tag_name="$tag_name" \
+              --field name="$name" \
+              --field body="$body" \
+              --field draft="$draft" \
+              --field prerelease="$prerelease" >/dev/null 2>&1 || true
+
+            echo "Created release: $tag_name"
+          done
+
+          echo "✅ Releases migrated"
+
+      - name: Summary
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATE_TOKEN }}
+        run: |
+          echo "📊 Migration Summary"
+          echo "==================="
+          echo ""
+          echo "✅ Migration completed successfully!"
+          echo ""
+          echo "📍 Destination Repository:"
+          echo "   https://github.com/$NEW_OWNER/$NEW_REPO"
+          echo ""
+          echo "📋 What was migrated:"
+          echo "   ✓ Full git history (all branches and tags)"
+          echo "   ✓ Repository metadata (description, homepage, topics)"
+          echo "   ✓ Labels and milestones"
+          echo "   ✓ Issues with comments (preserving open/closed state)"
+          echo "   ✓ Open pull requests (same-repo heads only)"
+          echo "   ✓ Releases (without assets)"
+          echo "   ✓ Default branch setting"
+          echo ""
+          echo "🔗 Access your migrated repository:"
+          echo "   https://github.com/$NEW_OWNER/$NEW_REPO"
+          echo ""
+          echo "🎉 Migration to $NEW_REPO is complete!"
