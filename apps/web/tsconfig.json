@@ -21,7 +21,8 @@
       "@/features/*": ["features/*"],
       "@/lib/*": ["lib/*"],
       "@/app/*": ["app/*"],
-      "@/styles/*": ["styles/*"]
+      "@/styles/*": ["styles/*"],
+      "@/data/*": ["data/*"]
     },
     "plugins": [{ "name": "next" }]
   },

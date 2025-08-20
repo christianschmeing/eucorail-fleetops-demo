@@ -13,6 +13,7 @@
     "lint": "next lint || exit 0"
   },
   "dependencies": {
+    "zustand": "^4.5.2",
     "@eucorail/ui": "file:../../packages/ui",
     "@tanstack/react-query": "^5.51.1",
     "@types/leaflet": "^1.9.20",

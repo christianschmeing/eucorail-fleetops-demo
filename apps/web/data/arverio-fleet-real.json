@@ -1,0 +1,115 @@
+{
+  "operator": "Arverio Deutschland GmbH",
+  "parentCompany": "ÖBB-Personenverkehr AG",
+  "lastUpdated": "2025-01-19T14:00:00Z",
+  "totalFleet": 144,
+  "facilities": {
+    "ESS": {
+      "id": "ESS",
+      "name": "Wartungsstützpunkt Essingen",
+      "owner": "Arverio Facility GmbH",
+      "maintenanceProvider": "Stadler Service",
+      "address": "Bahnhof 2, 73457 Essingen",
+      "coordinates": { "lat": 48.7114, "lon": 10.0155 },
+      "hours": { "start": "06:30", "end": "18:00" },
+      "capacity": 70
+    },
+    "GAB": {
+      "id": "GAB",
+      "name": "Betriebswerk Langweid",
+      "owner": "EUCO Rail AG",
+      "maintenanceProvider": "EUCO Rail Services",
+      "address": "Parkstraße 20, 86462 Langweid am Lech",
+      "coordinates": { "lat": 48.4869, "lon": 10.8569 },
+      "hours": { "start": "06:00", "end": "18:30" },
+      "capacity": 85
+    }
+  },
+  "fleetTypes": {
+    "FLIRT3": { "manufacturer": "Stadler", "totalCount": 88, "maxSpeed": 160 },
+    "MIREO": { "manufacturer": "Siemens", "count": 44, "maxSpeed": 160 },
+    "DESIRO_HC": { "manufacturer": "Siemens", "count": 12, "maxSpeed": 160 }
+  },
+  "lineAssignments": {
+    "badenWuerttemberg": {
+      "region": "BW",
+      "operator": "Arverio Baden-Württemberg GmbH",
+      "vehicleNumbers": "66001-66066",
+      "depot": "ESS",
+      "totalVehicles": 66,
+      "lines": [
+        { "id": "RE1", "name": "Residenzbahn", "vehicles": 14 },
+        { "id": "RE8", "name": "Frankenbahn", "vehicles": 16 },
+        { "id": "RE90", "name": "Murrbahn", "vehicles": 11 },
+        { "id": "MEX13", "name": "Remsbahn", "vehicles": 15 },
+        { "id": "MEX16", "name": "Filstalbahn", "vehicles": 10 }
+      ]
+    },
+    "bayern": {
+      "region": "BY",
+      "operator": "Arverio Bayern GmbH",
+      "vehicleNumbers": "78001-78078",
+      "depot": "GAB",
+      "totalVehicles": 78,
+      "lines": [
+        { "id": "RE9", "name": "Fugger-Express", "vehicles": 20 },
+        { "id": "RE80", "name": "Augsburger Netz", "vehicles": 12 },
+        { "id": "RE89", "vehicles": 8 },
+        { "id": "RE96", "name": "Allgäu-Lindau", "vehicles": 10 },
+        { "id": "RB86", "vehicles": 6 },
+        { "id": "RB87", "vehicles": 7 },
+        { "id": "RB89", "vehicles": 5 },
+        { "id": "RE72", "name": "Allgäu-Express", "vehicles": 8 },
+        { "id": "RB92", "vehicles": 2 }
+      ]
+    }
+  },
+  "vehicles": [
+    {
+      "id": "66001",
+      "type": "FLIRT3",
+      "subtype": "3-teilig",
+      "operator": "Arverio BW",
+      "line": "MEX13",
+      "depot": "ESS",
+      "status": "OPERATIONAL",
+      "mileage": 287453,
+      "lastMaintenance": "2024-11-15",
+      "maintenanceLevel": "IS2"
+    },
+    {
+      "id": "66002",
+      "type": "FLIRT3",
+      "subtype": "4-teilig",
+      "operator": "Arverio BW",
+      "line": "RE8",
+      "depot": "ESS",
+      "status": "DEPOT",
+      "mileage": 243120,
+      "lastMaintenance": "2024-12-01",
+      "maintenanceLevel": "IS1"
+    },
+    {
+      "id": "78001",
+      "type": "DESIRO_HC",
+      "operator": "Arverio BY",
+      "line": "RE9",
+      "depot": "GAB",
+      "status": "OPERATIONAL",
+      "mileage": 342876,
+      "lastMaintenance": "2024-10-22",
+      "maintenanceLevel": "IS3"
+    },
+    {
+      "id": "78002",
+      "type": "MIREO",
+      "operator": "Arverio BY",
+      "line": "RE80",
+      "depot": "GAB",
+      "status": "MAINTENANCE",
+      "mileage": 198001,
+      "lastMaintenance": "2024-12-28",
+      "maintenanceLevel": "IS2"
+    }
+  ]
+}
