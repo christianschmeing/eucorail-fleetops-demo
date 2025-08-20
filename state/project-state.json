@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "6163163412d7de956dace3ac640823c1ac106c32",
-    "message": "fix(depot): nav link to map and server-rendered track overlay ensured; tune centers",
+    "sha": "5336f0ff921145cc0fe0bcdb390c15f490b9e3c1",
+    "message": "fix(depot-map): use correct depot centers; draw SVG track lines and allocation markers overlay",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T15:10:07Z"
+    "timestamp": "2025-08-20T15:12:24Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17102513459"
+    "run_id": "17102572349"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T15:11:27.474Z",
+  "generated_at": "2025-08-20T15:13:51.917Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
