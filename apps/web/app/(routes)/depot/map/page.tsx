@@ -39,7 +39,7 @@ export default async function DepotMapPage({
     return track?.depot === selectedDepot;
   });
 
-  // Render server-side map directly
+  // Render server-side map directly; ensure default depot shows tracks
   return (
     <div className="h-screen flex flex-col bg-gray-900">
       {/* Header */}
