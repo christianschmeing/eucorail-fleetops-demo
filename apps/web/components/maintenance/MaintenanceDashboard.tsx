@@ -8,6 +8,7 @@ import { clsx } from 'clsx';
 import { ComplianceTracker } from '@/components/compliance/ComplianceTracker';
 import { SLADashboard } from '@/components/sla/SLADashboard';
 import { useFleetStore } from '@/lib/state/fleet-store';
+import { ECM_PROFILES, INTERVENTION_MAPPING } from '@/lib/maintenance/ecm-profiles';
 
 export function MaintenanceDashboard() {
   const { vehicles, calculateKPIs } = useFleetStore();
@@ -107,6 +108,32 @@ export function MaintenanceDashboard() {
                     <div className="space-y-6">
                       <ComplianceTracker />
                       <SLADashboard />
+                      {/* IS1..IS6 mapping summary */}
+                      <div className="p-4 border rounded-lg">
+                        <div className="font-semibold mb-2">
+                          Interventions (IS1–IS6 ↔ DB F1–F6)
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          {INTERVENTION_MAPPING.description}
+                        </div>
+                        <ul className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                          {Object.entries(INTERVENTION_MAPPING.mapping).map(([k, v]: any) => (
+                            <li
+                              key={k}
+                              className="flex items-center justify-between bg-gray-50 px-2 py-1 rounded"
+                            >
+                              <span className="font-mono">{k}</span>
+                              <span>→ {v.maps_to}</span>
+                              <span className="text-gray-500">
+                                Codes: {(v.db_is_codes || []).join(', ')}
+                              </span>
+                              <span className="text-gray-500">
+                                Interval: {(v.typical_interval.km || []).join('–')} km
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </CardBody>

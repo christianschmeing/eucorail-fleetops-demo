@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { generateTrains } from '@/lib/generateTrains';
 import arverioFleet from '@/data/arverio-fleet-real.json';
 import linesData from '@/data/lines-complete.json';
-import { ECM_PROFILES } from '@/lib/maintenance/ecm-profiles';
+import { ECM_PROFILES, INTERVENTION_MAPPING } from '@/lib/maintenance/ecm-profiles';
 
 async function getTrain(id: string) {
   try {
@@ -171,6 +171,7 @@ async function getTrain(id: string) {
           ).toISOString(),
         },
       } as any;
+      (train as any).interventionMapping = INTERVENTION_MAPPING;
     }
     return train as any;
   } catch (error) {
