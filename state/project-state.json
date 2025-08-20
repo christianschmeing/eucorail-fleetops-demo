@@ -1,16 +1,16 @@
 {
   "repo": "/christianschmeing/eucorail-fleetops-demo",
-  "branch": "copilot/fix-9f28ea18-6f16-4d51-9e95-36a556a40478",
+  "branch": "main",
   "commit": {
-    "sha": "25f35c107f1065d1b0726cc5a2ce7b7781df285a",
-    "message": "Add migration workflow to automate repository copy to v2.20\n\nCo-authored-by: christianschmeing <214955431+christianschmeing@users.noreply.github.com>",
-    "author": "copilot-swe-agent[bot]",
-    "timestamp": "2025-08-20T09:22:49Z"
+    "sha": "7fc1e421ad2e29aae8147b3d7a1514db29f43f11",
+    "message": "test(e2e): stabilize selectors; ci: skip visual snapshots in CI",
+    "author": "Christian Schmeing",
+    "timestamp": "2025-08-20T10:56:21Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17094227308"
+    "run_id": "17096342798"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T09:43:13.660Z",
+  "generated_at": "2025-08-20T10:57:42.575Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
