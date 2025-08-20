@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "ecdfe86aadc8617d04f763de85c3cd15b1f9a617",
-    "message": "feat(arverio): align generation BW=66 BY=78; position on RE1 RE8 MEX16 RE9 RE80",
+    "sha": "98d1685e7bf7ce7acc42d73b3310cf5af762b76b",
+    "message": "fix(map): default status filters on; tolerate lat/lon variants from Arverio data",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T13:00:37Z"
+    "timestamp": "2025-08-20T13:04:32Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17099143256"
+    "run_id": "17099241662"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T13:01:56.883Z",
+  "generated_at": "2025-08-20T13:05:58.946Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
