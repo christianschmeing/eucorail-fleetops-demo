@@ -9,9 +9,9 @@ interface ServerDepotMapProps {
 }
 
 const DEPOT_CENTERS = {
-  // align center with track data bases from track-geometries.ts
-  Essingen: { lat: 48.823, lon: 10.015 },
-  Langweid: { lat: 48.449, lon: 10.846 },
+  // align with data/depot_tracks_korrekt.yaml
+  Essingen: { lat: 48.6295, lon: 9.9574 },
+  Langweid: { lat: 48.4894, lon: 10.8539 },
 };
 
 // This component renders completely on the server

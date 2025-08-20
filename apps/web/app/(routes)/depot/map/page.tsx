@@ -76,7 +76,24 @@ export default async function DepotMapPage({
       {/* Header */}
       <div className="bg-gradient-to-r from-orange-900 to-gray-800 p-4 border-b border-gray-700">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">Depot-Karte</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold text-white">Depot-Karte</h1>
+            {/* Depot Switcher */}
+            <div className="flex items-center gap-2">
+              <a
+                href="/depot/map?depot=Essingen"
+                className={`px-3 py-1 rounded border ${selectedDepot === 'Essingen' ? 'bg-white/10 border-white/30' : 'border-white/20 hover:bg-white/5'}`}
+              >
+                Essingen
+              </a>
+              <a
+                href="/depot/map?depot=Langweid"
+                className={`px-3 py-1 rounded border ${selectedDepot === 'Langweid' ? 'bg-white/10 border-white/30' : 'border-white/20 hover:bg-white/5'}`}
+              >
+                Langweid
+              </a>
+            </div>
+          </div>
           <div className="flex gap-4">
             <div className="text-right">
               <div className="text-xs text-gray-400">Züge im Depot</div>
