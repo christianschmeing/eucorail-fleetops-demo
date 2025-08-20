@@ -24,8 +24,8 @@ interface LeafletDepotMapProps {
 
 // Depot center coordinates
 const DEPOT_CENTERS = {
-  Essingen: { lat: 48.7995, lon: 10.0000 },
-  Langweid: { lat: 48.4890, lon: 10.8490 },
+  Essingen: { lat: 48.6295, lon: 9.9574 },
+  Langweid: { lat: 48.4894, lon: 10.8539 },
 };
 
 export default function LeafletDepotMap({
@@ -80,19 +80,19 @@ export default function LeafletDepotMap({
     if (!mapRef.current) return;
 
     // Clear existing polylines
-    polylinesRef.current.forEach(p => p.remove());
+    polylinesRef.current.forEach((p) => p.remove());
     polylinesRef.current = [];
 
     // Add track polylines
-    tracks.forEach(track => {
+    tracks.forEach((track) => {
       if (track.geometry?.coordinates) {
         // Convert coordinates to LatLng
-        const latLngs = track.geometry.coordinates.map(coord => 
-          L.latLng(coord[1], coord[0]) // Note: GeoJSON is [lon, lat], Leaflet expects [lat, lon]
+        const latLngs = track.geometry.coordinates.map(
+          (coord) => L.latLng(coord[1], coord[0]) // Note: GeoJSON is [lon, lat], Leaflet expects [lat, lon]
         );
 
         // Determine track color
-        const hasAllocation = allocations.some(a => a.trackId === track.id);
+        const hasAllocation = allocations.some((a) => a.trackId === track.id);
         let color = '#10b981'; // Green - free
         if (track.state === 'gesperrt' || track.state === 'defekt') {
           color = '#6b7280'; // Gray - out of service
@@ -106,7 +106,7 @@ export default function LeafletDepotMap({
           weight: 6,
           opacity: 0.8,
         });
-        
+
         if (mapRef.current) {
           polyline.addTo(mapRef.current);
         }
@@ -138,19 +138,19 @@ export default function LeafletDepotMap({
     if (!mapRef.current) return;
 
     // Clear existing markers
-    markersRef.current.forEach(m => m.remove());
+    markersRef.current.forEach((m) => m.remove());
     markersRef.current = [];
 
     // Add train markers
-    allocations.forEach(allocation => {
-      const track = tracks.find(t => t.id === allocation.trackId);
+    allocations.forEach((allocation) => {
+      const track = tracks.find((t) => t.id === allocation.trackId);
       if (!track || !track.geometry?.coordinates) return;
 
       // Calculate position along track
       const offsetRatio = (allocation.offsetM ?? 0) / track.lengthM;
       const pointIndex = Math.floor(offsetRatio * (track.geometry.coordinates.length - 1));
       const coord = track.geometry.coordinates[pointIndex] || track.geometry.coordinates[0];
-      
+
       // Create custom icon based on purpose
       let bgColor = '#10b981'; // Default green
       if (allocation.purpose === 'ARA') bgColor = '#eab308';
@@ -182,7 +182,7 @@ export default function LeafletDepotMap({
 
       // Create marker
       const marker = L.marker([coord[1], coord[0]], { icon });
-      
+
       if (mapRef.current) {
         marker.addTo(mapRef.current);
       }
@@ -212,12 +212,12 @@ export default function LeafletDepotMap({
 
   return (
     <div className="relative w-full h-full">
-      <div 
-        ref={mapContainerRef} 
+      <div
+        ref={mapContainerRef}
         className="w-full h-full"
         style={{ minHeight: '500px', zIndex: 1 }}
       />
-      
+
       {/* Legend */}
       <div className="absolute bottom-4 right-4 bg-white/90 p-3 rounded-lg shadow-lg z-[400]">
         <div className="text-xs font-semibold mb-2 text-gray-800">Gleisfarben:</div>
