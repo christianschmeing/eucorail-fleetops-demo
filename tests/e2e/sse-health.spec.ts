@@ -2,9 +2,10 @@ import { test, expect } from '@playwright/test';
 
 test.describe('SSE endpoints health', () => {
   test('positions stream exposes text/event-stream', async ({ request }) => {
+    // Smoke: just ensure route returns 200 and correct content-type header quickly
     const res = await request.get('/api/positions/stream', {
       headers: { Accept: 'text/event-stream' },
-      timeout: 10_000,
+      timeout: 2000,
     });
     expect(res.ok()).toBeTruthy();
     const ct = res.headers()['content-type'] || '';
@@ -14,7 +15,7 @@ test.describe('SSE endpoints health', () => {
   test('tcms stream exposes text/event-stream', async ({ request }) => {
     const res = await request.get('/api/tcms/stream', {
       headers: { Accept: 'text/event-stream' },
-      timeout: 10_000,
+      timeout: 2000,
     });
     expect(res.ok()).toBeTruthy();
     const ct = res.headers()['content-type'] || '';
