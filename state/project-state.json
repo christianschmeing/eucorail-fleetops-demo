@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "73c42f0b6d39fe23c878609e3427ea40be37c836",
-    "message": "feat(log+search): include live TCMS events in log and search",
+    "sha": "33213d2d34b0a498636837ceffd2e18526a8bfb9",
+    "message": "feat(maintenance): render IHB & Predictive panels; mostUrgentDueStage",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T12:01:47Z"
+    "timestamp": "2025-08-21T12:54:06Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17126331901"
+    "run_id": "17127525935"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T12:05:35.435Z",
+  "generated_at": "2025-08-21T12:56:05.305Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
