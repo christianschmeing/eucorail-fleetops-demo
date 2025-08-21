@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "e154ace5b04d12d655ff288e59af0a25ac630e70",
-    "message": "feat(maintenance): plan dialog + SSR-safe planned allocations + visible IS filters",
+    "sha": "752e21215aeb8812101b5d499cc9ad35273ee81b",
+    "message": "feat(maintenance): ihb panel + stage planning + predictive; store ecm due calc; alloc api stage",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-20T18:06:13Z"
+    "timestamp": "2025-08-21T07:43:56Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17106554998"
+    "run_id": "17120509008"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-20T18:07:29.169Z",
+  "generated_at": "2025-08-21T07:45:11.685Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
