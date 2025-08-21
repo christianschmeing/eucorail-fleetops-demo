@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "f3adfe9a7fa2bfcc5629ad3667751f116db8b339",
-    "message": "test: relax SSE and depot visual assertions; robust filters test",
+    "sha": "4ec0bccf40b15b95bf4ef0c795b1eac7cb0f9590",
+    "message": "test: relax maintenance coverage assertion to presence of dashboard header",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T10:55:51Z"
+    "timestamp": "2025-08-21T10:59:06Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17124862024"
+    "run_id": "17124924680"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T10:57:09.533Z",
+  "generated_at": "2025-08-21T11:00:24.937Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
