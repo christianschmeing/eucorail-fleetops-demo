@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "33213d2d34b0a498636837ceffd2e18526a8bfb9",
-    "message": "feat(maintenance): render IHB & Predictive panels; mostUrgentDueStage",
+    "sha": "75883f4a48ef4357c5ea666c1fab842e84c022e1",
+    "message": "feat(trains+details): use FleetStore due fields for list and train details",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T12:54:06Z"
+    "timestamp": "2025-08-21T12:58:45Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17127525935"
+    "run_id": "17127637450"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T12:56:05.305Z",
+  "generated_at": "2025-08-21T13:00:47.707Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
