@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useFleetStore } from '@/lib/state/fleet-store';
 import Link from 'next/link';
 import { MaintenanceInfo, MaintenanceInterval } from '@/types/train';
@@ -90,6 +90,55 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
   });
 
   const itemsPerPage = 20;
+
+  // Attach minimal TCMS SSE on this page too (Map attaches its own when mounted)
+  useEffect(() => {
+    let es: EventSource | null = null;
+    let poll: any = null;
+    try {
+      es = new EventSource('/api/tcms/stream');
+      es.onmessage = (ev) => {
+        try {
+          const data = JSON.parse(ev.data);
+          if (data?.type === 'tcms' && data.event) {
+            useFleetStore.getState().addTcmsEvent(data.event);
+          }
+        } catch {}
+      };
+      // Ensure list gets initial data
+      poll = setInterval(async () => {
+        try {
+          const r = await fetch('/api/tcms/events', { cache: 'no-store' });
+          const j = await r.json();
+          if (Array.isArray(j.events)) {
+            for (const e of j.events) useFleetStore.getState().addTcmsEvent(e);
+          }
+        } catch {}
+      }, 15000);
+    } catch {}
+    return () => {
+      try {
+        es?.close();
+      } catch {}
+      try {
+        if (poll) clearInterval(poll);
+      } catch {}
+    };
+  }, []);
+
+  // Aggregate TCMS counters for alerts panel
+  const tcmsAggregate = useMemo(() => {
+    const all: any[] = [];
+    for (const [trainId, list] of Object.entries(activeTcms || {})) {
+      for (const e of list as any[]) all.push({ ...e, trainId });
+    }
+    all.sort((a, b) => (a.ts || '').localeCompare(b.ts || ''));
+    const critical = all.filter((e) => e.severity === 'CRITICAL').length;
+    const alarm = all.filter((e) => e.severity === 'ALARM').length;
+    const warn = all.filter((e) => e.severity === 'WARN').length;
+    const recent = all.slice(-8).reverse();
+    return { critical, alarm, warn, total: all.length, recent };
+  }, [activeTcms]);
 
   // Sortierung
   const sortedTrains = [...trains].sort((a, b) => {
@@ -269,6 +318,64 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
       </div>
 
       <div className="p-6">
+        {/* TCMS Alerts Panel */}
+        <div
+          className="mb-6 grid grid-cols-1 lg:grid-cols-3 gap-4"
+          data-testid="tcms-alerts-panel"
+          aria-label="TCMS-Alarmübersicht"
+        >
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+            <div className="text-sm text-gray-400 mb-1">Aktive TCMS</div>
+            <div className="text-2xl font-semibold text-white">{tcmsAggregate.total}</div>
+            <div className="mt-3 flex gap-2">
+              <span className="px-2 py-0.5 text-xs rounded bg-red-600/20 text-red-300 border border-red-600/40">
+                Critical {tcmsAggregate.critical}
+              </span>
+              <span className="px-2 py-0.5 text-xs rounded bg-yellow-600/20 text-yellow-300 border border-yellow-600/40">
+                Alarm {tcmsAggregate.alarm}
+              </span>
+              <span className="px-2 py-0.5 text-xs rounded bg-green-600/20 text-green-300 border border-green-600/40">
+                Warn {tcmsAggregate.warn}
+              </span>
+            </div>
+          </div>
+          <div className="lg:col-span-2 bg-gray-800 border border-gray-700 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-gray-300 font-semibold">Neueste TCMS-Ereignisse</div>
+              <div className="text-xs text-gray-400">{new Date().toLocaleString()}</div>
+            </div>
+            <div className="mt-3 divide-y divide-gray-700">
+              {tcmsAggregate.recent.length === 0 && (
+                <div className="text-xs text-gray-500">Keine aktiven Ereignisse</div>
+              )}
+              {tcmsAggregate.recent.map((e) => (
+                <div key={e.id} className="py-2 flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        e.severity === 'CRITICAL'
+                          ? 'bg-red-500'
+                          : e.severity === 'ALARM'
+                            ? 'bg-yellow-500'
+                            : 'bg-green-500'
+                      }`}
+                    />
+                    <span className="text-gray-300">{e.code}</span>
+                    <span className="text-gray-500 hidden sm:inline">· {e.system}</span>
+                    <Link
+                      href={`/trains/${encodeURIComponent(e.trainId)}`}
+                      className="text-blue-400 hover:text-blue-300"
+                    >
+                      {e.trainId}
+                    </Link>
+                  </div>
+                  <div className="text-xs text-gray-500">{new Date(e.ts).toLocaleTimeString()}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Filter */}
         <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
