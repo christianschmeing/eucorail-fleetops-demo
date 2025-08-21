@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "75883f4a48ef4357c5ea666c1fab842e84c022e1",
-    "message": "feat(trains+details): use FleetStore due fields for list and train details",
+    "sha": "26f35cd9f637196215b96b7f5e35016b57655e64",
+    "message": "feat(depot): generate due-based work orders using ECM profiles and real fleet hints",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T12:58:45Z"
+    "timestamp": "2025-08-21T13:02:50Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17127637450"
+    "run_id": "17127740737"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T13:00:47.707Z",
+  "generated_at": "2025-08-21T13:04:54.803Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
