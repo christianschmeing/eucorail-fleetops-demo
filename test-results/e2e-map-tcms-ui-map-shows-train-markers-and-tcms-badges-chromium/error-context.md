@@ -48,43 +48,43 @@
             - img
             - text: Suchen (⌘K, /)
 - heading "Live-Karte" [level=1]
-- text: 'Live Gesamt (gefiltert) 123 von 144 (Filter aktiv) Aktive 123 100% In Wartung 0 0% Alarme 0 0% Offline 0 0% Bundesland:'
+- text: 'Live Gesamt (gefiltert) 144 von 144 (Filter aktiv) Aktive 123 85% In Wartung 0 0% Alarme 0 0% Offline 21 15% Bundesland:'
 - checkbox "BW"
 - text: BW
 - checkbox "BY"
 - text: 'BY Linie:'
 - button "Alle BW"
 - button "BW aus"
-- checkbox "RE1 (8)"
-- text: RE1 (8)
-- checkbox "RE8 (8)"
-- text: RE8 (8)
-- checkbox "MEX16 (9)"
-- text: MEX16 (9)
-- checkbox "RE90 (8)"
-- text: RE90 (8)
-- checkbox "MEX13 (11)"
-- text: MEX13 (11)
+- checkbox "RE1 (10)"
+- text: RE1 (10)
+- checkbox "RE8 (10)"
+- text: RE8 (10)
+- checkbox "MEX16 (10)"
+- text: MEX16 (10)
+- checkbox "RE90 (10)"
+- text: RE90 (10)
+- checkbox "MEX13 (12)"
+- text: MEX13 (12)
 - button "Alle BY"
 - button "BY aus"
-- checkbox "RE9 (8)"
-- text: RE9 (8)
-- checkbox "RE80 (8)"
-- text: RE80 (8)
-- checkbox "RE89 (8)"
-- text: RE89 (8)
-- checkbox "RB86 (8)"
-- text: RB86 (8)
-- checkbox "RB87 (8)"
-- text: RB87 (8)
-- checkbox "RB89 (9)"
-- text: RB89 (9)
-- checkbox "RE72 (14)"
-- text: RE72 (14)
-- checkbox "RE96 (8)"
-- text: RE96 (8)
-- checkbox "RB92 (8)"
-- text: RB92 (8)
+- checkbox "RE9 (10)"
+- text: RE9 (10)
+- checkbox "RE80 (9)"
+- text: RE80 (9)
+- checkbox "RE89 (9)"
+- text: RE89 (9)
+- checkbox "RB86 (9)"
+- text: RB86 (9)
+- checkbox "RB87 (9)"
+- text: RB87 (9)
+- checkbox "RB89 (10)"
+- text: RB89 (10)
+- checkbox "RE72 (16)"
+- text: RE72 (16)
+- checkbox "RE96 (10)"
+- text: RE96 (10)
+- checkbox "RB92 (10)"
+- text: RB92 (10)
 - checkbox "RESERVE"
 - text: 'RESERVE Status:'
 - checkbox "Aktiv" [checked]
@@ -95,6 +95,8 @@
 - text: Alarm
 - checkbox "Offline" [checked]
 - text: Offline
+- checkbox "Standby" [checked]
+- text: Standby
 - button "Filter zurücksetzen"
 - region "Map"
 - button "Zug MEX13-60001"

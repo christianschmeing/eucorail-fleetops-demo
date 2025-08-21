@@ -50,25 +50,25 @@
 - link "← Zurück zur Übersicht":
     - /url: /trains
 - heading "Fahrzeug 66001" [level=1]
-- text: 'Linie: MEX13 Serie: FLIRT3 Laufleistung: 128,376 km Aktiv'
+- text: 'Linie: MEX13 Serie: FLIRT3 Laufleistung: 113,492 km Aktiv'
 - button "Übersicht"
 - button "Wartungsintervalle"
 - button "Historie"
 - heading "IS1 – Prüfung" [level=3]
-- text: 'OK Verbrauch 13.5% Seit letzter Wartung 3,376 km 49 Tage Restlauf 21,624 km 7 Tage Intervall: 25,000 km / 56 Tage Nächste Fälligkeit: 28.8.2025 Berechnung:'
-- code: Restlauf = 25,000 - 3,376 = 21,624 km
+- text: 'OK Verbrauch 54.0% Seit letzter Wartung 13,492 km 49 Tage Restlauf 11,508 km 7 Tage Intervall: 25,000 km / 56 Tage Nächste Fälligkeit: 28.8.2025 Berechnung:'
+- code: Restlauf = 25,000 - 13,492 = 11,508 km
 - heading "IS2 - Monatswartung" [level=3]
-- text: 'OK Verbrauch 71.2% Seit letzter Wartung 53,376 km 71 Tage Restlauf 21,624 km 79 Tage Intervall: 75,000 km / 150 Tage Nächste Fälligkeit: 8.11.2025 Berechnung:'
-- code: Restlauf = 75,000 - 53,376 = 21,624 km
+- text: 'OK Verbrauch 51.3% Seit letzter Wartung 38,492 km 71 Tage Restlauf 36,508 km 79 Tage Intervall: 75,000 km / 150 Tage Nächste Fälligkeit: 8.11.2025 Berechnung:'
+- code: Restlauf = 75,000 - 38,492 = 36,508 km
 - heading "IS3 - Quartalswartung" [level=3]
-- text: 'Bald fällig Verbrauch 61.1% Seit letzter Wartung 128,376 km 246 Tage Restlauf 81,624 km 119 Tage Intervall: 210,000 km / 365 Tage Nächste Fälligkeit: 18.12.2025 Berechnung:'
-- code: Restlauf = 210,000 - 128,376 = 81,624 km
+- text: 'Bald fällig Verbrauch 54.0% Seit letzter Wartung 113,492 km 246 Tage Restlauf 96,508 km 119 Tage Intervall: 210,000 km / 365 Tage Nächste Fälligkeit: 18.12.2025 Berechnung:'
+- code: Restlauf = 210,000 - 113,492 = 96,508 km
 - heading "IS4 - Hauptuntersuchung" [level=3]
-- text: 'OK Verbrauch 23.8% Seit letzter Wartung 128,376 km 235 Tage Restlauf 411,624 km 678 Tage Intervall: 540,000 km / 913 Tage Nächste Fälligkeit: 30.6.2027 Berechnung:'
-- code: Restlauf = 540,000 - 128,376 = 411,624 km
+- text: 'OK Verbrauch 21.0% Seit letzter Wartung 113,492 km 235 Tage Restlauf 426,508 km 678 Tage Intervall: 540,000 km / 913 Tage Nächste Fälligkeit: 30.6.2027 Berechnung:'
+- code: Restlauf = 540,000 - 113,492 = 426,508 km
 - heading "Lathe - Radsatzdrehung" [level=3]
-- text: 'OK Verbrauch 85.6% Seit letzter Wartung 128,376 km 246 Tage Restlauf 21,624 km 119 Tage Intervall: 150,000 km / 365 Tage Nächste Fälligkeit: 18.12.2025 Berechnung:'
-- code: Restlauf = 150,000 - 128,376 = 21,624 km
+- text: 'OK Verbrauch 75.7% Seit letzter Wartung 113,492 km 246 Tage Restlauf 36,508 km 119 Tage Intervall: 150,000 km / 365 Tage Nächste Fälligkeit: 18.12.2025 Berechnung:'
+- code: Restlauf = 150,000 - 113,492 = 36,508 km
 - button "Dark Mode Toggle": 🌓 Theme
 - alert
 ```

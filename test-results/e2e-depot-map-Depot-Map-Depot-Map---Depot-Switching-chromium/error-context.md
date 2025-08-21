@@ -53,6 +53,8 @@
 - link "Langweid":
     - /url: /depot/map?depot=Langweid
 - text: Züge im Depot 10/144 Gleis-Auslastung 57%
+- iframe
+- text: Gleisbelegung 10 Züge geplant/abgestellt
 - region "Map"
 - button "Zoom in"
 - button "Zoom out"

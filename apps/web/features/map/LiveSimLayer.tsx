@@ -140,6 +140,7 @@ export function LiveSimLayer({
         el.style.border = '2px solid white';
         el.setAttribute('role', 'button');
         el.setAttribute('aria-label', `Zug ${v.id}`);
+        el.setAttribute('data-testid', 'train-marker');
         // TCMS badge
         const badge = document.createElement('div');
         badge.style.position = 'absolute';
