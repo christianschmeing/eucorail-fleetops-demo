@@ -1,4 +1,6 @@
 import DepotClient from './DepotClient';
+import { ECM_PROFILES } from '@/lib/maintenance/ecm-profiles';
+import arverioFleet from '@/data/arverio-fleet-real.json';
 
 export interface Track {
   id: string;
@@ -288,6 +290,8 @@ function generateAllocations(): Allocation[] {
   const allocations: Allocation[] = [];
   const now = new Date();
   const fleetData = loadFleetData();
+  // Augment with due-based triggers using real fleet where possible
+  const real = (arverioFleet as any).vehicles as Array<any>;
   const isLevels: Allocation['isLevel'][] = ['IS1', 'IS2', 'IS3', 'IS4'];
   const taskOptions = [
     ['IS1: Sichtprüfung', 'Bremsentest', 'Funktionscheck'],
@@ -361,7 +365,29 @@ function generateAllocations(): Allocation[] {
         const startOffset = baseOffset + hourInDay;
 
         // Wartungsdauer basierend auf Wartungstyp
-        const isLevel = train.isReserve ? 'IS4' : isLevels[Math.floor(Math.random() * 4)];
+        // pick IS level: prefer most urgent from real fleet due hints if present
+        let isLevel: Allocation['isLevel'] = train.isReserve
+          ? 'IS4'
+          : isLevels[Math.floor(Math.random() * 4)];
+        const realV = real?.find(
+          (v: any) => String(v.id) === String((train.trainId || '').replace(/\D+/g, ''))
+        );
+        if (realV) {
+          const fam = String(realV.type || '').toUpperCase();
+          const prof: any = (ECM_PROFILES as any)[fam];
+          if (prof) {
+            const kmField = (realV.mileageKm || realV.mileage || 0) as number;
+            const candidates: Array<{ st: any; rem: number }> = ['IS1', 'IS2', 'IS3', 'IS4'].map(
+              (st) => {
+                const cfg = prof[st];
+                const rem = cfg?.periodKm ? cfg.periodKm - (kmField % cfg.periodKm) : Infinity;
+                return { st, rem };
+              }
+            );
+            candidates.sort((a, b) => a.rem - b.rem);
+            isLevel = candidates[0].st as any;
+          }
+        }
         const duration =
           isLevel === 'IS1'
             ? 2 + Math.random() * 2
