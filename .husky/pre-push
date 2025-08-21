@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running local verify before push (build + E2E)..."
+npm run verify
+status=$?
+if [ $status -ne 0 ]; then
+  echo "❌ verify failed. Aborting push. Use --no-verify to override (not recommended)."
+  exit $status
+fi
+echo "✅ verify passed. Proceeding with push."
+
+

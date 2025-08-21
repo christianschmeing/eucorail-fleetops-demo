@@ -210,9 +210,10 @@ Interne Checks (typecheck/lint/build/test:int) – keine E2E/Playwright im CI.
 
 Diese Schritte haben sich im Projekt bewährt und sollen von Agenten konsistent angewendet werden:
 
-1. Lokale Verifikation vor Push
+1. Lokale Verifikation vor Push (automatisch erzwungen)
 
 - `npm run verify` (führt Build beider Workspaces aus, startet Test‑Server und Playwright‑E2E)
+- Pre-push Hook: Führt automatisch `npm run verify` aus und bricht den Push bei Fehlern ab
 - Falls visuelle Snapshots fehlen/abweichen: erst Code prüfen, dann optional `npm run cursor:update-snapshots` mit begründeter Commit‑Message (Konvention)
 
 2. Kurze Commits (Conventional Commits)
@@ -231,6 +232,12 @@ Diese Schritte haben sich im Projekt bewährt und sollen von Agenten konsistent 
 5. Production Deploy (überwacht)
 
 - GitHub Action „deploy‑production“ triggert Vercel‑Deploy und führt Health‑/Smoke‑Checks aus
+
+Tägliche Praxis:
+
+- PR: „Preview + Test“ Workflow liefert eine getestete Preview‑URL und E2E‑Report
+- Merge nach main: „Deploy Production (Vercel)“ baut, deployt, prüft Health/Smoke
+- Zusätzlich: „Release Verify“ validiert die aktuell live erreichbare Produktions‑URL periodisch/bei Push
 
 6. Depot/Maintenance Spezifika (manuelle Checks)
 

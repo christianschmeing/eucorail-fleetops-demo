@@ -16,6 +16,12 @@ jobs:
           node-version: '20'
       - name: Run agent policy check (warn-only)
         run: node scripts/ci/agent-policy-check.mjs || true
+      - name: Echo enforced process (info)
+        run: |
+          echo "Agents MUST run 'npm run verify' locally before pushing."
+          echo "Pre-push hook enforces local verify; override with --no-verify only in emergencies."
+          echo "Visual tests are disabled in CI (ENABLE_VISUAL_TESTS=0)."
+          echo "Production deploy is monitored via 'deploy-production' with health + smoke checks."
 
 
 
