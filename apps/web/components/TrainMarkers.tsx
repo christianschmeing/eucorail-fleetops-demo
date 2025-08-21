@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSSETrains } from './hooks/useSSETrains';
+import { useFleetStore } from '@/lib/state/fleet-store';
 
 interface TrainMarkerProps {
   map: maplibregl.Map | null;
@@ -441,6 +442,55 @@ export default function TrainMarkers({
     `;
   };
 
+  const updateTcmsBadge = (el: HTMLDivElement, id: string) => {
+    try {
+      const active = useFleetStore.getState().activeTcms || {};
+      const events = (active as any)[id] || [];
+      const critical = events.filter((e: any) => e.severity === 'CRITICAL').length;
+      const alarms = events.filter((e: any) => e.severity === 'ALARM').length;
+      const warns = events.filter((e: any) => e.severity === 'WARN').length;
+      const total = critical + alarms + warns;
+      let badge = el.querySelector('[data-testid="tcms-badge"]') as HTMLDivElement | null;
+      if (total > 0) {
+        if (!badge) {
+          badge = document.createElement('div');
+          badge.setAttribute('data-testid', 'tcms-badge');
+          badge.style.position = 'absolute';
+          badge.style.right = '-6px';
+          badge.style.top = '-6px';
+          badge.style.minWidth = '16px';
+          badge.style.height = '16px';
+          badge.style.padding = '0 3px';
+          badge.style.borderRadius = '9999px';
+          badge.style.fontSize = '10px';
+          badge.style.lineHeight = '16px';
+          badge.style.textAlign = 'center';
+          badge.style.pointerEvents = 'none';
+          el.appendChild(badge);
+        }
+        const hasCritical = critical > 0;
+        const hasAlarm = alarms > 0;
+        badge.style.background = hasCritical
+          ? 'rgba(239,68,68,0.95)'
+          : hasAlarm
+            ? 'rgba(245,158,11,0.95)'
+            : 'rgba(34,197,94,0.95)';
+        badge.style.color = '#111';
+        badge.style.border = '1px solid rgba(255,255,255,0.85)';
+        badge.textContent = String(total);
+        // Extend title with TCMS summary
+        const codes = events.map((e: any) => e.code).slice(0, 3);
+        const rest = events.length - codes.length;
+        const summary = codes.join(', ') + (rest > 0 ? ` +${rest}` : '');
+        if (summary && !el.title.includes('TCMS')) {
+          el.title = `${el.title} • TCMS:${summary}`;
+        }
+      } else if (badge) {
+        badge.remove();
+      }
+    } catch {}
+  };
+
   const ensureDomMarker = (
     id: string,
     lon: number,
@@ -464,6 +514,7 @@ export default function TrainMarkers({
       el.style.justifyContent = 'center';
       el.style.cursor = 'pointer';
       el.style.willChange = 'transform';
+      el.style.position = 'relative';
       el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
       // Unified tooltip: FZ • Slot • UIC + Line + ECM + Next due (best-effort)
       if (titleText) {
@@ -478,6 +529,7 @@ export default function TrainMarkers({
         el.title = `${id}${slot}${uic} • ${line || ''}${ecm}${next}${sched}`;
       }
       el.innerHTML = renderTrainIconSVG(manufacturer, 0);
+      updateTcmsBadge(el, id);
       el.addEventListener('click', (e) => {
         e.stopPropagation();
         onTrainSelect(id);
@@ -502,6 +554,7 @@ export default function TrainMarkers({
       domMarkersRef.current.set(id, entry);
     } else {
       entry.el.style.filter = isStale ? 'grayscale(1) opacity(0.6)' : 'none';
+      updateTcmsBadge(entry.el, id);
       const prev = entry.lastLonLat;
       const moved = !prev || Math.abs(prev[0] - lon) > 1e-6 || Math.abs(prev[1] - lat) > 1e-6;
       if (moved && acceptNewTarget) {

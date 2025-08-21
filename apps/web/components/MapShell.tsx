@@ -96,6 +96,10 @@ export default function MapShell({
           const data = JSON.parse(ev.data);
           if (data?.type === 'tcms' && data.event) {
             useFleetStore.getState().addTcmsEvent(data.event);
+            // Trigger map refresh so markers can update badges
+            try {
+              window.dispatchEvent(new CustomEvent('trains:update'));
+            } catch {}
           }
         } catch {}
       };
@@ -106,6 +110,9 @@ export default function MapShell({
           const j = await r.json();
           if (Array.isArray(j.events)) {
             for (const e of j.events) useFleetStore.getState().addTcmsEvent(e);
+            try {
+              window.dispatchEvent(new CustomEvent('trains:update'));
+            } catch {}
           }
         } catch {}
       }, 10000);
