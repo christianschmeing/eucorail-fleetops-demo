@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useFleetStore } from '@/lib/state/fleet-store';
 import Link from 'next/link';
 import { MaintenanceInfo, MaintenanceInterval } from '@/types/train';
 
@@ -31,15 +32,9 @@ function getStatusBadge(status: 'green' | 'yellow' | 'red') {
 }
 
 // Maintenance Badge Komponente
-function MaintenanceBadge({ 
-  type, 
-  interval 
-}: { 
-  type: string; 
-  interval?: MaintenanceInterval 
-}) {
+function MaintenanceBadge({ type, interval }: { type: string; interval?: MaintenanceInterval }) {
   if (!interval) return <span className="text-gray-500">-</span>;
-  
+
   return (
     <div className="group relative">
       <div className={`px-2 py-1 rounded text-xs ${getStatusBadge(interval.status)} cursor-help`}>
@@ -48,7 +43,7 @@ function MaintenanceBadge({
           Rest: {Math.round(interval.restKm).toLocaleString()} km
         </div>
       </div>
-      
+
       {/* Tooltip */}
       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-50 w-64">
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-3 shadow-xl">
@@ -80,6 +75,7 @@ function MaintenanceBadge({
 
 export default function TrainsClientExtended({ initialTrains }: TrainsClientProps) {
   const [trains] = useState<Train[]>(initialTrains);
+  const activeTcms = useFleetStore((s) => s.activeTcms);
   const [currentPage, setCurrentPage] = useState(1);
   const [showMaintenanceColumns, setShowMaintenanceColumns] = useState(true);
   const [maintenanceFilter, setMaintenanceFilter] = useState<string>('');
@@ -90,35 +86,36 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
     region: '',
     line: '',
     status: '',
-    search: ''
+    search: '',
   });
-  
+
   const itemsPerPage = 20;
 
   // Sortierung
   const sortedTrains = [...trains].sort((a, b) => {
     let aVal: any = a[sortField];
     let bVal: any = b[sortField];
-    
+
     // Spezialbehandlung für Wartungsintervalle
     if (sortField.includes('restKm')) {
       const type = sortField.split('_')[0]; // IS1, IS2, etc.
       aVal = a.maintenanceInfo?.[type as keyof MaintenanceInfo]?.restKm ?? Infinity;
       bVal = b.maintenanceInfo?.[type as keyof MaintenanceInfo]?.restKm ?? Infinity;
     }
-    
+
     if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
     if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
     return 0;
   });
 
   // Filter anwenden
-  const filteredTrains = sortedTrains.filter(train => {
+  const filteredTrains = sortedTrains.filter((train) => {
     if (filters.region && train.region !== filters.region) return false;
     if (filters.line && train.lineId !== filters.line) return false;
     if (filters.status && train.status !== filters.status) return false;
-    if (filters.search && !train.id.toLowerCase().includes(filters.search.toLowerCase())) return false;
-    
+    if (filters.search && !train.id.toLowerCase().includes(filters.search.toLowerCase()))
+      return false;
+
     // Wartungsfilter
     if (maintenanceFilter) {
       const [type, statusFilter] = maintenanceFilter.split('_');
@@ -127,16 +124,16 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
       if (statusFilter === 'red' && interval.status !== 'red') return false;
       if (statusFilter === 'yellow' && interval.status !== 'yellow') return false;
     }
-    
+
     // Rest-km Filter
     if (restKmFilter) {
-      const hasLowRestKm = ['IS1', 'IS2', 'IS3', 'IS4', 'Lathe'].some(type => {
+      const hasLowRestKm = ['IS1', 'IS2', 'IS3', 'IS4', 'Lathe'].some((type) => {
         const interval = train.maintenanceInfo?.[type as keyof MaintenanceInfo];
         return interval && interval.restKm < restKmFilter;
       });
       if (!hasLowRestKm) return false;
     }
-    
+
     return true;
   });
 
@@ -150,15 +147,32 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
   const handleExport = () => {
     const csvData = [
       [
-        'Zug-ID', 'Linie', 'Region', 'Status', 'Depot', 'Serie', 
-        'Verspätung (min)', 'Geschwindigkeit (km/h)', 'Health Score', 
-        'IS1 Rest-km', 'IS1 Rest-Tage', 'IS1 Status',
-        'IS2 Rest-km', 'IS2 Rest-Tage', 'IS2 Status',
-        'IS3 Rest-km', 'IS3 Rest-Tage', 'IS3 Status',
-        'IS4 Rest-km', 'IS4 Rest-Tage', 'IS4 Status',
-        'Lathe Rest-km', 'Lathe Rest-Tage', 'Lathe Status'
+        'Zug-ID',
+        'Linie',
+        'Region',
+        'Status',
+        'Depot',
+        'Serie',
+        'Verspätung (min)',
+        'Geschwindigkeit (km/h)',
+        'Health Score',
+        'IS1 Rest-km',
+        'IS1 Rest-Tage',
+        'IS1 Status',
+        'IS2 Rest-km',
+        'IS2 Rest-Tage',
+        'IS2 Status',
+        'IS3 Rest-km',
+        'IS3 Rest-Tage',
+        'IS3 Status',
+        'IS4 Rest-km',
+        'IS4 Rest-Tage',
+        'IS4 Status',
+        'Lathe Rest-km',
+        'Lathe Rest-Tage',
+        'Lathe Status',
       ],
-      ...filteredTrains.map(train => [
+      ...filteredTrains.map((train) => [
         train.id,
         train.lineId,
         train.region,
@@ -182,11 +196,11 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
         train.maintenanceInfo?.IS4?.status || '',
         train.maintenanceInfo?.Lathe?.restKm?.toString() || '',
         train.maintenanceInfo?.Lathe?.restDays?.toString() || '',
-        train.maintenanceInfo?.Lathe?.status || ''
-      ])
+        train.maintenanceInfo?.Lathe?.status || '',
+      ]),
     ];
-    
-    const csv = csvData.map(row => row.join(',')).join('\n');
+
+    const csv = csvData.map((row) => row.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -213,7 +227,7 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">Fahrzeugübersicht</h1>
             <p className="text-gray-300">
-              <span className="font-semibold text-white">{trains.length} Fahrzeuge</span> • 
+              <span className="font-semibold text-white">{trains.length} Fahrzeuge</span> •
               Wartungsintervalle & Restlaufzeiten
             </p>
           </div>
@@ -221,14 +235,18 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
             <button
               onClick={() => setShowMaintenanceColumns(!showMaintenanceColumns)}
               className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                showMaintenanceColumns 
-                  ? 'bg-green-600 hover:bg-green-700 text-white' 
+                showMaintenanceColumns
+                  ? 'bg-green-600 hover:bg-green-700 text-white'
                   : 'bg-gray-600 hover:bg-gray-700 text-white'
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
               </svg>
               Wartungsdaten {showMaintenanceColumns ? 'ein' : 'aus'}
             </button>
@@ -237,8 +255,12 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
               </svg>
               CSV-Export ({filteredTrains.length} Zeilen)
             </button>
@@ -263,7 +285,7 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm text-gray-400 mb-1">Region</label>
               <select
@@ -279,7 +301,7 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                 <option value="BY">Bayern</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm text-gray-400 mb-1">Status</label>
               <select
@@ -298,7 +320,7 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                 <option value="reserve">Reserve</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm text-gray-400 mb-1">Wartungsampel</label>
               <select
@@ -317,7 +339,7 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                 <option value="Lathe_red">Lathe Rot</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm text-gray-400 mb-1">Rest-km unter</label>
               <select
@@ -336,8 +358,13 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
               </select>
             </div>
           </div>
-          
-          {(filters.region || filters.line || filters.status || filters.search || maintenanceFilter || restKmFilter) && (
+
+          {(filters.region ||
+            filters.line ||
+            filters.status ||
+            filters.search ||
+            maintenanceFilter ||
+            restKmFilter) && (
             <div className="mt-3 flex items-center justify-between">
               <span className="text-sm text-gray-400">
                 {filteredTrains.length} von {trains.length} Zügen gefiltert
@@ -363,7 +390,7 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
             <table className="w-full">
               <thead className="bg-gray-700/50 border-b border-gray-600">
                 <tr>
-                  <th 
+                  <th
                     className="px-4 py-3 text-left text-sm font-medium text-gray-300 cursor-pointer hover:text-white"
                     onClick={() => handleSort('id')}
                   >
@@ -371,114 +398,159 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">Linie</th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-300">Status</th>
-                  <th className="px-4 py-3 text-center text-sm font-medium text-gray-300">Health</th>
-                  
+                  <th className="px-4 py-3 text-center text-sm font-medium text-gray-300">
+                    Health
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm font-medium text-gray-300">TCMS</th>
+
                   {showMaintenanceColumns && (
                     <>
-                      <th 
+                      <th
                         className="px-4 py-3 text-center text-sm font-medium text-gray-300 cursor-pointer hover:text-white"
                         onClick={() => handleSort('IS1_restKm')}
                       >
                         IS1 {sortField === 'IS1_restKm' && (sortDirection === 'asc' ? '↑' : '↓')}
                       </th>
-                      <th 
+                      <th
                         className="px-4 py-3 text-center text-sm font-medium text-gray-300 cursor-pointer hover:text-white"
                         onClick={() => handleSort('IS2_restKm')}
                       >
                         IS2 {sortField === 'IS2_restKm' && (sortDirection === 'asc' ? '↑' : '↓')}
                       </th>
-                      <th 
+                      <th
                         className="px-4 py-3 text-center text-sm font-medium text-gray-300 cursor-pointer hover:text-white"
                         onClick={() => handleSort('IS3_restKm')}
                       >
                         IS3 {sortField === 'IS3_restKm' && (sortDirection === 'asc' ? '↑' : '↓')}
                       </th>
-                      <th 
+                      <th
                         className="px-4 py-3 text-center text-sm font-medium text-gray-300 cursor-pointer hover:text-white"
                         onClick={() => handleSort('IS4_restKm')}
                       >
                         IS4 {sortField === 'IS4_restKm' && (sortDirection === 'asc' ? '↑' : '↓')}
                       </th>
-                      <th 
+                      <th
                         className="px-4 py-3 text-center text-sm font-medium text-gray-300 cursor-pointer hover:text-white"
                         onClick={() => handleSort('Lathe_restKm')}
                       >
-                        Lathe {sortField === 'Lathe_restKm' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        Lathe{' '}
+                        {sortField === 'Lathe_restKm' && (sortDirection === 'asc' ? '↑' : '↓')}
                       </th>
                     </>
                   )}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
-                {currentTrains.map((train) => (
-                  <tr key={train.id} className="hover:bg-gray-700/30 transition-colors">
-                    <td className="px-4 py-3">
-                      <Link href={`/trains/${encodeURIComponent(train.id)}`} className="font-medium text-blue-400 hover:text-blue-300">
-                        {train.id}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 text-gray-300">{train.lineId}</td>
-                    <td className="px-4 py-3">
-                      <span className={`px-2 py-1 text-xs rounded ${
-                        train.status === 'active' ? 'bg-green-500/20 text-green-400' :
-                        train.status === 'maintenance' ? 'bg-yellow-500/20 text-yellow-400' :
-                        train.status === 'inspection' ? 'bg-red-500/20 text-red-400' :
-                        'bg-gray-500/20 text-gray-400'
-                      }`}>
-                        {train.status === 'active' ? 'Aktiv' :
-                         train.status === 'maintenance' ? 'Wartung' :
-                         train.status === 'inspection' ? 'Inspektion' :
-                         train.status === 'standby' ? 'Bereitschaft' : train.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {train.healthScore && (
-                        <div className="flex items-center justify-center gap-1">
-                          <div className="w-12 bg-gray-700 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full ${
-                                train.healthScore >= 90 ? 'bg-green-500' :
-                                train.healthScore >= 75 ? 'bg-yellow-500' :
-                                'bg-red-500'
-                              }`}
-                              style={{ width: `${train.healthScore}%` }}
-                            />
+                {currentTrains.map((train) => {
+                  const evts = (activeTcms as any)[train.id] || [];
+                  const alarms = evts.filter(
+                    (e: any) => e.severity === 'ALARM' || e.severity === 'CRITICAL'
+                  );
+                  const warn = evts.filter((e: any) => e.severity === 'WARN').length;
+                  const hasCritical = evts.some((e: any) => e.severity === 'CRITICAL');
+                  return (
+                    <tr
+                      key={train.id}
+                      className={`transition-colors ${hasCritical ? 'bg-red-900/20' : 'hover:bg-gray-700/30'}`}
+                    >
+                      <td className="px-4 py-3">
+                        <Link
+                          href={`/trains/${encodeURIComponent(train.id)}`}
+                          className="font-medium text-blue-400 hover:text-blue-300"
+                        >
+                          {train.id}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3 text-gray-300">{train.lineId}</td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`px-2 py-1 text-xs rounded ${
+                            train.status === 'active'
+                              ? 'bg-green-500/20 text-green-400'
+                              : train.status === 'maintenance'
+                                ? 'bg-yellow-500/20 text-yellow-400'
+                                : train.status === 'inspection'
+                                  ? 'bg-red-500/20 text-red-400'
+                                  : 'bg-gray-500/20 text-gray-400'
+                          }`}
+                        >
+                          {train.status === 'active'
+                            ? 'Aktiv'
+                            : train.status === 'maintenance'
+                              ? 'Wartung'
+                              : train.status === 'inspection'
+                                ? 'Inspektion'
+                                : train.status === 'standby'
+                                  ? 'Bereitschaft'
+                                  : train.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        {train.healthScore && (
+                          <div className="flex items-center justify-center gap-1">
+                            <div className="w-12 bg-gray-700 rounded-full h-2">
+                              <div
+                                className={`h-2 rounded-full ${
+                                  train.healthScore >= 90
+                                    ? 'bg-green-500'
+                                    : train.healthScore >= 75
+                                      ? 'bg-yellow-500'
+                                      : 'bg-red-500'
+                                }`}
+                                style={{ width: `${train.healthScore}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-400">{train.healthScore}%</span>
                           </div>
-                          <span className="text-xs text-gray-400">{train.healthScore}%</span>
-                        </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        <span
+                          className={`px-2 py-1 text-xs rounded border ${alarms.length > 0 ? 'bg-red-600/20 text-red-300 border-red-600/40' : warn > 0 ? 'bg-yellow-600/20 text-yellow-300 border-yellow-600/40' : 'bg-green-600/20 text-green-300 border-green-600/40'}`}
+                        >
+                          {alarms.length > 0
+                            ? `${alarms.length} Alarm`
+                            : warn > 0
+                              ? `${warn} Warn`
+                              : '0'}
+                        </span>
+                      </td>
+
+                      {showMaintenanceColumns && (
+                        <>
+                          <td className="px-4 py-3 text-center">
+                            <MaintenanceBadge type="IS1" interval={train.maintenanceInfo?.IS1} />
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <MaintenanceBadge type="IS2" interval={train.maintenanceInfo?.IS2} />
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <MaintenanceBadge type="IS3" interval={train.maintenanceInfo?.IS3} />
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <MaintenanceBadge type="IS4" interval={train.maintenanceInfo?.IS4} />
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <MaintenanceBadge
+                              type="Lathe"
+                              interval={train.maintenanceInfo?.Lathe}
+                            />
+                          </td>
+                        </>
                       )}
-                    </td>
-                    
-                    {showMaintenanceColumns && (
-                      <>
-                        <td className="px-4 py-3 text-center">
-                          <MaintenanceBadge type="IS1" interval={train.maintenanceInfo?.IS1} />
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          <MaintenanceBadge type="IS2" interval={train.maintenanceInfo?.IS2} />
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          <MaintenanceBadge type="IS3" interval={train.maintenanceInfo?.IS3} />
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          <MaintenanceBadge type="IS4" interval={train.maintenanceInfo?.IS4} />
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          <MaintenanceBadge type="Lathe" interval={train.maintenanceInfo?.Lathe} />
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-          
+
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between px-4 py-3 border-t border-gray-700">
               <div className="text-sm text-gray-400">
-                Zeige {startIndex + 1}-{Math.min(endIndex, filteredTrains.length)} von {filteredTrains.length} Einträgen
+                Zeige {startIndex + 1}-{Math.min(endIndex, filteredTrains.length)} von{' '}
+                {filteredTrains.length} Einträgen
               </div>
               <div className="flex gap-2">
                 <button
@@ -496,8 +568,8 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
                       className={`px-3 py-1 text-sm rounded ${
-                        pageNum === currentPage 
-                          ? 'bg-blue-600 text-white' 
+                        pageNum === currentPage
+                          ? 'bg-blue-600 text-white'
                           : 'bg-gray-700 hover:bg-gray-600 text-white'
                       }`}
                     >

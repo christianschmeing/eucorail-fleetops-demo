@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { ECM_PROFILES } from '@/lib/maintenance/ecm-profiles';
 import { Badge } from '@/components/ui/Badge';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { Card, CardBody, CardTitle } from '@/components/ui/Card';
@@ -129,8 +130,9 @@ const FACILITIES = {
   },
 } as const;
 
+// duration will be treated as a minimum; UI width will reflect ECM_PROFILES duration if available
 const WORK_ORDERS = [
-  { id: 'WO-001', vehicleId: '66012', type: 'IS2', duration: 4, priority: 'high', depot: 'ESS' },
+  { id: 'WO-001', vehicleId: '66012', type: 'IS2', duration: 10, priority: 'high', depot: 'ESS' },
   {
     id: 'WO-002',
     vehicleId: '78034',
@@ -139,7 +141,7 @@ const WORK_ORDERS = [
     priority: 'medium',
     depot: 'GAB',
   },
-  { id: 'WO-003', vehicleId: '66045', type: 'IS3', duration: 8, priority: 'low', depot: 'ESS' },
+  { id: 'WO-003', vehicleId: '66045', type: 'IS3', duration: 20, priority: 'low', depot: 'ESS' },
   { id: 'WO-004', vehicleId: '78012', type: 'LATHE', duration: 6, priority: 'high', depot: 'GAB' },
   {
     id: 'WO-005',
@@ -150,7 +152,7 @@ const WORK_ORDERS = [
     depot: 'GAB',
   },
   { id: 'WO-006', vehicleId: '66008', type: 'IS1', duration: 1.5, priority: 'high', depot: 'ESS' },
-  { id: 'WO-007', vehicleId: '78023', type: 'IS4', duration: 16, priority: 'low', depot: 'GAB' },
+  { id: 'WO-007', vehicleId: '78023', type: 'IS4', duration: 50, priority: 'low', depot: 'GAB' },
 ] as const;
 
 interface DepotSlot {
@@ -456,17 +458,17 @@ export default function DepotPlanningPage() {
           <div
             ref={ganttRef}
             className="flex-1 overflow-auto bg-white p-4"
-            style={{ zoom: `${zoomLevel}%` }}
+            style={{ zoom: zoomLevel / 100 }}
           >
             <div className="flex border-b pb-2 mb-4">
               <div className="w-20" />
               {Array.from({ length: 7 }).map((_, day) => (
-                <div key={day} className="flex-1 text-center">
+                <div key={`day-${day}`} className="flex-1 text-center">
                   <div className="font-semibold text-sm">Tag {day + 1}</div>
                   <div className="flex">
                     {Array.from({ length: 24 }).map((_, hour) => (
                       <div
-                        key={hour}
+                        key={`hour-${day}-${hour}`}
                         className="flex-1 text-xs text-gray-400 border-l"
                         style={{ minWidth: '20px' }}
                       >
@@ -478,12 +480,12 @@ export default function DepotPlanningPage() {
               ))}
             </div>
 
-            {(FACILITIES as any)[selectedDepot].tracks.map((track: any) => {
+            {((FACILITIES as any)[selectedDepot]?.tracks || []).map((track: any, idx: number) => {
               const trackNo = track.no;
               const trackSlots = slots.filter((s) => s.trackNo === trackNo);
               return (
                 <div
-                  key={`${track.no}-${track.segment || ''}`}
+                  key={`${track.no}-${track.segment || ''}-${idx}`}
                   className="flex mb-2 relative"
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
@@ -497,7 +499,7 @@ export default function DepotPlanningPage() {
                   <div className="flex-1 relative h-12 bg-gray-50 border rounded">
                     {Array.from({ length: 168 }).map((_, hour) => (
                       <div
-                        key={hour}
+                        key={`grid-${trackNo}-${hour}`}
                         className="absolute top-0 bottom-0 border-l border-gray-200"
                         style={{ left: `${(hour / 168) * 100}%` }}
                       />
@@ -507,7 +509,28 @@ export default function DepotPlanningPage() {
                         (w: any) => w.id === slot.workOrderId
                       );
                       const startHour = (slot.startTime.getTime() - Date.now()) / 3600000;
-                      const duration = wo?.duration || 4;
+                      // try to pick realistic duration from ECM_PROFILES by vehicle family inference
+                      let duration = wo?.duration || 4;
+                      const vehPrefix = String(wo?.vehicleId || '');
+                      let family: 'FLIRT3' | 'MIREO' | 'DESIRO_HC' | null = null;
+                      if (vehPrefix.startsWith('660')) family = 'FLIRT3';
+                      if (vehPrefix.startsWith('780')) {
+                        // split roughly by allocation
+                        const suffix = Number(vehPrefix.slice(3));
+                        family =
+                          suffix % 3 === 0 ? 'DESIRO_HC' : suffix % 2 === 0 ? 'MIREO' : 'FLIRT3';
+                      }
+                      const stage = String(wo?.type || '').toUpperCase();
+                      if (
+                        family &&
+                        (ECM_PROFILES as any)[family] &&
+                        (ECM_PROFILES as any)[family][stage]
+                      ) {
+                        duration = Math.max(
+                          duration,
+                          (ECM_PROFILES as any)[family][stage].durationHours || duration
+                        );
+                      }
                       const hasConflict = conflicts.some((c) => c.includes(slot.id));
                       return (
                         <div

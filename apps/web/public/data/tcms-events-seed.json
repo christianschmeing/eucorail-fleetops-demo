@@ -1,0 +1,73 @@
+[
+  {
+    "id": "e-0001",
+    "ts": "2025-08-20T07:12:03Z",
+    "trainId": "66001",
+    "lineId": "RE9",
+    "system": "DOOR",
+    "code": "DOOR_2L_OBSTRUCTED",
+    "severity": "ALARM",
+    "status": "RAISED",
+    "kmAtEvent": 421345,
+    "dwellImpact": true,
+    "humanMessage": "Tür 2L schließt nicht – Hindernis/Quetschutz ausgelöst",
+    "suggestedAction": "Türbereich räumen; Tür neu ansteuern; Sensor prüfen",
+    "meta": { "station": "Augsburg Hbf", "attempts": 2 }
+  },
+  {
+    "id": "e-0002",
+    "ts": "2025-08-20T07:18:55Z",
+    "trainId": "66022",
+    "lineId": "RE1",
+    "system": "TRACTION",
+    "code": "TRAC_INV_OVHT",
+    "severity": "ALARM",
+    "status": "RAISED",
+    "kmAtEvent": 318233,
+    "humanMessage": "Traktionsumrichter über Temperaturgrenze (gemessen 96°C)",
+    "suggestedAction": "Leistungsanforderung reduzieren; Lüfter prüfen; Kühlmittelkreislauf inspizieren",
+    "meta": { "temp": 96 }
+  },
+  {
+    "id": "e-0003",
+    "ts": "2025-08-20T07:25:10Z",
+    "trainId": "M-1208",
+    "lineId": "RE9",
+    "system": "BRAKE",
+    "code": "BRAKE_MAIN_AIR_LOW",
+    "severity": "CRITICAL",
+    "status": "RAISED",
+    "kmAtEvent": 167883,
+    "humanMessage": "Hauptluftleitung < 4.2 bar – Bremsleistung eingeschränkt",
+    "suggestedAction": "Zug anhalten, Dichtheit prüfen; Kompressorstatus checken; Ventile prüfen",
+    "meta": { "bar": 4.2 }
+  },
+  {
+    "id": "e-0004",
+    "ts": "2025-08-20T07:28:41Z",
+    "trainId": "DH-9042",
+    "lineId": "RE3",
+    "system": "PANTOGRAPH",
+    "code": "PANTO_NO_RISE",
+    "severity": "CRITICAL",
+    "status": "RAISED",
+    "kmAtEvent": 52204,
+    "humanMessage": "Panto-Hebebefehl ohne Bewegung – Druck 3.1 bar",
+    "suggestedAction": "Druckversorgung prüfen; Mechanik prüfen; Ersatzkonzept",
+    "meta": { "bar": 3.1 }
+  },
+  {
+    "id": "e-0005",
+    "ts": "2025-08-20T07:30:06Z",
+    "trainId": "66055",
+    "lineId": "RE9",
+    "system": "NETWORK",
+    "code": "NET_MVB_BUS_OFF",
+    "severity": "ALARM",
+    "status": "RAISED",
+    "kmAtEvent": 244102,
+    "humanMessage": "Feldbus MVB im Zustand BUS-OFF – Segment A",
+    "suggestedAction": "Segmentprüfung; Teilnehmer trennen/tauschen",
+    "meta": { "seg": "A" }
+  }
+]

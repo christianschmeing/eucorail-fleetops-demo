@@ -13,6 +13,7 @@ import PerformanceKPIs from './dashboard/PerformanceKPIs';
 import TrainPopup from './TrainPopup';
 import { useQueryClient } from '@tanstack/react-query';
 import { KPIStat } from './KPIStat';
+import { useFleetStore } from '@/lib/state/fleet-store';
 
 export default function MapShell({
   externalActiveLines,
@@ -42,6 +43,7 @@ export default function MapShell({
   const [trainCount, setTrainCount] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
   const [activeLines, setActiveLines] = useState<string[]>([]);
+  const [simOffsetMin, setSimOffsetMin] = useState<number>(0); // playback offset
   const [fleetHealth, setFleetHealth] = useState({
     active: 7,
     maintenance: 2,
@@ -84,6 +86,39 @@ export default function MapShell({
   const qc = useQueryClient();
   const [showMessages, setShowMessages] = useState(false);
   const [is3D, setIs3D] = useState(false);
+  // Attach TCMS SSE listener once
+  useEffect(() => {
+    let es: EventSource | null = null;
+    try {
+      es = new EventSource('/api/tcms/stream');
+      es.onmessage = (ev) => {
+        try {
+          const data = JSON.parse(ev.data);
+          if (data?.type === 'tcms' && data.event) {
+            useFleetStore.getState().addTcmsEvent(data.event);
+          }
+        } catch {}
+      };
+      // Also poll seed/events periodically to ensure data presence on first load
+      const poll = setInterval(async () => {
+        try {
+          const r = await fetch('/api/tcms/events', { cache: 'no-store' });
+          const j = await r.json();
+          if (Array.isArray(j.events)) {
+            for (const e of j.events) useFleetStore.getState().addTcmsEvent(e);
+          }
+        } catch {}
+      }, 10000);
+      (window as any).__tcmsPoll = poll;
+    } catch {}
+    return () => {
+      try {
+        es?.close();
+        const poll: any = (window as any).__tcmsPoll;
+        if (poll) clearInterval(poll);
+      } catch {}
+    };
+  }, []);
 
   // Initialize map
   useEffect(() => {
@@ -141,6 +176,31 @@ export default function MapShell({
       if (debugLogs) console.error('❌ Error creating map:', error);
     }
   }, []);
+
+  // Read URL params on mount (lines, sim)
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      const linesParam = url.searchParams.get('lines');
+      const simParam = url.searchParams.get('sim');
+      if (linesParam) setActiveLines(linesParam.split(',').filter(Boolean));
+      if (simParam) setSimOffsetMin(parseInt(simParam));
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist filter/time to URL (debounced a bit by rAF)
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      if (activeLines.length > 0) url.searchParams.set('lines', activeLines.join(','));
+      else url.searchParams.delete('lines');
+      if (simOffsetMin !== 0) url.searchParams.set('sim', String(simOffsetMin));
+      else url.searchParams.delete('sim');
+      const next = url.toString();
+      if (next !== window.location.href) window.history.replaceState({}, '', next);
+    } catch {}
+  }, [activeLines, simOffsetMin]);
 
   // Keyboard shortcuts (disabled in test mode)
   useEffect(() => {
@@ -499,6 +559,22 @@ export default function MapShell({
                   Nur Aktiv
                 </button>
               </div>
+              {/* Time slider */}
+              <div className="mb-3">
+                <label className="block text-xs text-euco-muted mb-1">
+                  Zeit (−2h … jetzt … +2h)
+                </label>
+                <input
+                  type="range"
+                  min={-120}
+                  max={120}
+                  step={5}
+                  value={simOffsetMin}
+                  onChange={(e) => setSimOffsetMin(parseInt(e.target.value))}
+                  className="w-full"
+                />
+                <div className="text-xs text-euco-muted mt-1">{simOffsetMin} min</div>
+              </div>
               {/* Line Filter */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {['RE9', 'RE8', 'MEX16'].map((code) => (
@@ -800,6 +876,7 @@ export default function MapShell({
         selectedTrain={selectedTrain}
         onTrainSelect={handleTrainSelect}
         lineFilter={activeLines}
+        simOffsetMin={simOffsetMin}
       />
 
       {/* Train maintenance popup with focus on technical condition */}

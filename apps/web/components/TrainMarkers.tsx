@@ -10,6 +10,7 @@ interface TrainMarkerProps {
   selectedTrain: string | null;
   onTrainSelect: (trainId: string) => void;
   lineFilter?: string[];
+  simOffsetMin?: number; // playback offset (now ± minutes)
 }
 
 // Types for timetable-based positioning
@@ -323,9 +324,9 @@ const computeSchedulePosition = (
   };
 };
 
-const computeAllTrainPositions = (): ComputedTrain[] => {
+const computeAllTrainPositions = (offsetMin = 0): ComputedTrain[] => {
   const now = new Date();
-  const t = toMinutesSinceMidnight(now);
+  const t = toMinutesSinceMidnight(now) + offsetMin;
   const result: ComputedTrain[] = [];
   for (const def of TRAIN_DEFINITIONS) {
     if (def.status === 'maintenance' || def.status === 'stationary') {
@@ -382,6 +383,7 @@ export default function TrainMarkers({
   selectedTrain,
   onTrainSelect,
   lineFilter,
+  simOffsetMin = 0,
 }: TrainMarkerProps) {
   const qc = useQueryClient();
   useSSETrains();
@@ -479,6 +481,11 @@ export default function TrainMarkers({
       el.addEventListener('click', (e) => {
         e.stopPropagation();
         onTrainSelect(id);
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set('train_id', id);
+          window.history.replaceState({}, '', url.toString());
+        } catch {}
       });
       const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
         .setLngLat([lon, lat])
@@ -804,7 +811,7 @@ export default function TrainMarkers({
       if (fallbackTimerRef.current) return;
       const tick = () => {
         if (hasLiveRef.current) return;
-        const bootstrap = computeAllTrainPositions();
+        const bootstrap = computeAllTrainPositions(simOffsetMin);
         const bootstrapFc = {
           type: 'FeatureCollection',
           features: bootstrap.map((t) => ({
@@ -851,7 +858,7 @@ export default function TrainMarkers({
       // Fallback bootstrap if SSE has not populated anything yet
       let liveFeatures = Array.isArray(fc?.features) ? fc.features : [];
       if (!liveFeatures || liveFeatures.length === 0) {
-        const bootstrap = computeAllTrainPositions();
+        const bootstrap = computeAllTrainPositions(simOffsetMin);
         const bootstrapFc = {
           type: 'FeatureCollection',
           features: bootstrap.map((t) => ({

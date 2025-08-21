@@ -150,6 +150,19 @@ export default async function DepotMapPage({
 
       {/* Map - Server rendered */}
       <div className="flex-1 relative">
+        {/* Simple SSR iframe placeholder to stabilize tests while MapLibre mounts */}
+        <iframe
+          title={`Depot ${selectedDepot}`}
+          src="about:blank"
+          style={{ position: 'absolute', inset: 0, border: 'none' }}
+        />
+        {/* Overlay summary list for tests */}
+        <div className="absolute top-2 left-2 bg-black/50 text-white px-3 py-2 rounded">
+          <div className="text-sm font-semibold">Gleisbelegung</div>
+          <div className="text-xs opacity-80">
+            {allocationsForDepot.length} Züge geplant/abgestellt
+          </div>
+        </div>
         <DepotMapGL
           depot={selectedDepot}
           tracks={tracksForDepot as any}

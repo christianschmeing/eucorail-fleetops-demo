@@ -28,6 +28,14 @@
             - /url: /depot
             - img
             - text: Depot g o
+        - link "Depot‑Karte":
+            - /url: /depot/map
+            - img
+            - text: Depot‑Karte
+        - link "Depot-Planung":
+            - /url: /depot/planning
+            - img
+            - text: Depot-Planung
         - link "ECM g e":
             - /url: /ecm
             - img

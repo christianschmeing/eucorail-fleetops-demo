@@ -43,6 +43,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
     'maintenance',
     'alarm',
     'offline',
+    'standby',
   ]);
   const [sseConnected, setSseConnected] = useState(false);
   // Linien-Metadaten
@@ -143,49 +144,73 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
     markers.current.clear();
   }, [filteredTrains]);
 
-  // SSE für Live-Updates (fallback auf absolute URL in Prod)
+  // URL state sync for selected lines
   useEffect(() => {
-    const API_URL =
-      process.env.NEXT_PUBLIC_API_URL ||
-      (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? 'http://localhost:4100'
-        : 'https://geolocation-mockup.vercel.app/api');
-    const eventSource = new EventSource(`${API_URL}/events`);
+    try {
+      const url = new URL(window.location.href);
+      const lines = url.searchParams.get('lines');
+      if (lines) setSelectedLines(lines.split(',').filter(Boolean));
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    eventSource.onopen = () => {
-      setSseConnected(true);
-      console.log('SSE verbunden');
-    };
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      if (selectedLines.length > 0) url.searchParams.set('lines', selectedLines.join(','));
+      else url.searchParams.delete('lines');
+      const next = url.toString();
+      if (next !== window.location.href) window.history.replaceState({}, '', next);
+    } catch {}
+  }, [selectedLines]);
 
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === 'train-update') {
-          setTrains((prev) => {
-            const updated = [...prev];
-            const idx = updated.findIndex((t) => t.id === data.trainId);
-            if (idx >= 0 && data.position) {
-              updated[idx] = {
-                ...updated[idx],
-                position: { lat: data.position[1], lng: data.position[0] },
-                delayMin: data.delayMin,
-              };
-            }
-            return updated;
-          });
+  // SSE für Live-Updates (use local Next API stream). Fallback auf polling bei Fehlern
+  useEffect(() => {
+    let eventSource: EventSource | null = null;
+    try {
+      eventSource = new EventSource(`/api/positions/stream`);
+    } catch {}
+
+    if (eventSource)
+      eventSource.onopen = () => {
+        setSseConnected(true);
+        console.log('SSE verbunden');
+      };
+
+    if (eventSource)
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'train-update') {
+            setTrains((prev) => {
+              const updated = [...prev];
+              const idx = updated.findIndex((t) => t.id === data.trainId);
+              if (idx >= 0 && data.position) {
+                updated[idx] = {
+                  ...updated[idx],
+                  position: { lat: data.position[1], lng: data.position[0] },
+                  delayMin: data.delayMin,
+                };
+              }
+              return updated;
+            });
+          }
+        } catch (err) {
+          console.error('SSE Fehler:', err);
         }
-      } catch (err) {
-        console.error('SSE Fehler:', err);
-      }
-    };
+      };
 
-    eventSource.onerror = () => {
-      setSseConnected(false);
-      console.log('SSE getrennt');
-    };
+    if (eventSource)
+      eventSource.onerror = () => {
+        setSseConnected(false);
+        console.log('SSE getrennt');
+        // no throw: keep UI usable
+      };
 
     return () => {
-      eventSource.close();
+      try {
+        eventSource?.close();
+      } catch {}
     };
   }, []);
 
@@ -407,7 +432,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
 
             <div className="flex gap-2">
               <span className="text-sm text-gray-400">Status:</span>
-              {['active', 'maintenance', 'alarm', 'offline'].map((status) => (
+              {['active', 'maintenance', 'alarm', 'offline', 'standby'].map((status) => (
                 <label key={status} className="flex items-center gap-1">
                   <input
                     type="checkbox"
@@ -428,7 +453,9 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                         ? 'Wartung'
                         : status === 'alarm'
                           ? 'Alarm'
-                          : 'Offline'}
+                          : status === 'offline'
+                            ? 'Offline'
+                            : 'Standby'}
                   </span>
                 </label>
               ))}
@@ -454,7 +481,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
 
       {/* Karte */}
       <div className="flex-1 relative">
-        <div ref={mapContainer} className="absolute inset-0" />
+        <div ref={mapContainer} className="absolute inset-0" data-testid="map-canvas" />
         {/* Simulierte Linien/Layer (Timetable/OSM Placeholder) */}
         <LiveSimLayer map={mapObj} visibleLines={selectedLines} />
 

@@ -8,6 +8,7 @@ import type { Track } from '@/types/depot';
 import type { Allocation } from '../depot-data';
 import type { TrackGeometry } from '../track-geometries';
 import { loadDepotTracks } from '@/lib/depots/tracks';
+import { useFleetStore } from '@/lib/state/fleet-store';
 
 interface Props {
   depot: 'Essingen' | 'Langweid';
@@ -19,6 +20,7 @@ export default function DepotMapGL({ depot, tracks, allocations = [] }: Props) {
   const mapRef = useRef<Map | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
+  const activeTcms = useFleetStore((s) => s.activeTcms);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -131,7 +133,17 @@ export default function DepotMapGL({ depot, tracks, allocations = [] }: Props) {
               : a.purpose.startsWith('IS')
                 ? '#eab308'
                 : '#ef4444';
-      el.title = `${a.train_id} – ${a.purpose}`;
+      const startsInMs = new Date(a.startPlanned).getTime() - Date.now();
+      const startsInMin = Math.round(startsInMs / 60000);
+      const info = `Start: ${new Date(a.startPlanned).toLocaleString('de-DE')}`;
+      const info2 = `Ende: ${new Date(a.endPlanned).toLocaleString('de-DE')}`;
+      const info3 = `Beginnt in: ${startsInMin} min`;
+      const tcms = (activeTcms as any)[a.train_id] || [];
+      const tcmsTop = tcms
+        .slice(0, 2)
+        .map((e: any) => `${e.severity}: ${e.humanMessage}`)
+        .join('\n');
+      el.title = `${a.train_id} – ${a.purpose}\n${info}\n${info2}\n${info3}${tcmsTop ? `\nTCMS: ${tcmsTop}` : ''}`;
       const marker = new maplibregl.Marker({ element: el }).setLngLat(pos as any).addTo(map);
       markersRef.current.push(marker);
     }

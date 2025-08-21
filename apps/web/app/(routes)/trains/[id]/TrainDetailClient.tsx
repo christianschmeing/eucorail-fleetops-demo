@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useFleetStore } from '@/lib/state/fleet-store';
 import Link from 'next/link';
 import { MaintenanceInfo, MaintenanceInterval } from '@/types/train';
 
@@ -126,6 +127,8 @@ function MaintenanceCard({ type, interval }: { type: string; interval?: Maintena
 
 export default function TrainDetailClient({ train }: TrainDetailClientProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'maintenance' | 'history'>('overview');
+  const activeTcms = useFleetStore((s) => s.activeTcms[train.id] || []);
+  const critical = activeTcms.some((e: any) => e.severity === 'CRITICAL');
 
   return (
     <div className="h-full overflow-auto bg-gray-900">
@@ -180,6 +183,12 @@ export default function TrainDetailClient({ train }: TrainDetailClientProps) {
             </span>
           </div>
         </div>
+        {critical && (
+          <div className="mt-3 p-3 rounded bg-red-900/30 border border-red-700 text-red-200">
+            ⚠ Kritische TCMS‑Meldung aktiv – Fahrt nur eingeschränkt. Bitte Disposition
+            informieren.
+          </div>
+        )}
       </div>
 
       {/* Tabs */}
@@ -310,6 +319,35 @@ export default function TrainDetailClient({ train }: TrainDetailClientProps) {
                   <dd className="text-white font-medium">{train.occupancyPct || 0}%</dd>
                 </div>
               </dl>
+            </div>
+
+            {/* Alerts */}
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+              <h2 className="text-lg font-semibold text-white mb-4">TCMS‑Alerts</h2>
+              {activeTcms.length === 0 ? (
+                <div className="text-sm text-gray-400">Keine aktiven Meldungen</div>
+              ) : (
+                <div className="space-y-2">
+                  {activeTcms.map((e: any) => (
+                    <div key={e.code} className="p-2 rounded border border-gray-700">
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-white font-medium">{e.code}</div>
+                        <span
+                          className={`px-2 py-0.5 text-xs rounded ${e.severity === 'CRITICAL' ? 'bg-red-600/30 text-red-300' : e.severity === 'ALARM' ? 'bg-orange-600/30 text-orange-300' : e.severity === 'WARN' ? 'bg-yellow-600/30 text-yellow-300' : 'bg-gray-600/30 text-gray-300'}`}
+                        >
+                          {e.severity}
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-300 mt-1">{e.humanMessage}</div>
+                      {e.suggestedAction && (
+                        <div className="text-xs text-gray-400 mt-1">
+                          Aktion: {e.suggestedAction}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Wartungsübersicht */}

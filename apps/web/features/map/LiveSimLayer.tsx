@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useSimStore } from '@/lib/sim/store';
+import { useFleetStore } from '@/lib/state/fleet-store';
 import maplibregl from 'maplibre-gl';
 
 function lerp(a: [number, number], b: [number, number], t: number): [number, number] {
@@ -16,6 +17,7 @@ export function LiveSimLayer({
   visibleLines?: string[];
 }) {
   const { lines, vehicles, buildLinesFromDataset, allocateFleet, start } = useSimStore();
+  const activeTcms = useFleetStore((s) => s.activeTcms);
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
 
   // bootstrap demo data (until real timetable caches are present)
@@ -138,6 +140,22 @@ export function LiveSimLayer({
         el.style.border = '2px solid white';
         el.setAttribute('role', 'button');
         el.setAttribute('aria-label', `Zug ${v.id}`);
+        // TCMS badge
+        const badge = document.createElement('div');
+        badge.style.position = 'absolute';
+        badge.style.top = '-6px';
+        badge.style.right = '-6px';
+        badge.style.minWidth = '14px';
+        badge.style.height = '14px';
+        badge.style.borderRadius = '8px';
+        badge.style.fontSize = '9px';
+        badge.style.lineHeight = '14px';
+        badge.style.textAlign = 'center';
+        badge.style.color = '#fff';
+        badge.style.padding = '0 2px';
+        badge.style.background = '#ef4444';
+        badge.style.display = 'none';
+        el.appendChild(badge);
         el.addEventListener('click', (e) => {
           e.stopPropagation();
           window.location.href = `/trains/${encodeURIComponent(v.id)}`;
@@ -148,6 +166,26 @@ export function LiveSimLayer({
       } else {
         (marker.getElement().style as any).background = color;
         marker.setLngLat(pos);
+      }
+      // Update tooltip + badge with TCMS info
+      const digits = v.id.replace(/\D+/g, '');
+      const evts = [...(activeTcms[v.id] || []), ...((digits && activeTcms[digits]) || [])];
+      const alarms = evts.filter((e) => e.severity === 'ALARM' || e.severity === 'CRITICAL');
+      const el = marker.getElement();
+      const top3 = evts
+        .slice(0, 3)
+        .map((e) => `${e.severity}: ${e.humanMessage}`)
+        .join('\n');
+      el.title = top3 ? `${v.id} — ${top3}` : `Zug ${v.id}`;
+      const badgeEl = el.children.item(0) as HTMLDivElement | null;
+      if (badgeEl) {
+        const count = alarms.length;
+        if (count > 0) {
+          badgeEl.textContent = String(count);
+          badgeEl.style.display = 'block';
+        } else {
+          badgeEl.style.display = 'none';
+        }
       }
     }
 

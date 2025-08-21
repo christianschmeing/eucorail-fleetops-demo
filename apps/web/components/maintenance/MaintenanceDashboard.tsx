@@ -19,7 +19,8 @@ import { useRouter } from 'next/navigation';
 
 export default function MaintenanceDashboard() {
   const router = useRouter();
-  const { vehicles, calculateKPIs } = useFleetStore();
+  const { vehicles, calculateKPIs, expectedFailuresPerMonth, expectedFailuresPerYear } =
+    useFleetStore();
   const [data, setData] = useState<any>(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
   const [filterDueIS1, setFilterDueIS1] = useState(false);
@@ -536,22 +537,26 @@ function IHBPanel({
 }
 
 function PredictivePanel({ vehicle }: { vehicle: any }) {
+  const { expectedFailuresPerMonth, expectedFailuresPerYear } = useFleetStore();
   const mileage = vehicle.mileageKm || 0;
   const fam = String(vehicle.type || '').toUpperCase();
   const common = FAILURE_RATES_PER_10K_KM.common as any;
   const spec = (FAILURE_RATES_PER_10K_KM.specific as any)[fam] || {};
-  const per10k = { ...common, ...spec };
+  const per10k = { ...common, ...spec } as Record<string, number>;
   const factor = mileage / 10000;
-  const entries = Object.entries(per10k).map(([k, v]: any) => ({
+  const entries = Object.entries(per10k).map(([k, v]) => ({
     comp: k,
-    expectedPerYear: v * factor * 1.2,
+    expectedPerYear: v * factor,
     expectedPerMonth: (v * factor) / 12,
   }));
-  const totalMonth = entries.reduce((a, b) => a + b.expectedPerMonth, 0);
+  const totalMonth = expectedFailuresPerMonth(vehicle.type, mileage);
+  const totalYear = expectedFailuresPerYear(vehicle.type, mileage);
   return (
     <div className="p-4 border rounded-lg bg-white">
       <div className="font-semibold mb-2">Predictive Insights</div>
-      <div className="text-sm mb-2">Erwartete Korrekturen: {totalMonth.toFixed(2)} / Monat</div>
+      <div className="text-sm mb-2">
+        Erwartete Korrekturen: {totalMonth.toFixed(2)} / Monat · {totalYear.toFixed(1)} / Jahr
+      </div>
       <div className="grid grid-cols-2 gap-2 text-xs">
         {entries.map((e) => (
           <div key={e.comp} className="flex items-center justify-between border rounded px-2 py-1">
