@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "655ce6d642a5353940d6405d52f61d8a80ab4d1f",
-    "message": "feat(maintenance): add IS plan dialog with track/time; depot shows planned/corrective",
+    "sha": "949320434465f3f0ef550bb8cb0a54750e23cdb4",
+    "message": "feat(depot): support Corrective planning; render red markers for corrective",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T11:48:09Z"
+    "timestamp": "2025-08-21T11:51:36Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17126007279"
+    "run_id": "17126080826"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T11:50:09.967Z",
+  "generated_at": "2025-08-21T11:53:42.573Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
