@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "949320434465f3f0ef550bb8cb0a54750e23cdb4",
-    "message": "feat(depot): support Corrective planning; render red markers for corrective",
+    "sha": "73c42f0b6d39fe23c878609e3427ea40be37c836",
+    "message": "feat(log+search): include live TCMS events in log and search",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T11:51:36Z"
+    "timestamp": "2025-08-21T12:01:47Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17126080826"
+    "run_id": "17126331901"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T11:53:42.573Z",
+  "generated_at": "2025-08-21T12:05:35.435Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
