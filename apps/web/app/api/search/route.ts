@@ -33,6 +33,29 @@ export async function GET(req: Request) {
           });
         }
       }
+      // Live TCMS events best-effort
+      try {
+        const r = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/tcms/events`, {
+          cache: 'no-store',
+        });
+        if (r.ok) {
+          const j = await r.json();
+          const events = Array.isArray(j.events) ? j.events : [];
+          for (const e of events) {
+            const hay = `${e.code} ${e.humanMessage} ${e.system} ${e.trainId}`.toLowerCase();
+            if (hay.includes(q)) {
+              out.push({
+                type: 'tcms_event',
+                code: e.code,
+                title: e.humanMessage || e.code,
+                system: e.system,
+                trainId: e.trainId,
+                href: e.trainId ? `/trains/${encodeURIComponent(e.trainId)}` : `/maintenance`,
+              });
+            }
+          }
+        }
+      } catch {}
     } catch {}
   }
   return new Response(JSON.stringify({ results: out.slice(0, 20) }), {
