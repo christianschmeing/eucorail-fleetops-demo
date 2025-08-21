@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "ed8b9739f89c206915cf399c272b6fdba01fc965",
-    "message": "feat(tcms): show TCMS badges on map markers; trigger refresh on SSE events",
+    "sha": "f7cebb091ab0a5356ee9d32fcb679c05ae828b17",
+    "message": "feat(trains): add TCMS alerts panel and SSE listener on trains page",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T11:38:40Z"
+    "timestamp": "2025-08-21T11:42:10Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17125811729"
+    "run_id": "17125885400"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T11:40:46.154Z",
+  "generated_at": "2025-08-21T11:44:11.777Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
