@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useFleetStore } from '@/lib/state/fleet-store';
+import { ECM_PROFILES } from '@/lib/maintenance/ecm-profiles';
 import Link from 'next/link';
 import { MaintenanceInfo, MaintenanceInterval } from '@/types/train';
 
@@ -129,6 +130,46 @@ export default function TrainDetailClient({ train }: TrainDetailClientProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'maintenance' | 'history'>('overview');
   const activeTcms = useFleetStore((s) => s.activeTcms[train.id] || []);
   const critical = activeTcms.some((e: any) => e.severity === 'CRITICAL');
+  const storeVehicles = useFleetStore((s) => s.vehicles as any[]);
+
+  // Build intervals from FleetStore due fields for this train
+  const intervals = useMemo(() => {
+    const v = storeVehicles.find((x) => String(x.id) === String(train.id));
+    if (!v) return {} as any;
+    const fam = String(v.type || '').toUpperCase();
+    const prof: any = (ECM_PROFILES as any)[fam];
+    const mk = (stage: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'Lathe') => {
+      const stKey = stage === 'Lathe' ? 'IS2' : stage;
+      const cfg = prof?.[stKey];
+      if (!cfg) return undefined;
+      const intervalKm = (cfg.periodKm as number) || 0;
+      const intervalDays = (cfg.periodDays as number) || 0;
+      const restKm = Math.max(0, (v.kmToNext?.[stKey] ?? intervalKm) as number);
+      const restDays = Math.max(0, (v.daysToNext?.[stKey] ?? intervalDays) as number);
+      const kmSinceLast = Math.max(0, intervalKm - restKm);
+      const daysSinceLast = Math.max(0, intervalDays - restDays);
+      const status: 'green' | 'yellow' | 'red' =
+        restKm < 5000 ? 'red' : restKm < 10000 ? 'yellow' : 'green';
+      const nextDate = new Date(Date.now() + restDays * 24 * 60 * 60 * 1000).toISOString();
+      return {
+        intervalKm,
+        intervalDays,
+        kmSinceLast,
+        daysSinceLast,
+        restKm,
+        restDays,
+        status,
+        nextDate,
+      };
+    };
+    return {
+      IS1: mk('IS1'),
+      IS2: mk('IS2'),
+      IS3: mk('IS3'),
+      IS4: mk('IS4'),
+      Lathe: mk('Lathe'),
+    } as any;
+  }, [storeVehicles, train.id]);
 
   return (
     <div className="h-full overflow-auto bg-gray-900">
@@ -393,14 +434,11 @@ export default function TrainDetailClient({ train }: TrainDetailClientProps) {
 
         {activeTab === 'maintenance' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            <MaintenanceCard type="IS1 – Prüfung" interval={train.maintenanceInfo?.IS1} />
-            <MaintenanceCard type="IS2 - Monatswartung" interval={train.maintenanceInfo?.IS2} />
-            <MaintenanceCard type="IS3 - Quartalswartung" interval={train.maintenanceInfo?.IS3} />
-            <MaintenanceCard type="IS4 - Hauptuntersuchung" interval={train.maintenanceInfo?.IS4} />
-            <MaintenanceCard
-              type="Lathe - Radsatzdrehung"
-              interval={train.maintenanceInfo?.Lathe}
-            />
+            <MaintenanceCard type="IS1 – Prüfung" interval={(intervals as any).IS1} />
+            <MaintenanceCard type="IS2 - Monatswartung" interval={(intervals as any).IS2} />
+            <MaintenanceCard type="IS3 - Quartalswartung" interval={(intervals as any).IS3} />
+            <MaintenanceCard type="IS4 - Hauptuntersuchung" interval={(intervals as any).IS4} />
+            <MaintenanceCard type="Lathe - Radsatzdrehung" interval={(intervals as any).Lathe} />
           </div>
         )}
 
