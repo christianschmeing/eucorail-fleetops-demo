@@ -10,19 +10,30 @@ import { clsx } from 'clsx';
 import { ComplianceTracker } from '@/components/compliance/ComplianceTracker';
 import { SLADashboard } from '@/components/sla/SLADashboard';
 import { useFleetStore } from '@/lib/state/fleet-store';
-import { ECM_PROFILES, INTERVENTION_MAPPING } from '@/lib/maintenance/ecm-profiles';
+import {
+  ECM_PROFILES,
+  INTERVENTION_MAPPING,
+  FAILURE_RATES_PER_10K_KM,
+} from '@/lib/maintenance/ecm-profiles';
+import { useRouter } from 'next/navigation';
 
 export default function MaintenanceDashboard() {
+  const router = useRouter();
   const { vehicles, calculateKPIs } = useFleetStore();
   const [data, setData] = useState<any>(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
+  const [filterDueIS1, setFilterDueIS1] = useState(false);
   const [filterDueIS2, setFilterDueIS2] = useState(true);
   const [filterDueIS3, setFilterDueIS3] = useState(true);
+  const [filterDueIS456, setFilterDueIS456] = useState(false);
   const [planOpen, setPlanOpen] = useState(false);
   const [planDepot, setPlanDepot] = useState<'Essingen' | 'Langweid'>('Essingen');
   const [planTrack, setPlanTrack] = useState<string>('');
   const [planStart, setPlanStart] = useState<string>('');
   const [planDurationH, setPlanDurationH] = useState<number>(1);
+  const [planPurpose, setPlanPurpose] = useState<'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6'>(
+    'IS2'
+  );
 
   useEffect(() => {
     (async () => {
@@ -39,31 +50,46 @@ export default function MaintenanceDashboard() {
   );
 
   // helper to determine nearing flags
-  function nearing(v: any): { is2: boolean; is3: boolean } {
+  function nearing(v: any): {
+    is1: boolean;
+    is2: boolean;
+    is3: boolean;
+    is4: boolean;
+    is5: boolean;
+    is6: boolean;
+  } {
     const key = String(v.type || '').toUpperCase();
     const p: any = (ECM_PROFILES as any)[key];
-    if (!p) return { is2: false, is3: false };
+    if (!p) return { is1: false, is2: false, is3: false, is4: false, is5: false, is6: false };
     const mileage = v.mileageKm ?? 0;
-    const calc = (stage: 'IS2' | 'IS3') => {
+    const calc = (stage: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6') => {
       const cfg = p[stage];
       if (!cfg) return false;
       const usage = ((mileage % cfg.periodKm) / cfg.periodKm) * 100;
       return usage >= 75;
     };
-    return { is2: calc('IS2'), is3: calc('IS3') };
+    return {
+      is1: calc('IS1'),
+      is2: calc('IS2'),
+      is3: calc('IS3'),
+      is4: calc('IS4'),
+      is5: calc('IS5'),
+      is6: calc('IS6'),
+    };
   }
 
   // filter vehicles based on toggles
   const filteredVehicles = vehicles.filter((v: any) => {
     const flags = nearing(v);
+    const wantsIS1 = filterDueIS1 ? flags.is1 : true;
     const wantsIS2 = filterDueIS2 ? flags.is2 : true;
     const wantsIS3 = filterDueIS3 ? flags.is3 : true;
-    // When at least one filter is enabled, require OR; if none enabled show all
-    const anyFilter = filterDueIS2 || filterDueIS3;
-    return anyFilter ? wantsIS2 || wantsIS3 : true;
+    const wantsIS456 = filterDueIS456 ? flags.is4 || flags.is5 || flags.is6 : true;
+    const anyFilter = filterDueIS1 || filterDueIS2 || filterDueIS3 || filterDueIS456;
+    return anyFilter ? wantsIS1 || wantsIS2 || wantsIS3 || wantsIS456 : true;
   });
 
-  function openPlanDialog(v: any) {
+  function openPlanDialog(v: any, stage: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6' = 'IS2') {
     const depot = v.depot === 'ESS' ? 'Essingen' : 'Langweid';
     setPlanDepot(depot);
     const tracks = trackGeometries.filter((t) => t.depot === depot && t.state !== 'gesperrt');
@@ -71,6 +97,7 @@ export default function MaintenanceDashboard() {
     const start = new Date(Date.now() + 10 * 60 * 1000).toISOString().slice(0, 16);
     setPlanStart(start);
     setPlanDurationH(1);
+    setPlanPurpose(stage);
     setSelectedVehicleId(v.id);
     setPlanOpen(true);
   }
@@ -84,6 +111,9 @@ export default function MaintenanceDashboard() {
       const endISO = new Date(
         new Date(planStart).getTime() + planDurationH * 60 * 60 * 1000
       ).toISOString();
+      const famKey = String(v.type || '').toUpperCase();
+      const cfg: any = (ECM_PROFILES as any)[famKey]?.[planPurpose] || {};
+      const expectedDurationHours = cfg.durationHours || planDurationH;
       const res = await fetch('/api/depot/allocations', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -93,12 +123,14 @@ export default function MaintenanceDashboard() {
           trackId: planTrack,
           startPlanned: startISO,
           endPlanned: endISO,
-          purpose: 'IS2',
+          purpose: planPurpose,
+          stage: planPurpose,
+          expectedDurationHours,
         }),
       });
       if (res.ok) {
         setPlanOpen(false);
-        location.href = `/depot/map?depot=${depot}`;
+        router.push(`/depot/map?depot=${depot}`);
       } else {
         console.error(await res.text());
         alert('Planung fehlgeschlagen');
@@ -130,7 +162,15 @@ export default function MaintenanceDashboard() {
               placeholder="Search vehicle ID or type..."
               className="w-full px-3 py-2 border rounded-lg"
             />
-            <div className="flex items-center gap-4 text-sm">
+            <div className="flex flex-wrap gap-4 text-sm">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={filterDueIS1}
+                  onChange={(e) => setFilterDueIS1(e.target.checked)}
+                />
+                IS1 fällig (≤ 25% Rest km)
+              </label>
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -147,12 +187,28 @@ export default function MaintenanceDashboard() {
                 />
                 IS3 fällig (≤ 25% Rest km)
               </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={filterDueIS456}
+                  onChange={(e) => setFilterDueIS456(e.target.checked)}
+                />
+                IS4–IS6 fällig (≤ 25% Rest km)
+              </label>
             </div>
             <details>
               <summary className="text-sm cursor-pointer select-none">
-                Filter: Fällige IS2/IS3
+                Erweiterte Filter: Fällige IS‑Stufen
               </summary>
               <div className="mt-2 space-y-2 text-sm">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={filterDueIS1}
+                    onChange={(e) => setFilterDueIS1(e.target.checked)}
+                  />
+                  IS1 in ≤ 25% Rest (km)
+                </label>
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -169,13 +225,22 @@ export default function MaintenanceDashboard() {
                   />
                   IS3 in ≤ 25% Rest (km)
                 </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={filterDueIS456}
+                    onChange={(e) => setFilterDueIS456(e.target.checked)}
+                  />
+                  IS4–IS6 in ≤ 25% Rest (km)
+                </label>
               </div>
             </details>
           </div>
           <div className="p-2 space-y-1">
             {filteredVehicles.map((v: any) => {
               const flags = nearing(v);
-              const warn = flags.is2 || flags.is3;
+              const warn =
+                flags.is1 || flags.is2 || flags.is3 || flags.is4 || flags.is5 || flags.is6;
               return (
                 <div
                   key={v.id}
@@ -248,6 +313,18 @@ export default function MaintenanceDashboard() {
                     <div className="space-y-6">
                       <ComplianceTracker />
                       <SLADashboard />
+                      {/* IHB Panel */}
+                      <IHBPanel
+                        vehicle={selectedVehicle}
+                        onPlan={(stage) =>
+                          openPlanDialog(
+                            { id: selectedVehicle.id, depot: selectedVehicle.depot },
+                            stage
+                          )
+                        }
+                      />
+                      {/* Predictive */}
+                      <PredictivePanel vehicle={selectedVehicle} />
                       {/* IS1..IS6 mapping summary */}
                       <div className="p-4 border rounded-lg">
                         <div className="font-semibold mb-2">
@@ -293,6 +370,8 @@ export default function MaintenanceDashboard() {
         onStart={setPlanStart}
         durationH={planDurationH}
         onDuration={setPlanDurationH}
+        stage={planPurpose}
+        onStage={setPlanPurpose}
         onSubmit={submitPlan}
       />
     </div>
@@ -311,6 +390,8 @@ function PlanDrawer({
   onStart,
   durationH,
   onDuration,
+  stage,
+  onStage,
   onSubmit,
 }: any) {
   const ess = trackGeometries.filter((t) => t.depot === 'Essingen' && t.state !== 'gesperrt');
@@ -319,6 +400,20 @@ function PlanDrawer({
   return (
     <Drawer open={open} onClose={onClose} side="right" title="In Depot einplanen">
       <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">Stufe</label>
+          <select
+            value={stage}
+            onChange={(e) => onStage(e.target.value)}
+            className="w-full border rounded px-2 py-1"
+          >
+            {['IS1', 'IS2', 'IS3', 'IS4', 'IS5', 'IS6'].map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
         <div>
           <label className="block text-sm font-medium mb-1">Depot</label>
           <select
@@ -377,5 +472,94 @@ function PlanDrawer({
         </div>
       </div>
     </Drawer>
+  );
+}
+
+function IHBPanel({
+  vehicle,
+  onPlan,
+}: {
+  vehicle: any;
+  onPlan: (stage: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6') => void;
+}) {
+  const key = String(vehicle.type || '').toUpperCase();
+  const prof: any = (ECM_PROFILES as any)[key];
+  if (!prof) return null;
+  const stages: Array<'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6'> = [
+    'IS1',
+    'IS2',
+    'IS3',
+    'IS4',
+    'IS5',
+    'IS6',
+  ];
+  const kmToNext = vehicle.kmToNext || {};
+  const daysToNext = vehicle.daysToNext || {};
+  const statusColor = (st: any) => {
+    const cfg = prof[st];
+    if (!cfg) return 'bg-gray-200';
+    const rem = (kmToNext[st] ?? cfg.periodKm) / cfg.periodKm;
+    if (rem > 0.5) return 'bg-green-100 text-green-700';
+    if (rem > 0.25) return 'bg-yellow-100 text-yellow-700';
+    return 'bg-red-100 text-red-700';
+  };
+  return (
+    <div className="p-4 border rounded-lg bg-white">
+      <div className="font-semibold mb-2">IHB / ECM Übersicht</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {stages.map((st) => {
+          const cfg = prof[st];
+          if (!cfg) return null;
+          return (
+            <div key={st} className={`p-3 rounded border ${statusColor(st)}`}>
+              <div className="flex items-center justify-between mb-1">
+                <div className="font-mono font-semibold">{st}</div>
+                <div className="text-xs">{cfg.durationHours} h</div>
+              </div>
+              <div className="text-xs">
+                Rest: {(kmToNext[st] ?? 0).toLocaleString()} km • {daysToNext[st] ?? 0} Tage
+              </div>
+              <div className="mt-2 flex justify-end">
+                <button
+                  className="px-2 py-1 text-xs bg-blue-600 text-white rounded"
+                  onClick={() => onPlan(st)}
+                >
+                  Jetzt planen
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PredictivePanel({ vehicle }: { vehicle: any }) {
+  const mileage = vehicle.mileageKm || 0;
+  const fam = String(vehicle.type || '').toUpperCase();
+  const common = FAILURE_RATES_PER_10K_KM.common as any;
+  const spec = (FAILURE_RATES_PER_10K_KM.specific as any)[fam] || {};
+  const per10k = { ...common, ...spec };
+  const factor = mileage / 10000;
+  const entries = Object.entries(per10k).map(([k, v]: any) => ({
+    comp: k,
+    expectedPerYear: v * factor * 1.2,
+    expectedPerMonth: (v * factor) / 12,
+  }));
+  const totalMonth = entries.reduce((a, b) => a + b.expectedPerMonth, 0);
+  return (
+    <div className="p-4 border rounded-lg bg-white">
+      <div className="font-semibold mb-2">Predictive Insights</div>
+      <div className="text-sm mb-2">Erwartete Korrekturen: {totalMonth.toFixed(2)} / Monat</div>
+      <div className="grid grid-cols-2 gap-2 text-xs">
+        {entries.map((e) => (
+          <div key={e.comp} className="flex items-center justify-between border rounded px-2 py-1">
+            <span>{e.comp}</span>
+            <span>{e.expectedPerMonth.toFixed(2)}/Monat</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

@@ -43,11 +43,11 @@ async function main() {
   const outDir = path.resolve('apps/web/public/data/timetables');
   ensureDir(outDir);
 
-  for (const l of cfg.lines || []) {
-    if (!l.csv) continue;
-    const res = await fetch(l.csv);
+  for (const ln of cfg.lines || []) {
+    if (!ln.csv) continue;
+    const res = await fetch(ln.csv);
     if (!res.ok) {
-      console.error(`Failed to fetch CSV for ${l.line_id}: ${res.status}`);
+      console.error(`Failed to fetch CSV for ${ln.line_id}: ${res.status}`);
       continue;
     }
     const text = await res.text();
@@ -77,13 +77,13 @@ async function main() {
     }
 
     const timetable: Timetable = {
-      line_id: l.line_id,
+      line_id: ln.line_id,
       timezone: tz,
       trips: Array.from(tripsMap.values()),
       stops: Array.from(stopsMap.values()),
     };
 
-    const outPath = path.join(outDir, `${l.line_id}.json`);
+    const outPath = path.join(outDir, `${ln.line_id}.json`);
     fs.writeFileSync(outPath, JSON.stringify(timetable, null, 2));
     console.log(`Wrote ${outPath}`);
   }

@@ -68,28 +68,28 @@ function distributeToAllocation(seed: Train[]): Train[] {
       out.push({ ...t, lineId: line, position: sampleOnLine(line), status: 'active' });
     }
   };
-  for (const l of byLines) take(byPool, l, wanted[l] || 0);
-  for (const l of bwLines) take(bwPool, l, wanted[l] || 0);
+  for (const ln of byLines) take(byPool, ln, wanted[ln] || 0);
+  for (const ln of bwLines) take(bwPool, ln, wanted[ln] || 0);
   while (out.length < 123) {
     const all = [...byLines, ...bwLines];
-    const l = all[out.length % all.length];
+    const ln = all[out.length % all.length];
     out.push({
       id: `FILL-${out.length}`,
-      lineId: l,
-      region: bwLines.includes(l) ? 'BW' : 'BY',
+      lineId: ln,
+      region: bwLines.includes(ln) ? 'BW' : 'BY',
       status: 'active',
-      position: sampleOnLine(l),
+      position: sampleOnLine(ln),
     });
   }
   while (out.length < 144) {
     const pools = [...byLines, ...bwLines];
-    const l = pools[out.length % pools.length];
+    const ln = pools[out.length % pools.length];
     out.push({
       id: `RES-${out.length}`,
-      lineId: l,
-      region: bwLines.includes(l) ? 'BW' : 'BY',
+      lineId: ln,
+      region: bwLines.includes(ln) ? 'BW' : 'BY',
       status: 'standby',
-      position: sampleOnLine(l),
+      position: sampleOnLine(ln),
     });
   }
   return out.slice(0, 144);

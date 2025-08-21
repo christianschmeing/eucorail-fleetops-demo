@@ -47,20 +47,20 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
   const [sseConnected, setSseConnected] = useState(false);
   // Linien-Metadaten
   type LineMeta = { id: string; name: string; color: string; region: 'BW' | 'BY' };
-  const bwLines: LineMeta[] = ((linesData as any).baden_wuerttemberg ?? []).map((l: any) => ({
-    id: l.id,
-    name: l.name,
-    color: l.color ?? '#3b82f6',
+  const bwLines: LineMeta[] = ((linesData as any).baden_wuerttemberg ?? []).map((ln: any) => ({
+    id: ln.id,
+    name: ln.name,
+    color: ln.color ?? '#3b82f6',
     region: 'BW',
   }));
-  const byLines: LineMeta[] = ((linesData as any).bayern ?? []).map((l: any) => ({
-    id: l.id,
-    name: l.name,
-    color: l.color ?? '#22c55e',
+  const byLines: LineMeta[] = ((linesData as any).bayern ?? []).map((ln: any) => ({
+    id: ln.id,
+    name: ln.name,
+    color: ln.color ?? '#22c55e',
     region: 'BY',
   }));
-  const allBWIds = bwLines.map((l) => l.id);
-  const allBYIds = byLines.map((l) => l.id);
+  const allBWIds = bwLines.map((ln) => ln.id);
+  const allBYIds = byLines.map((ln) => ln.id);
   const trainsAfterRegionStatus = trains.filter((t) => {
     if (selectedRegions.length > 0 && !selectedRegions.includes(t.region)) return false;
     if (selectedStatuses.length > 0 && !selectedStatuses.includes(t.status)) return false;
@@ -303,7 +303,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                     type="button"
                     className="px-2 py-0.5 text-xs bg-blue-800/30 rounded border border-blue-700 text-blue-100"
                     onClick={() =>
-                      setSelectedLines(selectedLines.filter((l) => !allBWIds.includes(l)))
+                      setSelectedLines(selectedLines.filter((ln) => !allBWIds.includes(ln)))
                     }
                   >
                     BW aus
@@ -321,7 +321,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                           if (e.target.checked) {
                             setSelectedLines([...selectedLines, line.id]);
                           } else {
-                            setSelectedLines(selectedLines.filter((l) => l !== line.id));
+                            setSelectedLines(selectedLines.filter((ln) => ln !== line.id));
                           }
                         }}
                         className="rounded"
@@ -351,7 +351,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                     type="button"
                     className="px-2 py-0.5 text-xs bg-emerald-800/30 rounded border border-emerald-700 text-emerald-100"
                     onClick={() =>
-                      setSelectedLines(selectedLines.filter((l) => !allBYIds.includes(l)))
+                      setSelectedLines(selectedLines.filter((ln) => !allBYIds.includes(ln)))
                     }
                   >
                     BY aus
@@ -369,7 +369,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                           if (e.target.checked) {
                             setSelectedLines([...selectedLines, line.id]);
                           } else {
-                            setSelectedLines(selectedLines.filter((l) => l !== line.id));
+                            setSelectedLines(selectedLines.filter((ln) => ln !== line.id));
                           }
                         }}
                         className="rounded"
@@ -395,7 +395,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
                       if (e.target.checked) {
                         setSelectedLines([...selectedLines, 'RESERVE']);
                       } else {
-                        setSelectedLines(selectedLines.filter((l) => l !== 'RESERVE'));
+                        setSelectedLines(selectedLines.filter((ln) => ln !== 'RESERVE'));
                       }
                     }}
                     className="rounded"

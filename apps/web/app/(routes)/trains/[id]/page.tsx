@@ -41,8 +41,10 @@ async function getTrain(id: string) {
     // Last-resort: synthesize from ID so deep-links never 404
     if (!train) {
       const lineId = (id.split('-')[0] || 'RE9').toUpperCase();
-      const isBW = ((linesData as any).baden_wuerttemberg || []).some((l: any) => l.id === lineId);
-      const isBY = ((linesData as any).bayern || []).some((l: any) => l.id === lineId);
+      const isBW = ((linesData as any).baden_wuerttemberg || []).some(
+        (ln: any) => ln.id === lineId
+      );
+      const isBY = ((linesData as any).bayern || []).some((ln: any) => ln.id === lineId);
       const region = isBW ? 'BW' : isBY ? 'BY' : 'BY';
       const series = region === 'BW' ? 'FLIRT 3' : 'Mireo Plus H';
       train = {

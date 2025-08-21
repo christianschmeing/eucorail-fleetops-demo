@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import ServerDepotMap from './ServerDepotMap';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import { generateAllocations, generateMovePlans, getKPIs } from '../depot-data';
 import { trackGeometries } from '../track-geometries';
 
@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: 'Depot Karte | EUCORAIL FleetOps',
   description: 'Depot-Mikrosicht mit Track-Belegung und Zu-/Abführungsplanung',
 };
+
+export const dynamic = 'force-dynamic';
 
 async function getDepotMapData() {
   // Generate initial allocations and move plans
@@ -18,7 +20,7 @@ async function getDepotMapData() {
     const fullUrl = baseEnv
       ? `${baseEnv.startsWith('http') ? '' : 'https://'}${baseEnv}/api/depot/allocations`
       : `${process.env.NODE_ENV === 'production' ? 'https://geolocation-mockup.vercel.app' : ''}/api/depot/allocations`;
-    const r = await fetch(fullUrl, { cache: 'no-store' });
+    const r = await fetch(fullUrl, { next: { revalidate: 0 } });
     if (r.ok) {
       const json = await r.json();
       if (Array.isArray(json?.planned)) {
@@ -105,7 +107,7 @@ export default async function DepotMapPage({
     }
   } catch {}
 
-  const DepotMapGL = dynamic(() => import('./DepotMapGL'), { ssr: false });
+  const DepotMapGL = nextDynamic(() => import('./DepotMapGL'), { ssr: false });
 
   // Render server-side summary header + client MapLibre for tracks
   return (

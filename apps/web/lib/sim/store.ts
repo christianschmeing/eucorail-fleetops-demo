@@ -116,9 +116,9 @@ export const useSimStore = create<SimState>((set, get) => ({
       for (let i = 0; i < c; i++) linesExpanded.push(lineId);
     }
     while (linesExpanded.length < TOTAL) {
-      for (const l of allLineIds) {
+      for (const ln of allLineIds) {
         if (linesExpanded.length >= TOTAL) break;
-        linesExpanded.push(l);
+        linesExpanded.push(ln);
       }
     }
     for (let i = 0; i < TOTAL; i++) {

@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Live-Karte mit echten Arverio-Linien und Fahrzeugen',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function Page() {
   return (
     <div className="h-screen bg-gray-900">

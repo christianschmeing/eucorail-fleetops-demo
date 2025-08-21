@@ -67,28 +67,28 @@ async function getTrains(): Promise<Train[]> {
         out[out.length - 1].lineId = line;
       }
     };
-    for (const l of byLines) pull('BY', l, wanted[l] || 0);
-    for (const l of bwLines) pull('BW', l, wanted[l] || 0);
+    for (const ln of byLines) pull('BY', ln, wanted[ln] || 0);
+    for (const ln of bwLines) pull('BW', ln, wanted[ln] || 0);
     while (out.length < 123) {
       const all = [...byLines, ...bwLines];
-      const l = all[out.length % all.length];
+      const ln = all[out.length % all.length];
       out.push({
         id: `FILL-${out.length}`,
-        lineId: l,
-        region: bwLines.includes(l) ? 'BW' : 'BY',
+        lineId: ln,
+        region: bwLines.includes(ln) ? 'BW' : 'BY',
         status: 'active',
-        depot: bwLines.includes(l) ? 'Essingen' : 'Langweid',
+        depot: bwLines.includes(ln) ? 'Essingen' : 'Langweid',
       } as any);
     }
     while (out.length < 144) {
       const pools = [...byLines, ...bwLines];
-      const l = pools[out.length % pools.length];
+      const ln = pools[out.length % pools.length];
       out.push({
         id: `RES-${out.length}`,
-        lineId: l,
-        region: bwLines.includes(l) ? 'BW' : 'BY',
+        lineId: ln,
+        region: bwLines.includes(ln) ? 'BW' : 'BY',
         status: 'standby',
-        depot: bwLines.includes(l) ? 'Essingen' : 'Langweid',
+        depot: bwLines.includes(ln) ? 'Essingen' : 'Langweid',
       } as any);
     }
     return out.slice(0, 144);

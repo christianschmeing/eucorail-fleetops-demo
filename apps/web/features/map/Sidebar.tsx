@@ -152,7 +152,7 @@ export function Sidebar({
     // Prefer API-provided lines; fall back to lines from SSE trains if needed
     const set = new Set<string>();
     if (Array.isArray(lines) && lines.length > 0) {
-      for (const l of lines) set.add(l.id.toUpperCase());
+      for (const ln of lines) set.add(ln.id.toUpperCase());
     } else {
       for (const t of trains) if (t.line) set.add(t.line.toUpperCase());
     }

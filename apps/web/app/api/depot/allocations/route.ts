@@ -9,6 +9,8 @@ type Allocation = {
   endPlanned: string;
   etaRelease?: string;
   purpose: string;
+  stage?: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6';
+  expectedDurationHours?: number;
   risk?: 'low' | 'med' | 'high';
   status: 'planned' | 'active' | 'maintenance' | 'reserve' | 'abstellung' | 'alarm' | 'offline';
   is_reserve?: boolean;
@@ -49,6 +51,8 @@ export async function POST(req: Request) {
       endPlanned: (body.endPlanned as string) || end.toISOString(),
       etaRelease: end.toISOString(),
       purpose: body.purpose || 'IS2',
+      stage: (body as any).stage,
+      expectedDurationHours: (body as any).expectedDurationHours,
       risk: 'low',
       status: 'planned',
       is_reserve: false,
