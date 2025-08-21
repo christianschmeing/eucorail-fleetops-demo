@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "bfd26ceccdfc161e438196f3f74fa84f33d2aa54",
-    "message": "fix(map): replace require() in MapShell\n\nfeat(map): add map canvas testid\n\nfix(depot): add SSR placeholder iframe and Gleisbelegung label\n\nfix(sse): guard controller after close for positions/tcms streams\n\nfeat(filters): include standby status in map filters\n\nfix(allocation): ensure 144 total across pages",
+    "sha": "dc5014cffcfcc992079e58728168849bcfc01621",
+    "message": "test: relax E2E assertions for maintenance, lines, depot map and SSE to stabilize CI",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T10:45:22Z"
+    "timestamp": "2025-08-21T10:52:16Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17124639171"
+    "run_id": "17124790966"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T10:46:43.540Z",
+  "generated_at": "2025-08-21T10:53:42.413Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
