@@ -1,0 +1,25 @@
+name: Rollback Helper
+
+on:
+  workflow_dispatch:
+    inputs:
+      rollback:
+        description: 'Rollback to previous deployment?'
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  rollback-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rollback Instructions
+        run: |
+          echo "📌 To rollback:"
+          echo "1. Go to Vercel Dashboard"
+          echo "2. Select previous deployment"
+          echo "3. Promote to Production"
+          echo ""
+          echo "Or use: vercel rollback [deployment-url]"
+
+

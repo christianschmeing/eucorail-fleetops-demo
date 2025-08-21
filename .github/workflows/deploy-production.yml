@@ -117,6 +117,32 @@ jobs:
               echo "Health endpoint not 200 (got $code)" >&2; exit 1; fi
           done
 
+      - name: Soft Secrets Sanity (non-blocking)
+        if: always()
+        shell: bash
+        run: |
+          # Non-destructive visibility that secrets are wired (without echoing values)
+          missing=0
+          for k in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!k}" ]; then echo "⚠️ $k not set in job environment"; missing=$((missing+1)); fi
+          done
+          if [ "$missing" -gt 0 ]; then echo "Some Vercel secrets appear missing (informational)"; fi
+
+      - name: Smoke Tests (Optional, non-blocking)
+        if: success()
+        continue-on-error: true
+        env:
+          PLAYWRIGHT_SKIP_WEBSERVER: '1'
+          ENABLE_VISUAL_TESTS: '0'
+          BASE_URL: ${{ needs.deploy.outputs.prod_url }}
+        run: |
+          if [ -f "playwright.config.ts" ]; then
+            echo "Running optional smoke tests..."
+            npx playwright test --project=chromium --grep @smoke || true
+          else
+            echo "No Playwright config found, skipping smoke tests"
+          fi
+
       - name: Run smoke E2E against Production (chromium)
         env:
           PLAYWRIGHT_SKIP_WEBSERVER: '1'
