@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "26f35cd9f637196215b96b7f5e35016b57655e64",
-    "message": "feat(depot): generate due-based work orders using ECM profiles and real fleet hints",
+    "sha": "2c98dabfd154ebe22d02d1a376b5ddcce720f9c1",
+    "message": "chore(ci): add soft health check, optional smoke tests, rollback helper, and docs (non-destructive)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T13:02:50Z"
+    "timestamp": "2025-08-21T13:32:54Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17127740737"
+    "run_id": "17128506827"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T13:04:54.803Z",
+  "generated_at": "2025-08-21T13:35:01.668Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
