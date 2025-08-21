@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useFleetStore } from '@/lib/state/fleet-store';
 import Link from 'next/link';
 import { MaintenanceInfo, MaintenanceInterval } from '@/types/train';
+import { ECM_PROFILES } from '@/lib/maintenance/ecm-profiles';
 
 interface Train {
   id: string;
@@ -76,6 +77,7 @@ function MaintenanceBadge({ type, interval }: { type: string; interval?: Mainten
 export default function TrainsClientExtended({ initialTrains }: TrainsClientProps) {
   const [trains] = useState<Train[]>(initialTrains);
   const activeTcms = useFleetStore((s) => s.activeTcms);
+  const storeVehicles = useFleetStore((s) => s.vehicles as any[]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showMaintenanceColumns, setShowMaintenanceColumns] = useState(true);
   const [maintenanceFilter, setMaintenanceFilter] = useState<string>('');
@@ -90,6 +92,44 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
   });
 
   const itemsPerPage = 20;
+
+  // Build maintenance interval for a given train and stage using FleetStore due fields
+  const getInterval = useMemo(() => {
+    return (
+      trainId: string,
+      stage: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'Lathe'
+    ): MaintenanceInterval | undefined => {
+      const v = storeVehicles.find((x) => String(x.id) === String(trainId));
+      if (!v) return undefined;
+      const fam = String(v.type || '').toUpperCase();
+      const prof: any = (ECM_PROFILES as any)[fam];
+      // Lathe is not in IS config; approximate with IS2 like cadence if missing
+      const stKey = stage === 'Lathe' ? 'IS2' : stage;
+      const cfg = prof?.[stKey];
+      if (!cfg) return undefined;
+      const kmToNext = (v.kmToNext?.[stKey] ?? cfg.periodKm) as number;
+      const daysToNext = (v.daysToNext?.[stKey] ?? cfg.periodDays) as number;
+      const restKm = Math.max(0, kmToNext || 0);
+      const restDays = Math.max(0, daysToNext || 0);
+      const intervalKm = (cfg.periodKm as number) || 0;
+      const intervalDays = (cfg.periodDays as number) || 0;
+      const kmSinceLast = Math.max(0, intervalKm - restKm);
+      const daysSinceLast = Math.max(0, intervalDays - restDays);
+      const status: 'green' | 'yellow' | 'red' =
+        restKm < 5000 ? 'red' : restKm < 10000 ? 'yellow' : 'green';
+      const nextDate = new Date(Date.now() + restDays * 24 * 60 * 60 * 1000).toISOString();
+      return {
+        intervalKm,
+        intervalDays,
+        kmSinceLast,
+        daysSinceLast,
+        restKm,
+        restDays,
+        status,
+        nextDate,
+      } as MaintenanceInterval;
+    };
+  }, [storeVehicles]);
 
   // Attach minimal TCMS SSE on this page too (Map attaches its own when mounted)
   useEffect(() => {
@@ -148,8 +188,8 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
     // Spezialbehandlung für Wartungsintervalle
     if (sortField.includes('restKm')) {
       const type = sortField.split('_')[0]; // IS1, IS2, etc.
-      aVal = a.maintenanceInfo?.[type as keyof MaintenanceInfo]?.restKm ?? Infinity;
-      bVal = b.maintenanceInfo?.[type as keyof MaintenanceInfo]?.restKm ?? Infinity;
+      aVal = getInterval(a.id, type as any)?.restKm ?? Infinity;
+      bVal = getInterval(b.id, type as any)?.restKm ?? Infinity;
     }
 
     if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
@@ -626,21 +666,21 @@ export default function TrainsClientExtended({ initialTrains }: TrainsClientProp
                       {showMaintenanceColumns && (
                         <>
                           <td className="px-4 py-3 text-center">
-                            <MaintenanceBadge type="IS1" interval={train.maintenanceInfo?.IS1} />
+                            <MaintenanceBadge type="IS1" interval={getInterval(train.id, 'IS1')} />
                           </td>
                           <td className="px-4 py-3 text-center">
-                            <MaintenanceBadge type="IS2" interval={train.maintenanceInfo?.IS2} />
+                            <MaintenanceBadge type="IS2" interval={getInterval(train.id, 'IS2')} />
                           </td>
                           <td className="px-4 py-3 text-center">
-                            <MaintenanceBadge type="IS3" interval={train.maintenanceInfo?.IS3} />
+                            <MaintenanceBadge type="IS3" interval={getInterval(train.id, 'IS3')} />
                           </td>
                           <td className="px-4 py-3 text-center">
-                            <MaintenanceBadge type="IS4" interval={train.maintenanceInfo?.IS4} />
+                            <MaintenanceBadge type="IS4" interval={getInterval(train.id, 'IS4')} />
                           </td>
                           <td className="px-4 py-3 text-center">
                             <MaintenanceBadge
                               type="Lathe"
-                              interval={train.maintenanceInfo?.Lathe}
+                              interval={getInterval(train.id, 'Lathe')}
                             />
                           </td>
                         </>

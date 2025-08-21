@@ -123,14 +123,40 @@ export function LiveSimLayer({
       const pos = getPointOnLine(v.lineId, v.progress);
       if (!pos) continue;
       let marker = markersRef.current.get(v.id);
+      // color by due status if known via fleet store
+      const fs = (useFleetStore.getState().vehicles as any[]).find(
+        (x) => String(x.id) === String(v.id)
+      );
+      let dueColor: string | null = null;
+      if (fs && fs.kmToNext) {
+        const fam = String(fs.type || '').toUpperCase();
+        // consider nearest IS stage
+        const stages: Array<'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6'> = [
+          'IS1',
+          'IS2',
+          'IS3',
+          'IS4',
+          'IS5',
+          'IS6',
+        ];
+        let best = Infinity;
+        for (const st of stages) {
+          const rem = fs.kmToNext[st] ?? Infinity;
+          if (typeof rem === 'number' && rem < best) best = rem;
+        }
+        if (best < 5000) dueColor = '#ef4444';
+        else if (best < 10000) dueColor = '#f59e0b';
+        else dueColor = '#10b981';
+      }
       const color =
-        v.status === 'active'
+        dueColor ||
+        (v.status === 'active'
           ? '#10b981'
           : v.status === 'maintenance'
             ? '#f59e0b'
             : v.status === 'offline'
               ? '#6b7280'
-              : '#ef4444';
+              : '#ef4444');
       if (!marker) {
         const el = document.createElement('div');
         el.style.width = '12px';
@@ -157,6 +183,16 @@ export function LiveSimLayer({
         badge.style.background = '#ef4444';
         badge.style.display = 'none';
         el.appendChild(badge);
+        // open popup on hover with details
+        const popup = new maplibregl.Popup({ closeButton: true, closeOnClick: true }).setHTML(
+          `<div style="font: 12px/1.4 system-ui; min-width: 200px;">
+             <div style="font-weight:600;">Zug ${v.id}</div>
+             <div>Linie: ${v.lineId}</div>
+             <div>Status: ${v.status}</div>
+           </div>`
+        );
+        el.addEventListener('mouseenter', () => popup.setLngLat(pos).addTo(map));
+        el.addEventListener('mouseleave', () => popup.remove());
         el.addEventListener('click', (e) => {
           e.stopPropagation();
           window.location.href = `/trains/${encodeURIComponent(v.id)}`;

@@ -35,7 +35,7 @@ export function AppNav() {
   const router = useRouter();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [q, setQ] = useState('');
-  const [results, setResults] = useState<{ id: string; lineId?: string }[]>([]);
+  const [results, setResults] = useState<any[]>([]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -69,14 +69,11 @@ export function AppNav() {
     }
     const run = async () => {
       try {
-        const base = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4100';
-        const r = await fetch(`${base}/api/trains`);
-        const arr = await r.json();
+        const r = await fetch(`/api/search?q=${encodeURIComponent(q)}`, { cache: 'no-store' });
+        const j = await r.json();
         if (cancelled) return;
-        const filtered = arr
-          .filter((t: any) => String(t.id).toLowerCase().includes(q.toLowerCase()))
-          .slice(0, 20);
-        setResults(filtered);
+        const out = Array.isArray(j.results) ? j.results.slice(0, 20) : [];
+        setResults(out);
       } catch {
         setResults([]);
       }
@@ -150,19 +147,40 @@ export function AppNav() {
               {results.length === 0 && (
                 <div className="p-3 text-sm text-white/60">Keine Treffer</div>
               )}
-              {results.map((r) => (
-                <button
-                  key={r.id}
-                  onClick={() => {
-                    setPaletteOpen(false);
-                    router.push(`/trains?select=${encodeURIComponent(r.id)}`);
-                  }}
-                  className="w-full text-left px-3 py-2 hover:bg-white/5"
-                >
-                  <div className="text-sm font-medium">{r.id}</div>
-                  <div className="text-xs text-white/50">Linie: {r.lineId ?? '–'}</div>
-                </button>
-              ))}
+              {results.map((r, idx) => {
+                const key = r.id || r.code || `res-${idx}`;
+                const primary =
+                  r.type === 'train'
+                    ? r.id
+                    : r.type === 'tcms'
+                      ? r.code
+                      : r.title || r.code || r.id;
+                const secondary =
+                  r.type === 'train'
+                    ? `Linie: ${r.line || r.lineId || '–'}`
+                    : r.type === 'tcms'
+                      ? `${r.title} • ${r.system}`
+                      : r.type === 'tcms_event'
+                        ? `${r.code} • ${r.system || ''} • ${r.trainId || ''}`
+                        : '';
+                const href =
+                  r.href ||
+                  (r.type === 'train' ? `/trains/${encodeURIComponent(r.id)}` : '/maintenance');
+                return (
+                  <button
+                    key={key}
+                    onClick={() => {
+                      setPaletteOpen(false);
+                      router.push(href);
+                    }}
+                    className="w-full text-left px-3 py-2 hover:bg-white/5"
+                  >
+                    <div className="text-sm font-medium">{primary}</div>
+                    {secondary && <div className="text-xs text-white/50">{secondary}</div>}
+                    <div className="text-[10px] text-white/40 mt-0.5">{r.type}</div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

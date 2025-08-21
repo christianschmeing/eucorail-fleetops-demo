@@ -106,6 +106,30 @@ export default function MaintenanceDashboard() {
     setPlanOpen(true);
   }
 
+  function mostUrgentDueStage(
+    v: any
+  ): 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6' | 'Corrective' {
+    const fam = String(v.type || '').toUpperCase();
+    const prof: any = (ECM_PROFILES as any)[fam] || {};
+    const kmToNext = v.kmToNext || {};
+    const stages: Array<'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6'> = [
+      'IS1',
+      'IS2',
+      'IS3',
+      'IS4',
+      'IS5',
+      'IS6',
+    ];
+    let best: any = null;
+    for (const st of stages) {
+      const cfg = prof[st];
+      if (!cfg) continue;
+      const rem = (kmToNext[st] ?? cfg.periodKm) as number;
+      if (best == null || rem < best.rem) best = { st, rem };
+    }
+    return (best?.st as any) || 'IS2';
+  }
+
   async function submitPlan() {
     const v = vehicles.find((x: any) => x.id === selectedVehicleId);
     if (!v) return;
@@ -272,9 +296,9 @@ export default function MaintenanceDashboard() {
                   <div className="px-3 pb-2">
                     <button
                       className="text-xs text-blue-600 hover:text-blue-700"
-                      onClick={() => openPlanDialog(v)}
+                      onClick={() => openPlanDialog(v, mostUrgentDueStage(v))}
                     >
-                      → in Depot einplanen (IS2)
+                      → in Depot einplanen
                     </button>
                   </div>
                 </div>
