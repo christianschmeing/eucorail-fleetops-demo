@@ -126,13 +126,15 @@ export default function DepotMapGL({ depot, tracks, allocations = [] }: Props) {
       el.style.background =
         a.status === 'planned'
           ? '#60a5fa'
-          : a.purpose === 'ARA'
-            ? '#eab308'
-            : a.purpose === 'Korr'
-              ? '#f97316'
-              : a.purpose.startsWith('IS')
-                ? '#eab308'
-                : '#ef4444';
+          : String(a.purpose || '').toLowerCase() === 'corrective'
+            ? '#ef4444'
+            : a.purpose === 'ARA'
+              ? '#eab308'
+              : a.purpose === 'Korr'
+                ? '#f97316'
+                : String(a.purpose || '').startsWith('IS')
+                  ? '#eab308'
+                  : '#ef4444';
       const startsInMs = new Date(a.startPlanned).getTime() - Date.now();
       const startsInMin = Math.round(startsInMs / 60000);
       const info = `Start: ${new Date(a.startPlanned).toLocaleString('de-DE')}`;

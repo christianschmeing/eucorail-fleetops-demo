@@ -32,9 +32,9 @@ export default function MaintenanceDashboard() {
   const [planTrack, setPlanTrack] = useState<string>('');
   const [planStart, setPlanStart] = useState<string>('');
   const [planDurationH, setPlanDurationH] = useState<number>(1);
-  const [planPurpose, setPlanPurpose] = useState<'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6'>(
-    'IS2'
-  );
+  const [planPurpose, setPlanPurpose] = useState<
+    'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6' | 'Corrective'
+  >('IS2');
 
   useEffect(() => {
     (async () => {
@@ -90,7 +90,10 @@ export default function MaintenanceDashboard() {
     return anyFilter ? wantsIS1 || wantsIS2 || wantsIS3 || wantsIS456 : true;
   });
 
-  function openPlanDialog(v: any, stage: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6' = 'IS2') {
+  function openPlanDialog(
+    v: any,
+    stage: 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6' | 'Corrective' = 'IS2'
+  ) {
     const depot = v.depot === 'ESS' ? 'Essingen' : 'Langweid';
     setPlanDepot(depot);
     const tracks = trackGeometries.filter((t) => t.depot === depot && t.state !== 'gesperrt');
@@ -113,8 +116,8 @@ export default function MaintenanceDashboard() {
         new Date(planStart).getTime() + planDurationH * 60 * 60 * 1000
       ).toISOString();
       const famKey = String(v.type || '').toUpperCase();
-      const cfg: any = (ECM_PROFILES as any)[famKey]?.[planPurpose] || {};
-      const expectedDurationHours = cfg.durationHours || planDurationH;
+      const cfg: any = (ECM_PROFILES as any)[famKey]?.[planPurpose as any];
+      const expectedDurationHours = (cfg?.durationHours as number) || planDurationH;
       const res = await fetch('/api/depot/allocations', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -125,7 +128,9 @@ export default function MaintenanceDashboard() {
           startPlanned: startISO,
           endPlanned: endISO,
           purpose: planPurpose,
-          stage: planPurpose,
+          stage: (['IS1', 'IS2', 'IS3', 'IS4', 'IS5', 'IS6'] as const).includes(planPurpose as any)
+            ? (planPurpose as any)
+            : undefined,
           expectedDurationHours,
         }),
       });
@@ -408,7 +413,7 @@ function PlanDrawer({
             onChange={(e) => onStage(e.target.value)}
             className="w-full border rounded px-2 py-1"
           >
-            {['IS1', 'IS2', 'IS3', 'IS4', 'IS5', 'IS6'].map((s) => (
+            {['IS1', 'IS2', 'IS3', 'IS4', 'IS5', 'IS6', 'Corrective'].map((s) => (
               <option key={s} value={s}>
                 {s}
               </option>
