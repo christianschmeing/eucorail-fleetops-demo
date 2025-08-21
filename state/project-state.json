@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "c13cbad3f3fd7768ffbde84e240bdb370e8b6195",
-    "message": "test: skip SSE header checks in TEST_MODE to avoid flakiness; keep events JSON check",
+    "sha": "4f922b6bcca0d9b32bee7b34cd7fedc82c229f29",
+    "message": "test: skip SSE header checks in CI; relax map markers assertion to canvas presence",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T11:04:12Z"
+    "timestamp": "2025-08-21T11:06:34Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17125043702"
+    "run_id": "17125099321"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T11:05:34.002Z",
+  "generated_at": "2025-08-21T11:08:00.953Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
