@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "2c98dabfd154ebe22d02d1a376b5ddcce720f9c1",
-    "message": "chore(ci): add soft health check, optional smoke tests, rollback helper, and docs (non-destructive)",
+    "sha": "b1b02c5af7559f328108cefa600ce21fc5210ceb",
+    "message": "feat(ci): multi-trigger deploy and local fallback\n\n- Add PR label trigger\n\n- Add workflow_dispatch inputs\n\n- Add weekly schedule\n\n- Add local deploy test script\n\n- Add direct vercel deploy script\n\n- Add fallback workflow and act config\n\n- Add Makefile\n\n- Update README and package scripts",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-21T13:32:54Z"
+    "timestamp": "2025-08-22T07:34:11Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17128506827"
+    "run_id": "17149193630"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-21T13:35:01.668Z",
+  "generated_at": "2025-08-22T07:36:17.933Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
