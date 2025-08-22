@@ -2,7 +2,7 @@
 import { join } from 'node:path';
 import { writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { spawnZsh, sleep, httpOk, ensureDir, rotateLog, freePortRobust, rmrf, runZshWait, latestMTime, readText, spawnTunnel, httpStatus, processAlive, sanitizeEnv, writePid, readPid, killProcGroup, readLock, writeLock, removeLock } from './util.js';
+import { spawnZsh, sleep, httpOk, ensureDir, rotateLog, freePortRobust, rmrf, runZshWait, latestMTime, readText, spawnTunnel, httpStatus, processAlive, sanitizeEnv, writePid, readPid, killProcGroup, readLock, writeLock, removeLock } from './util.mjs';
 
 const repoRoot = process.cwd();
 const logsRoot = existsSync('/tmp') ? '/tmp' : join(repoRoot, '.logs');
@@ -119,7 +119,7 @@ async function start() {
     if (!token) {
       // Ensure cloudflared binary exists via downloader
       try {
-        const { execCapture } = await import('./util.js');
+        const { execCapture } = await import('./util.mjs');
         const res = await execCapture('node scripts/dev/cloudflared.mjs', { cwd: repoRoot, timeoutMs: 180000 });
         if (res.stdout && res.stdout.trim()) binPath = res.stdout.trim();
       } catch {}
