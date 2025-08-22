@@ -25,6 +25,9 @@ export default function MaintenanceDashboard() {
     useFleetStore();
   const [data, setData] = useState<any>(null);
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'technical' | 'workshop' | 'predictive' | 'compliance' | 'sla' | 'corrective'
+  >('overview');
   const [filterDueIS1, setFilterDueIS1] = useState(false);
   const [filterDueIS2, setFilterDueIS2] = useState(true);
   const [filterDueIS3, setFilterDueIS3] = useState(true);
@@ -129,6 +132,16 @@ export default function MaintenanceDashboard() {
     () => vehicles.find((v: any) => v.id === selectedVehicleId) ?? null,
     [vehicles, selectedVehicleId]
   );
+
+  // Update deep-link focus whenever selection changes
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      if (selectedVehicleId) url.searchParams.set('focus', selectedVehicleId);
+      else url.searchParams.delete('focus');
+      window.history.replaceState({}, '', url.toString());
+    } catch {}
+  }, [selectedVehicleId]);
 
   // Compute per-stage due counts (critical/warn/ok) using km/days thresholds
   type StageKey = 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6';
@@ -360,7 +373,7 @@ export default function MaintenanceDashboard() {
       </header>
 
       <div className="flex h-[calc(100vh-80px)]">
-        <aside className="w-80 bg-white border-r overflow-y-auto">
+        <aside className="w-96 bg-white border-r overflow-y-auto">
           <div className="p-4 border-b space-y-2">
             <input
               type="search"
@@ -384,7 +397,10 @@ export default function MaintenanceDashboard() {
                       : 'bg-white text-gray-700 border-gray-300'
                   }`}
                 >
-                  {st}
+                  <span className="font-mono mr-1">{st}</span>
+                  <span className="text-[10px] opacity-80">
+                    {stageCounts[st].critical + stageCounts[st].warn}/{stageCounts[st].total}
+                  </span>
                 </button>
               ))}
               <button
@@ -476,44 +492,115 @@ export default function MaintenanceDashboard() {
               </div>
             </details>
           </div>
-          <div className="p-2 space-y-1">
-            {filteredVehicles.map((v: any) => {
-              const flags = nearing(v);
-              const warn =
-                flags.is1 || flags.is2 || flags.is3 || flags.is4 || flags.is5 || flags.is6;
-              return (
-                <div
-                  key={v.id}
-                  className={clsx('rounded-lg', warn ? 'ring-1 ring-yellow-400' : '')}
-                >
-                  <button
-                    onClick={() => setSelectedVehicleId(v.id)}
-                    className={clsx(
-                      'w-full text-left px-3 py-2 rounded-lg',
-                      selectedVehicleId === v.id
-                        ? 'bg-blue-50'
-                        : warn
-                          ? 'bg-yellow-50'
-                          : 'hover:bg-gray-50'
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="font-semibold">{v.id}</div>
-                      <Badge>{v.type}</Badge>
-                    </div>
-                    <div className="text-xs text-gray-600">Health 100%</div>
-                  </button>
-                  <div className="px-3 pb-2">
-                    <button
-                      className="text-xs text-blue-600 hover:text-blue-700"
-                      onClick={() => openPlanDialog(v, mostUrgentDueStage(v))}
-                    >
-                      → in Depot einplanen
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="p-2">
+            <div className="w-full overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="text-left text-gray-600">
+                    <th className="px-3 py-2">Zug</th>
+                    <th className="px-3 py-2">Typ</th>
+                    <th className="px-3 py-2">Linie</th>
+                    <th className="px-3 py-2">Depot</th>
+                    <th className="px-3 py-2">Status</th>
+                    <th className="px-3 py-2">Km</th>
+                    <th className="px-3 py-2">IS1–IS6</th>
+                    <th className="px-3 py-2">Aktionen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredVehicles.map((v: any) => {
+                    const depotName =
+                      v.depot === 'ESS' ? 'Essingen' : v.depot === 'GAB' ? 'Langweid' : '';
+                    const status = (v.status || 'OPERATIONAL') as
+                      | 'OPERATIONAL'
+                      | 'MAINTENANCE'
+                      | 'DEPOT';
+                    return (
+                      <tr
+                        key={v.id}
+                        className={clsx(
+                          'border-t',
+                          STAGES.some((st) => vehicleStageStatus(v, st) === 'critical')
+                            ? 'bg-red-50'
+                            : STAGES.some((st) => vehicleStageStatus(v, st) === 'warn')
+                              ? 'bg-yellow-50'
+                              : ''
+                        )}
+                      >
+                        <td className="px-3 py-2 whitespace-nowrap">
+                          <a
+                            href={`/trains/${v.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-blue-600 hover:underline font-mono"
+                          >
+                            {v.id}
+                          </a>
+                        </td>
+                        <td className="px-3 py-2">
+                          <Badge>{v.type}</Badge>
+                        </td>
+                        <td className="px-3 py-2">{v.line || '-'}</td>
+                        <td className="px-3 py-2">{depotName || '-'}</td>
+                        <td className="px-3 py-2">{status}</td>
+                        <td className="px-3 py-2">{(v.mileageKm ?? 0).toLocaleString()}</td>
+                        <td className="px-3 py-2">
+                          <div className="flex gap-1">
+                            {STAGES.map((st) => {
+                              const s = vehicleStageStatus(v, st);
+                              const color =
+                                s === 'critical'
+                                  ? 'bg-red-500'
+                                  : s === 'warn'
+                                    ? 'bg-yellow-500'
+                                    : 'bg-gray-300';
+                              return (
+                                <span
+                                  key={st}
+                                  title={st}
+                                  className={`inline-block w-2.5 h-2.5 rounded-full ${color}`}
+                                />
+                              );
+                            })}
+                          </div>
+                        </td>
+                        <td className="px-3 py-2">
+                          <div className="flex gap-2">
+                            <button
+                              className="px-2 py-1 border rounded"
+                              onClick={() => setSelectedVehicleId(v.id)}
+                              aria-label={`Details zu ${v.id}`}
+                            >
+                              Details
+                            </button>
+                            <div className="relative">
+                              {/* Quick plan per stage */}
+                              {STAGES.map((st) => (
+                                <button
+                                  key={st}
+                                  className="px-1.5 py-0.5 text-xs border rounded mr-1"
+                                  onClick={() => openPlanDialog(v, st)}
+                                  title={`Plan ${st}`}
+                                >
+                                  {st}
+                                </button>
+                              ))}
+                              <button
+                                className="px-2 py-1 text-xs border rounded"
+                                onClick={() => openPlanDialog(v, 'Corrective')}
+                                title="Plan Corrective"
+                              >
+                                Corr.
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </aside>
         <main className="flex-1 overflow-y-auto">
@@ -578,31 +665,55 @@ export default function MaintenanceDashboard() {
                     <Tabs
                       tabs={[
                         { key: 'overview', label: 'Overview' },
+                        { key: 'corrective', label: 'Corrective' },
                         { key: 'technical', label: 'Technical' },
                         { key: 'workshop', label: 'Workshop' },
                         { key: 'predictive', label: 'AI Insights' },
                         { key: 'compliance', label: 'Compliance' },
                         { key: 'sla', label: 'SLA Monitor' },
                       ]}
-                      active={'overview'}
-                      onChange={() => {}}
+                      active={activeTab}
+                      onChange={(k) => setActiveTab(k as any)}
                     />
                     <div className="space-y-6">
-                      <ComplianceTracker />
-                      <SLADashboard />
-                      {/* IHB Panel */}
-                      <IHBPanel
-                        vehicle={selectedVehicle}
-                        onPlan={(stage) =>
-                          openPlanDialog(
-                            { id: selectedVehicle.id, depot: selectedVehicle.depot },
-                            stage
-                          )
-                        }
-                      />
-                      {/* Predictive */}
-                      <PredictivePanel vehicle={selectedVehicle} />
-                      {/* IS1..IS6 mapping summary */}
+                      {activeTab === 'overview' && (
+                        <>
+                          <IHBPanel
+                            vehicle={selectedVehicle}
+                            onPlan={(stage) =>
+                              openPlanDialog(
+                                { id: selectedVehicle.id, depot: selectedVehicle.depot },
+                                stage
+                              )
+                            }
+                          />
+                          <div className="p-4 border rounded-lg">
+                            <div className="font-semibold mb-2">IS‑Stufen Status</div>
+                            <StageBars vehicle={selectedVehicle} />
+                          </div>
+                        </>
+                      )}
+                      {activeTab === 'corrective' && (
+                        <CorrectivePanel
+                          vehicleId={selectedVehicle.id}
+                          onPlan={() => openPlanDialog(selectedVehicle, 'Corrective')}
+                        />
+                      )}
+                      {activeTab === 'technical' && (
+                        <div className="p-4 border rounded-lg bg-white text-sm text-gray-700">
+                          Sensorik/Telemetrie nicht verfügbar – Demo-Stub.
+                        </div>
+                      )}
+                      {activeTab === 'workshop' && (
+                        <div className="p-4 border rounded-lg bg-white text-sm text-gray-700">
+                          Keine aktuellen Werkstattdaten – planen Sie eine Maßnahme, um einen Slot
+                          zu sehen.
+                        </div>
+                      )}
+                      {activeTab === 'predictive' && <PredictivePanel vehicle={selectedVehicle} />}
+                      {activeTab === 'compliance' && <ComplianceTracker />}
+                      {activeTab === 'sla' && <SLADashboard />}
+                      {/* Mapping summary always available below */}
                       <div className="p-4 border rounded-lg">
                         <div className="font-semibold mb-2">
                           Interventions (IS1–IS6 ↔ DB F1–F6)
@@ -749,6 +860,85 @@ function PlanDrawer({
         </div>
       </div>
     </Drawer>
+  );
+}
+
+function StageBars({ vehicle }: { vehicle: any }) {
+  const fam = String(vehicle.type || '').toUpperCase();
+  const prof: any = (ECM_PROFILES as any)[fam] || {};
+  const kmToNext = vehicle.kmToNext || {};
+  const daysToNext = vehicle.daysToNext || {};
+  const stages: Array<'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6'> = [
+    'IS1',
+    'IS2',
+    'IS3',
+    'IS4',
+    'IS5',
+    'IS6',
+  ];
+  return (
+    <div className="space-y-2">
+      {stages.map((st) => {
+        const cfg = prof[st];
+        if (!cfg) return null;
+        const remKm = kmToNext[st] ?? cfg.periodKm;
+        const pct = Math.max(0, Math.min(1, 1 - remKm / cfg.periodKm));
+        const color = remKm <= 0 ? 'bg-red-500' : remKm <= 1000 ? 'bg-yellow-500' : 'bg-green-500';
+        return (
+          <div key={st} className="text-xs">
+            <div className="flex items-center justify-between">
+              <span className="font-mono mr-2">{st}</span>
+              <span className="text-gray-600">
+                Rest {remKm.toLocaleString()} km · {daysToNext[st] ?? 0} Tage
+              </span>
+            </div>
+            <div className="h-2 bg-gray-200 rounded overflow-hidden mt-1">
+              <div className={`h-full ${color}`} style={{ width: `${pct * 100}%` }} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function CorrectivePanel({ vehicleId, onPlan }: { vehicleId: string; onPlan: () => void }) {
+  const { activeTcms } = useFleetStore();
+  const events: any[] = (activeTcms as any)[vehicleId] || [];
+  const sorted = [...events].sort((a, b) => (a.severity === 'CRITICAL' ? -1 : 1));
+  return (
+    <div className="p-4 border rounded-lg bg-white">
+      <div className="flex items-center justify-between mb-2">
+        <div className="font-semibold">TCMS Alerts</div>
+        <button className="px-2 py-1 bg-red-600 text-white rounded" onClick={onPlan}>
+          Plan corrective
+        </button>
+      </div>
+      {sorted.length === 0 ? (
+        <div className="text-sm text-gray-600">Keine aktiven Alerts.</div>
+      ) : (
+        <ul className="space-y-2 text-sm">
+          {sorted.slice(0, 10).map((e, idx) => (
+            <li key={idx} className="flex items-center justify-between border rounded px-2 py-1">
+              <span
+                className={clsx(
+                  'px-1.5 py-0.5 rounded text-xs',
+                  e.severity === 'CRITICAL'
+                    ? 'bg-red-100 text-red-700'
+                    : 'bg-yellow-100 text-yellow-700'
+                )}
+              >
+                {e.severity}
+              </span>
+              <span className="flex-1 mx-2 truncate">{e.humanMessage || e.code}</span>
+              <span className="text-gray-500 text-xs">
+                {new Date(e.ts || Date.now()).toLocaleString()}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
