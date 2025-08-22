@@ -148,6 +148,20 @@ export function MapFiltersBar({
           className="px-2 py-1 text-sm bg-gray-800 text-white border border-gray-700 rounded"
           aria-label="Zug-ID Suche"
         />
+        {(region.length < 2 || lines.length > 0 || status.length < 4 || reserve === 0 || q) && (
+          <button
+            onClick={() => {
+              setRegion(['BW', 'BY']);
+              setLines([]);
+              setStatus(['active', 'maintenance', 'alarm', 'offline']);
+              setReserve(1);
+              setQ('');
+            }}
+            className="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded"
+          >
+            Filter zurücksetzen
+          </button>
+        )}
       </div>
     </div>
   );

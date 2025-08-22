@@ -81,8 +81,12 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
   const filteredTrains = trains.filter((train) => {
     if (selectedLines.length > 0 && !selectedLines.includes(train.lineId)) return false;
     if (selectedRegions.length > 0 && !selectedRegions.includes(train.region)) return false;
-    if (selectedStatuses.length > 0 && !selectedStatuses.includes(train.status)) return false;
-    if (!includeReserve && train.status === 'reserve') return false;
+    // Reserve inclusion is controlled by toggle, not by status chips
+    if (train.status === 'reserve') {
+      if (!includeReserve) return false;
+    } else {
+      if (selectedStatuses.length > 0 && !selectedStatuses.includes(train.status)) return false;
+    }
     if (searchQ && !String(train.id).toLowerCase().includes(searchQ.toLowerCase())) return false;
     return true;
   });
