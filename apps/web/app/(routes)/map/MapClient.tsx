@@ -82,7 +82,7 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
     if (selectedLines.length > 0 && !selectedLines.includes(train.lineId)) return false;
     if (selectedRegions.length > 0 && !selectedRegions.includes(train.region)) return false;
     // Reserve inclusion is controlled by toggle, not by status chips
-    if (train.status === 'reserve') {
+    if (train.status === 'reserve' || train.status === 'standby') {
       if (!includeReserve) return false;
     } else {
       if (selectedStatuses.length > 0 && !selectedStatuses.includes(train.status)) return false;
