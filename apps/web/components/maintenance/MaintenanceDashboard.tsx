@@ -757,11 +757,15 @@ function PlanDrawer({
     <Drawer open={open} onClose={onClose} side="right" title="In Depot einplanen">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Stufe</label>
+          <label className="block text-sm font-medium mb-1" htmlFor="plan-stage-select">
+            Stufe
+          </label>
           <select
+            id="plan-stage-select"
             value={stage}
             onChange={(e) => onStage(e.target.value)}
             className="w-full border rounded px-2 py-1"
+            aria-label="Stufe"
           >
             {['IS1', 'IS2', 'IS3', 'IS4', 'IS5', 'IS6', 'Corrective'].map((s) => (
               <option key={s} value={s}>
@@ -771,22 +775,30 @@ function PlanDrawer({
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Depot</label>
+          <label className="block text-sm font-medium mb-1" htmlFor="plan-depot-select">
+            Depot
+          </label>
           <select
+            id="plan-depot-select"
             value={depot}
             onChange={(e) => onDepot(e.target.value)}
             className="w-full border rounded px-2 py-1"
+            aria-label="Depot"
           >
             <option>Essingen</option>
             <option>Langweid</option>
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Gleis</label>
+          <label className="block text-sm font-medium mb-1" htmlFor="plan-track-select">
+            Gleis
+          </label>
           <select
+            id="plan-track-select"
             value={track}
             onChange={(e) => onTrack(e.target.value)}
             className="w-full border rounded px-2 py-1"
+            aria-label="Gleis"
           >
             {tracks.map((t) => (
               <option key={t.id} value={t.id}>
@@ -796,20 +808,28 @@ function PlanDrawer({
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Start</label>
+          <label className="block text-sm font-medium mb-1" htmlFor="plan-start-input">
+            Start
+          </label>
           <input
+            id="plan-start-input"
             type="datetime-local"
             value={start}
             onChange={(e) => onStart(e.target.value)}
             className="w-full border rounded px-2 py-1"
+            aria-label="Start"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Dauer</label>
+          <label className="block text-sm font-medium mb-1" htmlFor="plan-duration-select">
+            Dauer
+          </label>
           <select
+            id="plan-duration-select"
             value={durationH}
             onChange={(e) => onDuration(Number(e.target.value))}
             className="w-full border rounded px-2 py-1"
+            aria-label="Dauer"
           >
             {[1, 2, 3, 4, 6, 8].map((h) => (
               <option key={h} value={h}>
