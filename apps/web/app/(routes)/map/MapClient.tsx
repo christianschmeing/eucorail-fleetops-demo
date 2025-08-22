@@ -5,6 +5,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { LiveSimLayer } from '@/features/map/LiveSimLayer';
 import linesData from '@/data/lines-complete.json';
+import { MapFiltersBar, type MapFilters } from '@/components/map/MapFiltersBar';
 
 interface Train {
   id: string;
@@ -43,8 +44,9 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
     'maintenance',
     'alarm',
     'offline',
-    'standby',
   ]);
+  const [includeReserve, setIncludeReserve] = useState<0 | 1>(1);
+  const [searchQ, setSearchQ] = useState('');
   const [sseConnected, setSseConnected] = useState(false);
   // Linien-Metadaten
   type LineMeta = { id: string; name: string; color: string; region: 'BW' | 'BY' };
@@ -80,6 +82,8 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
     if (selectedLines.length > 0 && !selectedLines.includes(train.lineId)) return false;
     if (selectedRegions.length > 0 && !selectedRegions.includes(train.region)) return false;
     if (selectedStatuses.length > 0 && !selectedStatuses.includes(train.status)) return false;
+    if (!includeReserve && train.status === 'reserve') return false;
+    if (searchQ && !String(train.id).toLowerCase().includes(searchQ.toLowerCase())) return false;
     return true;
   });
 
@@ -274,208 +278,17 @@ export default function MapClient({ initialTrains, initialKpis }: MapClientProps
             </div>
           </div>
 
-          {/* Filter */}
-          <div className="mt-4 flex gap-4">
-            <div className="flex gap-2">
-              <span className="text-sm text-gray-400">Bundesland:</span>
-              <label className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  checked={selectedRegions.includes('BW')}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedRegions([...selectedRegions, 'BW']);
-                    } else {
-                      setSelectedRegions(selectedRegions.filter((r) => r !== 'BW'));
-                    }
-                  }}
-                  className="rounded"
-                />
-                <span className="text-sm text-white">BW</span>
-              </label>
-              <label className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  checked={selectedRegions.includes('BY')}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedRegions([...selectedRegions, 'BY']);
-                    } else {
-                      setSelectedRegions(selectedRegions.filter((r) => r !== 'BY'));
-                    }
-                  }}
-                  className="rounded"
-                />
-                <span className="text-sm text-white">BY</span>
-              </label>
-            </div>
-
-            <div className="flex flex-wrap gap-2 items-start">
-              <span className="text-sm text-gray-400">Linie:</span>
-              <div className="flex flex-wrap gap-2">
-                {/* BW dynamisch */}
-                <div className="flex gap-2 px-2 py-1 bg-blue-900/20 rounded">
-                  <button
-                    type="button"
-                    className="px-2 py-0.5 text-xs bg-blue-800/60 rounded border border-blue-700 text-blue-100"
-                    onClick={() =>
-                      setSelectedLines(Array.from(new Set([...selectedLines, ...allBWIds])))
-                    }
-                  >
-                    Alle BW
-                  </button>
-                  <button
-                    type="button"
-                    className="px-2 py-0.5 text-xs bg-blue-800/30 rounded border border-blue-700 text-blue-100"
-                    onClick={() =>
-                      setSelectedLines(selectedLines.filter((ln) => !allBWIds.includes(ln)))
-                    }
-                  >
-                    BW aus
-                  </button>
-                  {bwLines.map((line) => (
-                    <label
-                      key={line.id}
-                      className="flex items-center gap-1"
-                      data-testid={`line-chip-${line.id}`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedLines.includes(line.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedLines([...selectedLines, line.id]);
-                          } else {
-                            setSelectedLines(selectedLines.filter((ln) => ln !== line.id));
-                          }
-                        }}
-                        className="rounded"
-                      />
-                      <span className="text-sm" style={{ color: line.color }}>
-                        {line.id}
-                      </span>
-                      <span className="text-[10px] text-gray-300">
-                        ({countsByLine[line.id] || 0})
-                      </span>
-                    </label>
-                  ))}
-                </div>
-
-                {/* BY dynamisch */}
-                <div className="flex gap-2 px-2 py-1 bg-green-900/20 rounded">
-                  <button
-                    type="button"
-                    className="px-2 py-0.5 text-xs bg-emerald-800/60 rounded border border-emerald-700 text-emerald-100"
-                    onClick={() =>
-                      setSelectedLines(Array.from(new Set([...selectedLines, ...allBYIds])))
-                    }
-                  >
-                    Alle BY
-                  </button>
-                  <button
-                    type="button"
-                    className="px-2 py-0.5 text-xs bg-emerald-800/30 rounded border border-emerald-700 text-emerald-100"
-                    onClick={() =>
-                      setSelectedLines(selectedLines.filter((ln) => !allBYIds.includes(ln)))
-                    }
-                  >
-                    BY aus
-                  </button>
-                  {byLines.map((line) => (
-                    <label
-                      key={line.id}
-                      className="flex items-center gap-1"
-                      data-testid={`line-chip-${line.id}`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedLines.includes(line.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedLines([...selectedLines, line.id]);
-                          } else {
-                            setSelectedLines(selectedLines.filter((ln) => ln !== line.id));
-                          }
-                        }}
-                        className="rounded"
-                      />
-                      <span className="text-sm" style={{ color: line.color }}>
-                        {line.id}
-                      </span>
-                      <span className="text-[10px] text-gray-300">
-                        ({countsByLine[line.id] || 0})
-                      </span>
-                    </label>
-                  ))}
-                </div>
-
-                {/* S-Bahn Linien entfernt (nicht Teil des Datensets) */}
-
-                {/* Reserve */}
-                <label className="flex items-center gap-1 px-2 py-1 bg-gray-600/20 rounded">
-                  <input
-                    type="checkbox"
-                    checked={selectedLines.includes('RESERVE')}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedLines([...selectedLines, 'RESERVE']);
-                      } else {
-                        setSelectedLines(selectedLines.filter((ln) => ln !== 'RESERVE'));
-                      }
-                    }}
-                    className="rounded"
-                  />
-                  <span className="text-sm text-gray-300">RESERVE</span>
-                </label>
-              </div>
-            </div>
-
-            <div className="flex gap-2">
-              <span className="text-sm text-gray-400">Status:</span>
-              {['active', 'maintenance', 'alarm', 'offline', 'standby'].map((status) => (
-                <label key={status} className="flex items-center gap-1">
-                  <input
-                    type="checkbox"
-                    checked={selectedStatuses.includes(status)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedStatuses([...selectedStatuses, status]);
-                      } else {
-                        setSelectedStatuses(selectedStatuses.filter((s) => s !== status));
-                      }
-                    }}
-                    className="rounded"
-                  />
-                  <span className="text-sm text-white">
-                    {status === 'active'
-                      ? 'Aktiv'
-                      : status === 'maintenance'
-                        ? 'Wartung'
-                        : status === 'alarm'
-                          ? 'Alarm'
-                          : status === 'offline'
-                            ? 'Offline'
-                            : 'Standby'}
-                  </span>
-                </label>
-              ))}
-            </div>
-
-            {(selectedLines.length > 0 ||
-              selectedRegions.length > 0 ||
-              selectedStatuses.length > 0) && (
-              <button
-                onClick={() => {
-                  setSelectedLines([]);
-                  setSelectedRegions([]);
-                  setSelectedStatuses([]);
-                }}
-                className="ml-auto px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded"
-              >
-                Filter zurücksetzen
-              </button>
-            )}
-          </div>
+          {/* Filters Bar */}
+          <MapFiltersBar
+            linesOptions={[...new Set([...allBWIds, ...allBYIds])]}
+            onChange={(f: MapFilters) => {
+              setSelectedRegions(f.region);
+              setSelectedLines(f.lines);
+              setSelectedStatuses(f.status);
+              setIncludeReserve(f.reserve);
+              setSearchQ(f.q);
+            }}
+          />
         </div>
       </div>
 
