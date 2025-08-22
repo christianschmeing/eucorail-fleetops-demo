@@ -210,9 +210,9 @@ async function getRecentEvents() {
 
 async function getMaintenanceSummary() {
   try {
-    return await apiGet<{
-      stages: Record<Stage, { critical: number; warn: number; ok: number }>;
-      top10: Array<{
+    const data = await apiGet<{
+      stages?: Record<Stage, { critical: number; warn: number; ok: number }>;
+      top10?: Array<{
         id: string;
         stage: Stage;
         kmToNext: number;
@@ -220,6 +220,17 @@ async function getMaintenanceSummary() {
         depot: string;
       }>;
     }>('/api/maintenance/summary');
+    const emptyStages: Record<Stage, { critical: number; warn: number; ok: number }> = {
+      IS1: { critical: 0, warn: 0, ok: 0 },
+      IS2: { critical: 0, warn: 0, ok: 0 },
+      IS3: { critical: 0, warn: 0, ok: 0 },
+      IS4: { critical: 0, warn: 0, ok: 0 },
+      IS5: { critical: 0, warn: 0, ok: 0 },
+      IS6: { critical: 0, warn: 0, ok: 0 },
+    };
+    const stages = data?.stages ? { ...emptyStages, ...data.stages } : emptyStages;
+    const top10 = Array.isArray(data?.top10) ? data!.top10!.slice(0, 10) : [];
+    return { stages, top10 };
   } catch {
     return {
       stages: {
