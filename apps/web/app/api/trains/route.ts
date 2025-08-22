@@ -77,10 +77,10 @@ const FLEET_DATA = {
       region = 'BY';
       status = trainNum <= 90 ? 'active' : trainNum <= 100 ? 'maintenance' : 'reserve';
     }
-    // 109-144: restliche FLIRT3 BY-Netze (keine S-Bahn Linien)
+    // 109-144: restliche FLIRT3 BY-Netze (Averio-Set, keine S-Bahn)
     else {
-      // Align with S-Bahn lines present in /api/lines to keep SSOT consistent
-      const lineOptions = ['S2', 'S3', 'S4', 'S6'];
+      // Use Averio BY lines only to match Averio fleet scope
+      const lineOptions = ['RE9', 'RE12', 'MEX16', 'MEX18', 'MEX12', 'RB32', 'RB54'];
       lineCode = lineOptions[Math.floor(Math.random() * lineOptions.length)];
       vehicleType = 'flirt_3_160';
       homeDepot = 'Langweid';
@@ -89,15 +89,10 @@ const FLEET_DATA = {
       status = trainNum <= 130 ? 'active' : trainNum <= 137 ? 'maintenance' : 'reserve';
     }
 
-    // Reserve-Züge
+    // Reserve-Züge behalten ihre ursprüngliche Linienzuordnung (keine S‑Bahn/Reserve-Linie)
     const isReserve = status === 'reserve';
-    if (isReserve) {
-      lineCode = 'RESERVE';
-    }
 
-    const trainId = isReserve
-      ? `RES-${homeDepot.charAt(0)}-${90000 + trainNum}`
-      : `${lineCode}-${60000 + trainNum}`;
+    const trainId = `${lineCode}-${60000 + trainNum}`;
 
     return {
       id: trainId,
