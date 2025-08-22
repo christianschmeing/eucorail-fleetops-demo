@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "5d94ca953c30a0847f464d58a1280115f73a7171",
-    "message": "feat(depot-map): add data-testid planned-slot to planned markers (stabilize E2E)",
+    "sha": "711903279b4849af089bdc0cd76816e711991128",
+    "message": "fix(lines,trains): restrict to Averio lines only; remove S-Bahn; keep 144 via trains API",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T11:02:15Z"
+    "timestamp": "2025-08-22T11:14:37Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17153546993"
+    "run_id": "17153799602"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T11:04:27.512Z",
+  "generated_at": "2025-08-22T11:16:33.106Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
