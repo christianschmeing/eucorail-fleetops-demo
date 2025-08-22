@@ -48,7 +48,7 @@
             - img
             - text: Suchen (⌘K, /)
 - heading "Live-Karte" [level=1]
-- text: 'Live Gesamt (gefiltert) 123 von 144 (Filter aktiv) Aktive 123 100% In Wartung 0 0% Alarme 0 0% Offline 0 0% Bundesland:'
+- text: 'Live Gesamt (gefiltert) 144 von 144 (Filter aktiv) Aktive 123 85% In Wartung 0 0% Alarme 0 0% Offline 21 15% Bundesland:'
 - checkbox "BW" [checked]
 - text: BW
 - checkbox "BY" [checked]
