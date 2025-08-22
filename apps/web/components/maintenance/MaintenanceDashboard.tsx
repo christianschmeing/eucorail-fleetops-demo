@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Card, CardBody, CardTitle } from '@/components/ui/Card';
 import { Tabs } from '@/components/ui/Tabs';
 import { Badge } from '@/components/ui/Badge';
@@ -37,6 +38,16 @@ export default function MaintenanceDashboard() {
     'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6' | 'Corrective'
   >('IS2');
 
+  // New filters (multi-stage, depot/region, status, search, corrective)
+  const [selectedStages, setSelectedStages] = useState<StageKey[]>([]);
+  const [includeCorrective, setIncludeCorrective] = useState(false);
+  const [selectedDepot, setSelectedDepot] = useState<'All' | 'Essingen' | 'Langweid'>('All');
+  const [selectedRegion, setSelectedRegion] = useState<'All' | 'BW' | 'BY'>('All');
+  const [selectedStatusesState, setSelectedStatusesState] = useState<
+    Array<'OPERATIONAL' | 'MAINTENANCE' | 'DEPOT'>
+  >(['OPERATIONAL', 'MAINTENANCE', 'DEPOT']);
+  const [searchQ, setSearchQ] = useState('');
+
   useEffect(() => {
     (async () => {
       try {
@@ -61,10 +72,58 @@ export default function MaintenanceDashboard() {
         else if (stage === 'IS2') setFilterDueIS2(true);
         else if (stage === 'IS3') setFilterDueIS3(true);
         else if (stage === 'IS4' || stage === 'IS5' || stage === 'IS6') setFilterDueIS456(true);
+        // multi-stage selection for chips
+        const stages = stage.split(',').filter(Boolean) as StageKey[];
+        if (stages.length) setSelectedStages(stages);
       }
+      const depotQ = (search && search.get('depot')) || '';
+      if (depotQ === 'Essingen' || depotQ === 'Langweid') setSelectedDepot(depotQ);
+      const regionQ = (search && search.get('region')) || '';
+      if (regionQ === 'BW' || regionQ === 'BY') setSelectedRegion(regionQ);
+      const statusQ = (search && search.get('status')) || '';
+      if (statusQ) {
+        const arr = statusQ
+          .split(',')
+          .filter((x) => ['OPERATIONAL', 'MAINTENANCE', 'DEPOT'].includes(x)) as Array<
+          'OPERATIONAL' | 'MAINTENANCE' | 'DEPOT'
+        >;
+        if (arr.length) setSelectedStatusesState(arr);
+      }
+      const cq = (search && search.get('corrective')) || '';
+      if (cq === '1') setIncludeCorrective(true);
+      const q = (search && search.get('q')) || '';
+      if (q) setSearchQ(q);
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // URL sync on filter changes
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      if (selectedStages.length) url.searchParams.set('stage', selectedStages.join(','));
+      else url.searchParams.delete('stage');
+      if (selectedDepot !== 'All') url.searchParams.set('depot', selectedDepot);
+      else url.searchParams.delete('depot');
+      if (selectedRegion !== 'All') url.searchParams.set('region', selectedRegion);
+      else url.searchParams.delete('region');
+      if (selectedStatusesState.length < 3)
+        url.searchParams.set('status', selectedStatusesState.join(','));
+      else url.searchParams.delete('status');
+      if (includeCorrective) url.searchParams.set('corrective', '1');
+      else url.searchParams.delete('corrective');
+      if (searchQ) url.searchParams.set('q', searchQ);
+      else url.searchParams.delete('q');
+      window.history.replaceState({}, '', url.toString());
+    } catch {}
+  }, [
+    selectedStages,
+    selectedDepot,
+    selectedRegion,
+    selectedStatusesState,
+    includeCorrective,
+    searchQ,
+  ]);
 
   const selectedVehicle = useMemo(
     () => vehicles.find((v: any) => v.id === selectedVehicleId) ?? null,
@@ -104,6 +163,14 @@ export default function MaintenanceDashboard() {
     }
     return base;
   }, [vehicles]);
+
+  // SWR-like polling for summary
+  const summaryQ = useQuery({
+    queryKey: ['maintenance-summary'],
+    queryFn: async () => (await fetch('/api/maintenance/summary', { cache: 'no-store' })).json(),
+    refetchInterval: 30000,
+    staleTime: 30000,
+  });
 
   function applyStageFilter(stage: StageKey) {
     // update local filters
@@ -152,15 +219,50 @@ export default function MaintenanceDashboard() {
     };
   }
 
-  // filter vehicles based on toggles
-  const filteredVehicles = vehicles.filter((v: any) => {
-    const flags = nearing(v);
-    const wantsIS1 = filterDueIS1 ? flags.is1 : true;
-    const wantsIS2 = filterDueIS2 ? flags.is2 : true;
-    const wantsIS3 = filterDueIS3 ? flags.is3 : true;
-    const wantsIS456 = filterDueIS456 ? flags.is4 || flags.is5 || flags.is6 : true;
-    const anyFilter = filterDueIS1 || filterDueIS2 || filterDueIS3 || filterDueIS456;
-    return anyFilter ? wantsIS1 || wantsIS2 || wantsIS3 || wantsIS456 : true;
+  // filter vehicles based on chips, depot/region/status, search, corrective
+  const filteredVehicles = (vehicles as any[]).filter((v: any) => {
+    // depot/region
+    const depotName = v.depot === 'ESS' ? 'Essingen' : v.depot === 'GAB' ? 'Langweid' : '';
+    if (selectedDepot !== 'All' && depotName !== selectedDepot) return false;
+    const region = v.depot === 'ESS' ? 'BW' : 'BY';
+    if (selectedRegion !== 'All' && region !== selectedRegion) return false;
+    // status
+    const status = (v.status || 'OPERATIONAL') as 'OPERATIONAL' | 'MAINTENANCE' | 'DEPOT';
+    if (!selectedStatusesState.includes(status)) return false;
+    // search
+    if (searchQ) {
+      const q = searchQ.toLowerCase();
+      const hay = `${v.id} ${v.type || ''}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    // corrective (TCMS)
+    if (includeCorrective) {
+      const tc = (useFleetStore.getState().activeTcms as any)[v.id] || [];
+      const hasSev = tc.some((e: any) => e.severity === 'CRITICAL' || e.severity === 'ALARM');
+      if (!hasSev) return false;
+    }
+    // stage selection
+    if (selectedStages.length > 0) {
+      let match = false;
+      for (const st of selectedStages) {
+        const stStatus = vehicleStageStatus(v, st);
+        if (stStatus === 'critical' || stStatus === 'warn') {
+          match = true;
+          break;
+        }
+      }
+      if (!match) return false;
+    } else {
+      // fallback to legacy toggles until fully removed
+      const flags = nearing(v);
+      const wantsIS1 = filterDueIS1 ? flags.is1 : true;
+      const wantsIS2 = filterDueIS2 ? flags.is2 : true;
+      const wantsIS3 = filterDueIS3 ? flags.is3 : true;
+      const wantsIS456 = filterDueIS456 ? flags.is4 || flags.is5 || flags.is6 : true;
+      const anyFilter = filterDueIS1 || filterDueIS2 || filterDueIS3 || filterDueIS456;
+      if (anyFilter && !(wantsIS1 || wantsIS2 || wantsIS3 || wantsIS456)) return false;
+    }
+    return true;
   });
 
   function openPlanDialog(
@@ -263,41 +365,76 @@ export default function MaintenanceDashboard() {
             <input
               type="search"
               placeholder="Search vehicle ID or type..."
+              value={searchQ}
+              onChange={(e) => setSearchQ(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg"
             />
-            <div className="flex flex-wrap gap-4 text-sm">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={filterDueIS1}
-                  onChange={(e) => setFilterDueIS1(e.target.checked)}
-                />
-                IS1 fällig (≤ 25% Rest km)
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={filterDueIS2}
-                  onChange={(e) => setFilterDueIS2(e.target.checked)}
-                />
-                IS2 fällig (≤ 25% Rest km)
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={filterDueIS3}
-                  onChange={(e) => setFilterDueIS3(e.target.checked)}
-                />
-                IS3 fällig (≤ 25% Rest km)
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={filterDueIS456}
-                  onChange={(e) => setFilterDueIS456(e.target.checked)}
-                />
-                IS4–IS6 fällig (≤ 25% Rest km)
-              </label>
+            <div className="flex flex-wrap gap-2">
+              {STAGES.map((st) => (
+                <button
+                  key={st}
+                  onClick={() =>
+                    setSelectedStages((prev) =>
+                      prev.includes(st) ? prev.filter((s) => s !== st) : [...prev, st]
+                    )
+                  }
+                  className={`px-2 py-1 text-xs rounded border ${
+                    selectedStages.includes(st)
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-white text-gray-700 border-gray-300'
+                  }`}
+                >
+                  {st}
+                </button>
+              ))}
+              <button
+                onClick={() => setIncludeCorrective((v) => !v)}
+                className={`px-2 py-1 text-xs rounded border ${
+                  includeCorrective
+                    ? 'bg-red-600 text-white border-red-600'
+                    : 'bg-white text-gray-700 border-gray-300'
+                }`}
+              >
+                Corrective
+              </button>
+            </div>
+            <div className="flex gap-2 items-center text-sm">
+              <select
+                value={selectedDepot}
+                onChange={(e) => setSelectedDepot(e.target.value as any)}
+                className="px-2 py-1 border rounded"
+                aria-label="Depot"
+              >
+                <option value="All">Alle Depots</option>
+                <option value="Essingen">Essingen</option>
+                <option value="Langweid">Langweid</option>
+              </select>
+              <select
+                value={selectedRegion}
+                onChange={(e) => setSelectedRegion(e.target.value as any)}
+                className="px-2 py-1 border rounded"
+                aria-label="Region"
+              >
+                <option value="All">Alle Regionen</option>
+                <option value="BW">BW</option>
+                <option value="BY">BY</option>
+              </select>
+            </div>
+            <div className="flex gap-2 text-sm">
+              {(['OPERATIONAL', 'MAINTENANCE', 'DEPOT'] as const).map((s) => (
+                <label key={s} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedStatusesState.includes(s)}
+                    onChange={(e) =>
+                      setSelectedStatusesState((prev) =>
+                        e.target.checked ? [...prev, s] : prev.filter((x) => x !== s)
+                      )
+                    }
+                  />
+                  {s}
+                </label>
+              ))}
             </div>
             <details>
               <summary className="text-sm cursor-pointer select-none">
