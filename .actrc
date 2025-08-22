@@ -1,0 +1,7 @@
+# Default settings for act (GitHub Actions locally)
+--container-architecture linux/amd64
+--platform ubuntu-latest=node:20-slim
+--secret-file .env.local
+--env-file .env.local
+
+

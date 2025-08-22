@@ -201,6 +201,70 @@ Interne Checks (typecheck/lint/build/test:int) – keine E2E/Playwright im CI.
 
 ### Produktions-Deployment (überwacht)
 
+## 🚀 Deployment
+
+### Option 1: Automatisches Deployment (Empfohlen)
+
+Push zu `main` triggert automatisch Production Deployment:
+
+```bash
+git push origin main
+```
+
+### Option 2: GitHub UI (Manuell)
+
+1. Gehe zu Actions
+2. Wähle "Deploy Production (Vercel)"
+3. Klicke "Run workflow" und wähle Inputs
+
+### Option 3: Lokales Deployment (Ohne GitHub)
+
+```bash
+# Setup (einmalig)
+cp .env.example .env.local
+# Fülle die Werte in .env.local aus
+
+# Test vor Deployment
+npm run deploy:test
+
+# Preview Deployment
+npm run deploy:preview
+
+# Production Deployment
+npm run deploy:prod
+```
+
+### Option 4: GitHub CLI (falls installiert)
+
+```bash
+gh auth login
+gh workflow run "Deploy Production (Vercel)" --ref main
+gh run list --workflow="Deploy Production (Vercel)"
+```
+
+### Troubleshooting
+
+#### GitHub CLI nicht authentifiziert?
+
+```bash
+brew install gh
+gh auth login
+gh auth status
+```
+
+#### Vercel Token fehlt?
+
+1. `https://vercel.com/account/tokens`
+2. Token in `.env.local` eintragen
+
+#### Deployment schlägt fehl?
+
+```bash
+npm run deploy:test
+gh run view --log || true
+npm run deploy:direct
+```
+
 - Workflow: `.github/workflows/deploy-production.yml`
 - Schritte: `vercel pull --prod` → `vercel build` (Logs/Manifests als Artifact) → `vercel deploy --prod` → Health-Checks (`/`, `/api/health`) und Route-Checks (`/map`, `/trains`, `/depot/planning`) → Smoke E2E (chromium)
 - Concurrency: verhindert parallele Deploys und Race Conditions

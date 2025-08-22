@@ -59,7 +59,13 @@
     "test:visual:update": "playwright test --project=visual-chromium --update-snapshots",
     "build:timetables": "ts-node apps/web/scripts/parse-timetables.ts",
     "build:railmaps": "ts-node apps/web/scripts/build-railmaps.ts",
-    "build:data": "npm run build:timetables && npm run build:railmaps"
+    "build:data": "npm run build:timetables && npm run build:railmaps",
+    "deploy:test": "node scripts/local-deploy-test.js",
+    "deploy:preview": "npx vercel",
+    "deploy:prod": "npx vercel --prod",
+    "deploy:direct": "bash scripts/direct-vercel-deploy.sh",
+    "workflow:test": "act push -W .github/workflows/deploy-production.yml --dry-run",
+    "gh:setup": "gh auth login && gh auth status"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [

@@ -3,7 +3,25 @@ name: Deploy Production (Vercel)
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: {}
+  pull_request:
+    types: [ labeled ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - preview
+      skip_tests:
+        description: 'Skip smoke tests'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '0 2 * * 1'
 
 permissions:
   contents: read
