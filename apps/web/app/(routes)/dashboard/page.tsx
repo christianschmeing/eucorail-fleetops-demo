@@ -1,5 +1,7 @@
 import { apiGet } from '@/lib/api';
 
+type Stage = 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6';
+
 interface KPIData {
   availabilityPct: number;
   overdueCount: number;
@@ -32,7 +34,7 @@ async function getKPIs(): Promise<KPIData> {
       availabilityPct: 75.0,
       overdueCount: 7,
       woAgingMedianDays: 3,
-      depotUtilToday: { Stuttgart: 0.65, Augsburg: 0.72 }
+      depotUtilToday: { Stuttgart: 0.65, Augsburg: 0.72 },
     };
   }
 }
@@ -49,36 +51,44 @@ async function getTrains(): Promise<Train[]> {
       alarm: 3,
       offline: 5,
       reserve: 22,
-      abstellung: 7
+      abstellung: 7,
     };
-    
-    let statusCounter = { ...statusDistribution };
-    
+
+    const statusCounter = { ...statusDistribution };
+
     // Essingen Züge (69)
     for (let i = 1; i <= 32; i++) {
-      const status = statusCounter.active-- > 0 ? 'active' : 
-                     statusCounter.maintenance-- > 0 ? 'maintenance' : 'offline';
+      const status =
+        statusCounter.active-- > 0
+          ? 'active'
+          : statusCounter.maintenance-- > 0
+            ? 'maintenance'
+            : 'offline';
       trains.push({
         id: `RE9-${60000 + i}`,
         status,
         lineId: 'RE9',
         region: 'BW',
-        homeDepot: 'Essingen'
+        homeDepot: 'Essingen',
       } as any);
     }
-    
+
     for (let i = 1; i <= 28; i++) {
-      const status = statusCounter.active-- > 0 ? 'active' : 
-                     statusCounter.maintenance-- > 0 ? 'maintenance' : 'abstellung';
+      const status =
+        statusCounter.active-- > 0
+          ? 'active'
+          : statusCounter.maintenance-- > 0
+            ? 'maintenance'
+            : 'abstellung';
       trains.push({
         id: `RE8-${70000 + i}`,
         status,
         lineId: 'RE8',
         region: 'BW',
-        homeDepot: 'Essingen'
+        homeDepot: 'Essingen',
       } as any);
     }
-    
+
     for (let i = 1; i <= 9; i++) {
       trains.push({
         id: `RES-E-${90000 + i}`,
@@ -86,53 +96,53 @@ async function getTrains(): Promise<Train[]> {
         lineId: 'RESERVE',
         region: 'BW',
         homeDepot: 'Essingen',
-        isReserve: true
+        isReserve: true,
       } as any);
     }
-    
+
     // Langweid Züge (75)
     for (let i = 1; i <= 30; i++) {
-      const status = statusCounter.active-- > 0 ? 'active' : 
-                     statusCounter.alarm-- > 0 ? 'alarm' : 'maintenance';
+      const status =
+        statusCounter.active-- > 0 ? 'active' : statusCounter.alarm-- > 0 ? 'alarm' : 'maintenance';
       trains.push({
         id: `MEX16-${80000 + i}`,
         status,
         lineId: 'MEX16',
         region: 'BY',
-        homeDepot: 'Langweid'
+        homeDepot: 'Langweid',
       } as any);
     }
-    
+
     for (let i = 1; i <= 18; i++) {
       trains.push({
         id: `MEX12-${81000 + i}`,
         status: statusCounter.active-- > 0 ? 'active' : 'maintenance',
         lineId: 'MEX12',
         region: 'BY',
-        homeDepot: 'Langweid'
+        homeDepot: 'Langweid',
       } as any);
     }
-    
+
     for (let i = 1; i <= 18; i++) {
       trains.push({
         id: `S6-${82000 + i}`,
         status: statusCounter.active-- > 0 ? 'active' : 'offline',
         lineId: 'S6',
         region: 'BY',
-        homeDepot: 'Langweid'
+        homeDepot: 'Langweid',
       } as any);
     }
-    
+
     for (let i = 1; i <= 18; i++) {
       trains.push({
         id: `S2-${83000 + i}`,
         status: statusCounter.active-- > 0 ? 'active' : 'abstellung',
         lineId: 'S2',
         region: 'BY',
-        homeDepot: 'Langweid'
+        homeDepot: 'Langweid',
       } as any);
     }
-    
+
     for (let i = 1; i <= 13; i++) {
       trains.push({
         id: `RES-L-${91000 + i}`,
@@ -140,10 +150,10 @@ async function getTrains(): Promise<Train[]> {
         lineId: 'RESERVE',
         region: 'BY',
         homeDepot: 'Langweid',
-        isReserve: true
+        isReserve: true,
       } as any);
     }
-    
+
     return trains;
   }
 }
@@ -160,7 +170,7 @@ async function getLines(): Promise<Line[]> {
       { id: 'MEX12', vehicles: 18, activeVehicles: 14, punctualityPct: 90 },
       { id: 'S6', vehicles: 18, activeVehicles: 14, punctualityPct: 94 },
       { id: 'S2', vehicles: 18, activeVehicles: 14, punctualityPct: 89 },
-      { id: 'RESERVE', vehicles: 22, activeVehicles: 0, punctualityPct: 0 }
+      { id: 'RESERVE', vehicles: 22, activeVehicles: 0, punctualityPct: 0 },
     ] as Line[];
   }
 }
@@ -169,7 +179,7 @@ async function getRecentEvents() {
   // Generiere Events für alle 144 Züge
   const events = [];
   const now = Date.now();
-  
+
   // Erstelle Events für verschiedene Zugtypen
   const eventTypes = [
     { type: 'departure', message: 'hat Depot verlassen' },
@@ -177,33 +187,96 @@ async function getRecentEvents() {
     { type: 'maintenance_started', message: 'Wartung begonnen' },
     { type: 'maintenance_completed', message: 'Wartung abgeschlossen' },
     { type: 'alert', message: 'Türstörung gemeldet' },
-    { type: 'status_change', message: 'Status geändert' }
+    { type: 'status_change', message: 'Status geändert' },
   ];
-  
+
   for (let i = 0; i < 20; i++) {
     const eventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
     const trainNum = Math.floor(Math.random() * 144) + 1;
-    const lineCode = trainNum < 60 ? 'RE8' : trainNum < 90 ? 'RE9' : trainNum < 120 ? 'MEX16' : 'S6';
-    
+    const lineCode =
+      trainNum < 60 ? 'RE8' : trainNum < 90 ? 'RE9' : trainNum < 120 ? 'MEX16' : 'S6';
+
     events.push({
       trainId: `${lineCode}-${70000 + trainNum}`,
       lineCode,
       type: eventType.type,
       message: eventType.message,
-      timestamp: new Date(now - i * 5 * 60 * 1000).toISOString()
+      timestamp: new Date(now - i * 5 * 60 * 1000).toISOString(),
     });
   }
-  
+
   return events;
+}
+
+async function getMaintenanceSummary() {
+  try {
+    return await apiGet<{
+      stages: Record<Stage, { critical: number; warn: number; ok: number }>;
+      top10: Array<{
+        id: string;
+        stage: Stage;
+        kmToNext: number;
+        daysToNext: number;
+        depot: string;
+      }>;
+    }>('/api/maintenance/summary');
+  } catch {
+    return {
+      stages: {
+        IS1: { critical: 0, warn: 0, ok: 0 },
+        IS2: { critical: 0, warn: 0, ok: 0 },
+        IS3: { critical: 0, warn: 0, ok: 0 },
+        IS4: { critical: 0, warn: 0, ok: 0 },
+        IS5: { critical: 0, warn: 0, ok: 0 },
+        IS6: { critical: 0, warn: 0, ok: 0 },
+      },
+      top10: [],
+    };
+  }
+}
+
+async function getDepotSummary() {
+  try {
+    return await apiGet<
+      Record<
+        string,
+        { tracksTotal: number; inUse: number; plannedNext7d: number; conflicts: number }
+      >
+    >('/api/depot/summary');
+  } catch {
+    return {
+      Essingen: { tracksTotal: 0, inUse: 0, plannedNext7d: 0, conflicts: 0 },
+      Langweid: { tracksTotal: 0, inUse: 0, plannedNext7d: 0, conflicts: 0 },
+    };
+  }
+}
+
+async function getTcmsSummary() {
+  try {
+    return await apiGet<{
+      countsBySeverity: Record<string, number>;
+      topTrains: Array<{ trainId: string; score: number }>;
+      recent: any[];
+    }>('/api/tcms/summary');
+  } catch {
+    return {
+      countsBySeverity: { INFO: 0, WARN: 0, ALARM: 0, CRITICAL: 0 },
+      topTrains: [],
+      recent: [],
+    };
+  }
 }
 
 export default async function DashboardPage() {
   // SSR: Lade alle Daten serverseitig
-  const [kpis, trains, lines, recentEvents] = await Promise.all([
+  const [kpis, trains, lines, recentEvents, maint, depot, tcms] = await Promise.all([
     getKPIs(),
     getTrains(),
     getLines(),
-    getRecentEvents()
+    getRecentEvents(),
+    getMaintenanceSummary(),
+    getDepotSummary(),
+    getTcmsSummary(),
   ]);
 
   // Erweitere KPI-Daten
@@ -215,12 +288,15 @@ export default async function DashboardPage() {
     vehicleTypes: {
       flirt_3_160: 59,
       mireo_3_plus_h: 49,
-      desiro_hc: 36
+      desiro_hc: 36,
     },
-    lineDistribution: lines.reduce((acc, line) => {
-      acc[line.id] = (line as any).vehicles || 0;
-      return acc;
-    }, {} as Record<string, number>)
+    lineDistribution: lines.reduce(
+      (acc, line) => {
+        acc[line.id] = (line as any).vehicles || 0;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
   };
 
   // Erweitere Trains mit Fahrzeugtypen
@@ -229,20 +305,23 @@ export default async function DashboardPage() {
     vehicleType: idx < 59 ? 'flirt_3_160' : idx < 108 ? 'mireo_3_plus_h' : 'desiro_hc',
     vehicleFamily: idx < 59 ? 'Stadler' : 'Siemens',
     model: idx < 59 ? 'FLIRT' : idx < 108 ? 'Mireo' : 'Desiro',
-    mileageKm: 50000 + Math.floor(Math.random() * 150000)
+    mileageKm: 50000 + Math.floor(Math.random() * 150000),
   }));
 
   // Dynamischer Import
   const DashboardClient = (await import('./DashboardClient')).default;
   const ConsistencyChecker = (await import('@/components/ConsistencyChecker')).default;
-  
+
   return (
     <div>
-      <DashboardClient 
+      <DashboardClient
         kpiData={enhancedKpis}
         recentEvents={recentEvents}
         trains={enhancedTrains}
         lines={lines}
+        maintenanceSummary={maint}
+        depotSummary={depot}
+        tcmsSummary={tcms}
       />
       <div className="p-6">
         <ConsistencyChecker />
