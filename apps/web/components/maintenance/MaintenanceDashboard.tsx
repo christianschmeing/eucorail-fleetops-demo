@@ -15,10 +15,11 @@ import {
   INTERVENTION_MAPPING,
   FAILURE_RATES_PER_10K_KM,
 } from '@/lib/maintenance/ecm-profiles';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function MaintenanceDashboard() {
   const router = useRouter();
+  const search = useSearchParams();
   const { vehicles, calculateKPIs, expectedFailuresPerMonth, expectedFailuresPerYear } =
     useFleetStore();
   const [data, setData] = useState<any>(null);
@@ -43,6 +44,26 @@ export default function MaintenanceDashboard() {
         if (r.ok) setData(await r.json());
       } catch {}
     })();
+  }, []);
+
+  // Honor deep-link query params: stage=ISx, focus={trainId}
+  useEffect(() => {
+    try {
+      const stage = (search.get('stage') || '').toUpperCase();
+      const focus = search.get('focus') || '';
+      if (focus) setSelectedVehicleId(focus);
+      if (stage) {
+        setFilterDueIS1(false);
+        setFilterDueIS2(false);
+        setFilterDueIS3(false);
+        setFilterDueIS456(false);
+        if (stage === 'IS1') setFilterDueIS1(true);
+        else if (stage === 'IS2') setFilterDueIS2(true);
+        else if (stage === 'IS3') setFilterDueIS3(true);
+        else if (stage === 'IS4' || stage === 'IS5' || stage === 'IS6') setFilterDueIS456(true);
+      }
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectedVehicle = useMemo(

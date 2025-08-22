@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 interface LogEvent {
   id: string;
@@ -40,6 +41,7 @@ export default function LogClient({
   uniqueTrainIds,
   eventTypeLabels,
 }: LogClientProps) {
+  const search = useSearchParams();
   const [events] = useState<LogEvent[]>(initialEvents);
   const [filters, setFilters] = useState({
     types: [] as string[],
@@ -48,6 +50,18 @@ export default function LogClient({
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50;
+
+  // Apply deeplink: sev=CRITICAL,ALARM (maps to TCMS_EVENT type)
+  useEffect(() => {
+    try {
+      const sev = (search.get('sev') || '').toUpperCase();
+      if (sev) {
+        // we keep type filter focusing TCMS events; severity refinement is done in list filter below
+        setFilters((f) => ({ ...f, types: ['TCMS_EVENT'] }));
+      }
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Formatiere Datum/Zeit deutsch
   const formatDateTime = (isoString: string) => {
@@ -91,6 +105,13 @@ export default function LogClient({
       if (!event.trainId.toLowerCase().includes(filters.trainId.toLowerCase())) {
         return false;
       }
+    }
+
+    // Severity query (only for TCMS_EVENT)
+    const sev = (search.get('sev') || '').toUpperCase();
+    if (sev && event.type === 'TCMS_EVENT') {
+      // crude match against details text which contains message; keep visible if includes sev keyword
+      if (!`${event.details || ''}`.toUpperCase().includes(sev)) return false;
     }
 
     return true;

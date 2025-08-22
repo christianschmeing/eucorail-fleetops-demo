@@ -481,7 +481,7 @@ export default function DashboardClient({
               {['CRITICAL', 'ALARM', 'WARN', 'INFO'].map((sev) => (
                 <a
                   key={sev}
-                  href={`/protokoll?sev=${sev}`}
+                  href={`/log?sev=${sev}`}
                   className={`px-2 py-0.5 rounded border ${sev === 'CRITICAL' ? 'bg-red-600/20 text-red-300 border-red-600/40' : sev === 'ALARM' ? 'bg-yellow-600/20 text-yellow-300 border-yellow-600/40' : sev === 'WARN' ? 'bg-green-600/20 text-green-300 border-green-600/40' : 'bg-gray-600/20 text-gray-300 border-gray-600/40'}`}
                 >
                   {sev} {tcmsSummary.countsBySeverity[sev] || 0}
