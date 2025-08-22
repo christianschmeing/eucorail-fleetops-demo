@@ -23,9 +23,9 @@ Zweck: Schnelle Übergabe an neue Teammitglieder – ohne Änderung des Produktv
 - Preview: `.github/workflows/preview.yml` liefert bei PRs eine kommentierte, getestete Preview‑URL.
 - Release: `.github/workflows/release-verify.yml` wartet nach Push auf `main` auf die Production‑URL, testet sie (Playwright) und publiziert die getestete URL als Artifact.
 
-## Deployment & Richtlinien
+## Deployment & Richtlinien (Standard)
 
-- Produktions‑Deploy: `.github/workflows/deploy-production.yml`
+- Produktions‑Deploy: `.github/workflows/deploy-production.yml` (Standard‑Pfad)
   - Trigger:
     - push auf `main`
     - PR Label (Event `pull_request: labeled`)
@@ -34,11 +34,13 @@ Zweck: Schnelle Übergabe an neue Teammitglieder – ohne Änderung des Produktv
   - Secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
   - Schritte: `vercel pull` → `vercel build` → `vercel deploy --prod` → Health/Route‑Checks → optionale Smoke‑Tests
 
-- Lokale Alternativen (ohne GitHub CLI):
-  - `npm run deploy:test` – Build + Vercel CLI Check + Pull (preview)
+### Hotfix/Notfall (nur wenn CI blockiert)
+
+- Direkte Vercel‑CLI Deploys sind nur als Ausnahme gedacht:
   - `npm run deploy:preview` – Preview Deploy via Vercel CLI
-  - `npm run deploy:prod` – Production Deploy via Vercel CLI
-  - `npm run deploy:direct` – geführtes Script (Preview/Prod) ohne GitHub Actions
+  - `npm run deploy:prod` – Production Deploy via Vercel CLI (immutable URL)
+  - `npm run deploy:direct` – geführtes Script (Preview/Prod)
+    Hinweis: Dieser Weg umgeht CI‑Gates. Nach Hotfix bitte PR nachziehen, damit Historie konsistent ist.
 
 - Fallback Workflow: `.github/workflows/deploy-fallback.yml`
   - Manuell (`workflow_dispatch`) oder durch Commit der Datei `DEPLOY_NOW` auf `main`.

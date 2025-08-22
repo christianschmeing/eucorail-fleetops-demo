@@ -64,6 +64,7 @@
     "deploy:preview": "npx vercel",
     "deploy:prod": "npx vercel --prod",
     "deploy:direct": "bash scripts/direct-vercel-deploy.sh",
+    "deploy:ci": "gh workflow run 'Deploy Production (Vercel)' --ref main || echo 'Use GitHub Actions UI if gh is not configured'",
     "workflow:test": "act push -W .github/workflows/deploy-production.yml --dry-run",
     "gh:setup": "gh auth login && gh auth status"
   },

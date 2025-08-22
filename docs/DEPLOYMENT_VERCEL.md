@@ -36,7 +36,7 @@ Hinterlege Variablen für Production, Preview und Development in Vercel (Project
 - Vercel UI erlaubt Rollbacks auf vorherige Deployments.
 - Aktiviere Analytics/Logs, optional Speed Insights.
 
-## 7) CI: Preview + Test (PR)
+## 7) CI: Preview + Test (PR) – Standardweg
 
 - Workflow: `.github/workflows/preview.yml`
 - Ablauf:
@@ -48,7 +48,7 @@ Hinterlege Variablen für Production, Preview und Development in Vercel (Project
   - `VERCEL_ORG_ID`
   - `VERCEL_PROJECT_ID`
 
-## 8) CI: Release Verify (main)
+## 8) CI: Release Verify (main) – Standardweg
 
 - Workflow: `.github/workflows/release-verify.yml`
 - Ablauf:

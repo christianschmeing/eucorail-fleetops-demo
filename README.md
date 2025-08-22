@@ -204,7 +204,7 @@ Interne Checks (typecheck/lint/build/test:int) – keine E2E/Playwright im CI.
 
 ## 🚀 Deployment
 
-### Option 1: Automatisches Deployment (Empfohlen)
+### Option 1: Automatisches Deployment (Empfohlen, Standard)
 
 Push zu `main` triggert automatisch Production Deployment:
 
@@ -218,7 +218,7 @@ git push origin main
 2. Wähle "Deploy Production (Vercel)"
 3. Klicke "Run workflow" und wähle Inputs
 
-### Option 3: Lokales Deployment (Ohne GitHub)
+### Option 3: Lokales Deployment (Hotfix/Notfall)
 
 ```bash
 # Setup (einmalig)
@@ -231,7 +231,7 @@ npm run deploy:test
 # Preview Deployment
 npm run deploy:preview
 
-# Production Deployment
+# Production Deployment (umgeht CI – nur im Notfall)
 npm run deploy:prod
 ```
 
