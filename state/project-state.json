@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "26fde5a7a231fc9c23c8214e03da1d9e57b4909e",
-    "message": "docs: add handover deployment guide and PR checklist",
+    "sha": "3f8dfaf3589233ca1fc8c7a30879b3a5af337f4b",
+    "message": "fix(dashboard): guard maintenance summary defaults to avoid SSR crash",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T07:37:32Z"
+    "timestamp": "2025-08-22T07:58:53Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17149259581"
+    "run_id": "17149671036"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T07:39:26.673Z",
+  "generated_at": "2025-08-22T08:00:52.485Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
