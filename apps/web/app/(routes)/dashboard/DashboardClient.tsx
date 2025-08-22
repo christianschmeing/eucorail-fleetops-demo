@@ -1,16 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-  Train,
-  Activity,
-  AlertTriangle,
-  CheckCircle,
-  TrendingUp,
-  Users,
-  Zap,
-  Wrench,
-} from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Train, Activity, AlertTriangle, CheckCircle, Wrench } from 'lucide-react';
 import Link from 'next/link';
 
 interface KPIData {
@@ -72,10 +64,54 @@ export default function DashboardClient({
 }: DashboardClientProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [tcmsSseStatus, setTcmsSseStatus] = useState<'live' | 'down'>('live');
+
+  // 30s polling for summaries (overrides SSR props when available)
+  const maintenanceQ = useQuery({
+    queryKey: ['maintenance-summary'],
+    queryFn: async () => (await fetch('/api/maintenance/summary', { cache: 'no-store' })).json(),
+    refetchInterval: 30000,
+    staleTime: 30000,
+  });
+  const depotQ = useQuery({
+    queryKey: ['depot-summary'],
+    queryFn: async () => (await fetch('/api/depot/summary', { cache: 'no-store' })).json(),
+    refetchInterval: 30000,
+    staleTime: 30000,
+  });
+  const tcmsQ = useQuery({
+    queryKey: ['tcms-summary'],
+    queryFn: async () => (await fetch('/api/tcms/summary', { cache: 'no-store' })).json(),
+    refetchInterval: 30000,
+    staleTime: 30000,
+  });
+
+  const ms: any = maintenanceQ.data ?? maintenanceSummary;
+  const ds: any = depotQ.data ?? depotSummary;
+  const ts: any = tcmsQ.data ?? tcmsSummary;
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  // TCMS SSE health: show badge when stream is down
+  useEffect(() => {
+    let es: EventSource | null = null;
+    try {
+      es = new EventSource('/api/tcms/stream');
+      es.onopen = () => setTcmsSseStatus('live');
+      es.onerror = () => {
+        setTcmsSseStatus('down');
+        if (es) es.close();
+      };
+      void 0; // presence check only
+    } catch {
+      setTcmsSseStatus('down');
+    }
+    return () => {
+      if (es) es.close();
+    };
   }, []);
 
   // Berechne Live-Statistiken
@@ -214,7 +250,7 @@ export default function DashboardClient({
             </div>
             <div className="grid grid-cols-2 gap-3">
               {(['IS1', 'IS2', 'IS3', 'IS4', 'IS5', 'IS6'] as const).map((st) => {
-                const c = maintenanceSummary.stages[st];
+                const c = ms.stages[st];
                 const total = c.critical + c.warn + c.ok || 1;
                 return (
                   <a
@@ -252,7 +288,7 @@ export default function DashboardClient({
               <div className="text-xs text-gray-400">Sortiert nach Rest‑Tage, dann km</div>
             </div>
             <div className="divide-y divide-gray-700">
-              {maintenanceSummary.top10.map((row) => (
+              {ms.top10.map((row: any) => (
                 <div
                   key={`${row.id}-${row.stage}`}
                   className="py-2 flex items-center justify-between text-sm"
@@ -281,7 +317,7 @@ export default function DashboardClient({
                   </div>
                 </div>
               ))}
-              {maintenanceSummary.top10.length === 0 && (
+              {ms.top10.length === 0 && (
                 <div className="text-xs text-gray-500">Keine Daten verfügbar</div>
               )}
             </div>
@@ -388,7 +424,7 @@ export default function DashboardClient({
             <h2 className="text-lg font-semibold text-white mb-4">Depot-Auslastung</h2>
             <div className="space-y-4">
               {['Essingen', 'Langweid'].map((depot) => {
-                const s = depotSummary[depot] || {
+                const s = ds[depot] || {
                   tracksTotal: 0,
                   inUse: 0,
                   plannedNext7d: 0,
@@ -473,9 +509,19 @@ export default function DashboardClient({
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold text-white">TCMS Alarme (24h)</h2>
-              <a href="/log" className="text-blue-400 text-sm hover:text-blue-300">
-                Protokoll →
-              </a>
+              <div className="flex items-center gap-2">
+                {tcmsSseStatus === 'down' && (
+                  <span
+                    data-testid="tcms-sse-fallback"
+                    className="px-2 py-0.5 rounded text-xs bg-yellow-900/40 text-yellow-300 border border-yellow-700"
+                  >
+                    Live-Stream unterbrochen – Polling aktiv
+                  </span>
+                )}
+                <a href="/log" className="text-blue-400 text-sm hover:text-blue-300">
+                  Protokoll →
+                </a>
+              </div>
             </div>
             <div className="flex gap-2 text-xs">
               {['CRITICAL', 'ALARM', 'WARN', 'INFO'].map((sev) => (
@@ -484,12 +530,12 @@ export default function DashboardClient({
                   href={`/log?sev=${sev}`}
                   className={`px-2 py-0.5 rounded border ${sev === 'CRITICAL' ? 'bg-red-600/20 text-red-300 border-red-600/40' : sev === 'ALARM' ? 'bg-yellow-600/20 text-yellow-300 border-yellow-600/40' : sev === 'WARN' ? 'bg-green-600/20 text-green-300 border-green-600/40' : 'bg-gray-600/20 text-gray-300 border-gray-600/40'}`}
                 >
-                  {sev} {tcmsSummary.countsBySeverity[sev] || 0}
+                  {sev} {ts.countsBySeverity[sev] || 0}
                 </a>
               ))}
             </div>
             <div className="mt-3 divide-y divide-gray-700">
-              {tcmsSummary.recent.slice(0, 8).map((e: any) => (
+              {ts.recent.slice(0, 8).map((e: any) => (
                 <div key={e.id} className="py-2 flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <span
@@ -508,7 +554,7 @@ export default function DashboardClient({
                   </div>
                 </div>
               ))}
-              {tcmsSummary.recent.length === 0 && (
+              {ts.recent.length === 0 && (
                 <div className="text-xs text-gray-500">Keine Daten verfügbar</div>
               )}
             </div>
