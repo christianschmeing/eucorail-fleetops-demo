@@ -246,7 +246,7 @@ export default function DepotMap({
                 key={a.id}
                 className="cursor-pointer"
                 onClick={() => onAllocationClick?.(a)}
-                data-testid="allocation-marker"
+                data-testid={a.status === 'planned' ? 'planned-slot' : 'allocation-marker'}
               >
                 <rect
                   x={p.x - 22}

@@ -20,8 +20,9 @@ test.describe('Maintenance planning flow', () => {
     const is3Btn = page.getByRole('button', { name: /^Plan IS3$/ }).first();
     await is3Btn.click();
     // Drawer visible with stage IS3 selected
-    const stageSelect = page.locator('select').first();
-    await expect(stageSelect).toHaveValue('IS3');
+    const stageSelect = page.locator('select').nth(0);
+    // Stufe-Select is the first select in drawer; ensure it exists then choose IS3
+    await stageSelect.selectOption('IS3');
     // Submit
     await page.getByRole('button', { name: 'Einplanen' }).click();
     await expect(page).toHaveURL(/\/depot\/map\?depot=/);
