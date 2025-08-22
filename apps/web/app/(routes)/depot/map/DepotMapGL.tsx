@@ -135,6 +135,9 @@ export default function DepotMapGL({ depot, tracks, allocations = [] }: Props) {
                 : String(a.purpose || '').startsWith('IS')
                   ? '#eab308'
                   : '#ef4444';
+      if (a.status === 'planned') {
+        el.setAttribute('data-testid', 'planned-slot');
+      }
       const startsInMs = new Date(a.startPlanned).getTime() - Date.now();
       const startsInMin = Math.round(startsInMs / 60000);
       const info = `Start: ${new Date(a.startPlanned).toLocaleString('de-DE')}`;

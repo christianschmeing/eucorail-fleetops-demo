@@ -52,9 +52,9 @@
     - /url: /depot/map?depot=Essingen
 - link "Langweid":
     - /url: /depot/map?depot=Langweid
-- text: Züge im Depot 4/144 Gleis-Auslastung 57%
+- text: Züge im Depot 5/144 Gleis-Auslastung 57%
 - iframe
-- text: Gleisbelegung 4 Züge geplant/abgestellt
+- text: Gleisbelegung 5 Züge geplant/abgestellt
 - region "Map"
 - button "Zoom in"
 - button "Zoom out"
