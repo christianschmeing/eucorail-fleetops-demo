@@ -159,9 +159,12 @@ export default function DashboardClient({
         {/* Haupt-KPI-Karten */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Verfügbarkeit */}
-          <div
-            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-blue-500 transition-all cursor-pointer"
-            onClick={() => setSelectedMetric('availability')}
+          <Link
+            href="/trains?status=active"
+            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-blue-500 transition-all cursor-pointer block"
+            aria-label="Verfügbarkeit anzeigen"
+            data-testid="kpi-availability"
+            role="link"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 bg-blue-900/50 rounded-lg">
@@ -178,12 +181,15 @@ export default function DashboardClient({
               {activeTrains}/{kpiData.fleetSize}
             </p>
             <p className="text-xs text-gray-500 mt-2">Aktive Fahrzeuge</p>
-          </div>
+          </Link>
 
           {/* Wartung */}
-          <div
-            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-500 transition-all cursor-pointer"
-            onClick={() => setSelectedMetric('maintenance')}
+          <Link
+            href="/maintenance"
+            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-500 transition-all cursor-pointer block"
+            aria-label="Wartung öffnen"
+            data-testid="kpi-maintenance"
+            role="link"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 bg-yellow-900/50 rounded-lg">
@@ -198,12 +204,15 @@ export default function DashboardClient({
             <h3 className="text-sm font-medium text-gray-400">In Wartung</h3>
             <p className="text-2xl font-bold text-white mt-1">{kpiData.overdueCount}</p>
             <p className="text-xs text-gray-500 mt-2">Überfällige WOs</p>
-          </div>
+          </Link>
 
           {/* ECM Compliance */}
-          <div
-            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-green-500 transition-all cursor-pointer"
-            onClick={() => setSelectedMetric('compliance')}
+          <Link
+            href="/ecm"
+            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-green-500 transition-all cursor-pointer block"
+            aria-label="ECM Portal öffnen"
+            data-testid="kpi-ecm"
+            role="link"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 bg-green-900/50 rounded-lg">
@@ -216,12 +225,15 @@ export default function DashboardClient({
             <h3 className="text-sm font-medium text-gray-400">ECM Compliance</h3>
             <p className="text-2xl font-bold text-white mt-1">ECM-3</p>
             <p className="text-xs text-gray-500 mt-2">Zertifizierungsstatus</p>
-          </div>
+          </Link>
 
           {/* Alarme */}
-          <div
-            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-red-500 transition-all cursor-pointer"
-            onClick={() => setSelectedMetric('alerts')}
+          <Link
+            href="/log?sev=CRITICAL"
+            className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-red-500 transition-all cursor-pointer block"
+            aria-label="Kritische Alarme öffnen"
+            data-testid="kpi-alerts"
+            role="link"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 bg-red-900/50 rounded-lg">
@@ -236,7 +248,7 @@ export default function DashboardClient({
             <h3 className="text-sm font-medium text-gray-400">Kritische Alarme</h3>
             <p className="text-2xl font-bold text-white mt-1">{reserveTrains}</p>
             <p className="text-xs text-gray-500 mt-2">Reserve-Fahrzeuge</p>
-          </div>
+          </Link>
         </div>
 
         {/* IS-Fälligkeiten Ampel + Top 10 fällig */}
@@ -256,7 +268,8 @@ export default function DashboardClient({
                   <a
                     key={st}
                     href={`/maintenance?stage=${st}`}
-                    className="p-3 rounded-lg border border-gray-700 hover:border-blue-600 transition-colors"
+                    title={`Zu IS-Stufe ${st} springen`}
+                    className="p-3 rounded-lg border border-gray-700 hover:border-blue-600 transition-colors cursor-pointer"
                   >
                     <div className="text-sm text-gray-400">{st}</div>
                     <div className="mt-2 flex items-center gap-2 text-xs">
