@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "c488cfc423a58334ce5cd1ab658e6d20f6aadf21",
-    "message": "feat(dashboard): make KPI cards and IS tiles clickable with deep links",
+    "sha": "d9ad69c4987962129e24120d3a007e03b0029c6e",
+    "message": "feat(maintenance): add IS overview cards with filter + URL sync",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T08:30:49Z"
+    "timestamp": "2025-08-22T09:10:08Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17150349351"
+    "run_id": "17151204201"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T08:32:59.932Z",
+  "generated_at": "2025-08-22T09:12:26.210Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
