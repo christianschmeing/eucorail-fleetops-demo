@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "d9ad69c4987962129e24120d3a007e03b0029c6e",
-    "message": "feat(maintenance): add IS overview cards with filter + URL sync",
+    "sha": "7f553c6cf1eebfdc18c3866db6f4d4750d53fcc6",
+    "message": "feat(maintenance): wire React Query polling to /api/maintenance/summary",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T09:10:08Z"
+    "timestamp": "2025-08-22T09:55:37Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17151204201"
+    "run_id": "17152176897"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T09:12:26.210Z",
+  "generated_at": "2025-08-22T09:57:38.085Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
