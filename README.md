@@ -15,6 +15,7 @@ Ein professionelles Web-Mockup einer Flottenplattform für Zugwartung und Asset-
 - Agent System Rules: docs/AGENT_SYSTEM_RULES.md
 - Copy this seed (for new Cursor tab): .agent/SEED.prompt
 - Hinweis: Start ausschließlich via Supervisor; kein integriertes Terminal.
+- Handover & Deployment‑Guide: docs/HANDOVER_GUIDE.md
 
 ## 🎯 Projektziel
 
