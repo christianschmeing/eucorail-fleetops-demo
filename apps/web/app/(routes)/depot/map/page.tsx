@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import ServerDepotMap from './ServerDepotMap';
 import nextDynamic from 'next/dynamic';
+import { headers } from 'next/headers';
 import { generateAllocations, generateMovePlans, getKPIs } from '../depot-data';
 import { trackGeometries } from '../track-geometries';
 
@@ -16,10 +17,11 @@ async function getDepotMapData() {
   const allocations = generateAllocations();
   // Merge planned allocations from API with robust SSR-safe fetch
   try {
-    const baseEnv = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL || '';
-    const fullUrl = baseEnv
-      ? `${baseEnv.startsWith('http') ? '' : 'https://'}${baseEnv}/api/depot/allocations`
-      : `${process.env.NODE_ENV === 'production' ? 'https://geolocation-mockup.vercel.app' : ''}/api/depot/allocations`;
+    const h = headers();
+    const host = h.get('x-forwarded-host') || h.get('host') || '';
+    const proto =
+      h.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http');
+    const fullUrl = host ? `${proto}://${host}/api/depot/allocations` : '/api/depot/allocations';
     const r = await fetch(fullUrl, { next: { revalidate: 0 } });
     if (r.ok) {
       const json = await r.json();
