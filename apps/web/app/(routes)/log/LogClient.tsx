@@ -54,7 +54,7 @@ export default function LogClient({
   // Apply deeplink: sev=CRITICAL,ALARM (maps to TCMS_EVENT type)
   useEffect(() => {
     try {
-      const sev = (search.get('sev') || '').toUpperCase();
+      const sev = ((search && search.get('sev')) || '').toUpperCase();
       if (sev) {
         // we keep type filter focusing TCMS events; severity refinement is done in list filter below
         setFilters((f) => ({ ...f, types: ['TCMS_EVENT'] }));
