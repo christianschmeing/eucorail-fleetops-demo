@@ -71,6 +71,58 @@ export default function MaintenanceDashboard() {
     [vehicles, selectedVehicleId]
   );
 
+  // Compute per-stage due counts (critical/warn/ok) using km/days thresholds
+  type StageKey = 'IS1' | 'IS2' | 'IS3' | 'IS4' | 'IS5' | 'IS6';
+  const STAGES: StageKey[] = ['IS1', 'IS2', 'IS3', 'IS4', 'IS5', 'IS6'];
+  function vehicleStageStatus(v: any, st: StageKey): 'critical' | 'warn' | 'ok' {
+    const km = v?.kmToNext?.[st];
+    const days = v?.daysToNext?.[st];
+    const kmBad = typeof km === 'number' && km <= 0;
+    const daysBad = typeof days === 'number' && days <= 0;
+    if (kmBad || daysBad) return 'critical';
+    const kmWarn = typeof km === 'number' && km <= 1000;
+    const daysWarn = typeof days === 'number' && days <= 14;
+    if (kmWarn || daysWarn) return 'warn';
+    return 'ok';
+  }
+
+  const stageCounts = useMemo(() => {
+    const base: Record<StageKey, { critical: number; warn: number; ok: number; total: number }> = {
+      IS1: { critical: 0, warn: 0, ok: 0, total: 0 },
+      IS2: { critical: 0, warn: 0, ok: 0, total: 0 },
+      IS3: { critical: 0, warn: 0, ok: 0, total: 0 },
+      IS4: { critical: 0, warn: 0, ok: 0, total: 0 },
+      IS5: { critical: 0, warn: 0, ok: 0, total: 0 },
+      IS6: { critical: 0, warn: 0, ok: 0, total: 0 },
+    };
+    for (const v of vehicles as any[]) {
+      for (const st of STAGES) {
+        const status = vehicleStageStatus(v, st);
+        base[st][status] += 1;
+        base[st].total += 1;
+      }
+    }
+    return base;
+  }, [vehicles]);
+
+  function applyStageFilter(stage: StageKey) {
+    // update local filters
+    setFilterDueIS1(false);
+    setFilterDueIS2(false);
+    setFilterDueIS3(false);
+    setFilterDueIS456(false);
+    if (stage === 'IS1') setFilterDueIS1(true);
+    else if (stage === 'IS2') setFilterDueIS2(true);
+    else if (stage === 'IS3') setFilterDueIS3(true);
+    else setFilterDueIS456(true);
+    // update URL query for deep link
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('stage', stage);
+      window.history.replaceState({}, '', url.toString());
+    } catch {}
+  }
+
   // helper to determine nearing flags
   function nearing(v: any): {
     is1: boolean;
@@ -329,6 +381,43 @@ export default function MaintenanceDashboard() {
         </aside>
         <main className="flex-1 overflow-y-auto">
           <div className="p-6 space-y-6">
+            {/* Overview cards: IS1–IS6 */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {STAGES.map((st) => {
+                const c = stageCounts[st];
+                return (
+                  <button
+                    key={st}
+                    onClick={() => applyStageFilter(st)}
+                    className="text-left bg-white border rounded-lg p-3 hover:border-blue-400 transition-colors"
+                    aria-label={`Filter auf ${st}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="font-semibold font-mono">{st}</div>
+                      <div className="text-xs text-gray-500">{c.total}</div>
+                    </div>
+                    <div className="mt-2 flex items-center gap-2 text-xs">
+                      <span className="px-2 py-0.5 rounded bg-red-100 text-red-700">
+                        {c.critical}
+                      </span>
+                      <span className="px-2 py-0.5 rounded bg-yellow-100 text-yellow-700">
+                        {c.warn}
+                      </span>
+                      <span className="px-2 py-0.5 rounded bg-green-100 text-green-700">
+                        {c.ok}
+                      </span>
+                    </div>
+                    <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-red-500"
+                        style={{ width: `${(c.critical / Math.max(1, c.total)) * 100}%` }}
+                      />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
             <Card>
               <CardBody>
                 <CardTitle>Depot Operations Overview</CardTitle>
