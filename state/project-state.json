@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "3f8dfaf3589233ca1fc8c7a30879b3a5af337f4b",
-    "message": "fix(dashboard): guard maintenance summary defaults to avoid SSR crash",
+    "sha": "5698f1c7d0a958a36815db6b282bd579d51d9bc8",
+    "message": "fix(maintenance): guard useSearchParams for stage/focus deeplinks (build)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T07:58:53Z"
+    "timestamp": "2025-08-22T08:18:28Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17149671036"
+    "run_id": "17150086942"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T08:00:52.485Z",
+  "generated_at": "2025-08-22T08:20:34.302Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
