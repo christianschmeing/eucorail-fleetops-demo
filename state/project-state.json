@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "5698f1c7d0a958a36815db6b282bd579d51d9bc8",
-    "message": "fix(maintenance): guard useSearchParams for stage/focus deeplinks (build)",
+    "sha": "4e23eb3711c61fe714926da7b802f0cb957fe0f0",
+    "message": "chore(dashboard): fix lints (unused imports, expression)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T08:18:28Z"
+    "timestamp": "2025-08-22T08:26:33Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17150086942"
+    "run_id": "17150256690"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T08:20:34.302Z",
+  "generated_at": "2025-08-22T08:28:31.328Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
