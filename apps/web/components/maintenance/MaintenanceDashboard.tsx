@@ -49,8 +49,8 @@ export default function MaintenanceDashboard() {
   // Honor deep-link query params: stage=ISx, focus={trainId}
   useEffect(() => {
     try {
-      const stage = (search.get('stage') || '').toUpperCase();
-      const focus = search.get('focus') || '';
+      const stage = ((search && search.get('stage')) || '').toUpperCase();
+      const focus = (search && search.get('focus')) || '';
       if (focus) setSelectedVehicleId(focus);
       if (stage) {
         setFilterDueIS1(false);
