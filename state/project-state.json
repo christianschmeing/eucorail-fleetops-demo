@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "20d62d8c216ff7baf243cf25e2edbcc648a61770",
-    "message": "feat(maintenance): table with due indicators; corrective tab; stage-aware planning; deep-links",
+    "sha": "178e8442e27afe7c45d8ba1a5981f840afc6bed0",
+    "message": "docs(deploy): set GitHub Actions as standard; mark direct CLI as hotfix-only; add deploy:ci script",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T10:12:13Z"
+    "timestamp": "2025-08-22T10:29:03Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17152530553"
+    "run_id": "17152893080"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T10:14:10.835Z",
+  "generated_at": "2025-08-22T10:31:10.896Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
