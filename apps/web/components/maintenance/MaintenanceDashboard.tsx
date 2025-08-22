@@ -396,6 +396,8 @@ export default function MaintenanceDashboard() {
                       ? 'bg-blue-600 text-white border-blue-600'
                       : 'bg-white text-gray-700 border-gray-300'
                   }`}
+                  aria-pressed={selectedStages.includes(st)}
+                  aria-label={`Filter ${st} (${stageCounts[st].critical + stageCounts[st].warn}/${stageCounts[st].total})`}
                 >
                   <span className="font-mono mr-1">{st}</span>
                   <span className="text-[10px] opacity-80">
@@ -410,6 +412,8 @@ export default function MaintenanceDashboard() {
                     ? 'bg-red-600 text-white border-red-600'
                     : 'bg-white text-gray-700 border-gray-300'
                 }`}
+                aria-pressed={includeCorrective}
+                aria-label={`Corrective ${includeCorrective ? 'aktiv' : 'inaktiv'}`}
               >
                 Corrective
               </button>
@@ -452,45 +456,7 @@ export default function MaintenanceDashboard() {
                 </label>
               ))}
             </div>
-            <details>
-              <summary className="text-sm cursor-pointer select-none">
-                Erweiterte Filter: Fällige IS‑Stufen
-              </summary>
-              <div className="mt-2 space-y-2 text-sm">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={filterDueIS1}
-                    onChange={(e) => setFilterDueIS1(e.target.checked)}
-                  />
-                  IS1 in ≤ 25% Rest (km)
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={filterDueIS2}
-                    onChange={(e) => setFilterDueIS2(e.target.checked)}
-                  />
-                  IS2 in ≤ 25% Rest (km)
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={filterDueIS3}
-                    onChange={(e) => setFilterDueIS3(e.target.checked)}
-                  />
-                  IS3 in ≤ 25% Rest (km)
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={filterDueIS456}
-                    onChange={(e) => setFilterDueIS456(e.target.checked)}
-                  />
-                  IS4–IS6 in ≤ 25% Rest (km)
-                </label>
-              </div>
-            </details>
+            {/* Legacy expanded filter removed to avoid duplication; chips above show counts */}
           </div>
           <div className="p-2">
             <div className="w-full overflow-x-auto">
@@ -578,17 +544,19 @@ export default function MaintenanceDashboard() {
                               {STAGES.map((st) => (
                                 <button
                                   key={st}
-                                  className="px-1.5 py-0.5 text-xs border rounded mr-1"
+                                  className="px-1.5 py-0.5 text-xs border rounded mr-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                   onClick={() => openPlanDialog(v, st)}
                                   title={`Plan ${st}`}
+                                  aria-label={`Plan ${st}`}
                                 >
                                   {st}
                                 </button>
                               ))}
                               <button
-                                className="px-2 py-1 text-xs border rounded"
+                                className="px-2 py-1 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 onClick={() => openPlanDialog(v, 'Corrective')}
                                 title="Plan Corrective"
+                                aria-label="Plan Corrective"
                               >
                                 Corr.
                               </button>

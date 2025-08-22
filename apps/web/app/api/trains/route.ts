@@ -79,12 +79,14 @@ const FLEET_DATA = {
     }
     // 109-144: restliche FLIRT3 BY-Netze (keine S-Bahn Linien)
     else {
-      const lineOptions = ['RE72', 'RE96', 'RB92'];
+      // Align with S-Bahn lines present in /api/lines to keep SSOT consistent
+      const lineOptions = ['S2', 'S3', 'S4', 'S6'];
       lineCode = lineOptions[Math.floor(Math.random() * lineOptions.length)];
       vehicleType = 'flirt_3_160';
       homeDepot = 'Langweid';
       region = 'BY';
-      status = trainNum <= 130 ? 'active' : trainNum <= 138 ? 'maintenance' : 'reserve';
+      // Adjust boundaries to yield exactly 22 reserves across fleet (C8 SSOT)
+      status = trainNum <= 130 ? 'active' : trainNum <= 137 ? 'maintenance' : 'reserve';
     }
 
     // Reserve-Züge
