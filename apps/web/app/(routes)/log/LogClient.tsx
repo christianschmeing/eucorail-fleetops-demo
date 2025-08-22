@@ -109,7 +109,6 @@ export default function LogClient({
 
     // Severity query (only for TCMS_EVENT)
     const sev = (search?.get('sev') || '').toUpperCase();
-    const sev = (search?.get('sev') || '').toUpperCase();
     if (sev && event.type === 'TCMS_EVENT') {
       // crude match against details text which contains message; keep visible if includes sev keyword
       if (!`${event.details || ''}`.toUpperCase().includes(sev)) return false;
