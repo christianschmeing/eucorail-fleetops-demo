@@ -2,15 +2,15 @@
   "repo": "/christianschmeing/eucorail-fleetops-demo",
   "branch": "main",
   "commit": {
-    "sha": "82035210c46d78c7d523b283181cb232dd92926a",
-    "message": "chore(dev): rename util.js to util.mjs and fix imports",
+    "sha": "5d94ca953c30a0847f464d58a1280115f73a7171",
+    "message": "feat(depot-map): add data-testid planned-slot to planned markers (stabilize E2E)",
     "author": "Christian Schmeing",
-    "timestamp": "2025-08-22T10:44:16Z"
+    "timestamp": "2025-08-22T11:02:15Z"
   },
   "ci": {
     "status": "success",
     "workflow": "state",
-    "run_id": "17153195748"
+    "run_id": "17153546993"
   },
   "changes": {
     "apps_web": false,
@@ -30,7 +30,7 @@
   "release": {
     "latest_tag": null
   },
-  "generated_at": "2025-08-22T10:46:25.990Z",
+  "generated_at": "2025-08-22T11:04:27.512Z",
   "default_branch_hint": "main",
   "agent_rules_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/docs/AGENT_SYSTEM_RULES.md",
   "agent_seed_url": "https://raw.githubusercontent.com/ChristianSchmeing/eucorail-fleetops-demo/main/.agent/SEED.prompt"
